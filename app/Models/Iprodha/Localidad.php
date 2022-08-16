@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Models\Iprodha;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+
+
+class Localidad extends Model
+{
+    use HasFactory;
+    
+    public $timestamps = false;
+    
+    protected $table = 'IPRODHA.LOCALIDAD';
+    protected $primaryKey = 'ID_LOC';
+    public $incrementing = true;
+
+    protected $fillable = [ 
+        'ID_LOC',
+        'NOM_LOC',
+        'ID_MUN',
+        'CP',
+        'LOC_VIEJA',
+        'POBLACION',
+        'COD_INDEC',
+        'KMS_POS',
+        'COD_TABLERO',
+        'ID_LOC_HACIENDA',
+        'LONGITUD',
+        'LATITUD',
+        'GRUPO_OCA'
+    ];
+    protected $attributes = [
+        'ID_LOC' => true,
+        /*'NOM_LOC' => false,
+        'ID_MUN' => false,
+        'CP' => false,
+        'LOC_VIEJA' => false,*/
+
+    ];
+    /*public function obraBarrio()
+    {
+        return $this->belongsTo(Obras::class,'id_obr','id_obr');
+    }*/
+    public function localidadBarrio()
+    {
+        //return $this->belongsTo(Localidad::class,'id_loc','id_loc');
+        return $this->hasMany(Barrio::class,'id_loc','id_loc');
+    }
+}

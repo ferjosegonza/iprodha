@@ -1,0 +1,33 @@
+body {
+    background-color: #F6E3CE /*#bda480;*/
+}
+.colorheaderr{
+    background-color: #ffac47;
+}
+.footer-left{
+    color: #000;
+}
+
+.colorsidebar{
+    background-color: #F5F5F5;
+}
+
+.color-content .section-header{
+    background-color: #F5F5F5;
+}
+
+.color-content .card{
+    background-color: #F5F5F5;
+}
+
+.color-content thead{
+    background-color: #ffac47;
+}
+.colorfooter{
+    background-color: #727272;
+}
+
+
+/* .color-content .table-responsive th{
+    color: #fff;
+} */

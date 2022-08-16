@@ -1,0 +1,23 @@
+#tablaconceptos thead tr th{  
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}
+#tablaconceptos thead tr th:nth-child(1){  
+    border-left: grey 1px solid;
+}
+#tablaconceptos tbody tr td {  
+    text-align: center;
+    border-left: grey 1px solid;
+}
+
+#tablaconceptos tbody tr td:nth-child(2){  
+    text-align:left;
+}
+
+#tablaconceptos tbody tr td:nth-child(29) {
+    border-left: grey 0px solid;
+}
+#tablaconceptos tbody tr:nth-child(10) {
+    border-bottom: grey 1px solid;
+}
