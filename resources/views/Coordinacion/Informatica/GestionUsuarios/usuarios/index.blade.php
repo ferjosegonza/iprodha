@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('content')
     @include('layouts.modal.delete', ['modo' => 'Agregar'])
     <section class="section">
@@ -18,7 +19,7 @@
                                         <div class="col-xs-2 col-sm-1 col-md-2 col-lg-1">
                                             @can('CREAR-USUARIO')
                                                 {!! Form::open(['method' => 'GET', 'route' => ['usuarios.create'], 'class' => 'd-flex justify-content-evenly']) !!}
-                                                {!! Form::submit('Nuevo', ['class' => 'btn btn-warning my-1']) !!}
+                                                    {!! Form::submit('Nuevo', ['class' => 'btn btn-warning my-1']) !!}
                                                 {!! Form::close() !!}
                                             @endcan
                                         </div>
@@ -42,29 +43,28 @@
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                             {!! Form::open(['method' => 'GET', 'class' => 'd-flex justify-content-evenly', 'route' => ['usuarios.pdf']]) !!}
-                                            {!! Form::submit('Imprimir', ['class' => 'btn btn-success my-1']) !!}
+                                                {!! Form::submit('Imprimir', ['class' => 'btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card  col-md-7 ">
                         <div class="card-body">
-                            <!-- Centramos la paginacion a la derecha -->
+                            {{--<!-- Centramos la paginacion a la derecha -->
                             <div class="pagination justify-content-end">
-                                {!! $usuarios->links() !!}
-                            </div>
+                                 $usuarios->links() 
+                            </div>--}}
                             <div class="table-responsive">
-                                <table class="table table-striped mt-2 ">
+                                <table id="example" class="table table-striped mt-2 ">
                                     <thead style="height:50px;">
                                         <th class='ml-3' style="color:#fff">ID</th>
                                         <th style="color:#fff;">Nombre</th>
                                         <th style="color:#fff;">E-mail</th>
-                                        <th style="color:#fff;">Rol</th>
-                                        <th style="color:#fff;">Grupos</th>
+                                        {{--<th style="color:#fff;width:25%">Roles</th>--}}
+                                        {{--<th style="color:#fff;">Grupos</th>--}}
                                         <th style="color:#fff;">Acciones</th>
                                     </thead>
                                     <tbody>
@@ -73,7 +73,7 @@
                                                 <td class='pl-3'>{{ $usuario->id }}</td>
                                                 <td>{{ $usuario->name }}</td>
                                                 <td>{{ $usuario->email }}</td>
-                                                <td>
+                                                {{--<td>
                                                     <div class="d-flex  flex-wrap align-items-center">
                                                         @if (!empty($usuario->getRoleNames()))
                                                             @foreach ($usuario->getRoleNames() as $rolNombre)
@@ -84,30 +84,11 @@
                                                                         @break
                                                                     @endif
                                                                 @endforeach
-                                                                
                                                             @endforeach
                                                         @endif
                                                     </div>
-
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex  flex-wrap align-items-center">
-                                                        @if (!empty($usuario->getRoleNames()))
-                                                            @foreach ($usuario->getRoleNames() as $rolNombre)
-                                                                @foreach ($roles_sinpermisos as $roles)
-                                                                    @if ($roles->name == $rolNombre)
-                                                                        <div class="badge badge-success ">{{ $rolNombre }}
-                                                                        </div>
-                                                                        @break
-                                                                    @endif
-                                                                @endforeach
-                                                                
-                                                            @endforeach
-                                                        @endif
-                                                    </div>
-
-                                                </td>
-
+                                                </td>--}}
+                                                
                                                 <td >
                                                     <div class="d-flex flex-row align-items-center justify-content-around">
                                                         @can('EDITAR-USUARIO')
@@ -155,5 +136,28 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('js')
     <script src="{{ asset('js/Coordinacion/Informatica/GestionUsuarios/usuarios/index_usuarios.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                language: {
+                    lengthMenu: 'Mostrar _MENU_ registros por pagina',
+                    zeroRecords: 'No se ha encontrado registros',
+                    info: 'Mostrando pagina _PAGE_ de _PAGES_',
+                    infoEmpty: 'No se ha encontrado registros',
+                    infoFiltered: '(Filtrado de _MAX_ registros totales)',
+                    search: 'Buscar',
+                    paginate:{
+                        first:"Prim.",
+                        last: "Ult.",
+                        previous: 'Ant.',
+                        next: 'Sig.',
+                    },
+                },
+            });
+            });
+    </script>
 @endsection

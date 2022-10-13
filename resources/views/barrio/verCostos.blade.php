@@ -7,24 +7,29 @@
             <h3 class="page__heading">Costos de Barrio  {{$unBarrio->nombarrio }}</h3>
         </div>
         <div class="section-body">
-            {!! Form::model($Costos, ['method' => 'POST','route' => ['barrio.index', $unBarrio->barrio]]) !!}
             <div class="card-body">
                 @include('layouts.modal.mensajes')
             </div>
             <div style="width:99%;float:left;">
-                <div style="width:30%;float:left;margin-left:1%;">
-                    {!! Form::label('Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::select('dormitorioCosxBarrio',$Dormis1->pluck('cantdorm'),null
+                <div style="width:22%;float:left;margin-left:1%;">
+                    {!! Form::label('Plan:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                    {!! Form::select('plazoCosxBarrio',['Anual','Mensual'],['Anual','Mensual']
                         ,['placeholder' => 'Seleccionar', 'class' => 'form-select','onClick' => 'show1();']
                         ) !!}
                 </div>
-                <div style="width:30%;float:left;margin-left:1%;">                    
+                <div style="width:22%;float:left;margin-left:1%;">
+                    {!! Form::label('Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                    {!! Form::select('dormitorioCosxBarrio',$Dormis1->pluck('cantdorm'),$Dormis1->pluck('cantdorm')
+                        ,['placeholder' => 'Seleccionar', 'class' => 'form-select','onClick' => 'show1();']
+                        ) !!}
+                </div>
+                <div style="width:22%;float:left;margin-left:1%;">                    
                     {!! Form::label('Mensual:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                     {!! Form::select('plazomensualCosxBarrio',$BarrioMen->pluck('plazo'),$BarrioMen->pluck('plazo')
                         , ['placeholder' => 'Seleccionar', 'class' => 'form-select']
                         ) !!}
                 </div>
-                <div style="width:30%;float:left;margin-left:1%;">
+                <div style="width:22%;float:left;margin-left:1%;">
                     {!! Form::label('Anual:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                     {!! Form::select('plazoanualCosxBarrio',$BarrioAnual->pluck('plazo'),$BarrioAnual->pluck('plazo')
                         , ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
@@ -55,7 +60,7 @@
                             <th scope="col" style="color:#fff;">IMPORTE</th>
 
                         </thead>
-                        <tbody>                                
+                        <tbody>
                             @foreach ($Costos as $costo)
                                 <tr>
                                     <td>{{ $costo->id_concosto }}</td>

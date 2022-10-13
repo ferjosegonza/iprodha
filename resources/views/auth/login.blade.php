@@ -33,11 +33,11 @@
                 <div class="form-group">
                     <div class="d-block">
                         <label for="password" class="control-label">Password</label>
-                        {{--<div class="float-right">
+                        <div class="float-right">
                             <a href="{{ route('password.request') }}" class="text-small">
                                 Olvidó tu contraseña?
                             </a>
-                        </div>--}}
+                        </div>
                     </div>
                     <input aria-describedby="passwordHelpBlock" id="password" type="password"
                            value="{{ (Cookie::get('password') !== null) ? Cookie::get('password') : null }}"

@@ -9,8 +9,6 @@
             <div class="row">
                 <div class="col-sm-12">                    
                     @include('layouts.modal.mensajes')
-
-
                     <div class="card">
                         <div class="card-body">
                             <div class="row">

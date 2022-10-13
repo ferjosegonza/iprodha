@@ -30,7 +30,6 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    {{-- {!! Form::select('tipo', [], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!} --}}
                                 </div>
                             </div>       
                         </div>

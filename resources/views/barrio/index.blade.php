@@ -13,41 +13,8 @@
                         {!! $Barrios->links() !!}
                     </div>
                     <div class="col">
-                        <div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-start">
-                                    <div style="height:30px">
-                                        @can('VER-BARRIO')
-                                            <a class="btn btn-warning" href="{{ route('barrio.crear') }}">Nuevo</a>
-                                        @endcan
-                                    </div>
-                                    <div class="col-xs-7 col-sm-8 col-md-8 col-lg-8">
-                                        {!! Form::open([
-                                            'method' => 'GET',
-                                            'class' => '',
-                                            'route' => ['barrio.index'],
-                                        ]) !!}
-                                        <div class="row justify-content-evenly align-items-center">
-                                            <div
-                                                class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d-flex justify-content-evenly">
-                                                {!! Form::text('name', null, ['placeholder' => 'Buscar', 'class' => 'form-control  ']) !!}
-                                            </div>
-                                            <div
-                                                class="col-xs-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-evenly">
-                                                {!! Form::submit('Buscar', ['class' => 'btn btn-secondary  ']) !!}
-                                            </div>
-                                        </div>
-                                        {!! Form::close() !!}
-                                    </div>                                    
-                                    <div class="pagination offset-xs-5">
-                                        <!-- Ubicamos la paginacion a la derecha -->
+                        
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="card  rounded">
                             <div class="card-body  ">
                                 <div class="text-nowrap table-responsive">

@@ -151,7 +151,8 @@ $(function() {
         $(".main-sidebar").niceScroll(sidebar_nicescroll_opts);
         sidebar_nicescroll = $(".main-sidebar").getNiceScroll();
       }, 500);
-      $(".main-sidebar .sidebar-menu > li > ul .dropdown-title").remove();
+      //$(".main-sidebar .sidebar-menu > li > ul .dropdown-title").remove();
+      $(".minititulo").css("display", "none");
       $(".main-sidebar .sidebar-menu > li > a").removeAttr('data-toggle');
       $(".main-sidebar .sidebar-menu > li > a").removeAttr('data-original-title');
       $(".main-sidebar .sidebar-menu > li > a").removeAttr('title');
@@ -165,7 +166,9 @@ $(function() {
 
         if(me.find('> .dropdown-menu').length) {
           me.find('> .dropdown-menu').hide();
-          me.find('> .dropdown-menu').prepend('<li class="dropdown-title pt-3">'+ me.find('> a').text() +'</li>');
+          //me.find('> .dropdown-menu').prepend('<li class="dropdown-title pt-3">'+ me.find('> a').text() +'</li>');
+          
+          $(".minititulo").css("display", "block");
         }else{
           me.find('> a').attr('data-toggle', 'tooltip');
           me.find('> a').attr('data-original-title', me.find('> a').text());

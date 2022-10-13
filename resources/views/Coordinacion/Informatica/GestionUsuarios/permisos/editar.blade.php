@@ -12,7 +12,8 @@
                     <div class="card">
                         <div class="card-body">
                         
-                        {!! Form::model($permiso, ['method' => 'PATCH','route' => ['permisos.update', $permiso->id]]) !!} 
+                        {!! Form::model($permiso, ['method' => 'PATCH',
+                        'style'=>'text-transform:uppercase;','route' => ['permisos.update', $permiso->id]]) !!} 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">

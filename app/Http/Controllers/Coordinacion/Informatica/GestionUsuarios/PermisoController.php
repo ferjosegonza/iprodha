@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 //agregamos
+use App\Models\Diegoz\Grant_rolesxpermisos;
+use Illuminate\Support\Facades\DB;
+
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -27,13 +30,13 @@ class PermisoController extends Controller
 
         if ($name =='') {
             //Con paginación
-            $permisos = Permission::orderBy('name', 'asc')->simplePaginate(10);
+            $permisos = Permission::orderBy('name', 'asc')->get();
             return view('Coordinacion.Informatica.GestionUsuarios.permisos.index',compact('permisos'));
             //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
         } else {
             
             $name = strtoupper($name);
-            $permisos = Permission::where('name', 'like', '%' .$name . '%')->orderBy('updated_at', 'DESC')->simplePaginate(10);
+            $permisos = Permission::where('name', 'like', '%' .$name . '%')->orderBy('updated_at', 'DESC')->get();
             
             //$permisos = Permission::whereRaw('UPPER(name) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('name', 'asc')->simplePaginate(10); 
             return view('Coordinacion.Informatica.GestionUsuarios.permisos.index',compact('permisos'));
@@ -43,7 +46,7 @@ class PermisoController extends Controller
     public function buscarPermisos(Request $request)
     {        
          //Con paginación
-         $permisos = Permission::paginate(50);
+         $permisos = Permission::get();
          return view('Coordinacion.Informatica.GestionUsuarios.permisos.index',compact('permisos'));
          //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!} 
     }
@@ -56,7 +59,7 @@ class PermisoController extends Controller
     public function store(Request $request)
     {
         $campos = [
-            'name' => 'required|string|max:189',
+            'name' => 'required|string|max:189|unique:permissions,name',
             
         ];
         $mensaje=[
@@ -70,9 +73,13 @@ class PermisoController extends Controller
 
         $permiso =  Permission::create(['name'=>$name]); 
 
-        $role = Role::where('name','ADMIN')->get();
-        $permiso->assignRole($role);
-    
+
+        $role = Role::where('name','ADMIN')->first();
+        $model = new Grant_rolesxpermisos;
+        $model->permission_id = $permiso->id;
+        $model->role_id = $role->id;
+        $model->save();
+        
         return redirect()->route('permisos.create')->with('mensaje',$name.' creado exitosamente.');                       
     }
     
@@ -105,6 +112,8 @@ class PermisoController extends Controller
         $permiso = Permission::findOrFail($id);
 
         Permission::destroy($id);
+        DB::table('grant_rolesxpermisos')->where('permission_id',$permiso->id)->delete();
+
         return redirect()->route('permisos.index');               
     }
 }

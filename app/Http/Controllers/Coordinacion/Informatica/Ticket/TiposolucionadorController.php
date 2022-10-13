@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 //agregamos
 
-use App\Models\Silverol\Solucionador;
-use App\Models\Silverol\TipoSolucionador;
+use App\Models\Iprodha\Tic_Solucionador;
+use App\Models\Iprodha\Tic_Tipsolucionador;
 use \PDF;
 
 
@@ -26,30 +26,24 @@ class TiposolucionadorController extends Controller
 
     public function index(Request $request)
     {    
-        // $name = $request->query->get('name');
-        // //return response()->json([Solucionador::find(1)->getTipo]);
-        // //return Solucionador::find(1)->getTipo->destipsolucionador;
-        // //return response()->json([TipoSolucionador::find(1)->getSolucionador()]);
-
-        // // return ;
-        // if (!isset($name)) {
+        $name = $request->query->get('name');
+        
+        if (!isset($name)) {
                
-        //     //Con paginación
-        //     $Solucionadores = Solucionador::orderBy('idsolucionador', 'asc')
-        //                                                             ->simplePaginate(10);
-        //     //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
-        // } else {
-        //     //$roles = Role::where('name', 'like', '%' .$name . '%')->orderBy('updated_at', 'DESC')->paginate(10);
-        //     $Solucionadores = Solucionador::whereRaw('UPPER(nombre) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idsolucionador', 'asc')->paginate(10);
-        // }
-        $Tipos = Tiposolucionador::all();
-        return view('ticket.tiposolucionador.index',compact('Tipos'));    
-        return view('ticket.tiposolucionador.index');
+            //Con paginación
+            $Tipos = Tic_Tipsolucionador::orderBy('idtipsolucionador', 'asc')
+                                                             ->simplePaginate(10);
+            //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
+        } else {
+            $Tipos = Tic_Tipsolucionador::whereRaw('UPPER(destipsolucionador) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idtipsolucionador', 'asc')->paginate(10);
+        }
+        
+        return view('Coordinacion.Informatica.ticket.tiposolucionador.index',compact('Tipos'));    
     }
     
     public function create(Request $request)
     {
-        return view('ticket.tiposolucionador.crear');
+        return view('Coordinacion.Informatica.ticket.tiposolucionador.crear');
     }
 
     public function store(Request $request)
@@ -60,26 +54,21 @@ class TiposolucionadorController extends Controller
 
         $input = $request->all();
 
-        $modelo = new TipoSolucionador;
+        $modelo = new Tic_Tipsolucionador;
 
         //Nombre
         $modelo->destipsolucionador = strtoupper($request->input('nombre'));
         //--
        
-        $data = Tiposolucionador::latest('idtipsolucionador')->first();
-        //return response()->json($data);
+        $data = Tic_Tipsolucionador::latest('idtipsolucionador')->first();
 
         if(is_null($data)){
             $modelo->idtipsolucionador = 1;
         }else{
             $modelo->idtipsolucionador = $data['idtipsolucionador'] + 1;
         }
-       
-        // if (isset($data['nombre'])) {
-        //     return redirect()->route('tiposolucionador.index')->with('alerta','¡Ya existe el solucionador!');
-        // }
-            
-       $modelo->save();
+        $modelo->save();
+        
        return redirect()->route('tiposolucionador.index')->with('mensaje','El tipo de solucionador '.$modelo->nombre.' creado con exito.');                             
     }
 
@@ -89,17 +78,29 @@ class TiposolucionadorController extends Controller
    
     public function edit(Request $request, $id)
     {
+        $tipo = Tic_Tipsolucionador::findOrFail($id);
+    
+        return view('Coordinacion.Informatica.ticket.tiposolucionador.editar',compact('tipo'));
     }
     
     public function update(Request $request, $id)
-    {                                      
+    {
+        $this->validate($request, [
+            'nombre' => 'required|string',
+       ]);
+    
+        $modelo = Tic_Tipsolucionador::findOrFail($id);
+        $modelo->destipsolucionador = strtoupper($request->input('nombre'));
+        $modelo->save();
+    
+        return redirect()->route('tiposolucionador.index')->with('mensaje',$request->input('nombre').' editado exitosamente.');                                       
     }
 
     public function destroy($id)
     {
-        $tiposolu = Tiposolucionador::findOrFail($id);
+        $tiposolu = Tic_Tipsolucionador::findOrFail($id);
         $nombre = $tiposolu->destipsolucionador;
-        Tiposolucionador::destroy($id);
+        Tic_Tipsolucionador::destroy($id);
         return redirect()->route('tiposolucionador.index')->with('mensaje','Tipo Solucionador '.$nombre.' borrado con éxito!.');  
     }
 

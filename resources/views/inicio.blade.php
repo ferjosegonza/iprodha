@@ -13,6 +13,7 @@
                     <div class="card col-sm-12">
                         <div class="card-body">
                             {{--Contenido--}}
+                            {{-- @include('favoritos.index') --}}
                         </div>
                     </div>
                 </div>

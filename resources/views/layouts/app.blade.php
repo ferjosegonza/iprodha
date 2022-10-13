@@ -17,15 +17,17 @@
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" type="text/css"/>
     <link rel="icon" type="image/x-icon" href="{{asset('img/logo3.png')}}">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
 @yield('page_css')
 <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('web/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('web/css/components.css')}}">
     @yield('page_css')
 
-    @yield('css')
     <link rel="stylesheet" href="{{ asset('css/header/header.css') }}"/>
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/datatables.min.css') }}"/>
+    @yield('css')
 </head>
 <body id="body" class="sidebar-mini">
     <script src="{{ asset('js/jquery3.6.0.js') }}"></script>
@@ -67,6 +69,7 @@
 <script src="{{ mix('assets/js/profile.js') }}"></script>
 <script src="{{ mix('assets/js/custom/custom.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap.min2.js') }}"></script>
+<script src="{{ asset('js/datatables.min.js') }}"></script>
 
 @yield('page_js')
 @yield('scripts')
@@ -87,4 +90,8 @@
         };
     }(jQuery));
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    @yield('js')
+
 </html>

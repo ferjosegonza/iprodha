@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Models\Iprodha;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-
 
 class Barrio_rg_plazo extends Model
 {

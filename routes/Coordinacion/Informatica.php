@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Password;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\RolController;
 use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\UsuarioController;
+use App\Http\Controllers\Coordinacion\Informatica\VistaController;
 use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\PermisoController;
 use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\ChangePasswordController;
 use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\ChangeEmailController;
@@ -14,6 +15,9 @@ use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\ChangeEmailCon
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\TicketController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\SolucionadorController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
+use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemaController;
+use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemasubController;
+//use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
 
 use App\Http\Controllers\HomeController;
 
@@ -33,35 +37,44 @@ use App\Http\Controllers\HomeController;
 
 
 
-Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
-Route::get('/', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
+Route::get('/inicio', [HomeController::class, 'inicio'])->name('inicio');
+Route::get('/', [HomeController::class, 'inicio'])->name('inicio');
 Route::resource('home', HomeController::class);
 
-Route::group(['middleware' => ['auth','role:ADMIN']],function() {
-    Route::get('/phpinfo', [HomeController::class, 'phpinfo'])->name('phpinfo');
+
+
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-VISTAS']], function () {
+    Route::get('/vistas/buscarvista', [VistaController::class, 'buscarvista']);
+    Route::post('/vistas/editarvista', [VistaController::class, 'updatevista'])->name('vistas.updatevista');
+    Route::resource('vistas', VistaController::class);
 });
 
-Route::group(['middleware' => ['auth','role:ADMIN']],function() {
-    Route::get('/logAuditar', [HomeController::class, 'auditar'])->name('logAuditar');
-    Route::resource('logApp', LogViewerController::class);
-});
-
-
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-ROL|EDITAR-ROL|BORRAR-ROL|CREAR-ROL']], function () {
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-ROL']], function () {
+    Route::get('/roles/creargrupo', [RolController::class, 'creargrupo'])->name('roles.creargrupo');
+    Route::post('/roles/buscarordengrupo', [RolController::class, 'buscarordengrupo']);
+    Route::post('/roles/buscarmenus', [RolController::class, 'buscarmenus']);
+    Route::get('/roles/vistas', [RolController::class, 'vistas']);
+    Route::get('/roles/buscarvista', [RolController::class, 'buscarvista']);
+    Route::post('/roles/buscarpermisos', [RolController::class, 'buscarpermisos']);
+    Route::post('/roles/buscarmenu', [RolController::class, 'buscarmenu']);
+    Route::delete('/roles/eliminarmenu/{id}', [RolController::class, 'eliminarmenu']);
+    Route::post('/roles/editarmenu', [RolController::class, 'editarmenu']);
+    Route::post('/roles/buscarrol', [RolController::class, 'buscarrol']);
+    Route::post('/roles/guardargrupo', [RolController::class, 'storegrupo'])->name('roles.storegrupo');
     Route::resource('roles', RolController::class);
 });
 
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-USUARIO|EDITAR-USUARIO|BORRAR-USUARIO|CREAR-USUARIO']], function () {
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-USUARIO']], function () {
     Route::get('/usuarios/pdf', [UsuarioController::class, 'pdf'])->name('usuarios.pdf');
-    Route::post('/usuarioss', [UsuarioController::class, 'index']);
-    Route::post('/rolesconpermisos', [UsuarioController::class, 'listarrolesconpremisos']);
-    Route::post('/rolessinpermisos', [UsuarioController::class, 'listarrolessinpremisos']);
-    Route::post('/buscarpermisosdelrol', [UsuarioController::class, 'buscarpermisosdelrol']);
-    Route::post('/buscarpermisos', [UsuarioController::class, 'buscarpermisos']);
+    Route::post('/usuarios/rolesconpermisos', [UsuarioController::class, 'listarrolesconpremisos']);
+    Route::post('/usuarios/rolessinpermisos', [UsuarioController::class, 'listarrolessinpremisos']);
+    Route::post('/usuarios/buscarpermisosdelrol', [UsuarioController::class, 'buscarpermisosdelrol']);
+    Route::post('/usuarios/buscarpermisos', [UsuarioController::class, 'buscarpermisos']);
     Route::resource('usuarios', UsuarioController::class);
 });
 
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-PERMISO|EDITAR-PERMISO|BORRAR-PERMISO|CREAR-PERMISO']], function () {
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-PERMISO']], function () {
     Route::resource('permisos', PermisoController::class);
 });
 
@@ -80,13 +93,28 @@ Route::group(['middleware' => ['auth']],function() {
 });
 
 
-Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN']], function(){
+Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-TICKET']], function(){
+    Route::get('/ticket/asignar', [TicketController::class, 'asignadores'])->name('ticket.asigna');
+    Route::get('/ticket/asignar/{id}/cancel', [TicketController::class, 'cancelticket'])->name('ticket.cancel');
+    Route::get('/ticket/asignar/{id}/asignar', [TicketController::class, 'asigna'])->name('ticket.asignar');
+    Route::get('/ticket/atencion', [TicketController::class, 'vertickets'])->name('ticket.atencion');
+    Route::get('/ticket/atencion/{id}', [TicketController::class, 'atencionticket'])->name('ticket.atender');
+    Route::get('/ticket/asignar/{id}/complete', [TicketController::class, 'completarticket'])->name('ticket.complete');
+    Route::get('/ticket/validar/{id}', [TicketController::class, 'validarTicket'])->name('ticket.validar');
+    Route::get('/ticket/reasignar/{id}', [TicketController::class, 'reAsignarTicket'])->name('ticket.reasignar');
+    Route::patch('/ticket/editar/{id}', [TicketController::class, 'editarTicket'])->name('ticket.editar');
+    Route::get('/ticket/cambiarCat/{id}', [TicketController::class, 'cambiarCategTicket'])->name('ticket.cambiar');
+    Route::patch('/ticket/editarCat/{id}', [TicketController::class, 'editarCategTicket'])->name('ticket.cambiarcat');
+    Route::post('/ticket/{id}/solu',[TicketController::class,'allTicket']);
     Route::resource('ticket', TicketController::class);
-});
-
-Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN']], function(){
+    
+    // Route::get('/atender', [App\Http\Controllers\Coordinacion\Informatica\Ticket\TicketController::class, 'atencion']);
     Route::resource('solucionador', SolucionadorController::class);
     Route::resource('tiposolucionador', TiposolucionadorController::class);
+    Route::post('/categoriaprob/{id}/subcateg',[CategoriaproblemaController::class,'byCategorias']);
+    Route::post('/categoriaprob/{id}/solucionadores',[CategoriaproblemaController::class,'bySolucionadores']);
+    Route::resource('categoriaprob', CategoriaProblemaController::class);
+    Route::resource('categoriaprobsub', CategoriaproblemasubController::class);
 });
 
 // Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN']], function(){

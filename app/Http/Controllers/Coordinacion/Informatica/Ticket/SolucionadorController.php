@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 //agregamos
 
-use App\Models\Silverol\Solucionador;
-use App\Models\Silverol\TipoSolucionador;
+use App\Models\Iprodha\Tic_Solucionador;
+use App\Models\Iprodha\Tic_Tipsolucionador;
 use \PDF;
 
 
@@ -27,29 +27,23 @@ class SolucionadorController extends Controller
     public function index(Request $request)
     {    
         $name = $request->query->get('name');
-        //return response()->json([Solucionador::find(1)->getTipo]);
-        //return Solucionador::find(1)->getTipo->destipsolucionador;
-        //return response()->json([TipoSolucionador::find(1)->getSolucionador()]);
-
-        // return ;
+        
         if (!isset($name)) {
                
             //Con paginación
-            $Solucionadores = Solucionador::orderBy('idsolucionador', 'asc')->simplePaginate(10);
+            $Solucionadores = Tic_Solucionador::where('idsolucionador', '>=', '1')->orderBy('idsolucionador', 'asc')->simplePaginate(10);
             //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
         } else {
             //$roles = Role::where('name', 'like', '%' .$name . '%')->orderBy('updated_at', 'DESC')->paginate(10);
-            $Solucionadores = Solucionador::whereRaw('UPPER(nombre) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idsolucionador', 'asc')->paginate(10);
+            $Solucionadores = Tic_Solucionador::whereRaw('UPPER(nombre) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idsolucionador', 'asc')->paginate(10);
         }
-
-        return view('ticket.solucionador.index',compact('Solucionadores'));    
-        //return view('ticket.solucionador.index');
+        return view('Coordinacion.Informatica.ticket.solucionador.index',compact('Solucionadores'));   
     }
     
     public function create(Request $request)
     {
-        $Tipos = TipoSolucionador::all();
-        return view('ticket.solucionador.crear', compact('Tipos'));
+        $Tipos = Tic_Tipsolucionador::all();
+        return view('Coordinacion.Informatica.ticket.solucionador.crear', compact('Tipos'));
     }
 
     public function store(Request $request)
@@ -61,35 +55,23 @@ class SolucionadorController extends Controller
 
         $input = $request->all();
 
-        $modelo = new Solucionador;
+        $modelo = new Tic_Solucionador;
 
         //Nombre
         $modelo->nombre = strtoupper($request->input('nombre'));
+        $modelo->idtipsolucionador = $request->input('tipo');
         //--
-       
-        //idtipsolucionador
-        // $tipsolu = TipoSolucionador::where('destipsolucionador', $request->input('tipo'));
-        // $tipsolu = TipoSolucionador::all()
-        //                             ->where('destipsolucionador', $request->input('tipo'));
-        // $tipsolu = TipoSolucionador::where('destipsolucionador', '=', $request->input('tipo'));
-        $tipsolu = TipoSolucionador::where('destipsolucionador','=',$request->input('tipo'))->select('idtipsolucionador')->get();
-        return response()->json($tipsolu);
-        // $modelo->idtipsolucionador = $tipsolu[0]->idtipsolucionador;
-        // //--
-        
-
-        // //idsolucionador
               
-        // $data = Solucionador::latest('idsolucionador')->first();
+        $data = Tic_Solucionador::latest('idsolucionador')->first();
      
-        // if(!$data != null){
-        //     $modelo->idsolucionador = 1;
-        // }else{
-        //     $modelo->idsolucionador = $data['idsolucionador'] + 1;
-        // }
+        if(!$data != null){
+            $modelo->idsolucionador = 1;
+        }else{
+            $modelo->idsolucionador = $data['idsolucionador'] + 1;
+        }
 
-        // $modelo->save();
-        // return redirect()->route('solucionador.index')->with('mensaje','El solucionador '.$modelo->nombre.' creado con exito.');                             
+        $modelo->save();
+        return redirect()->route('solucionador.index')->with('mensaje','El solucionador '.$modelo->nombre.' creado con exito.');                             
     }
 
     public function show($id)
@@ -100,9 +82,9 @@ class SolucionadorController extends Controller
    
     public function edit(Request $request, $id)
     {
-        $Solucionador = Solucionador::findOrFail($id);
-        $Tipos = TipoSolucionador::all();
-        return view('ticket.solucionador.editar',compact('Solucionador','Tipos'));
+        $Solucionador = Tic_Solucionador::findOrFail($id);
+        $Tipos = Tic_Tipsolucionador::all();
+        return view('Coordinacion.Informatica.ticket.solucionador.editar',compact('Solucionador','Tipos'));
     }
 
     
@@ -113,11 +95,9 @@ class SolucionadorController extends Controller
             'tipo' => 'required|String',
        ]);
     
-        $modelo = Solucionador::find($id);
+        $modelo = Tic_Solucionador::find($id);
         $modelo->nombre = strtoupper($request->input('nombre'));
         $modelo->idtipsolucionador = $request->input('tipo');
-        // $tipsolu = TipoSolucionador::where('idtipsolucionador','=',$request->input('tipo'))->select('idtipsolucionador')->get();
-        // $modelo->idtipsolucionador = $tipsolu[0]->idtipsolucionador;
         $modelo->save();
     
         return redirect()->route('solucionador.index')->with('mensaje',$request->input('nombre').' editado exitosamente.');                                                                                      
@@ -125,9 +105,9 @@ class SolucionadorController extends Controller
 
     public function destroy($id)
     {
-        $solucionador = Solucionador::findOrFail($id);
+        $solucionador = Tic_Solucionador::findOrFail($id);
         $nombre = $solucionador->nombre;
-        Solucionador::destroy($id);
+        Tic_Solucionador::destroy($id);
         return redirect()->route('solucionador.index')->with('mensaje','Solucionador '.$nombre.' borrado con éxito!.');
         
     }

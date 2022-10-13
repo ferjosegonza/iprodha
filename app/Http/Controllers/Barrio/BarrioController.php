@@ -10,18 +10,6 @@ use App\Models\Iprodha\Barrio_programa;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\DB;
-//use Illuminate\Support\Facades\View;
-
-//use Spatie\Permission\Models\Permission;
-//use App\Http\Controllers\Controller;
-/*
-use Spatie\Permission\Models\Permission;
-use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Arr;*/
-
 class BarrioController extends Controller
 {
 

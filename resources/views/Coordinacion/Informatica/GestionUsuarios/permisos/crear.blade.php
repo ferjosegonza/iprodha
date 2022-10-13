@@ -13,7 +13,8 @@
                         <div class="card-body">
                         
 
-                        {!! Form::open(array('route' => 'permisos.store','method'=>'POST')) !!}
+                        {!! Form::open(array('route' => 'permisos.store','method'=>'POST',
+                        'style'=>'text-transform:uppercase;')) !!}
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
@@ -22,7 +23,7 @@
                                     </div>
                                 </div>       
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                            <button type="submit" class="btn btn-primary mr-2">Nuevo</button>
                             <a href="{{ route('permisos.index') }}"class="btn btn-secondary fo">Volver</a>
                         {!! Form::close() !!}
                         </div>

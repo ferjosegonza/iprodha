@@ -2,141 +2,157 @@
 
 @section('content')
 
-@include('layouts.modal.delete', ['modo' => 'Agregar'])
+{{-- @include('layouts.modal.delete', ['modo' => 'Agregar']) --}}
 {{-- @include('layouts.modal.success', ['modo' => 'Agregar']) --}}
 
 
     <section class="section">
         <div class="section-header">
-            <h3 class="page__heading">Tickets</h3>
+            <h3 class="page__heading">Ticket </h3>
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
+        @include('layouts.modal.delete', ['modo' => 'Agregar'])
         <div class="section-body">
             <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 ">
+                <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row g-3 ">
-                                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-6">
+                            <div class="row g-3 my-auto">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                     <div class="row justify-content-evenly align-items-evenly">
-                                        <div class="col-xs-2 col-sm-1 col-md-2 col-lg-1">
-                                            @can('CREAR-CATEGORIALABORAL')
-                                                {!! Form::open(['method' => 'GET', 'route' => ['categorialaboral.create'], 'class' => 'd-flex justify-content-evenly']) !!}
-                                                {!! Form::submit('Nuevo', ['class' => 'btn btn-warning my-1']) !!}
-                                                {!! Form::close() !!}
-                                            @endcan
-                                        </div>
-                                        <div class="col-xs-7 col-sm-8 col-md-8 col-lg-8">
-                                            {!! Form::open([
-                                                'method' => 'GET',
-                                                'class' => '',
-                                                'route' => ['categorialaboral.index'],
-                                            ]) !!}
-                                            <div class="row justify-content-evenly align-items-center">
-                                                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d-flex justify-content-evenly">
-                                                    {!! Form::text('name', null, ['placeholder' => 'Buscar Categoria', 'class' => 'form-control  ']) !!}
-                                                </div>
-                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-evenly">
-                                                    {!! Form::submit('Buscar', ['class' => 'btn btn-secondary']) !!}
-                                                </div>
+                                        <form method="GET" action="{{route('ticket.index')}}">
+                                            <div class="input-group mb-3">
+                                                <input name="name" type="text" class="form-control" placeholder="Buscar" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                <button class="btn btn-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                                             </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                        <div class="col-xs-2 col-sm-1 col-md-2 col-lg-1">
-                                            {!! Form::open(['method' => 'GET', 'class' => 'd-flex justify-content-evenly', 'route' => ['categorialaboral.pdf'], 'target' => '_blank']) !!}
-                                            {!! Form::submit('Imprimir', ['class' => 'btn btn-success my-1']) !!}
-                                            {!! Form::close() !!}
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </div>  
+
+                                <div class="col-lg-5 my-auto">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        @can('ATENDER-TICKET')
+                                            <a type="button" class="btn btn-light" href="{{route('ticket.atencion')}}">Atencion Ticket</a>
+                                        @endcan
+                                        @can('ASIGNAR-TICKET')
+                                            <a type="button" class="btn btn-light" href="{{route('ticket.asigna')}}">Asignadores</a>
+                                            <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Extra</button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{{route('solucionador.index')}}" target="_blank">Solucionador</a></li>
+                                                <li><a class="dropdown-item" href="{{route('categoriaprob.index')}}" target="_blank">Categoria</a></li>
+                                                <li><a class="dropdown-item" href="{{route('categoriaprobsub.index')}}" target="_blank">Sub-categoria</a></li>
+                                            </ul>
+                                        @endcan
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-2">
+                                    {!! Form::open(['method' => 'GET', 'route' => ['ticket.create'], 'class' => 'd-flex justify-content-end']) !!}
+                                        {!! Form::submit('+ Nuevo Ticket', ['class' => 'btn btn-success my-1']) !!}
+                                    {!! Form::close() !!}
+                                </div>
+                                
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="card">
                         <div class="card-body">
                             <!-- Centramos la paginacion a la derecha -->
-                            {{-- <div class="pagination justify-content-end">
-                                 {!! $CategoriasLaborales->links() !!}
-                            </div> --}}
-                            <div class="table-responsive">
+                            <div class="pagination justify-content-end">
+                                 {!! $Tickets->links() !!}
+                            </div>
+                            <div class="table-responsive text-center">
                                 <table class="table table-striped mt-2">
                                     <thead style="height:50px;">
-                                        <th class='ml-3' style="color:#fff;">Cat. Laboral</th>
-                                        <th style="color:#fff;">WEB</th>
-                                        <th style="color:#fff;">Suma Ingreso</th>
-                                        <th style="color:#fff;">Datos Lab.</th>
-                                        <th style="color: #fff;">Acciones</th>
+                                        <th class='ml-3' style="color:#fff;">Numero</th>
+                                        <th class='ml-3' style="color:#fff;">Categoria</th>
+                                        <th style="color:#fff;">Estado</th>
+                                        <th style="color:#fff;">Solucionador</th>
+                                        <th colspan="3" style="color: #fff;">Acciones</th>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($CategoriasLaborales as $CategoriaLaboral)
+                                        @foreach ($Tickets as $Ticket)
                                             <tr>
-                                                <td>{{$CategoriaLaboral->catlaboral}}</td>
-
-                                                @if ($CategoriaLaboral->web == 1)
-                                                    <td>SI</td>
-                                                @else
-                                                    <td>NO</td>
-                                                @endif
-
-                                                @if ($CategoriaLaboral->sumaingreso == 1)
-                                                    <td>SI</td>
-                                                @else
-                                                    <td>NO</td>
-                                                @endif
-                                                
-                                                @switch($CategoriaLaboral->datolab)
+                                                <td>{{$Ticket->idtarea}}</td>
+                                                <td>{{$Ticket->getCategoriaProb->getCatProblema->descatprob}}</td>
+                                               
+                                                @switch($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado)
                                                     @case(1)
-                                                        <td>SI</td>
-                                                    @break
-                                            
+                                                        <td>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="fas fa-hourglass-start"></i></td>
+                                                        @break
+                                                    @case(2)
+                                                        <td>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="fas fa-user-clock"></i></td>
+                                                        @break
                                                     @case(3)
-                                                        <td>SIN OPCION</td>
-                                                    @break
-                                            
+                                                        <td>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="fas fa-user-cog"></i></td>
+                                                        @break
+                                                    @case(4)
+                                                        <td style='color: #55a852'>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="far fa-check-circle"></i></td>
+                                                        @break
+                                                    @case(5)
+                                                        <td style='color: #55a852'>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="far fa-check-circle"></i><i class="far fa-check-circle"></i></td>
+                                                        @break
+                                                    @case(6)
+                                                        <td style='color: #fc685d'>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="far fa-times-circle"></i></td>
+                                                        @break
+                                                    @case(7)
+                                                        <td>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="fas fa-arrow-up"></i></td>
+                                                        @break
                                                     @default
-                                                        <td>NO</td>
-                                                @endswitch
+                                                        <td>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}}</td>
+                                                @endswitch  
+                                                
+                                                <td>{{$Ticket->getSolucionador->nombre}}</td>
+                                                
                                                 <td>
-                                                    <div class="d-flex flex-row align-items-center justify-content-around">
-                                                        @can('EDITAR-CATEGORIALABORAL')
-                                                            {!! Form::open(['method' => 'GET', 'route' => ['categorialaboral.edit', $CategoriaLaboral->id_catlaboral], 'style' => 'display:inline']) !!}
-                                                            {!! Form::submit('Editar', ['class' => 'btn btn-primary mr-2']) !!}
-                                                            {!! Form::close() !!}
-                                                        @endcan
-
-                                                        @can('BORRAR-CATEGORIALABORAL')
-                                                            {!! Form::open([
-                                                                'method' => 'DELETE',
-                                                                'class' => 'formulario',
-                                                                'route' => ['categorialaboral.destroy', $CategoriaLaboral->id_catlaboral],
-                                                                'style' => 'display:inline',
-                                                            ]) !!}
-                                                            {!! Form::submit('Borrar', ['class' => 'btn btn-danger']) !!}
-                                                            {!! Form::close() !!}
-                                                        @endcan
-                                                    </div>
+                                                    @can('VER-TICKET')
+                                                        {!! Form::open([
+                                                            'method' => 'GET',
+                                                            'route' => ['ticket.show', $Ticket->idtarea],
+                                                            'style' => 'display:inline',
+                                                        ]) !!}
+                                                        {!! Form::submit('Ver', ['class' => 'btn btn-warning']) !!}
+                                                        {!! Form::close() !!}
+                                                    @endcan
+                                                </td>
+                                                <td>
+                                                    @if ($Ticket->getEstadoTarea->last()->getEstado->idestado == 1)
+                                                        {!! Form::open([
+                                                            'method' => 'GET',
+                                                            'route' => ['ticket.edit', $Ticket->idtarea],
+                                                            'style' => 'display:inline',
+                                                        ]) !!}
+                                                        {!! Form::submit('Editar', ['class' => 'btn btn-primary']) !!}
+                                                        {!! Form::close() !!}    
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($Ticket->getEstadoTarea->last()->getEstado->idestado == 1)
+                                                        {!! Form::open([
+                                                            'method' => 'GET',
+                                                            'class' => 'formulario',
+                                                            'route' => ['ticket.cancel', $Ticket->idtarea],
+                                                            'style' => 'display:inline',
+                                                        ]) !!}
+                                                        {!! Form::submit('Cerrar', ['class' => 'btn btn-danger']) !!}
+                                                        {!! Form::close() !!}
+                                                    @endif  
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach
+                    
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id='mostrar' class="col-xs-12 col-sm-12 col-md-6" style="display: none">
-                    <div class="card">
-                        <div id='contenido' class="card-body">
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
-    {{-- <script src="{{ asset('js/usuarios/index_usuarios.js') }}"></script> --}}
 
-<script src="{{ asset('js/categorialaboral/index_categorialaboral.js') }}"></script>
-<script src="{{ asset('js/modal/success.js') }}"></script>
+<script src="{{ asset('js/Coordinacion/Informatica/ticket/index_ticket.js') }}"></script>
 
     
 @endsection

@@ -27,7 +27,7 @@
                                             {!! Form::open([
                                                 'method' => 'GET',
                                                 'class' => '',
-                                                'route' => ['roles.index'],
+                                                'route' => ['tiposolucionador.index'],
                                             ]) !!}
                                             <div class="row justify-content-evenly align-items-center">
                                                 <div
@@ -67,7 +67,7 @@
                                             <tr>
                                                 <td>{{$Tipo->destipsolucionador}}</td>
                                                 <td>
-                                                    <div class="d-flex flex-row align-items-center justify-content-around">
+                                                    <div class="align-items-center">
                                                         @can('EDITAR-ROL')
                                                             {!! Form::model($Tipo, [
                                                                 'method' => 'GET',
@@ -102,5 +102,5 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('js/ticket/index_tiposolucionador.js') }}"></script>
+    <script src="{{ asset('js/Coordinacion/Informatica/ticket/index_tiposolucionador.js') }}"></script>
 @endsection

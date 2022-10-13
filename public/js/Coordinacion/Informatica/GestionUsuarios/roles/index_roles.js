@@ -12,5 +12,3 @@ $(".formulario").on('submit', function(evt){
     $('#exampleModal').modal('show');
     
  });
-
- 

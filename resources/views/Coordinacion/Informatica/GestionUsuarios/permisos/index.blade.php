@@ -24,7 +24,9 @@
                                             @endcan
                                         </div>
                                         <div class="col-xs-7 col-sm-8 col-md-8 col-lg-8">
+                                            
                                             {!! Form::open([
+                                                'style'=>'text-transform:uppercase;',
                                                 'method' => 'GET',
                                                 'class' => '',
                                                 'route' => ['permisos.index'],
@@ -50,10 +52,10 @@
 
                     <div class="card col-sm-6">
                         <div class="card-body ">
-                            <div class="pagination justify-content-end">
+                            {{--<div class="pagination justify-content-end">
                                 <!-- Ubicamos la paginacion a la derecha -->
                                 {!! $permisos->links() !!}
-                            </div>
+                            </div>--}}
                             <div class=" table-responsive">
 
                                 <table class="table table-striped mt-2">
@@ -97,5 +99,28 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('js/Coordinacion/Informatica/GestionUsuarios/permisos/index_permisos.js') }}"></script>
+@endsection
+
+@section('js')
+<script src="{{ asset('js/Coordinacion/Informatica/GestionUsuarios/permisos/index_permisos.js') }}"></script>
+<script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                language: {
+                    lengthMenu: 'Mostrar _MENU_ registros por pagina',
+                    zeroRecords: 'No se ha encontrado registros',
+                    info: 'Mostrando pagina _PAGE_ de _PAGES_',
+                    infoEmpty: 'No se ha encontrado registros',
+                    infoFiltered: '(Filtrado de _MAX_ registros totales)',
+                    search: 'Buscar',
+                    paginate:{
+                        first:"Prim.",
+                        last: "Ult.",
+                        previous: 'Ant.',
+                        next: 'Sig.',
+                    },
+                },
+            });
+            });
+    </script>
 @endsection

@@ -20,7 +20,7 @@ class ChangeEmailController extends Controller
     
     public function store(Request $request)
     {
-        $user = User::findOrFail(auth()->user()->id);
+        $user = User::Fail(auth()->user()->id);
         
         /*
         Validate all input fields

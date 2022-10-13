@@ -20,7 +20,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-10 col-lg-6">
                                     <div class="row justify-content-evenly align-items-evenly">
                                         <div class="col-xs-2 col-sm-1 col-md-2 col-lg-1">
-                                            @can('crear-categorialaboral')
+                                            @can('CREAR-CATEGORIALABORAL')
                                                 {!! Form::open(['method' => 'GET', 'route' => ['solucionador.create'], 'class' => 'd-flex justify-content-evenly']) !!}
                                                 {!! Form::submit('Nuevo', ['class' => 'btn btn-warning my-1']) !!}
                                                 {!! Form::close() !!}
@@ -55,9 +55,9 @@
                     <div class="card">
                         <div class="card-body">
                             <!-- Centramos la paginacion a la derecha -->
-                            {{-- <div class="pagination justify-content-end">
-                                 {!! $CategoriasLaborales->links() !!}
-                            </div> --}}
+                             <div class="pagination justify-content-end">
+                                 {!! $Solucionadores->links() !!}
+                            </div> 
                             <div class="table-responsive text-center">
                                 <table class="table table-striped mt-2">
                                     <thead style="height:50px;">
@@ -72,30 +72,7 @@
                                                 <td>{{$Solucionador->idsolucionador}}</td>
                                                 <td>{{$Solucionador->nombre}}</td>
                                                 <td>{{$Solucionador->getTipo->destipsolucionador}}</td>
-                                                {{-- @if ($CategoriaLaboral->web == 1)
-                                                    <td>SI</td>
-                                                @else
-                                                    <td>NO</td>
-                                                @endif
-
-                                                @if ($CategoriaLaboral->sumaingreso == 1)
-                                                    <td>SI</td>
-                                                @else
-                                                    <td>NO</td>
-                                                @endif
-                                                
-                                                @switch($CategoriaLaboral->datolab)
-                                                    @case(1)
-                                                        <td>SI</td>
-                                                    @break
-                                            
-                                                    @case(3)
-                                                        <td>SIN OPCION</td>
-                                                    @break
-                                            
-                                                    @default
-                                                        <td>NO</td>
-                                                @endswitch --}}
+                                
                                                 <td>
                                                     <div class="align-items-center">
                                                         @can('EDITAR-CATEGORIALABORAL')
@@ -135,7 +112,7 @@
     </section>
     {{-- <script src="{{ asset('js/usuarios/index_usuarios.js') }}"></script> --}}
 
-<script src="{{ asset('js/ticket/index_solucionador.js') }}"></script>
+<script src="{{ asset('js/Coordinacion/Informatica/ticket/index_solucionador.js') }}"></script>
 
     
 @endsection

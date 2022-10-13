@@ -11,7 +11,7 @@
         </a>
     </div>
     <ul class="sidebar-menu">
-        @include('layouts.menu.PrimerNivel')
+        @include('layouts.menu.menu')
     </ul>
 </aside>
 
