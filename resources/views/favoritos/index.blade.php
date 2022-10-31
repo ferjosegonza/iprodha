@@ -20,7 +20,7 @@
                               <i id= "icono"class="fas fa-ellipsis-v fs-5"  ></i>
                             </a>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-ruta="{{$Favorito->ruta}}">Editar</a></li>
+                              <li><a id="editaar" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-ruta="{{$Favorito->ruta}}">Editar</a></li>
                               <li><a class="dropdown-item" href="#">Borrar</a></li>
                             </ul>
                           </div>
@@ -37,12 +37,12 @@
       </div>
 
 <script>
-  $('#exampleModal').on('show.bs.modal', function(event) {
+  $('#editaar').on('click', function(event) {
         var button = $(event.relatedTarget);
         var ruta = button.data('ruta');
         var modal = $(this);
-        
-        modal.find('#descript').text( nombre );
+        console.log(ruta);
+        modal.find('#descript').text( ruta );
         
     });
 </script>
