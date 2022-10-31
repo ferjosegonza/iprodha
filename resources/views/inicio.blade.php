@@ -13,11 +13,12 @@
                     <div class="card col-sm-12">
                         <div class="card-body">
                             {{--Contenido--}}
-                            {{-- @include('favoritos.index') --}}
+                            @include('favoritos.index')
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @include('layouts.favorito.editar', ['modo' => 'Agregar'])
 @endsection

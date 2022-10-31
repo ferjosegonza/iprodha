@@ -17,6 +17,7 @@ use App\Http\Controllers\Coordinacion\Informatica\Ticket\SolucionadorController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemaController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemasubController;
+use App\Http\Controllers\FavoritoController;
 //use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
 
 use App\Http\Controllers\HomeController;
@@ -38,7 +39,7 @@ use App\Http\Controllers\HomeController;
 
 
 Route::get('/inicio', [HomeController::class, 'inicio'])->name('inicio');
-Route::get('/', [HomeController::class, 'inicio'])->name('inicio');
+Route::get('/', [HomeController::class, 'inicio']);
 Route::resource('home', HomeController::class);
 
 
@@ -115,6 +116,14 @@ Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-TICKET']], 
     Route::post('/categoriaprob/{id}/solucionadores',[CategoriaproblemaController::class,'bySolucionadores']);
     Route::resource('categoriaprob', CategoriaProblemaController::class);
     Route::resource('categoriaprobsub', CategoriaproblemasubController::class);
+});
+
+Route::group(['middleware' => ['auth']], function() {
+    //Route::get('/profile', [App\Http\Controllers\HomeController::class, 'index']);
+    //Route::post('/profile', [App\Http\Controllers\HomeController::class, 'store']);
+    Route::post('/favs/todos', [FavoritoController::class, 'allfavourites'])->name('favorito.todos');
+    Route::get('/favorito/guardar/{ruta}', [FavoritoController::class, 'guardar'])->name('favorito.agregar');
+    Route::resource('favorito', FavoritoController::class);
 });
 
 // Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN']], function(){

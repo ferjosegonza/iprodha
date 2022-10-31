@@ -8,7 +8,8 @@
 
     <section class="section">
         <div class="section-header">
-            <h3 class="page__heading">Ticket </h3>
+            <h3 class="page__heading">Ticket</h3>
+            @include('layouts.favorito.fav', ['modo' => 'Agregar'])
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
         @include('layouts.modal.delete', ['modo' => 'Agregar'])

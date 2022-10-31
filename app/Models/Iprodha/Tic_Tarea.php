@@ -20,7 +20,7 @@ class Tic_Tarea extends Model
         'idtarea',    'idsolucionador',
         'idcatprobsub',   'descripciontarea',
         'usuario', 'iporigentarea', 'interno',
-        'prioridad', 'tiempoestimado'
+        'prioridad', 'tiempoestimado', 'idusuario',
     ];
     
     public function getSolucionador()

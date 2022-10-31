@@ -33,7 +33,7 @@ class Localidad extends Model
         'GRUPO_OCA'
     ];
     protected $attributes = [
-        'ID_LOC' => true,
+        'ID_LOC' => false,
         /*'NOM_LOC' => false,
         'ID_MUN' => false,
         'CP' => false,

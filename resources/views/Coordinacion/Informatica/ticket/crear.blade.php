@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Imagen: </label>
-                                    {!! Form::file('image', array('class' => 'form-control', 'type' => 'file', 'id' => "inputGroupFile03", 'aria-describedby' => 'inputGroupFileAddon03', 'aria-label' => 'Upload')) !!}
+                                    {!! Form::file('image', array('class' => 'form-control', 'type' => 'file', 'id' => "inputGroupFile03", 'aria-describedby' => 'inputGroupFileAddon03', 'aria-label' => 'Upload', 'accept' => 'image/*')) !!}
                                     <div class="div-padre mt-2" style="height: 350px; position: relative; background-color: #fff">
                                             <div class="hijo2" style="height: 350px; width:100%;position: absolute;">
                                                 <img id="imagenpre" style="height: inherit; width: 100%;">

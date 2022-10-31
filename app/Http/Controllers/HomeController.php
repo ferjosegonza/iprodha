@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diegoz\Auditar;
 use App\Models\MenuM;
+use App\Models\Silverol\Fav_Favorito;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -30,7 +31,8 @@ class HomeController extends Controller
     }
     public function inicio()
     {
-        return view('inicio');
+        $Favoritos = Fav_Favorito::where('idusuario', '=', Auth::user()->id)->paginate(10);
+        return view('inicio', compact('Favoritos'));
     }
     
     public function phpinfo()

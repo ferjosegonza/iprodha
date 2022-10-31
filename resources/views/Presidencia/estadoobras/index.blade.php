@@ -5,6 +5,7 @@
     <section class="section">
         <div class="section-header">
             <h2 class="page__heading">Pagos X Obras</h2>
+            @include('layouts.favorito.fav', ['modo' => 'Agregar'])
         </div>
         <div class="section-body">
             <div class="row">

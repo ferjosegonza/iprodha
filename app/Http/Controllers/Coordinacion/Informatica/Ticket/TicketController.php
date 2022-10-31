@@ -35,7 +35,7 @@ class TicketController extends Controller
         $name = $request->query->get('name');
         if (!isset($name)) {    
             //Con paginación
-            $Tickets = Tic_Tarea::where('usuario', '=', Auth::user()->name)->orderBy('idtarea', 'desc')->simplePaginate(10);
+            $Tickets = Tic_Tarea::where('idusuario', '=', Auth::user()->id)->orderBy('idtarea', 'desc')->simplePaginate(10);
             //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
         } else {
             $Tickets = Tic_Tarea::whereRaw('UPPER(idtarea) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idtarea', 'asc')->paginate(10);
@@ -55,6 +55,7 @@ class TicketController extends Controller
             'subcateg' => 'required|string',
             'interno' => 'required|string',
             'descrip' => 'required|string',
+            'image' => 'file|image|mimes:jpg,png,jpeg"]',
         ]);
     
         $input = $request->all();
@@ -64,6 +65,7 @@ class TicketController extends Controller
         //Nombre
         $modelo->descripciontarea = strtoupper($request->input('descrip'));
         $modelo->usuario = Auth::user()->name;
+        $modelo->idusuario = Auth::user()->id;
         $modelo->idcatprobsub = $request->input('subcateg');
         $modelo->iporigentarea = $request->ip();
         $modelo->interno = $request->input('interno');
@@ -209,18 +211,18 @@ class TicketController extends Controller
         return view('Coordinacion.Informatica.ticket.asigna',compact('Tickets','Categorias'));
     }
 
-    function vertickets()
+    function vertickets(Request $request)
     {
+        $name = $request->query->get('name');
         $Solucionador = Tic_Solucionador::where('idusuario', '=', Auth::user()->id)->first();
-        // try {
+        if (!isset($name)) {
             $Tickets = Tic_Tarea::where('idsolucionador', '=', $Solucionador->idsolucionador)->orderBy('idtarea', 'desc')->paginate(10);
+        }else{
+            $Tickets = Tic_Tarea::where('idsolucionador', '=', $Solucionador->idsolucionador)->whereRaw('UPPER(idtarea) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idtarea', 'asc')->simplePaginate(10);
+        }
+            // $Tickets = Tic_Tarea::where('idsolucionador', '=', $Solucionador->idsolucionador)->orderBy('idtarea', 'desc')->paginate(10);
             return view('Coordinacion.Informatica.ticket.Atencionturno.index', compact('Tickets'));
-        // } catch (\Throwable $th) {
-        //     $Tickets = null;
-        //     return view('Coordinacion.Informatica.ticket.Atencionturno.index', compact('Tickets'));
-        // }
-        // $Tickets = Tic_Tarea::where('idsolucionador', '=', $Solucionador->idsolucionador)->orderBy('idtarea', 'desc')->paginate(10);
-        // return view('Coordinacion.Informatica.ticket.Atencionturno.index', compact('Tickets'));
+     
     }
     
     function atencionticket($id)
@@ -326,6 +328,7 @@ class TicketController extends Controller
         $this->validate($request, [
             'interno' => 'required|string',
             'descrip' => 'required|string',
+            'image' => 'file|image|mimes:jpg,png,jpeg"]',
         ]);
 
         $Ticket = Tic_Tarea::findOrFail($id);

@@ -14,9 +14,9 @@
                         <div class="row g-3 my-auto">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                 <div class="row justify-content-evenly align-items-evenly">
-                                    <form method="GET" action="{{route('ticket.index')}}">
+                                    <form method="GET" action="{{route('ticket.atencion')}}">
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="Buscar" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                            <input name="name" type="text" class="form-control" placeholder="Buscar" aria-label="Recipient's username" aria-describedby="button-addon2">
                                             <button class="btn btn-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                                         </div>
                                     </form>

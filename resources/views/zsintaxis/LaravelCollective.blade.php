@@ -112,10 +112,17 @@
 
     <div class="row">
         <div class="col-md-6 ">
-            {!! Form::open(['method' => 'POST','route' => 'alumnos.store', 'class' => 'd-flex formulario']) !!}
-                {!! Form::text('nombre', null, ['placeholder' => 'Ingrese su Nombre', 'class' => 'form-control  ']) !!}
-                {!! Form::text('apellido', null, ['placeholder' => 'Ingrese su Apellido', 'class' => 'form-control  ']) !!}
-
+            {!! Form::open(['method' => 'POST','route' => 'alumnos.store', 'class' => 'd-flex flex-column  col-sm-5 formulario']) !!}
+                <div>
+                    {!! Form::text('nombre', null, ['placeholder' => 'Ingrese su Nombre', 'class' => 'form-control  ']) !!}
+                    {!! Form::text('apellido', null, ['placeholder' => 'Ingrese su Apellido', 'class' => 'form-control  ']) !!}
+                </div>
+                <div>
+                    {!! Form::label('MAYUSCULAS','MAYUSCULAS:', ['class' => 'control-label me-2', 'style' => 'width:100%']) !!}
+                    {!! Form::text('MAYUSCULAS', null, ['class' => 'form-control','required' => 'required',
+                    'style'=>'text-transform:uppercase',  'onkeyup'=>'javascript:this.value=this.value.toUpperCase()'
+                    ]) !!}
+                </div>
                 {!! Form::button('Crear', ['class' => 'ms-5 btn btn-warning']) !!}
                 {{-- {!! Form::submit('Crear', ['class' => 'ms-5 btn btn-warning']) !!} --}}
         {!! Form::close() !!}
@@ -130,7 +137,11 @@
         {\!! Form::text('nombre', null, ['placeholder' => 'Ingrese su Nombre', 'class' => 'form-control  ']) !!}                                 
         <br>                               
         {\!! Form::text('apellido', null, ['placeholder' => 'Ingrese su Apellido', 'class' => 'form-control  ']) !!}                                 
-        <br>                             
+        <br>       
+        {\!! Form::text('MAYUSCULAS', null, ['class' => 'form-control','required' => 'required',
+                        'style'=>'text-transform:uppercase',  'onkeyup'=>'javascript:this.value=this.value.toUpperCase()'
+                        ]) !!} 
+        <br>                       
         {\!! Form::submit('Crear', ['class' => 'ms-5 btn btn-warning']) !!}                                 
         <br>
         {\!! Form::close() !!}  
@@ -145,15 +156,25 @@
 
 <div class="container mt-5 mb-2">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h2>Para Modificar - PUT</h2>
 
-            {!! Form::model($alumno,['method' => 'PUT', 'route' => ['alumnos.update',$alumno['id']], 'class' => 'd-flex justify-content-start']) !!}
+            {!! Form::model($alumno,['method' => 'PUT', 'route' => ['alumnos.update',$alumno['id']], 'class' => 'd-flex flex-column col-sm-5 justify-content-start']) !!}
     
-                {!! Form::text('nombre', null, ['placeholder' => 'Ingrese su Nombre', 'class' => 'form-control  ']) !!}
-                {!! Form::text('apellido', null, ['placeholder' => 'Ingrese su Apellido', 'class' => 'form-control  ']) !!}
-
-                {!! Form::button('Editar', ['class' => 'ms-5 btn btn-success']) !!}
+                <div>
+                    {!! Form::text('nombre', null, ['placeholder' => 'Ingrese su Nombre', 'class' => 'form-control  ']) !!}
+                    {!! Form::text('apellido', null, ['placeholder' => 'Ingrese su Apellido', 'class' => 'form-control  ']) !!}
+                </div>
+                <br>
+                <div >
+                    {!! Form::label('MAYUSCULAS','MAYUSCULAS:', ['class' => 'control-label me-2', 'style' => 'width:100%']) !!}
+                    {!! Form::text('MAYUSCULAS', null, ['class' => 'form-control','required' => 'required',
+                    'style'=>'text-transform:uppercase',  'onkeyup'=>'javascript:this.value=this.value.toUpperCase()'
+                    ]) !!} 
+                </div>
+                <div>
+                    {!! Form::button('Editar', ['class' => 'ms-5 btn btn-success']) !!}
+                </div>  
                 {{-- {!! Form::submit('Editar', ['class' => 'ms-5 btn btn-warning']) !!} --}}
 
             {!! Form::close() !!}
@@ -168,13 +189,18 @@
         {\!! Form::text('nombre', null, ['placeholder' => 'Ingrese su Nombre', 'class' => 'form-control  ']) !!}                  
         <br>                
         {\!! Form::text('apellido', null, ['placeholder' => 'Ingrese su Apellido', 'class' => 'form-control  ']) !!}              
-        <br>                    
+        <br>
+        <br>
+        {\!! Form::text('MAYUSCULAS', null, ['class' => 'form-control','required' => 'required',
+        'style'=>'text-transform:uppercase',  'onkeyup'=>'javascript:this.value=this.value.toUpperCase()'
+        ]) !!}        
         {\!! Form::submit('Editar', ['class' => 'ms-5 btn btn-success']) !!}                                  
         <br>
         {\!! Form::close() !!}  
     </div>
 </div>                                
  
+
 
 
 <div class="container my-5">
