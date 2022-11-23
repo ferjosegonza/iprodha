@@ -20,12 +20,10 @@
                             <div class="row g-3 my-auto">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                     <div class="row justify-content-evenly align-items-evenly">
-                                        {{-- <form method="GET" action="{{route('ticket.atencion')}}"> --}}
                                             <div class="input-group mb-3">
-                                                <input type="text" class="form-control" placeholder="Buscar" aria-label="Recipient's username" aria-describedby="button-addon2" name="name">
+                                                <input type="text" class="form-control" placeholder="Buscar por numero" aria-label="Recipient's username" aria-describedby="button-addon2" name="name">
                                                 <button class="btn btn-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                                             </div>
-                                        {{-- </form> --}}
                                     </div>
                                 </div>
 
@@ -108,9 +106,13 @@
                                 
                                 <div class="col-lg-4">
                                     <select class="form-select" name="categ" placeholder="Seleccionar" id='selected-categoria' required>
-                                        <option disabled selected>Categoria</option>
+                                        <option selected>TODAS</option>
                                         @foreach ($Categorias as $Categoria)
-                                            <option value={{"$Categoria->idcatprob"}}>{{$Categoria->descatprob}}</option>
+                                            @if ($tipo == $Categoria->idcatprob)
+                                            <option value={{"$Categoria->idcatprob"}} selected>{{$Categoria->descatprob}}</option>
+                                            @else
+                                                <option value={{"$Categoria->idcatprob"}}>{{$Categoria->descatprob}}</option>
+                                            @endif
                                         @endforeach
                                     </select>  
                                 </div>
@@ -122,25 +124,25 @@
                     <div class="card">
                         <div class="card-body">
                             <!-- Centramos la paginacion a la derecha -->
-                            <div class="pagination justify-content-end">
+                            {{-- <div class="pagination justify-content-end">
                                 {!! $Tickets->links() !!}   
-                            </div>
-                            <div class="table-responsive text-center">
-                                <table class="table table-striped mt-2">
+                            </div> --}}
+                            <div class="">
+                                <table id="example" class="table table-striped mt-2">
                                     <thead style="height:50px;">
-                                        <th class='ml-3' style="color:#fff;">ID</th>
+                                        <th class='ml-3' style="color:#fff;">Numero</th>
                                         <th class='ml-3' style="color:#fff;">Categoria</th>
                                         <th class='ml-3' style="color:#fff;">Usuario</th>
                                         <th style="color:#fff;">Estado</th>
                                         <th style="color: #fff">Última Actualización</th>
                                         <th style="color:#fff;">Solucionador</th>
-                                        <th colspan="3" style="color: #fff;">Acciones</th>
+                                        <th style="color: #fff;">Acciones</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($Tickets as $Ticket)
                                             <tr>
                                                 <td>{{$Ticket->idtarea}}</td>
-                                                <td>{{$Ticket->getCategoriaProb->getCatProblema->descatprob}}</td>
+                                                <td><abbr title="{{$Ticket->descripciontarea}}" style="text-decoration:none; font-variant: none;">{{$Ticket->getCategoriaProb->getCatProblema->descatprob}} <i class="fas fa-eye"></i></abbr></td>
                                                 <td>{{$Ticket->usuario}}</td>
                                                 @switch($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado)
                                                     @case(1)
@@ -170,7 +172,7 @@
                                                 <td>{{Carbon\Carbon::parse($Ticket->getEstadoTarea->last()->fecha)->format('d-m-Y')}}</td>
                                                 <td>{{$Ticket->getSolucionador->nombre}}</td>
                                                 
-                                                <td>
+                                                {{-- <td>
                                                     @if ($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado == 1)
                                                         {!! Form::open([
                                                             'method' => 'GET',
@@ -191,16 +193,42 @@
                                                         {!! Form::submit('Editar', ['class' => 'btn btn-success']) !!}
                                                         {!! Form::close() !!}
                                                     @endif
-                                                </td>   
-                                                <td>        
-                                                    {!! Form::open([
-                                                        'method' => 'GET',
-                                                        'route' => ['ticket.show', $Ticket->idtarea],
-                                                        'style' => 'display:inline',
-                                                    ]) !!}
-                                                    {!! Form::submit('Ver', ['class' => 'btn btn-warning']) !!}
-                                                    {!! Form::close() !!}  
-                                                </td>
+                                                </td> --}}  
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            @if ($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado == 1)
+                                                            {!! Form::open([
+                                                                'method' => 'GET',
+                                                                'route' => ['ticket.asignar', $Ticket->idtarea],
+                                                                'style' => 'display:inline',
+                                                            ]) !!}
+                                                            {!! Form::submit('Asignar', ['class' => 'btn btn-primary']) !!}
+                                                            {!! Form::close() !!}
+                                                            @endif
+                                                        </div>
+                                                        <div class="col">
+                                                            @if ($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado <= 2)
+                                                            {!! Form::open([
+                                                                'method' => 'GET',
+                                                                'route' => ['ticket.cambiar', $Ticket->idtarea],
+                                                                'style' => 'display:inline',
+                                                            ]) !!}
+                                                            {!! Form::submit('Editar', ['class' => 'btn btn-success']) !!}
+                                                            {!! Form::close() !!}
+                                                            @endif
+                                                        </div>
+                                                        <div class="col">
+                                                            {!! Form::open([
+                                                                'method' => 'GET',
+                                                                'route' => ['ticket.show', $Ticket->idtarea],
+                                                                'style' => 'display:inline',
+                                                            ]) !!}
+                                                            {!! Form::submit('Ver', ['class' => 'btn btn-warning']) !!}
+                                                            {!! Form::close() !!}
+                                                        </div> 
+                                                    </div>        
+                                                </td> 
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -214,6 +242,48 @@
     </section>
 
 {{-- <script src="{{ asset('js/tarea/index_tarea.js') }}"></script> --}}
-
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            language: {
+                    lengthMenu: 'Mostrar _MENU_ registros por pagina',
+                    zeroRecords: 'No se ha encontrado registros',
+                    info: 'Mostrando pagina _PAGE_ de _PAGES_',
+                    infoEmpty: 'No se ha encontrado registros',
+                    infoFiltered: '(Filtrado de _MAX_ registros totales)',
+                    search: 'Buscar',
+                    paginate:{
+                        first:"Prim.",
+                        last: "Ult.",
+                        previous: 'Ant.',
+                        next: 'Sig.',
+                    },
+                },
+                "aaSorting": []
+        });
+    });
+</script>
     
 @endsection
+{{-- @section('js')
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                language: {
+                    lengthMenu: 'Mostrar _MENU_ registros por pagina',
+                    zeroRecords: 'No se ha encontrado registros',
+                    info: 'Mostrando pagina _PAGE_ de _PAGES_',
+                    infoEmpty: 'No se ha encontrado registros',
+                    infoFiltered: '(Filtrado de _MAX_ registros totales)',
+                    search: 'Buscar',
+                    paginate:{
+                        first:"Prim.",
+                        last: "Ult.",
+                        previous: 'Ant.',
+                        next: 'Sig.',
+                    },
+                },
+            });
+            });
+    </script>
+@endsection --}}

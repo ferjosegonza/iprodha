@@ -50,9 +50,10 @@
             <div style="width:15%;float:left;margin-left:1%;">
                 {!! Form::label('Expediente:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                 {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!}
+                
             </div>
         </div>
-        <div style="width:99%;float:left;background-color: rgb(224, 168, 95); padding:1%;margin-top:1%;">
+
 
             <div style="width:24%;float:left;margin-left:1%;">
                 {!! Form::label('Vivienda:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
@@ -70,6 +71,8 @@
                 {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                 {!! Form::number('montotope', null, ['class' => 'form-control']) !!}
             </div>
+
+        <div style="width:99%;float:left;background-color: rgb(223, 188, 144); padding:1%;margin-top:1%;">
             <div style="width:19%;float:left;margin-left:1%;">
                 {!! Form::label('Plazo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                 {!! Form::number('plazo', null, ['class' => 'form-control']) !!}

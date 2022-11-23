@@ -48,26 +48,33 @@ class FavoritoController extends Controller
    
     public function edit(Request $request, $id)
     {
-        
-        return 4;
+        $Favorito =  Fav_Favorito::where('idusuario', Auth::user()->id)->where('ruta', $id)->first();
+        return view('favoritos.editar',compact('Favorito'));
     }
 
     
     public function update(Request $request, $id)
-    {
+    { 
+        $this->validate($request, [
+            'titulo' => 'required|string',
+            'descripcion' => 'required|string',
+        ]);
         
-        return 5;
+        $Favorito =  Fav_Favorito::where('idusuario', Auth::user()->id)->where('ruta', $id)->first();
+        $Favorito->titulo = $request->get('titulo');
+        $Favorito->descripcion = $request->get('descripcion');
+        $Favorito->save();
+        return redirect()->route('inicio')->with('mensaje','Favorito editado con éxito!.');
     }
 
     public function destroy($id)
-    {     
-        
-        return 6;
+    {
+        $favorito = Fav_Favorito::where('idusuario', Auth::user()->id)->where('ruta', $id)->delete();
+        return redirect()->route('inicio')->with('mensaje','Favorito borrado con éxito!.');     
     }
 
     public function guardar(Request $request, $ruta)
     {
-        // var_dump($request->query->get('titulo'));
         $favExiste[0] = null;
         $favExiste = Fav_Favorito::where('idusuario', Auth::user()->id)->where('ruta', '=', $ruta)->get();
         if(sizeof($favExiste) == 0){

@@ -126,6 +126,8 @@ Route::get('/estadocivil', [App\Http\Controllers\EstadocivilController::class, '
 
 //gabriel
 use App\Http\Controllers\ob_operatoriaController;
+use App\Http\Controllers\cargarFojaController;
 //Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-OB_OPERATORIA']],function(){
     Route::resource('ob_operatoria',ob_operatoriaController::class);
+    Route::resource('cargarFoja',cargarFojaController::class);
 //});

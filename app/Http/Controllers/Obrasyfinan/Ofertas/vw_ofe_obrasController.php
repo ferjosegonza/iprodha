@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Construcciones\Certificacion;
+namespace App\Http\Controllers\Obrasyfinan\Ofertas;
 
 use App\Models\Iprodha\vw_ofe_obras;
 
@@ -34,5 +34,13 @@ class vw_ofe_obrasController extends Controller
             return view('ofeObra.index',compact('Ofertas'));
         }*/
        
-    }    
+    } 
+    public function elexpediente($idobra)
+    {        
+        $laOferta = Ofe_obra::find($idobra);
+        //Obras::find($id_obra)->delete();
+        $elexpediente = $laOferta->expediente; 
+        return $elexpediente->exp_asunto;
+        //return redirect()->route('ofeobra.index')->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');//->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');  
+    }
 }

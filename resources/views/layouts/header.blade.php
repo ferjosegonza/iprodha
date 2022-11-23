@@ -6,6 +6,14 @@
 <ul class="navbar-nav navbar-right">
 
     @if(\Illuminate\Support\Facades\Auth::user())
+        {{-- <li class="dropstart">
+            <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bell fs-4"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- Dropdown menu links -->
+            </ul>
+        </li> --}}
         <li class="dropdown">
             <a href="#" data-toggle="dropdown"
                class="nav-link dropdown-toggle nav-link-lg nav-link-user">

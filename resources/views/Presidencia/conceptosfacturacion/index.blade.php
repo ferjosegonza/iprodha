@@ -53,7 +53,10 @@
 
                         </div>
                     </div>
-                    <div class="card  rounded">
+                    <div class="pepe">
+asda
+                    </div>
+                    <div class="card  rounded ">
                         <div class="card-body  ">
                             <div class="text-nowrap table-responsive">
                                 <table id="tablaconceptos" style="width:100%;" class="table  table-striped mt-2 ">
@@ -293,7 +296,6 @@
                                                         @endcan
                                                     </div>
                                                 </td>
-
                                             </tr>
                                         @endforeach
                                     </tbody>

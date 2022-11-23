@@ -48,20 +48,20 @@
                             </div>
                         {{-- @endif --}}
                         
-                        <div class="table-responsive text-center">
-                            <table class="table table-striped mt-2">
+                        <div class="">
+                            <table id="example" class="table table-striped mt-2">
                                 <thead style="height:50px;">
-                                    <th class='ml-3' style="color:#fff;">ID</th>
+                                    <th class='ml-3' style="color:#fff;">Numero</th>
                                     <th class='ml-3' style="color:#fff;">Categoria</th>
                                     <th style="color:#fff;">Estado</th>
                                     {{-- <th style="color:#fff;">Solucionador</th> --}}
-                                    <th colspan="2" style="color: #fff;">Acciones</th>
+                                    <th style="color: #fff;">Acciones</th>
                                 </thead>
                                 <tbody>
                                     @foreach ($Tickets as $Ticket)
                                         <tr>
                                             <td>{{$Ticket->idtarea}}</td>
-                                            <td>{{$Ticket->getCategoriaProb->catprobsub}}</td>
+                                            <td><abbr title="{{$Ticket->descripciontarea}}" style="text-decoration:none; font-variant: none;">{{$Ticket->getCategoriaProb->catprobsub}} <i class="fas fa-eye"></i></abbr></td>
                                             @switch($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado)
                                                     @case(1)
                                                         <td>{{$Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->denestado}} <i class="fas fa-hourglass-start"></i></td>
@@ -90,7 +90,7 @@
                                             
                                             {{-- <td>{{$Ticket->getSolucionador->nombre}}</td> --}}
                                             
-                                            <td>
+                                            {{-- <td>
                                                 @if ($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado == 2 || $Ticket->getEstadoTarea->last()->getEstado->idestado == 3)
                                                     {!! Form::open([
                                                         'method' => 'GET',
@@ -109,6 +109,30 @@
                                                 ]) !!}
                                                 {!! Form::submit('Ver', ['class' => 'btn btn-warning']) !!}
                                                 {!! Form::close() !!}
+                                            </td> --}}
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        @if ($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado == 2 || $Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado == 3)
+                                                            {!! Form::open([
+                                                                'method' => 'GET',
+                                                                'route' => ['ticket.atender', $Ticket->idtarea],
+                                                                'style' => 'display:inline',
+                                                            ]) !!}
+                                                            {!! Form::submit('Atender', ['class' => 'btn btn-primary']) !!}
+                                                            {!! Form::close() !!}  
+                                                        @endif
+                                                    </div>
+                                                    <div class="col">
+                                                        {!! Form::open([
+                                                            'method' => 'GET',
+                                                            'route' => ['ticket.show', $Ticket->idtarea],
+                                                            'style' => 'display:inline',
+                                                        ]) !!}
+                                                        {!! Form::submit('Ver', ['class' => 'btn btn-warning']) !!}
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -128,5 +152,26 @@
         </div>
     </div>
     <script src="{{ asset('js/Coordinacion/Informatica/ticket/index_ticket.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                language: {
+                        lengthMenu: 'Mostrar _MENU_ registros por pagina',
+                        zeroRecords: 'No se ha encontrado registros',
+                        info: 'Mostrando pagina _PAGE_ de _PAGES_',
+                        infoEmpty: 'No se ha encontrado registros',
+                        infoFiltered: '(Filtrado de _MAX_ registros totales)',
+                        search: 'Buscar',
+                        paginate:{
+                            first:"Prim.",
+                            last: "Ult.",
+                            previous: 'Ant.',
+                            next: 'Sig.',
+                        },
+                    },
+                    "aaSorting": []
+            });
+        });
+    </script>
 </section>
 @endsection

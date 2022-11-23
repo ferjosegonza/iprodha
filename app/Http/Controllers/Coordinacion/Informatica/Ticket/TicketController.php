@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Iprodha\Tic_Tarea;
 use App\Models\Iprodha\Tic_Catproblema;
 use App\Models\Iprodha\Tic_Catproblemasub;
+use App\Models\Iprodha\Tic_Estado;
 use App\Models\Iprodha\Tic_Estados_x_Tarea;
 use App\Models\Iprodha\Tic_Imagen_x_Tarea;
 use App\Models\Iprodha\Tic_Solucionador;
+use App\Models\Iprodha\Tic_Reasignaciontarea;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use \PDF;
@@ -67,7 +69,7 @@ class TicketController extends Controller
         $modelo->usuario = Auth::user()->name;
         $modelo->idusuario = Auth::user()->id;
         $modelo->idcatprobsub = $request->input('subcateg');
-        $modelo->iporigentarea = $request->ip();
+        $modelo->iporigentarea = $_SERVER['HTTP_X_FORWARDED_FOR'];
         $modelo->interno = $request->input('interno');
         $modelo->prioridad = null;
         $modelo->tiempoestimado = null;
@@ -92,8 +94,13 @@ class TicketController extends Controller
         $modeloEstado->save();
 
         if($request->hasFile('image')){
-            $filename = time().'-'. Auth::user()->name . '.' . $request->file('image')->extension();
+            $cadenaConvert = str_replace(" ", "_", Auth::user()->name);
+            $filename = time().'-'. $cadenaConvert . '.' . $request->file('image')->extension();
             $path = $request->file('image')->storeAs('images/ticket', $filename, 'public_uploads');
+
+            // $path = $request->file('image')->getRealPath();    
+            // $logo = file_get_contents($path);
+            // $base64 = base64_encode($logo);
     
             $save = new Tic_Imagen_x_Tarea;
 
@@ -105,6 +112,8 @@ class TicketController extends Controller
             }
             $save->idtarea = $modelo->idtarea;
             $save->ruta = 'storage/upload/' . $path;
+            // $save->imgb = $base64;
+            // return response()->json($base64);
             $save->save();
         } 
       
@@ -128,8 +137,10 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {             
         $this->validate($request, [
-            'categ' => 'required|string',
+            'categ' => 'required|integer|between:1,999',
             'observ' => 'required|string',
+        ], [
+            'categ.between' => 'Seleccione el Solucionador',
         ]);
 
         $Ticket = Tic_Tarea::findOrFail($id);
@@ -178,37 +189,46 @@ class TicketController extends Controller
 
     public function asignadores(Request $request)
     {
+        //Variables
         $name = $request->query->get('name');
         $estado = $request->query->get('estado');
-        $categoria = $request->query->get('categ');;
-        $value = null;
-        
-        if (!isset($name)) {
-            $latestPosts = DB::table('iprodha.tic_estados_x_tarea')
-                   ->select('idtarea', DB::raw('MAX(idestado) estado_actual'))
-                   ->groupBy('idtarea');
-            // return $latestPosts;
+        $categoria = $request->query->get('categ');
+        $solu = Tic_Solucionador::where('idusuario', '=', Auth::user()->id)->first();
 
-            $Tickets = Tic_tarea::joinSub($latestPosts, 'latest_posts', function ($join) {
-                $join->on('iprodha.tic_tarea.idtarea', '=', 'latest_posts.idtarea');
-            })
-                ->when($estado != 0, function($query) use ($estado){
-                     $query->where('estado_actual', '=', $estado);
-                })
-                ->when($request->has('categ'), function ($query) use ($request, $categoria) {
-                         $query->whereIn('idcatprobsub', function ($query) use ($categoria){
-                         $query->select('idcatprobsub')
-                         ->from('iprodha.tic_catproblemasub')
-                         ->where('idcatprob', $categoria);
-                        });
-                        })
-                ->orderBy('iprodha.tic_tarea.idtarea', 'desc')->simplePaginate(10);
+        //Preguntar a que categoria pertenece el usuario.
+        if($request->has('categ')){
+            $tipo = $request->query->get('categ');
+        }else{
+            $tipo = $solu->getTipo->idtipsolucionador;
+            $catesolu = Tic_Catproblema::select('idcatprob')->where('idtipsolucionador','=',$tipo)->get();
+            $categoria = $catesolu[0]->idcatprob;
+        }
+
+        
+        // echo($solu->getTipo);
+        if (!isset($name)) {
+            $estadosTarea = DB::table('iprodha.tic_estados_x_tarea')
+                    ->select('idtarea', DB::raw('MAX(idestado) estado_actual'))
+                    ->groupBy('idtarea');
+
+            $estadosOrden = Tic_Estado::joinSub($estadosTarea, 'estados_Tarea', function ($join) {
+                                        $join->on('iprodha.tic_estado.idestado', '=', 'estados_Tarea.estado_actual');})
+                                        ->when($estado != 0, function($query) use ($estado){
+                                            $query->where('idestado', $estado);
+                                        })
+                                        ->orderBy('ordvisualiz');
+
+            $Tickets = Tic_tarea::joinSub($estadosOrden, 'estados_Orden', function ($join) {
+                                        $join->on('iprodha.tic_tarea.idtarea', '=', 'estados_Orden.idtarea');})
+                                        ->categoria($categoria)->get();
+            
         } else {
-            $Tickets = Tic_Tarea::whereRaw('UPPER(idtarea) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idtarea', 'asc')->simplePaginate(10);
+            $Tickets = Tic_Tarea::whereRaw('UPPER(idtarea) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idtarea', 'asc')->simplePaginate(100);
         }
 
         $Categorias = Tic_Catproblema::all();
-        return view('Coordinacion.Informatica.ticket.asigna',compact('Tickets','Categorias'));
+
+        return view('Coordinacion.Informatica.ticket.asigna',compact('Tickets','Categorias', 'tipo'));
     }
 
     function vertickets(Request $request)
@@ -293,6 +313,7 @@ class TicketController extends Controller
         $nuevoTicket->descripciontarea = $Ticket->descripciontarea;
         $nuevoTicket->idsolucionador = 0;
         $nuevoTicket->usuario = $Ticket->usuario;
+        $nuevoTicket->idusuario = $Ticket->idusuario;
         $nuevoTicket->idcatprobsub = $Ticket->idcatprobsub;
         $nuevoTicket->iporigentarea = $Ticket->iporigentarea;
         $nuevoTicket->interno = $Ticket->interno;
@@ -303,22 +324,30 @@ class TicketController extends Controller
         $imagenticket = Tic_Imagen_x_Tarea::where('idtarea', '=', $id)->first();
         $nuevaimagen = new Tic_Imagen_x_Tarea;
 
-        $imagenactaul = Tic_Imagen_x_Tarea::latest('idimagen')->first();
-        if(is_null($imagenactaul)){
-            $nuevaimagen->idimagen = 1;
-        }else{
-            $nuevaimagen->idimagen = $imagenactaul['idimagen'] + 1;
+        if(!is_null($imagenticket)){
+            $imagenactaul = Tic_Imagen_x_Tarea::latest('idimagen')->first();
+            if(is_null($imagenactaul)){
+                $nuevaimagen->idimagen = 1;
+            }else{
+                $nuevaimagen->idimagen = $imagenactaul['idimagen'] + 1;
+            }
+            $nuevaimagen->idtarea = $nuevoTicket->idtarea; 
+            $nuevaimagen->ruta = $imagenticket->ruta;
+            $nuevaimagen->save();
         }
-        $nuevaimagen->idtarea = $nuevoTicket->idtarea; 
-        $nuevaimagen->ruta = $imagenticket->ruta;
-        $nuevaimagen->save();
 
         $nuevomodeloEstado = new Tic_Estados_x_Tarea;
         $nuevomodeloEstado->idtarea = $nuevoTicket->idtarea;
         $nuevomodeloEstado->idestado = 1;
         $nuevomodeloEstado->fecha = \Carbon\Carbon::today()->toDateString();
-        $nuevomodeloEstado->observacion = "Este ticket fue reasignado";
+        $nuevomodeloEstado->observacion = "Este ticket fue reasignado. " . $request->input('observ');
         $nuevomodeloEstado->save();
+
+        $nuevoReasigTarea = new Tic_Reasignaciontarea;
+        $nuevoReasigTarea->idtarea = $nuevoTicket->idtarea;
+        $nuevoReasigTarea->idtarea_vieja = $Ticket->idtarea;
+        $nuevoReasigTarea->fecha = \Carbon\Carbon::today()->toDateString();
+        $nuevoReasigTarea->save();
 
         return redirect()->route('ticket.index')->with('mensaje','El ticket '.$Ticket->idtarea.' se volvio a abrir con exito.');
     }
@@ -382,6 +411,15 @@ class TicketController extends Controller
         }
         else{
             $Ticket->idsolucionador = $request->input('solu');
+            $estadoTareaMod = Tic_Estados_x_Tarea::where('idtarea','=', $Ticket->idtarea)->where('idestado','=', 2)->first();
+            if(empty($estadoTareaMod)){
+                $estadoTareaMod = new Tic_Estados_x_Tarea;
+                $estadoTareaMod->idtarea = $Ticket->idtarea;
+                $estadoTareaMod->idestado = 2;
+                $estadoTareaMod->fecha = \Carbon\Carbon::today()->toDateString();
+                $estadoTareaMod->observacion = $request->input('observ');
+            }
+            $estadoTareaMod->save();
         }
         $Ticket->save();
 

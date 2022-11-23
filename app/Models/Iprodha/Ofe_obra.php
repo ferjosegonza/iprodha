@@ -4,6 +4,8 @@ namespace App\Models\Iprodha;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Me\Expediente;
+use App\Models\Iprodha\Ofe_item;
 
 class Ofe_obra extends Model
 {
@@ -33,30 +35,32 @@ class Ofe_obra extends Model
         'mescotizacion',
         'publica', 
     ];
-    /*protected $attributes = [
-        'IDOBRA' => false,
-        'NOMOBRA'=> false,
-        'IDEXPEDIENTE'=> false,
-        'IDEMPRESA'=> false,
-        'IDLOC'=> false,
-        'MONVIV'=> false,
-        'MONINF'=> false,
-        'MONNEX'=> false,
-        'MONTERR'=> false,
-        'PLAZO'=> false,
-        'IDTIPOCONTRATOFER'=> false,
-        'NUMOFER'=> false,
-        'ANIOOFER'=> false,
-        'MONTOTOPE'=> false,
-        'ANIOCOTIZACION'=> false,
-        'MESCOTIZACION'=> false,
-        'PUBLICA'=> false,
-        
-    ];*/
-   public function OfeObrasExpediente()
+    protected $attributes = [
+        'idobra' => false,
+
+    ];
+
+    public function getExpediente()
     {
-        return $this->hasOne(MeExpedientes::class,'idexpediente','exp_doc_id');
+        return $this->hasOne(Expediente::class,'exp_doc_id','idexpediente');
     }
+    public function getItems()
+    {            
+        return $this->hasMany(Ofe_item::class,'idobra','idobra');
+    }
+    public function getSombrero()
+    {
+        return $this->hasMany(Ofe_sombrero::class,'idobra','idobra');
+    }
+    public function getEmpresa()
+    {
+        return $this->belongsTo(Empresa::class,'idempresa','id_emp');
+    }
+
+    public function getmoninf()
+{
+    return number_format($this->moninf, 2, ',', '.');
+}
     /*public function OfeObrasLocalidad()
     {
         return $this->belongsTo(Localidad::class,'idloc','id_loc');

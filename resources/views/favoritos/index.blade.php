@@ -17,11 +17,35 @@
                         <div class="col-sm-1 col-md-3 col-lg-1">
                           <div class="dropdown">
                             <a id="iconoContent" href="" data-bs-toggle="dropdown" style="text-decoration: none; color: #6c757d">
-                              <i id= "icono"class="fas fa-ellipsis-v fs-5"  ></i>
+                              <i id= "icono"class="fas fa-ellipsis-v fs-5"></i>
                             </a>
                             <ul class="dropdown-menu">
-                              <li><a id="editaar" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-ruta="{{$Favorito->ruta}}">Editar</a></li>
-                              <li><a class="dropdown-item" href="#">Borrar</a></li>
+                              <li>
+                                {!! Form::open(['id' => 'editar'.$Favorito->ruta,'method' => 'GET', 'route' => ['favorito.edit', $Favorito->ruta], 'style' => 'display:inline']) !!}
+                                  <a class="dropdown-item" href="#" onclick="document.getElementById('editar{{$Favorito->ruta}}').submit()">Editar</a>
+                                {!! Form::close() !!}
+
+                                {{-- {!! Form::model($Favorito,
+                                 ['method' => 'PATCH',
+                                 'id' => 'editar'.$Favorito->ruta,
+                                 'route' => ['favorito.update',
+                                  $Favorito->ruta]]) !!}
+                              
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModalUno" data-ruta="{{$Favorito->ruta}}" data-descri="{{$Favorito->descripcion}}" onclick="document.getElementById('editar{{$Favorito->ruta}}').submit()">Editar</a>
+                                {!! Form::close() !!} --}}
+
+                              </li>
+                              <li>
+                                {!! Form::open([
+                                    'method' => 'DELETE',
+                                    'class' => 'formulario',
+                                    'route' => ['favorito.destroy', $Favorito->ruta],
+                                    'style' => 'display:inline',
+                                    'id' => 'laruta'.$Favorito->ruta,
+                                ]) !!}
+                                  <a onclick="document.getElementById('laruta{{$Favorito->ruta}}').submit()" class="dropdown-item" href="#">Borrar</a>
+                                {!! Form::close() !!}
+                              </li>
                             </ul>
                           </div>
                         </div>
@@ -37,12 +61,14 @@
       </div>
 
 <script>
-  $('#editaar').on('click', function(event) {
-        var button = $(event.relatedTarget);
-        var ruta = button.data('ruta');
-        var modal = $(this);
-        console.log(ruta);
-        modal.find('#descript').text( ruta );
+  $('#exampleModalUno').on('shown.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    // var button = document.getElementById('editaar');
+    var ruta = button.dataset.ruta;
+    var textA = document.getElementById('descrip');
+    console.log(ruta);
+    // modal.find('#descript').text( ruta );
+    textA.value = ruta;
         
-    });
+  });
 </script>

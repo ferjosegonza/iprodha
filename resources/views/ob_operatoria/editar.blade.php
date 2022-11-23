@@ -12,7 +12,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     {!!Form::label('operatoria','Operatoria :')!!}
-                                    {!! Form::text('operatoria',old('operatoria'),['class'=>'form-control'])!!}
+                                    {!!Form::text('operatoria',old('operatoria'),['class'=>'form-control'])!!}
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">

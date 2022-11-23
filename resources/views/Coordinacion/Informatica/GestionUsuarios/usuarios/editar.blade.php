@@ -1,4 +1,6 @@
 @extends('layouts.app')
+
+
 @section('css')
 {{-- css para el la lista/arbol del menu --}}
 <style>#menu * { list-style:none;}
@@ -253,8 +255,9 @@
         {!! Form::close() !!}
     </section>
 @endsection
+
 @section('js')
-<script src="{{ asset('js/Coordinacion/Informatica/GestionUsuarios/usuarios/editar_usuarios.js') }}"></script>
+    <script src="{{ asset('js/Coordinacion/Informatica/GestionUsuarios/usuarios/editar_usuarios.js') }}"></script>
 @endsection
 
 

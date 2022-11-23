@@ -35,12 +35,10 @@
                 <div class="card">
                     <div class="card-body">         
                         {!! Form::model($Ticket, ['method' => 'PATCH','route' => ['ticket.cambiarcat', $Ticket->idtarea], 'enctype'=>'multipart/form-data']) !!}
-                        {{-- {!! Form::open(array('route' => 'ticket.editar','method'=>'POST', 'enctype'=>'multipart/form-data')) !!} --}}
                         <div class="row">
-                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-7">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
                                 <div class="form-group d-flex align-items-center">
                                     {!! Form::label('Categoria:', null, ['class' => 'control-label me-2', 'style' => 'white-space: nowrap; width:100%']) !!}                                   
-                                    {{-- {!! Form::text('categoria', $Ticket->getCategoriaProb->getCatProblema->descatprob, array('class' => 'form-control', 'disabled')) !!} --}}
                                     <select class="form-select" name="categoria" placeholder="Seleccionar" id='selected-categoria' required>
                                         <option disabled selected>Seleccionar</option>
                                         @foreach ($Categorias as $Categoria)
@@ -54,7 +52,6 @@
                                 </div>
                                 <div class="form-group d-flex align-items-center">
                                     {!! Form::label('Sub-Categoria:', null, ['class' => 'control-label me-2', 'style' => 'white-space: nowrap; width:100%']) !!}                                   
-                                    {{-- {!! Form::text('subcateg', $Ticket->getCategoriaProb->catprobsub, array('class' => 'form-control','disabled')) !!} --}}
                                     <select class="form-select" name="subcateg" placeholder="Seleccionar" id='selected-subcategoria' required>
                                         @foreach ($Subcategorias as $Subcategoria)
                                                 @if($Ticket->getCategoriaProb->getCatProblema->idcatprob == $Subcategoria->idcatprob)
@@ -72,10 +69,14 @@
                                     {!! Form::number('interno', $Ticket->interno, array('class' => 'form-control', 'type' => 'number', 'required', 'disabled')) !!}
                                 </div>
                                 <div class="form-group d-flex align-items-center">
-                                    {!! Form::label('Solucionador:', null, ['class' => 'control-label me-2', 'style' => 'white-space: nowrap; width:100%']) !!}
-                                    {!! Form::select('solu', $Solucionadores, $Ticket->getSolucionador->idsolucionador,['class'=>'form-select', 'id'=>'selected-solucionador']) !!}                               
-                                    {{-- {!! Form::text('solu', $Ticket->getSolucionador->nombre, array('class' => 'form-control', 'disabled')) !!} --}}
+                                    {!! Form::label('Usuario:', null, ['class' => 'control-label me-2', 'style' => 'white-space: nowrap; width:100%']) !!}                                   
+                                    {!! Form::text('interno', $Ticket->usuario, array('class' => 'form-control', 'disabled')) !!}
                                 </div>
+                                <div class="form-group d-flex align-items-center">
+                                    {!! Form::label('IP:', null, ['class' => 'control-label me-2', 'style' => 'white-space: nowrap; width:100%']) !!}                                   
+                                    {!! Form::text('interno', $Ticket->iporigentarea, array('class' => 'form-control', 'disabled')) !!}
+                                </div>
+                                
                                 <div class="form-group d-flex align-items-center">
                                     {!! Form::label('Estado:', null, ['class' => 'control-label me-2', 'style' => 'white-space: nowrap; width:100%']) !!}                                   
                                     {!! Form::text('estado', $Ticket->getEstadoTarea->last()->getEstado->denestado, array('class' => 'form-control', 'disabled')) !!}
@@ -86,8 +87,6 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Imagen: </label>
-                                    {{-- {!! Form::file('image', array('class' => 'form-control', 'type' => 'file', 'id' => "inputGroupFile03", 'aria-describedby' => 'inputGroupFileAddon03', 'aria-label' => 'Upload')) !!} --}}
-
                                     <div class="div-padre mt-2" style="height: 350px; position: relative; background-color: #fff">
                                         @if (!is_null($Image))
                                             <div class="hijo2" style="height: 350px; width:100%;position: absolute;">
@@ -109,16 +108,30 @@
                                             </a>
                                         @endif
                                     </div>
-                                    {{-- <div class="mt-2" style="height: 350px; background-color: #fff">
-                                        @if (!is_null($Image))
-                                                <img id="imagenpre" src={{asset($Image->ruta)}} style="height: inherit; width: 100%;">
-                                        @endif
-                                    </div> --}}
                                 </div>                             
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 ">
+                                <div class="sticky-top" style="padding-top: 5px">
+                                        <div class="form-group d-flex align-items-center">
+                                            {!! Form::label('Solucionador:', null, ['class' => 'control-label me-2', 'style' => 'white-space: nowrap;width:100%']) !!}
+                                            {!! Form::select('solu', $Solucionadores, $Ticket->getSolucionador->idsolucionador,['class'=>'form-select', 'id'=>'selected-solucionador']) !!}
+                                            <a class="align-items-center p-auto" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                <i class="fas fa-info-circle fs-3"></i>
+                                            </a>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Observaciones:</label>
+                                            {!! Form::textarea('observ', $Ticket->getEstadoTarea->last()->observacion, ['class'=>'form-control', 'rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 40vh']) !!}
+                                        </div>
+                                        <div class="form-group d-flex justify-content-end">                                      
+                                            <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                                            <a href="{{ route('ticket.index') }}"class="btn btn-secondary fo">Volver</a>
+                                        </div>
+                                </div>
                             </div>       
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-                        <a href="{{ route('ticket.index') }}"class="btn btn-secondary fo">Volver</a>
+                        {{-- <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                        <a href="{{ route('ticket.index') }}"class="btn btn-secondary fo">Volver</a> --}}
                         {!! Form::close() !!}
                     </div>
                 </div>
@@ -127,4 +140,32 @@
     </div>
     <script src="{{ asset('js/Coordinacion/Informatica/ticket/asignar_ticket.js') }}"></script>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Estado de Solucionadores</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped mt-2">
+                <thead style="height:50px;">
+                    <th class='ml-3' style="color:#fff;">Solucionador</th>
+                    <th class='ml-3' style="color:#fff;">En Proceso</th>
+                    <th class='ml-3' style="color:#fff;">Asignado</th>
+                    <th style="color:#fff;">Total</th>
+                </thead>
+                <tbody id="tabla-datos">
+                   
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
 @endsection

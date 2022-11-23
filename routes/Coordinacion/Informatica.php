@@ -119,8 +119,6 @@ Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-TICKET']], 
 });
 
 Route::group(['middleware' => ['auth']], function() {
-    //Route::get('/profile', [App\Http\Controllers\HomeController::class, 'index']);
-    //Route::post('/profile', [App\Http\Controllers\HomeController::class, 'store']);
     Route::post('/favs/todos', [FavoritoController::class, 'allfavourites'])->name('favorito.todos');
     Route::get('/favorito/guardar/{ruta}', [FavoritoController::class, 'guardar'])->name('favorito.agregar');
     Route::resource('favorito', FavoritoController::class);

@@ -4,6 +4,7 @@ namespace App\Models\Iprodha;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ME\Expediente;
 
 class vw_ofe_obras extends Model
 {
@@ -16,6 +17,7 @@ class vw_ofe_obras extends Model
     //public $incrementing = true;
   
     protected $fillable = [ 
+        'exp_doc_id',
         'idobra',
         'nomobra',
         'tipocontratofer',
@@ -33,6 +35,7 @@ class vw_ofe_obras extends Model
         'exp_asunto'=> true,
         'nom_emp'=> true,
         'nom_loc'=> true,
+        'exp_doc_id'=> true,
         
     ];
 
@@ -44,6 +47,10 @@ class vw_ofe_obras extends Model
         } else {
             return $query->where('nomobra', 'like', '%' .  strtoupper($nomobra) . '%'); 
         }          
+    }
+    public function getexpediente()
+    {
+        return $this->hasOne(Expediente::class,'exp_doc_id','exp_doc_id');
     }
    /*public function OfeObrasExpediente()
     {

@@ -25,7 +25,6 @@ $('#buscar1').click(function () {
         },
         success: function (response) {
             response.forEach(element => {
-                console.log(element.nom_emp);
                 $("#empresa").append("<option value='" + element.nom_emp + "' >" + element.nom_emp + "</option>");
             });
             
@@ -43,7 +42,6 @@ $('#buscar1').click(function () {
         },
         success: function (response) {
             response.forEach(element => {
-                console.log(element.operatoria);
                 $("#programa").append("<option value='" + element.operatoria + "' >" + element.operatoria + "</option>");
             });
             

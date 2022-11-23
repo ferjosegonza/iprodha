@@ -17,7 +17,7 @@ class Tic_Estado extends Model
     public $incrementing = false;
 
     protected $fillable = [ 
-        'idtarea',    'denestado',
+        'idtarea',    'denestado', 'activo', 'ordvisualiz',
     ];
     
     public function getEstadoTarea()

@@ -118,7 +118,7 @@
                                                     @endcan
                                                 </td>
                                                 <td>
-                                                    @if ($Ticket->getEstadoTarea->last()->getEstado->idestado == 1)
+                                                    @if ($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado == 1)
                                                         {!! Form::open([
                                                             'method' => 'GET',
                                                             'route' => ['ticket.edit', $Ticket->idtarea],
@@ -129,7 +129,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if ($Ticket->getEstadoTarea->last()->getEstado->idestado == 1)
+                                                    @if ($Ticket->getEstadoTarea->sortByDesc('idestado')->first()->getEstado->idestado == 1)
                                                         {!! Form::open([
                                                             'method' => 'GET',
                                                             'class' => 'formulario',

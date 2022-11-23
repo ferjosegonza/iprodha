@@ -13,11 +13,17 @@ class Empresa extends Model
     public $timestamps = false;
     
     protected $table = 'iprodha.empresa';
-    protected $primaryKey = 'idid_empconcepto';
+    protected $primaryKey = 'id_emp';
+    //protected $primaryKey = 'idid_empconcepto';
     public $incrementing = false;
 
     protected $fillable = [ 
         'id_emp','nom_emp'
      ];
-    
+
+     public function getOfertas()
+     {
+         return $this->hasMany(Ofe_obra::class,'idempresa','id_emp');
+     }
+     
 }

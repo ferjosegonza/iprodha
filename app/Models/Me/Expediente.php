@@ -16,19 +16,26 @@ class Expediente extends Model
     public $incrementing = true;
 
     protected $fillable = [ 
-        'EXP_DOC_ID',
-        'EXP_NUMERO',
-        'EXP_INICIANTE_APELLIDO',
-        'EXP_INICIANTE_NOMBRE',
-        'EXP_DOCUMENTO',
-        'EXP_ASUNTO',
-        'EXP_PAR_TIPO'
+        'exp_doc_id',
+        'exp_numero',
+        'exp_iniciante_apellido',
+        'exp_iniciante_nombre',
+        'exp_documento',
+        'exp_asunto',
+        'exp_par_tipo'
+
     ];
     protected $attributes = [
         'EXP_DOC_ID' => false,
     ];
-    public function ExpedienteOfeObras()
+    /**
+     * Get the user that owns the Expediente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+     
+    public function getObra()
     {
-        return $this->hasOne(Ofe_obra::class,'exp_doc_id','idexpediente');
+        return $this->belongsTo(Ofe_obra::class, 'idexpediente', 'exp_doc_id');
     }
 }

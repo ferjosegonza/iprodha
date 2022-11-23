@@ -71,17 +71,26 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Imagen: </label>
-                                    <div class="div-padre" style="height: 350px; position: relative">
-                                        <div class="hijo2" style="height: 350px; width:100%;position: absolute;">
-                                            @if (!is_null($Image))
-                                                <img src={{asset($Image->ruta)}} style="height: inherit; width: 100%;">
-                                            @endif
-                                        </div>
-                                        <a class='' href={{asset($Image->ruta)}} target='_blank' style="text-decoration: none; color: #9c9b98">
-                                            <div class="hijo1 d-flex mostrar" style="height: 350px; width:100%;; position: absolute;">
-                                                <i class="fas fa-search-plus m-auto" style="font-size: 8em"></i>
+                                    <div class="div-padre mt-2" style="height: 350px; position: relative; background-color: #fff">
+                                        @if (!is_null($Image))
+                                            <div class="hijo2" style="height: 350px; width:100%;position: absolute;">
+                                                <img id="imagenpre" src={{asset($Image->ruta)}} style="height: inherit; width: 100%;">
                                             </div>
-                                        </a>
+                                            <a id='imageurl' href={{asset($Image->ruta)}} target='_blank' style="text-decoration: none; color: #9c9b98">
+                                                <div class="hijo1 d-flex mostrar" style="height: 350px; width:100%;; position: absolute;">
+                                                    <i class="fas fa-search-plus m-auto" style="font-size: 8em"></i>
+                                                </div>
+                                            </a>
+                                        @else
+                                            <div class="hijo2" style="height: 350px; width:100%;position: absolute;">
+                                                <img id="imagenpre" style="height: inherit; width: 100%;">
+                                            </div>
+                                            <a id='imageurl' target='_blank' style="text-decoration: none; color: #9c9b98">
+                                                <div class="hijo1 d-flex mostrar" style="height: 350px; width:100%;; position: absolute;">
+                                                    <i class="fas fa-search-plus m-auto" style="font-size: 8em"></i>
+                                                </div>
+                                            </a>
+                                        @endif
                                     </div>                    
                                 </div>
                             </div>
