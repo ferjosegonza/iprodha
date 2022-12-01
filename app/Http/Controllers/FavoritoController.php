@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 //agregamos
-use App\Models\Silverol\Fav_Favorito;
+use App\Models\Iprodha\Fav_Favorito;
 
 
 class FavoritoController extends Controller

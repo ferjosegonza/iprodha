@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diegoz\Auditar;
 use App\Models\MenuM;
-use App\Models\Silverol\Fav_Favorito;
+use App\Models\Iprodha\Fav_Favorito;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
