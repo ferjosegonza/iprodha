@@ -19,10 +19,10 @@
             $ob_obrasxweb=ob_obrasxweb::select('id_obr')->where('foja','1')->get();
             $id_obr='';
             for($i=0;$i<count($ob_obrasxweb);$i++){
-                $id_obr.=$ob_obrasxweb[$i]['ID_OBR'].',';
+                $id_obr.=$ob_obrasxweb[$i]->id_obr.',';
             }
-            return$id_obr;
-            
+            return$id_obr.='0';
+
             $cargarFoja=cargarFoja::select('id_obr','num_obr','nom_obr','nom_emp')            
             ->where('id_inspector','79')
             //->whereIn('id_obr',$ob_obrasxweb)
