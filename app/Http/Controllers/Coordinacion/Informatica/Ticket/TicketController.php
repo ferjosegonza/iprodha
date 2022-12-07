@@ -16,6 +16,7 @@ use App\Models\Iprodha\Tic_Solucionador;
 use App\Models\Iprodha\Tic_Reasignaciontarea;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Route;
 use \PDF;
 
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -41,5 +42,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('menus', MenuM::menus(1)); 
         });
 
+        Blade::directive('money', function ($amount) {
+            return "<?php echo '$' . number_format($amount, 2); ?>";
+        });
     }
 }

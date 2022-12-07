@@ -26,7 +26,7 @@
 </style>
 <section class="section">
     <div class="section-header">
-        <h3 class="page__heading">Ver Ticket #{{$Ticket->idtarea}}</h3>
+        <h3 class="page__heading">Ver Ticket #{{$Ticket->idtarea}} </h3>
     </div>
     @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
     {{-- @include('layouts.modal.ticket', ['modo' => 'Agregar']) --}}
@@ -75,10 +75,10 @@
                                     <label for="">Descripcion del requerimiento:</label>
                                     {!! Form::textarea('descrip', $Ticket->descripciontarea, ['class'=>'form-control', 'rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 40vh', 'disabled']) !!}
                                 </div>
+                                @if (!is_null($Image))
                                 <div class="form-group">
                                     <label for="">Imagen: </label>
                                     <div class="div-padre mt-2" style="height: 350px; position: relative; background-color: #fff">
-                                        @if (!is_null($Image))
                                             <div class="hijo2" style="height: 350px; width:100%;position: absolute;">
                                                 <img id="imagenpre" src={{asset($Image->ruta)}} style="height: inherit; width: 100%;">
                                             </div>
@@ -87,23 +87,9 @@
                                                     <i class="fas fa-search-plus m-auto" style="font-size: 8em"></i>
                                                 </div>
                                             </a>
-                                        @else
-                                            <div class="hijo2" style="height: 350px; width:100%;position: absolute;">
-                                                <img id="imagenpre" style="height: inherit; width: 100%;">
-                                            </div>
-                                            <a id='imageurl' target='_blank' style="text-decoration: none; color: #9c9b98">
-                                                <div class="hijo1 d-flex mostrar" style="height: 350px; width:100%;; position: absolute;">
-                                                    <i class="fas fa-search-plus m-auto" style="font-size: 8em"></i>
-                                                </div>
-                                            </a>
-                                        @endif
                                     </div>
-                                    {{-- <div class="mt-2" style="height: 350px; background-color: #fff">
-                                        @if (!is_null($Image))
-                                                <img id="imagenpre" src={{asset($Image->ruta)}} style="height: inherit; width: 100%;">
-                                        @endif
-                                    </div> --}}
                                 </div>
+                                @endif
                                 
                             </div>
                             <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 ">
@@ -139,7 +125,7 @@
                                 @endif
                             </div>        
                         </div>
-                        <a href="{{ route('ticket.index') }}"class="btn btn-secondary fo">Volver</a>
+                        <a href="javascript:history.back()" class="btn btn-dark fo">Volver</a>
                     
                     </div>
                 </div>
