@@ -12,6 +12,7 @@ use App\Http\Controllers\Obras\Construcciones\Inspectores\cargarFojaController;
 
 //Lisandro
 use App\Http\Controllers\Obras\Construcciones\CupoxobraController;
+use App\Http\Controllers\Obras\Construcciones\ObrasxwebController;
 
 Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-CARGARFOJA']],function(){
     Route::resource('ob_operatoria',ob_operatoriaController::class);
@@ -20,4 +21,8 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-CARGARFOJA']],
 
 Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-CUPOOBRA']],function(){
     Route::resource('cupoobra', CupoxobraController::class);
+});
+
+Route::group(['middleware'=>['auth','role_or_permission:ADMIN']],function(){
+    Route::resource('obraweb', ObrasxwebController::class);
 });

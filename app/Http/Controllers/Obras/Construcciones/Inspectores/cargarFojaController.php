@@ -17,15 +17,12 @@
         }        
         public function index(){  
             $ob_obrasxweb=ob_obrasxweb::select('id_obr')->where('foja','1')->get();
-            $id_obr='';
-            for($i=0;$i<count($ob_obrasxweb);$i++){
-                $id_obr.=$ob_obrasxweb[$i]->id_obr.',';
-            }
-            return$id_obr.='0';
-
+            $id_obr='0';
+            for($i=0;$i<count($ob_obrasxweb);$i++){$id_obr.=','.$ob_obrasxweb[$i]->id_obr;}    
+            $array=explode(",",$id_obr);            
             $cargarFoja=cargarFoja::select('id_obr','num_obr','nom_obr','nom_emp')            
-            ->where('id_inspector','79')
-            //->whereIn('id_obr',$ob_obrasxweb)
+            //->where('id_inspector','79')
+            ->whereIn('id_obr',$array)
             ->groupBy('id_obr','num_obr','nom_obr','nom_emp')
             ->orderBy('num_obr')
             ->get();        

@@ -60,7 +60,8 @@ class TicketController extends Controller
             'descrip' => 'required|string',
             'image' => 'file|image|mimes:jpg,png,jpeg"]',
         ]);
-    
+
+        $mobile = preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
         $input = $request->all();
 
         $modelo = new Tic_Tarea;
@@ -70,7 +71,12 @@ class TicketController extends Controller
         $modelo->usuario = Auth::user()->name;
         $modelo->idusuario = Auth::user()->id;
         $modelo->idcatprobsub = $request->input('subcateg');
-        $modelo->iporigentarea = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        if(!$mobile){
+            $modelo->iporigentarea = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }else{
+            $modelo->iporigentarea = $_SERVER['REMOTE_ADDR'];
+        }
+        // $modelo->iporigentarea = $_SERVER['HTTP_X_FORWARDED_FOR'];
         $modelo->interno = $request->input('interno');
         $modelo->prioridad = null;
         $modelo->tiempoestimado = null;
@@ -456,4 +462,10 @@ class TicketController extends Controller
             $prueba = ['nombre' => $solucionador->nombre, 'totalAsign' => $TotalTicketAsignado, 'totalEnproc' => $TotalTicketEnproceso, 'total' => $Total];
         return $prueba;
     }
+
+    
+    public function isMobileDevice() {
+        return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+    }
+        
 }

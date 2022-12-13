@@ -35,7 +35,7 @@
                             {{-- <div class="pagination justify-content-end">
                                 {!! $Tickets->links() !!}   
                             </div> --}}
-                            <div class="">
+                            <div class="table-responsive">
                                 <table id="example" class="table table-striped mt-2">
                                     <thead style="height:50px;">
                                         {{-- <th style="color:#fff;">ID</th> --}}
