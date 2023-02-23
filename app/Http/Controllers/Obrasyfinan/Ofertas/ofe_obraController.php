@@ -87,7 +87,7 @@ class ofe_obraController extends Controller
     
     public function edit( $idobra)
     {
-            $unaOferta = Ofe_obra::find($idobra);
+            $unaOferta = Ofe_obra::find(decrypt($idobra));
             $Localidad= Localidad::pluck('nom_loc','id_loc'); 
             $Empresa= Empresa::pluck('nom_emp','id_emp'); 
             $TipoContrato= Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 

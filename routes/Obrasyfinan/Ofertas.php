@@ -8,6 +8,7 @@ use App\Http\Controllers\Obrasyfinan\Ofertas\ofe_obraController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_itemController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_itemdetController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_sombreroController;
+use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_cronogramaController;
 //use App\Http\Controllers\Obrasyfinan\Ofertas\vw_ofe_obrasController;
 
 
@@ -18,6 +19,9 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEOBRA']], 
     //Route::post('/ofeobra', [ofe_obraController::class, 'store'])->name('ofeobra.store');
     //Route::put('/oferobra/{unaOferta}', [ofe_obraController::class, 'update'])->name('ofeObra.update');
     //Route::delete('/ofeobra/eliminar/{unaOferta}', [ofe_obraController::class, 'destroy'])->name('ofeobra.destroy');
+    // Route::post('/ofecrono/{id}/{mes}/items', [Ofe_cronogramaController::class, 'losItems']);
+    // Route::post('/ofecrono/{mes}/{item}/buscar', [Ofe_cronogramaController::class, 'buscarItemMes']);
+    // Route::resource('ofecrono', Ofe_cronogramaController::class);
     Route::resource('ofeobra', ofe_obraController::class);
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMOBRA']], function () {
@@ -46,4 +50,12 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOB
     Route::delete('/ofesombreroxobra/{idobra}/eliminar', [Ofe_sombreroController::class,'destroy'])->name('ofesombreroxobra.eliminar');
     /////////    
     Route::resource('ofesombreroxobra', Ofe_sombreroController::class);
+});
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFECRONO']], function () {
+    Route::post('/ofecrono/{mes}/{item}/{avance}/nuevo', [Ofe_cronogramaController::class, 'guardarCrono']);
+    Route::post('/ofecrono/{item}/comprobar', [Ofe_cronogramaController::class, 'comprobarAvance']);
+    Route::post('/ofecrono/{id}/{mes}/items', [Ofe_cronogramaController::class, 'losItems']);
+    Route::post('/ofecrono/{mes}/{item}/buscar', [Ofe_cronogramaController::class, 'buscarItemMes']);
+    Route::resource('ofecrono', Ofe_cronogramaController::class);
 });

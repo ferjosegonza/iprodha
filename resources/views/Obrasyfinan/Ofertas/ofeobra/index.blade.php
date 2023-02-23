@@ -34,22 +34,28 @@
                                 <td>{{ $unaOferta->getExpediente->exp_numero }}</td>
                                 <td>{{ substr($unaOferta->getEmpresa->nom_emp, 0, 20) }}</td>
                                 <td>
-                                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.edit',$unaOferta->idobra],'style' => 'display:inline']) !!}
+                                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.edit',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                         {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
                                     {!! Form::close() !!}
-                                        
-                                    {!! Form::open([
-                                        'method' => 'DELETE','route' => ['ofeobra.destroy', $unaOferta->idobra],'style' => 'display:inline',]) !!}
-                                        {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('Estas seguro que desea ELIMINAR la oferta??')",]) !!}
-                                    {!! Form::close() !!}
-                                    
-                                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobraitems.itemsoferta',$unaOferta->idobra],'style' => 'display:inline']) !!}
+                                    @can('BORRAR-OFEOBRA')
+                                        {!! Form::open([
+                                            'method' => 'DELETE','route' => ['ofeobra.destroy', $unaOferta->idobra],'style' => 'display:inline',]) !!}
+                                            {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('Estas seguro que desea ELIMINAR la oferta??')",]) !!}
+                                        {!! Form::close() !!}
+                                    @endcan
+                                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobraitems.itemsoferta',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                         {!! Form::submit('Items', ['class' => 'btn btn-primary']) !!}
                                     {!! Form::close() !!}
 
                                     {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.indexx',$unaOferta->idobra],'style' => 'display:inline']) !!}
                                         {!! Form::submit('Sombrero', ['class' => 'btn btn-primary']) !!}
-                                    {!! Form::close() !!}                                    
+                                    {!! Form::close() !!}
+
+                                    @can('VER-CRONOGRAMAOBRA')
+                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.edit',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
+                                            {!! Form::submit('Cronograma', ['class' => 'btn btn-primary']) !!}
+                                        {!! Form::close() !!}                                  
+                                    @endcan  
                                 </td>
                             </tr>
                         @endforeach

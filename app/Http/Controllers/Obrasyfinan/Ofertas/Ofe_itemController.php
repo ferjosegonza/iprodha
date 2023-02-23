@@ -34,7 +34,7 @@ class Ofe_itemController extends Controller
         return view('Obrasyfinan.Ofertas.ofeitems.editar',compact('unItem','laObra'));
     }
     public function itemsxoferta ($idobra){
-        $laObra = Ofe_obra::find($idobra);
+        $laObra = Ofe_obra::find(decrypt($idobra));
         $itemsxobra =  $laObra->getItems ;
         return view('Obrasyfinan.Ofertas.ofeitems.index',compact('laObra','itemsxobra'));
     } 
