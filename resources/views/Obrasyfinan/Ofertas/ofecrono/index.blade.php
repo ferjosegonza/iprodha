@@ -15,7 +15,7 @@
             <div class="col-lg-5 my-auto">
             </div>
             <div class="col-lg-2 my-auto">
-                <a href="{{ route('ofeobra.index') }}" class="btn btn-dark my-1" Style="width: 80%">Volver</a>
+                {{-- <a href="{{ route('ofeobra.index') }}" class="btn btn-primary my-1" Style="width: 80%">Volver</a> --}}
             </div> 
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
@@ -52,7 +52,7 @@
                                     <label id='acu' for="formFile" class="form-label">%acu: 00.0000</label>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 py-2">
-                                    <input id="addRow" class="btn btn-primary my-auto" style="width: 70%" type="submit" value="Agregar">
+                                    <input id="addRow" class="btn btn-success my-auto" style="width: 70%" type="submit" value="Agregar">
                                 </div>
                             </div>
                                 
@@ -70,7 +70,7 @@
                             </div> --}}
                             <div class="table-responsive">
                                 <table id="example" class="table table-striped mt-2">
-                                    <thead style="height:50px;">
+                                    <thead style="height:50px; background-color:#6d7cf1;">
                                         <th style="color:#fff;">Item</th>
                                         <th style="color:#fff;">Avance</th>
                                         <th style="color:#fff;">Av. Acu</th>
@@ -80,7 +80,7 @@
                                         <th style="color:#fff;">Costo</th>
                                         <th style="color:#fff;">Acciones</th>
                                     </thead>
-                                    <tfoot align="right" style='background-color: rgb(255, 225, 181)'>
+                                    <tfoot align="right" style='background-color: #d2d5e7;'>
                                         <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
                                     </tfoot>
                                     <tbody>
@@ -88,6 +88,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <a href="{{ route('ofeobra.index') }}" class="btn btn-primary my-1" Style="width: 5%">Volver</a>
                         </div>
                     </div>
                 </div>

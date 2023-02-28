@@ -77,6 +77,15 @@ class Ofe_cronogramaController extends Controller
     public function guardarCrono($mes, $item, $avance)
     {
         $nuevoCrono = Ofe_cronograma::create(['iditem' => $item, 'mes' => $mes, 'avance' => $avance]);
+        // $unItem = Ofe_item::where('iditem', "=", $item)->where('idobra', '=', $obra)->get();
+        // return $unItem;
+        // $idCrono = Ofe_cronograma::orderBy('idcrono', 'desc')->first()->idcrono;
+        // return $idCrono;
+        // $nuevoCrono = new Ofe_cronograma();
+        // $nuevoCrono->iditem = $item;
+        // $nuevoCrono->mes = $mes;
+        // $nuevoCrono->avance = $avance;
+        // $nuevoCrono->save();
         return $nuevoCrono;
     }
 
@@ -94,7 +103,7 @@ class Ofe_cronogramaController extends Controller
     public function comprobarAvance($item)
     {
         $elItem = Vw_ofe_cronograma::where('iditem', '=', $item)->first();
-        
+        // return $elItem;
         if(!empty($elItem)){
             return $elItem->poravaacuitem;
         }else{

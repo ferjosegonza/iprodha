@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h5 >Items de la obra: {{$laObra->nomobra}}</h5>
+            <div class="titulo">Items de la obra: {{$laObra->nomobra}}</div>
         </div>
         <div class="section-body">
             <div class="row " >
@@ -49,8 +49,6 @@
                         @endforeach
                     </tbody>
                 </table>
-
-
                     {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => 'display:inline']) !!}
                         {!! Form::submit('Volver', ['class' => 'btn btn-primary mt-2']) !!}
                     {!! Form::close() !!}                    

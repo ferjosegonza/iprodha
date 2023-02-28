@@ -1,12 +1,10 @@
 @extends('layouts.app')
-@section('css')
-    
-    <link rel="stylesheet" href="{{ asset('css/Obrasyfinan/ofeobra.css') }}">
-@endsection
+
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h5>Ofertas de Obras</h5>
+            <div class="titulo page__heading">Ofertas de Obras</div>
+            @include('layouts.favorito.fav', ['modo' => 'Agregar'])
         </div>
         <div class="section-body">
             <div class="row " >
@@ -33,6 +31,7 @@
                                 <td>{{ $unaOferta->plazo }}</td>
                                 <td>{{ $unaOferta->getExpediente->exp_numero }}</td>
                                 <td>{{ substr($unaOferta->getEmpresa->nom_emp, 0, 20) }}</td>
+
                                 <td>
                                     {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.edit',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                         {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
@@ -55,7 +54,7 @@
                                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.edit',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                             {!! Form::submit('Cronograma', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}                                  
-                                    @endcan  
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

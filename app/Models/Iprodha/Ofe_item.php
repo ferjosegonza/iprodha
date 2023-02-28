@@ -37,4 +37,8 @@ class Ofe_item extends Model
     {
         return $this->hasMany(Ofe_subitem::class, 'iditem', 'iditem');
     }
+    public function getCronograma()
+    {
+        return $this->hasMany(Ofe_cronograma::class, 'iditem', 'iditem');
+    }
 }

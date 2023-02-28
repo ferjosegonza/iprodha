@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <a><strong>Edición Subitem - Item: {{$unItem->nom_item}}</strong></a>
+            <div class="titulo">Edición Subitem - Item: {{$unItem->nom_item}} </div>
         </div>
         @include('layouts.modal.mensajes')
         {!! Form::model($unItem, ['method' => 'PATCH', 'route' => ['ofeobraitemdet.actualizar',$unSubItem->iditem, $unSubItem->idsubitem]]) !!}
@@ -47,9 +47,9 @@
             </div>            
         </div>
             
-        @can('CREAR-OBRAS')
+        {{-- @can('CREAR-OBRAS') --}}
         {!! Form::submit('Guardar', ['class' => 'btn btn-warning mt-3 ']) !!}
-        @endcan
+        {{-- @endcan --}}
         {!! Form::close() !!}
         {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitemdet.detalleitem',$unItem], 'style' => 'display:inline']) !!}
         {!! Form::submit('Cancelar', ['class' => 'btn btn-primary my-3']) !!}

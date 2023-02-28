@@ -5,7 +5,7 @@ namespace App\Models\Iprodha;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Validation\Rules\Exists;
 /*use App\Models\ME\Expediente;
 use App\Models\Iprodha\Ofe_item;
 use App\Models\Iprodha\Ofe_obra;*/
@@ -25,7 +25,7 @@ class Ofe_subitem extends Model
     public $timestamps = false;
   
     protected $fillable = [ 
-        'idobra',
+        //'idobra',
         'iditem',
         'idsubitem',
         'denominacion',
@@ -34,8 +34,8 @@ class Ofe_subitem extends Model
         'costounitario',
     ];
     protected $attributes = [
-        'idobra' => false,
-        'idobra' => false,
+        //'idobra' => false,
+        //'idobra' => false,
         'iditem' => false,
         'idsubitem' => false,
         'denominacion' => false,
@@ -49,13 +49,15 @@ class Ofe_subitem extends Model
     {
         return $this->hasOne(Ofe_item::class,'iditem','iditem');
     }
-    public function getObra()
+    /*public function getObra()
     {            
         return $this->hasMany(Ofe_obra::class,'idobra','idobra');
-    }
+    }*/
     public function getUnidad()
     {
-        return $this->belongsTo(Ofe_unidad::class,'idunidad','idunidad');
+        return $this->belongsTo(Ofe_unidad::class,'idunidad','idunidad')->withDefault([
+            'unidad' => 'NO ESPECIFICADO',
+        ]);
     }
 
 

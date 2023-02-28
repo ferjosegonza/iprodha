@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h3 class="page__heading">Nueva Oferta</h3>
+            <div class="titulo">Nueva Oferta</div>
         </div>
         {!! Form::open(['route' => 'ofeobra.store', 'method' => 'POST']) !!}
         @include('layouts.modal.mensajes')
@@ -48,24 +48,23 @@
                 ]) !!}
             </div>
             <div style="width:15%;float:left;margin-left:1%;">
-                {!! Form::label('Expediente:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!}
-                
+                {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!}                
             </div>
         </div>
 
 
             <div style="width:24%;float:left;margin-left:1%;">
                 {!! Form::label('Vivienda:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                {!! Form::number('monviv', null, ['class' => 'form-control']) !!}
+                {!! Form::number('monviv', null, ['readonly','class' => 'form-control']) !!}
             </div>
             <div style="width:24%;float:left;margin-left:1%;">
                 {!! Form::label('Infraestructura:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                {!! Form::number('moninf', null, ['class' => 'form-control']) !!}
+                {!! Form::number('moninf', null, ['readonly','class' => 'form-control']) !!}
             </div>
             <div style="width:24%;float:left;margin-left:1%;">
                 {!! Form::label('Nexo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                {!! Form::number('monnex', null, ['class' => 'form-control']) !!}
+                {!! Form::number('monnex', null, ['readonly','class' => 'form-control']) !!}
             </div>
             <div style="width:19%;float:left;margin-left:1%;">
                 {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}

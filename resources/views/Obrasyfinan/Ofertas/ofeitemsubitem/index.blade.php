@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <a><strong>Subitems - Item: {{ $unItem->nom_item }}  Obra: {{ $unaObra->nomobra}}</strong></a>
+            <div class="titulo">Subitems - Item: {{ $unItem->nom_item }}  Obra: {{ $unaObra->nomobra}}</div>
         </div>
         <div class="section-body">
             <div class="row " >
@@ -17,6 +17,11 @@
                         <th scope="col" style="color:#fff;width:5%;">Cantidad</th>
                         <th scope="col" style="color:#fff;width:15%;">Costo Unitario</th>
                         <th scope="col" style="color:#fff;width:30%;">Acciones</th>
+                        <th>                    
+                            {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
+                            {!! Form::submit('Crear', ['class' => 'btn  btn-success mt-2 ']) !!}
+                            {!! Form::close() !!}   
+                        </th>
                     </thead>
                     <tbody>                        
                         @foreach ($subitemxitem as $unSubItem)
@@ -41,10 +46,8 @@
                         @endforeach
                     </tbody>
                 </table>
-                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
-                    {!! Form::submit('Crear', ['class' => 'btn  btn-warning mt-2 ']) !!}
-                    {!! Form::close() !!}                
-                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta',$unaObra->idobra], 'style' => 'display:inline']) !!}
+             
+                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta',encrypt($unaObra->idobra)], 'style' => 'display:inline']) !!}
                         {!! Form::submit('Volver', ['class' => 'btn btn-primary mt-2']) !!}
                     {!! Form::close() !!}                    
             </div>

@@ -53,16 +53,16 @@ class Ofe_itemdetController extends Controller
             'denominacion' => 'required|min:5|max:80|string',
             'unidad' => 'required|min:1|integer',
             'cantidad' => 'required|min:1|integer', 
-            'costounitario' => 'required|min:1|integer', 
+            'costounitario' => 'required|numeric:2,4', 
 
         ]);
         $input = $request->all(); 
         $subitem = new Ofe_subitem;
-        $subitem->idobra = $request->input('idobra');
+        //$subitem->idobra = $request->input('idobra');
         $subitem->iditem = $request->input('iditem');
         $subitem->idsubitem = $request->input('idsubitem');
         $subitem->denominacion = $request->input('denominacion');
-        $subitem->unidad = $request->input('unidad');
+        $subitem->idunidad = $request->input('idunidad');
         $subitem->cantidad = $request->input('cantidad');
         $subitem->costounitario = $request->input('costounitario');
         $subitem->save();
@@ -73,10 +73,11 @@ class Ofe_itemdetController extends Controller
     {
         $unSubItem1 = DB::table('iprodha.Ofe_subitem')
         ->where('iditem','=', $unItem)
-        ->where('idsubitem','=', $unSubItem)->delete();
+        ->where('idsubitem','=', $unSubItem);
+        
         $item = DB::table('iprodha.Ofe_item')->where('iditem','=', $unItem)->first(); 
         $unSubItem1->delete(); 
-        return redirect()->route('ofeobraitems.itemsoferta', $item->$idobra );
+        return redirect()->route('ofeobraitems.itemsoferta', encrypt($item->idobra) );
     }
 
     public function update(Request $request, $id)
@@ -84,10 +85,12 @@ class Ofe_itemdetController extends Controller
         
         $input  = $request->all(); 
         $validatedData = $request->validate([
+            //'id_obra' => 'required|unique|integer',
             'denominacion' => 'required|min:5|max:80|string',
-            'idunidad' => 'required|min:1|max:10|integer',
-            'cantidad' => 'required|min:0|integer',
-            'costounitario' => 'required|min:0|integer',
+            'idunidad' => 'required|min:1|integer',
+            'cantidad' => 'required|min:1|integer', 
+            'costounitario' => 'required|numeric:2,4', 
+
         ]);
         
         $idSubItem  = $request->input('idsubitem');

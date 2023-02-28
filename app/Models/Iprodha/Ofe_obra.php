@@ -34,6 +34,7 @@ class Ofe_obra extends Model
         'aniocotizacion',
         'mescotizacion',
         'publica', 
+        'iduserweb',
     ];
     protected $attributes = [
         'idobra' => false,
@@ -56,11 +57,10 @@ class Ofe_obra extends Model
     {
         return $this->belongsTo(Empresa::class,'idempresa','id_emp');
     }
-
     public function getmoninf()
-{
-    return number_format($this->moninf, 2, ',', '.');
-}
+    {
+        return number_format($this->moninf, 2, ',', '.');
+    }
     /*public function OfeObrasLocalidad()
     {
         return $this->belongsTo(Localidad::class,'idloc','id_loc');

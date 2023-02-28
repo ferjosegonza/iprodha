@@ -3,9 +3,8 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h3 >Alta Subitem - Item: {{$unItem->nom_item}}</h3>
-        </div>
-        
+            <div class="titulo">Alta Subitem - Item: {{$unItem->nom_item}}</div>
+        </div>        
         {!! Form::model($unItem, ['method' => 'POST', 'route' => ['ofeobraitemdet.store']]) !!}
         
         @include('layouts.modal.mensajes')
@@ -47,11 +46,11 @@
             </div>            
         </div>
             
-        @can('CREAR-OBRAS')
+        {{-- @can('CREAR-OBRAS') --}}
             {!! Form::submit('Guardar', ['class' => 'btn btn-warning mt-3 ']) !!}
-        @endcan
+        {{-- @endcan --}}
         {!! Form::close() !!}
-        {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta',$unItem], 'style' => 'display:inline']) !!}
+        {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta',encrypt($unItem->idobra)], 'style' => 'display:inline']) !!}
         {!! Form::submit('Cancelar', ['class' => 'btn btn-primary my-3']) !!}
         {!! Form::close() !!}
     </section>
