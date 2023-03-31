@@ -14,6 +14,7 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\Barrio\BarrioController;
 use App\Http\Controllers\Barrio\Fc_concosxbarrioController;
 
+use App\Http\Controllers\NotificacionController;
 
 use App\Http\Controllers\CategorialaboralController;
 use App\Http\Controllers\Obras84Controller;
@@ -66,8 +67,6 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OB_CONCEPTO'
     Route::get('/editar_con/{id_concepto}',[Ct_Ob_ConceptoController::class, 'edit'])->name('ob_concepto.editar');
     Route::resource('r_ob_concepto', Ct_Ob_ConceptoController::class);
 });
-
-
 
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAS']], function () {
@@ -124,3 +123,7 @@ Route::group(['middleware' => ['auth','role_or_permission:Admin']], function () 
 
 Route::get('/estadocivil', [App\Http\Controllers\EstadocivilController::class, 'index'])->name('index');
 
+Route::group(['middleware' => ['auth']], function () {
+Route::get('{usuario}/notificaciones', [NotificacionController::class, 'verTodo'])->name('notif.verTodo');
+Route::get('{idnotificacion}/ver', [NotificacionController::class, 'visto'])->name('notif.ver');
+});
