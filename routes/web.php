@@ -152,3 +152,8 @@ Route::group(['middleware' => ['auth','role_or_permission:Admin']], function () 
 
 Route::get('/estadocivil', [App\Http\Controllers\EstadocivilController::class, 'index'])->name('index');
 
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('{usuario}/notificaciones', [NotificacionController::class, 'verTodo'])->name('notif.verTodo');
+    Route::get('{idnotificacion}/ver', [NotificacionController::class, 'visto'])->name('notif.ver');
+    });
+
