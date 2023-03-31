@@ -12,6 +12,8 @@ use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\PermisoControl
 use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\ChangePasswordController;
 use App\Http\Controllers\Coordinacion\Informatica\GestionUsuarios\ChangeEmailController;
 
+use App\Http\Controllers\Coordinacion\Informatica\RegistroTrigger\TriggerController;
+
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\TicketController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\SolucionadorController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
@@ -124,7 +126,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('favorito', FavoritoController::class);
 });
 
-// Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN']], function(){
-//     Route::resource('tiposolucionador', TiposolucionadorController::class);
-// });
+Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-REGTRIGGER']], function(){
+    Route::resource('regtrigger', TriggerController::class);  
+});
 

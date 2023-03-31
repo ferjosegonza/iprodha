@@ -34,12 +34,21 @@ class Ofe_obra extends Model
         'aniocotizacion',
         'mescotizacion',
         'publica', 
+        'iduserweb',
     ];
     protected $attributes = [
         'idobra' => false,
 
     ];
 
+    public function getMescotizacionAttribute() {
+        return sprintf("%02d", $this->attributes['mescotizacion']);
+    }
+
+    public function getPublicaAttribute(){
+        return date("Y-m-d", strtotime($this->attributes['publica']));
+    }
+    
     public function getExpediente()
     {
         return $this->hasOne(Expediente::class,'exp_doc_id','idexpediente');
@@ -56,11 +65,19 @@ class Ofe_obra extends Model
     {
         return $this->belongsTo(Empresa::class,'idempresa','id_emp');
     }
-
+    public function getLocalidad()
+    {
+        return $this->belongsTo(Localidad::class,'idloc','id_loc');
+    }
     public function getmoninf()
-{
-    return number_format($this->moninf, 2, ',', '.');
-}
+    {
+        return number_format($this->moninf, 2, ',', '.');
+    }
+
+    public function getEstados()
+    {
+        return $this->hasMany(Ofe_estadoxobra::class, 'idobra', 'idobra');
+    }
     /*public function OfeObrasLocalidad()
     {
         return $this->belongsTo(Localidad::class,'idloc','id_loc');
@@ -69,8 +86,9 @@ class Ofe_obra extends Model
     {
         return $this->belongsTo(Empresa::class,'idEmpresa','id_emp');
     }*/
-   /* public function OfeObrasTipoOferta()
+
+    public function getTipoOferta()
     {
         return $this->belongsTo(Ofe_tipocontratoferta::class,'idtipocontratofer','IDTIPOCONTRATOFER');
-    }*/
+    }
 }

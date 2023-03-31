@@ -2,49 +2,79 @@
 
 @section('content')
     <section class="section">
-        <div class="section-header">
-            <a><strong>Subitems - Item: {{ $unItem->nom_item }}  Obra: {{ $unaObra->nomobra}}</strong></a>
+        <div class="section-header d-flex">
+            <div class="">
+                <div class="titulo py-1">Subitems - Item: <strong>{{ $unItem->nom_item }}</strong>   Obra: <strong>{{ $unaObra->nomobra}}</strong></div>
+            </div>
+            <div class="ms-auto">
+                @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
+                    {!! Form::submit('Crear Sub-Item', ['class' => 'btn  btn-success mt-2 ']) !!}
+                    {!! Form::close() !!}
+                @endif
+            </div>  
         </div>
         <div class="section-body">
-            <div class="row " >
+            <div class="row" >
                 @include('layouts.modal.mensajes')
-                <table id="example" class="table table-hover mt-2">
-                    <thead style="background-color:#6d7cf1;">
-                        <th scope="col" style="color:#fff;width:5%;">Obra</th>
-                        <th scope="col" style="color:#fff;width:10%;">Item</th>                        
-                        <th scope="col" style="color:#fff;width:25%;">Denominación</th>
-                        <th scope="col" style="color:#fff;width:15%;">Unidad</th>
-                        <th scope="col" style="color:#fff;width:5%;">Cantidad</th>
-                        <th scope="col" style="color:#fff;width:15%;">Costo Unitario</th>
-                        <th scope="col" style="color:#fff;width:30%;">Acciones</th>
-                    </thead>
-                    <tbody>                        
-                        @foreach ($subitemxitem as $unSubItem)
-                            <tr>
-                                <td>{{ $unSubItem->idobra }}</td>
-                                <td>{{ $unSubItem->iditem }}</td>
-                                <td>{{ $unSubItem->denominacion }}</td>                                
-                                <td>{{ $unSubItem->getUnidad->unidad }}</td>
-                                <td>{{ $unSubItem->cantidad }}</td>
-                                <td>{{ $unSubItem->costounitario }}</td>
-                                <td>
-                                    
-                                    {!! Form::open(['method' => 'GET','route' => ['ofeobraitemdet.editar',$unSubItem->idsubitem,$unItem->iditem ],'style' => 'display:inline',]) !!}
-                                        {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
-                                    {!! Form::close() !!}                                    
-                                    {!! Form::open([
-                                        'method' => 'DELETE','route' => ['ofeobraitemdet.eliminar',$unSubItem->idsubitem,$unItem->iditem],'style' => 'display:inline',]) !!}
-                                        {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('Estas seguro que desea ELIMINAR el item??')",]) !!}
-                                    {!! Form::close() !!}
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
-                    {!! Form::submit('Crear', ['class' => 'btn  btn-warning mt-2 ']) !!}
-                    {!! Form::close() !!}                
-                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta',$unaObra->idobra], 'style' => 'display:inline']) !!}
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Centramos la paginacion a la derecha -->
+                            {{-- <div class="pagination justify-content-end">
+                                {!! $Tickets->links() !!}   
+                            </div> --}}
+                            <div class="table-responsive">
+                                <table id="example" class="table table-hover mt-2">
+                                    <thead>
+                                        {{-- <th class="text-center" scope="col" style="color:#fff;width:5%;">Obra</th> --}}
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Item</th>                        
+                                        <th class="text-center" scope="col" style="color:#fff;width:25%;">Denominación</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:15%;">Unidad</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Cantidad</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:15%;">Costo Unitario</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:15%;">Costo Sub-Item</th>
+                                        @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                                        <th class="text-center" scope="col" style="color:#fff;width:30%;">Acciones</th>
+                                        {{-- <th>                  
+                                            {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
+                                            {!! Form::submit('Crear', ['class' => 'btn  btn-success mt-2 ']) !!}
+                                            {!! Form::close() !!}
+                                        </th> --}}
+                                        @endif
+                                    </thead>
+                                    <tbody>                        
+                                        @foreach ($subitemxitem as $unSubItem)
+                                            <tr>
+                                                {{-- <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->idobra }}</td> --}}
+                                                <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->iditem }}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->denominacion }}</td>                                
+                                                <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->getUnidad->unidad }}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->cantidad }}</td>
+                                                <td class="text-center" style="vertical-align: middle;">@money($unSubItem->costounitario)</td>
+                                                <td class="text-center" style="vertical-align: middle;">@money($unSubItem->cantidad * $unSubItem->costounitario)</td>
+                                                @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                        {!! Form::open(['method' => 'GET','route' => ['ofeobraitemdet.editar',$unSubItem->idsubitem,$unItem->iditem ],'style' => 'display:inline',]) !!}
+                                                            {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
+                                                        {!! Form::close() !!}                                    
+                                                        {!! Form::open([
+                                                            'method' => 'DELETE','route' => ['ofeobraitemdet.eliminar',$unSubItem->idsubitem,$unItem->iditem],'style' => 'display:inline',]) !!}
+                                                            {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('¿Está seguro que desea ELIMINAR el subitem?')",]) !!}
+                                                        {!! Form::close() !!}
+                                                </td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+                
+             
+                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta',encrypt($unaObra->idobra)], 'style' => 'display:inline']) !!}
                         {!! Form::submit('Volver', ['class' => 'btn btn-primary mt-2']) !!}
                     {!! Form::close() !!}                    
             </div>
