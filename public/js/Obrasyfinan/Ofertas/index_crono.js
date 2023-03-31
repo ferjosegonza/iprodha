@@ -117,6 +117,8 @@ function onSelectMesChange(){
         success: function (response) {
             $('#example').DataTable().clear().draw();
             response.forEach(element => {
+                element.importe = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(element.importe);
+                element.costo = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(element.costo);
                 $('#example').DataTable().row.add([element.nom_item, element.avance, element.poravaacuitem, element.incidencia, element.importe, element.costo, '<td><button type="button" class="btn btn-danger borrar" id="removeRow" value="'+element.idcrono+'">Eliminar</button>']).draw();
             });
          },
@@ -204,8 +206,8 @@ $(document).ready(function pintarTabla() {
             //   $( api.column( 1 ).footer() ).html(monTotal.toFixed(4));
             //   $( api.column( 2 ).footer() ).html(tueTotal);
               // $( api.column( 3 ).footer() ).html(wedTotal);
-              $( api.column( 4 ).footer() ).html(thuTotal.toFixed(2));
-              $( api.column( 5 ).footer() ).html(importeTotal.toFixed(8));
+              $( api.column( 4 ).footer() ).html(new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(thuTotal.toFixed(2)));
+              $( api.column( 5 ).footer() ).html(new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(importeTotal.toFixed(8)));
             //   $( api.column( 6 ).footer() ).html(costoTotal.toFixed(8));
           },
     });

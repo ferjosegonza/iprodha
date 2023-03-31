@@ -102,7 +102,7 @@
                 
             </div>
             <div class="modal-body">
-                <h6 id='contenidoModal'>Está seguro que desea Eliminar?</h6>
+                <h6 id='contenidoModal'>¿Está seguro que desea eliminar?</h6>
             </div>
             <div class="modal-footer d-flex justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

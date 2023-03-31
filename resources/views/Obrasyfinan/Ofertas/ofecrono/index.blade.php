@@ -70,7 +70,7 @@
                             </div> --}}
                             <div class="table-responsive">
                                 <table id="example" class="table table-striped mt-2">
-                                    <thead style="height:50px; background-color:#6d7cf1;">
+                                    <thead style="height:50px;">
                                         <th style="color:#fff;">Item</th>
                                         <th style="color:#fff;">Avance</th>
                                         <th style="color:#fff;">Av. Acu</th>
@@ -80,7 +80,7 @@
                                         <th style="color:#fff;">Costo</th>
                                         <th style="color:#fff;">Acciones</th>
                                     </thead>
-                                    <tfoot align="right" style='background-color: #d2d5e7;'>
+                                    <tfoot align="right" style='background-color: #ff910033;'>
                                         <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
                                     </tfoot>
                                     <tbody>
@@ -88,7 +88,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="{{ route('ofeobra.index') }}" class="btn btn-primary my-1" Style="width: 5%">Volver</a>
+                            <a href="{{ route('ofeobra.index') }}" class="btn btn-primary my-1" Style="width: 20%">Volver</a>
                         </div>
                     </div>
                 </div>

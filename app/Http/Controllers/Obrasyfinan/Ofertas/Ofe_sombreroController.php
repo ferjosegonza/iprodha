@@ -34,7 +34,12 @@ class Ofe_sombreroController extends Controller
     }
     public function store(Request $request)
     {
-       
+        $validatedData = $request->validate([
+            'conceptos' => 'required'                
+        ], [
+            'conceptos.required' => 'No hay concepto seleccionado.'
+        ]);
+
         $input  = $request->all();         
         $ar_onceptos=array();
         $ar_valores=array();
@@ -83,19 +88,17 @@ class Ofe_sombreroController extends Controller
         $unConcepto = Ofe_sombrero::where('idobra','=', $idobra)
         ->where('idconceptosombrero','=', $idsombrero)->first();
         $unConcepto->delete(); 
-        return redirect()->route('ofesombreroxobra.indexx',$idobra );
+        return redirect()->route('ofesombreroxobra.indexx',$idobra)->with('mensaje', 'Se borro el concepto con exito.');
     }
 
     public function update(Request $request, $idobra)
     {        
         $validatedData = $request->validate([
-            //'id_obra' => 'required|unique|integer',
-            /*'denominacion' => 'required|min:5|max:80|string',
-            'unidad' => 'required|min:1|integer',
-            'cantidad' => 'required|min:1|integer', 
-            'costounitario' => 'required|min:1|integer', */
-
+            'conceptos' => 'required'                
+        ], [
+            'conceptos.required' => 'No hay concepto seleccionado.'
         ]);
+        
         $input  = $request->all(); 
         $ar_onceptos=array();
         $ar_valores=array();
@@ -118,6 +121,8 @@ class Ofe_sombreroController extends Controller
             $sombre->valor = $ar_valores[$p];
             $sombre->save();
         }
-        return redirect()->route('ofeobra.index');
+        return redirect()->route('ofesombreroxobra.indexx',$idobra)->with('mensaje', 'Concepto de sombrero se modifico con exito.');
+        // return redirect()->route('ofeobra.index');
+        // return redirect()->route('categorialaboral.index')->with('mensaje','Concepto de sombrero se modifico con exito.');
     }
 }

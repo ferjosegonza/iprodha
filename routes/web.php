@@ -23,6 +23,11 @@ use App\Http\Controllers\JorgeController;
 //--
 
 use App\Http\Controllers\Terrenos\TerrenosController;
+
+//sol
+use App\Http\Controllers\pAlmacenController;
+use App\Http\Controllers\sectorController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,7 +72,30 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OB_CONCEPTO'
     Route::resource('r_ob_concepto', Ct_Ob_ConceptoController::class);
 });
 
-
+//Sol
+//Ruta p_Almacen
+Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-ALMACENES']], function () {
+    Route::get('p_almacen/{p_almacen}/imagen', [pAlmacenController::class, 'imagen'])->name('almacen.imagen');
+    Route::get('p_almacen/{p_almacen}/asignar', [pAlmacenController::class, 'asignar'])->name('almacen.asignar');
+    Route::put('p_almacen/{p_almacen}/imagen', [pAlmacenController::class, 'guardarImagen'])->name('almacen.guardarImagen');
+    Route::put('p_almacen/{p_almacen}/sectores', [pAlmacenController::class, 'asignarSector'])->name('almacen.asignarSector');
+    Route::get('p_almacen/crear', [pAlmacenController::class, 'create'])->name('almacen.crear');
+    Route::get('p_almacen/index', [pAlmacenController::class, 'index'])->name('almacen.index');
+    Route::get('p_almacen/{p_almacen}/editar', [pAlmacenController::class, 'edit'])->name('almacen.editar');
+    Route::put('p_almacen/{p_almacen}',[pAlmacenController::class, 'update'])->name('almacen.update');
+    Route::delete('p_almacen/eliminar/{id_almacen}', [pAlmacenController::class, 'destroy'])->name('almacen.eliminar');
+    
+    Route::resource('p_almacen', pAlmacenController::class); 
+});
+//Ruta sector
+Route::group(['middleware'=> ['auth', 'role_or_permission:ADMIN|VER-SECTORES']], function(){
+    Route::get('sector/crear', [sectorController::class, 'create'])->name('sector.crear');
+    Route::get('sector/index', [sectorController::class, 'index'])->name('sector.index');
+    Route::get('sector/{sector}/editar', [sectorController::class, 'edit'])->name('sector.editar');
+    Route::put('sector/{sector}',[sectorController::class, 'update'])->name('sector.update');
+    Route::delete('sector/eliminar/{id_sector}', [sectorController::class, 'destroy'])->name('sector.eliminar');
+    Route::resource('sector', sectorController::class);
+});
 
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAS']], function () {

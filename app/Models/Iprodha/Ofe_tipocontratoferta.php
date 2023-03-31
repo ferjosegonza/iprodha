@@ -12,7 +12,7 @@ class ofe_tipocontratoferta extends Model
         
     protected $table = 'IPRODHA.OFE_TIPOCONTRATOFERTA';
     protected $primaryKey = 'IDTIPOCONTRATOFER';
-    public $incrementing = true;
+    public $incrementing = false;
   
     protected $fillable = [ 
         'IDTIPOCONTRATOFER',
@@ -22,8 +22,9 @@ class ofe_tipocontratoferta extends Model
         'IDTIPOCONTRATOFER' => false,
         'TIPOCONTRATOFER'=> false,        
     ];
+
     public function ofetipocontratofertaObra()
     {
-        return $this->hasMany(ofe_obra::class,'IDTIPOCONTRATOFER','IDTIPOCONTRATOFER');
+        return $this->hasMany(ofe_obra::class,'idtipocontratofer','IDTIPOCONTRATOFER');
     }
 }

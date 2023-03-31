@@ -19,6 +19,7 @@ class Vw_ofe_cronograma extends Model
     protected $fillable = [ 
         'idcrono',
         'idobra',
+        'orden',
         'iditem',   
         'nom_item',
         'costo',
