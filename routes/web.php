@@ -27,6 +27,7 @@ use App\Http\Controllers\Terrenos\TerrenosController;
 //sol
 use App\Http\Controllers\pAlmacenController;
 use App\Http\Controllers\sectorController;
+use App\Http\Controllers\NotificacionController;
 
 /*
 |--------------------------------------------------------------------------
