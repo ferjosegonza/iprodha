@@ -155,5 +155,9 @@ Route::get('/estadocivil', [App\Http\Controllers\EstadocivilController::class, '
 Route::group(['middleware' => ['auth']], function () {
     Route::get('{usuario}/notificaciones', [NotificacionController::class, 'verTodo'])->name('notif.verTodo');
     Route::get('{idnotificacion}/ver', [NotificacionController::class, 'visto'])->name('notif.ver');
-    });
+    });//agregar noti
 
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');
+    Route::get('archivos/filtro', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
+    });
