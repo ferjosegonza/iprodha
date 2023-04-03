@@ -14,7 +14,7 @@
                         <div class="card-body">
                             {{--Contenido--}}
                             {{-- hola --}}
-                            {{-- @include('favoritos.index') --}}
+                            @include('favoritos.index')
                         </div>
                     </div>
                 </div>
