@@ -32,6 +32,7 @@ function subtipos(){
                     div += ('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
                     div += ('</select></div>');});
                     subtipo.innerHTML=div;
+                    console.log(subtipo.innerHTML)
                     return subtipo;
                 }  
                 
