@@ -30,8 +30,7 @@ class ArchivoController extends Controller
     }
 
     public function subtipos(Request $request){
-        return $request->id;
-        $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipoarchivo', '=', $request->id)->get();
+        $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipoarchivo', '=', 9)->get();
 
         $response['data'] = $SubTipoDocumento;        
         return response()->json(['response' => $response]);
