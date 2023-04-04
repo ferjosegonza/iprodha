@@ -14,7 +14,7 @@
                 <i class="fas fa-print" style="color: #ffffff;"></i>
             </button>
             <div class="dropdown-content">
-                <a href={{route('ofeobra.pdf', $data->idobra)}} target="_blank">Imprimir Todo</a>
+                <a href={{route('archivo.consultar')}} target="_blank">Imprimir Todo</a>
                 <a href={{route('ofeobra.pdf2', $data->idobra)}} target="_blank">Informacion de obra y sombrero</a>
                 <a href={{route('ofeobra.pdf1', $data->idobra)}} target="_blank">Items y cronograma</a>
             </div>
