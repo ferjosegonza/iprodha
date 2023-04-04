@@ -5,7 +5,8 @@ function subtipos(){
     }
     else{
         console.log("something")
-        let route = '/tipoarchivo/'+idtipo+'/subtipos';
+        console.log("something")
+        let route = '/tipoarchivo/'+idtipo+'/subtipos'; 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
