@@ -20,16 +20,19 @@ function subtipos(){
             }),
             dataType: 'json',
             success: function (json) 
-            { console.log(json);                 
-                if(json != null)
-                { var div = "<div>";
-                var subtipo = document.getElementById('subtipo').hidden=false;
-                div += ('<select class="form-select">')
-                div += ('<option value="" selected>Seleccionar</option>');
-                $.each(json.response.data, function(index) {                     
-                div += ('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
-                 div += ('</select></div>');});}      
-                subtipo.innerHTML=div;
+            {   console.log(json.response.data);            
+                if(json != null){ 
+                    console.log("entra");   
+                    var div = "<div>";
+                    var subtipo = document.getElementById('subtipo').hidden=false;
+                    div += ('<select class="form-select">')
+                    div += ('<option value="" selected>Seleccionar</option>');
+                    $.each(json.response.data, function(index) {                     
+                    div += ('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
+                    div += ('</select></div>');});
+                    subtipo.innerHTML=div;
+                }  
+                
             },                       
             error: function(response){
                 document.getElementById('subtipo').innerHTML= "ERROR";
