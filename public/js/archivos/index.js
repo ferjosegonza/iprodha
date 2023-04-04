@@ -35,6 +35,7 @@ function subtipos(){
                 
             },                       
             error: function(response){
+                console.log(response);
                 document.getElementById('subtipo').innerHTML= "ERROR";
             } 
 
