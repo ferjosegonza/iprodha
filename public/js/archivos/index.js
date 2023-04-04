@@ -4,14 +4,12 @@ function subtipos(){
         document.getElementById('subtipo').hidden=true;
     }
     else{
-        console.log("something")
         let route = '/tipoarchivo/'+idtipo+'/subtipos'; 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        console.log("something")
         $.ajax( {
             type: "GET",
             url: route,
@@ -21,18 +19,16 @@ function subtipos(){
                 id: idtipo
             }),
             dataType: 'json',
-            success: function (json) { 
-                console.log(json);
-
-                var div = "<div>";
-                var subtipo = document.getElementById('subtipo');
-                div += ('<select class="form-select"> <option value="" selected>Seleccionar</option>');
-                $.each(json.response.data, function(index) {
-                     div += ('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
-                });
-                div += ('</select></div>');
+            success: function (json) {                 
+                if(json != null)
+                { var div = "<div>";
+                var subtipo = document.getElementById('subtipo').hidden=false;
+                div += ('<select class="form-select">')
+                div += ('<option value="" selected>Seleccionar</option>');
+                $.each(json.response.data, function(index) {                     
+                div += ('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
+                 div += ('</select></div>');});}      
                 subtipo.innerHTML=div;
-
             },                       
             error: function(response){
                 document.getElementById('subtipo').innerHTML= "ERROR";
