@@ -262,16 +262,19 @@ class ofe_obraController extends Controller
     public function rechazarOferta(Request $request, $idobra)
     {
         $comentario = $request->input('comentario');
+        $name = $request->input('nom_emp');
+        $oferta = $request->input('nombobra');
         $subject = "Asunto del correo";
         $for = "lisandrosilvero@gmail.com";
-        Mail::to($for)->send(new OrderShipped());
+        Mail::to($for)->send(new OrderShipped($name, $oferta, $comentario));
         // Mail::send('Obrasyfinan.Ofertas.mail.rechazar',$request->all(), function($msj) use($subject,$for){
         //     $msj->from("tucorreo@gmail.com","NombreQueApareceráComoEmisor");
         //     $msj->subject($subject);
         //     $msj->to($for);
         // });
-        return $request;
+        // return $request;
         Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
+        Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
         return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.');
     }
 

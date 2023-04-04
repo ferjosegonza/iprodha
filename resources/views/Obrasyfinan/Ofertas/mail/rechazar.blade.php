@@ -15,7 +15,8 @@
 	</style>
 </head>
 <body>
-	<h1>Saludos, </h1>
-	<p>Esto es una prueba de envío de emails desde Laravel.</p>
+	<h1>Saludos, {{$name}}.</h1>
+	<p>La oferta de obra "{{$oferta}}" fue rechazada debido a:</p>
+	<p>{{$comentario}}</p>
 </body>
 </html>

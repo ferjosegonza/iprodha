@@ -427,8 +427,13 @@
                                         'route' => ['ofeobra.rechazar',encrypt($data->idobra)],
                                         'style' => 'display:inline',
                                         'id' => 'rechazarOfe']) !!}
-                                {!! Form::label('Comentarios para la empresa:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!}
+                                <label class="control-label" style="">Se rechazo la oferta de obra debido a:</label>
+                                {{-- {!! Form::label('Se rechazo la oferta debido a:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!} --}}
                                 {!! Form::textarea('comentario', null, ['class'=>'form-control', 'rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 40vh', 'required']) !!}
+                            </div>
+                            <div hidden>
+                                {!! Form::text('nombobra', $data->nomobra, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id' => 'info-obra-input']) !!}
+                                {!! Form::text('nom_emp', $data->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id'=>'empresa']) !!}
                             </div>
                         </div>
                         

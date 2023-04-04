@@ -28,6 +28,7 @@ use App\Http\Controllers\Terrenos\TerrenosController;
 use App\Http\Controllers\pAlmacenController;
 use App\Http\Controllers\sectorController;
 use App\Http\Controllers\ArchivoController;
+use App\Http\Controllers\NotificacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,3 +160,12 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/archivo/filtro', [ArchivoController::class, 'consultar'])->name('archivo.buscar');
     Route::get('/tipoarchivo/{id_tipoarchivo}/subtipos', [ArchivoController::class, 'subtipos'])->name('archivo.subtipos');
 });
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('{usuario}/notificaciones', [NotificacionController::class, 'verTodo'])->name('notif.verTodo');
+    Route::get('{idnotificacion}/ver', [NotificacionController::class, 'visto'])->name('notif.ver');
+    });//agregar noti
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');
+    Route::get('archivos/filtro', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
+    });

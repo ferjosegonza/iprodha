@@ -11,14 +11,19 @@ class OrderShipped extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $name;
+    public $oferta;
+    public $comentario;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name, $oferta, $comentario)
     {
-        //
+        $this->name = $name;
+        $this->comentario = $comentario;
+        $this->oferta = $oferta;
     }
 
     /**
@@ -28,8 +33,8 @@ class OrderShipped extends Mailable
      */
     public function build()
     {
-        return $this->from('iprodha.misiones.gob.ar', 'IPRODHA')
-                    ->subject('Prueba')
+        return $this->from('no-reply@iprodha.misiones.gob.ar', 'IPRODHA')
+                    ->subject('Oferta de Obra')
                     ->view('Obrasyfinan.Ofertas.mail.rechazar');
     }
 }

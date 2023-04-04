@@ -33,6 +33,7 @@ class HomeController extends Controller
     {
         $Favoritos = Fav_Favorito::where('idusuario', '=', Auth::user()->id)->paginate(10);
         return view('inicio', compact('Favoritos'));
+        // return view('inicio');
     }
     
     public function phpinfo()
