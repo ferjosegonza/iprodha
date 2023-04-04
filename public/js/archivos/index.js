@@ -5,7 +5,6 @@ function subtipos(){
     }
     else{
         console.log("something")
-        console.log("something")
         let route = '/tipoarchivo/'+idtipo+'/subtipos'; 
         $.ajaxSetup({
             headers: {
