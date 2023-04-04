@@ -3,21 +3,23 @@
 namespace App\Models\Iprodha;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
-class Dig_subtipoarchivos extends Model{
+class Dig_subtipoarchivo extends Model{
     use HasFactory;
-    public$timestamps=false;        
-    protected$table='iprodha.dig_subtipoarchivos';
-    protected$primaryKey=['id_tipoarchivo','id_subtipoarchivo'];
-    protected$fillable=[ 
+    public $timestamps=false;        
+    protected $table='iprodha.dig_subtipoarchivo';
+    protected $primaryKey=['id_tipoarchivo','id_subtipoarchivo'];
+    public $incrementing = false;
+    protected $fillable=[ 
         'id_tipocabecera', 'id_tipoarchivo','id_subtipoarchivo', 'dessubtipoarchivo', 'orden_imp', 'nombre_corto'
     ];        
 
     protected function setKeysForSaveQuery($query)
     {
         $query
-            ->where('idusuario', '=', $this->getAttribute('idusuario'))
-            ->where('ruta', '=', $this->getAttribute('ruta'));
+            ->where('id_tipoarchivo', '=', $this->getAttribute('id_tipoarchivo'))
+            ->where('id_subtipoarchivo', '=', $this->getAttribute('id_subtipoarchivo'));
         return $query;
     }
 }

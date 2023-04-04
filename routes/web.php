@@ -27,6 +27,7 @@ use App\Http\Controllers\Terrenos\TerrenosController;
 //sol
 use App\Http\Controllers\pAlmacenController;
 use App\Http\Controllers\sectorController;
+use App\Http\Controllers\ArchivoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +128,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-BARRIO']], f
 });
 
 
+
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-BARRIO']], function () {
     //Route::resource('barriocostos', BarrioCostosController::class);
     Route::get('/barrio/{barrio}/vercostos', [Fc_concosxbarrioController::class, 'edit'])->name('barrio.verCostos');
@@ -152,3 +154,8 @@ Route::group(['middleware' => ['auth','role_or_permission:Admin']], function () 
 
 Route::get('/estadocivil', [App\Http\Controllers\EstadocivilController::class, 'index'])->name('index');
 
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('/archivo', [ArchivoController::class, 'consultar'])->name('archivo.consultar');
+    Route::get('/archivo/filtro', [ArchivoController::class, 'consultar'])->name('archivo.buscar');
+    Route::get('/tipoarchivo/{id_tipoarchivo}/subtipos', [ArchivoController::class, 'subtipos'])->name('archivo.subtipos');
+});
