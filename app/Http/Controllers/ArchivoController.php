@@ -19,10 +19,7 @@ class ArchivoController extends Controller
         $archivos = Vw_dig_parabuscararchivo::orderBy('ano_archivo', 'desc')->simplePaginate();
 
         $TipoDocumento = Dig_tipoarchivo::orderBy('id_tipoarchivo')->get();
-
         
-
-
         return view('archivo.index')
             ->with('TipoDocumento',$TipoDocumento)
             ->with('archivos',$archivos);
