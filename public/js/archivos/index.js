@@ -19,7 +19,8 @@ function subtipos(){
                 id: idtipo
             }),
             dataType: 'json',
-            success: function (json) {                 
+            success: function (json) 
+            { console.log(json);                 
                 if(json != null)
                 { var div = "<div>";
                 var subtipo = document.getElementById('subtipo').hidden=false;
