@@ -1,10 +1,10 @@
 function subtipos(){
     var idtipo = document.getElementById('tipo').value;
     if(idtipo==""){
-        document.getElementById('subtipo').hidden=true;
+        document.getElementById('subtipo').hidden = true;
     }
     else{
-        var subtipo = document.getElementById('subtipo').hidden=false;
+        var subtipo = document.getElementById('subtipo').hidden = false;
         let route = '/tipoarchivo/'+idtipo+'/subtipos'; 
         $.ajaxSetup({
             headers: {
@@ -32,6 +32,7 @@ function subtipos(){
                     div += ('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
                     div += ('</select></div>');});
                     subtipo.innerHTML=div;
+                    return subtipo;
                 }  
                 
             },                       

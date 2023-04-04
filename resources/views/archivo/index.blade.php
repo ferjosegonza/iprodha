@@ -33,7 +33,7 @@
                     </select>   
                     
                     <div id="subtipo">
-                        
+                        algo                      
                     </div>
                     
 
