@@ -26,11 +26,11 @@ function subtipos(){
 
                 var div = "<div>";
                 var subtipo = document.getElementById('subtipo');
-                div.append('<select class="form-select"> <option value="" selected>Seleccionar</option>');
-                /* $.each(json.response.data, function(index) {
-                    /* div.append('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
-                } */
-                div.append('</select></div>')
+                div += ('<select class="form-select"> <option value="" selected>Seleccionar</option>');
+                $.each(json.response.data, function(index) {
+                     div += ('<option value="{{json.response.data[index].id_subtipoarchivo}}">{{json.response.data[index].nombre_corto}}</option>'); 
+                });
+                div += ('</select></div>');
                 subtipo.innerHTML=div;
 
             },                       
