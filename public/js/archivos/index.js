@@ -21,7 +21,7 @@ function subtipos(){
             dataType: 'json',
             success: function (json) 
             {   console.log(json.response.data);            
-                if(json != null){ 
+                if(json.response.data.lenght != 0){ 
                     console.log("entra");   
                     var div = "<div>";
                     var subtipo = document.getElementById('subtipo').hidden=false;
