@@ -4,6 +4,7 @@ function subtipos(){
         document.getElementById('subtipo').hidden=true;
     }
     else{
+        var subtipo = document.getElementById('subtipo').hidden=false;
         let route = '/tipoarchivo/'+idtipo+'/subtipos'; 
         $.ajaxSetup({
             headers: {
@@ -20,11 +21,11 @@ function subtipos(){
             }),
             dataType: 'json',
             success: function (json) 
-            {   console.log(json.response.data);            
+            {   
+                console.log(json.response.data);            
                 if(json.response.data.lenght != 0){ 
                     console.log("entra");   
-                    var div = "<div>";
-                    var subtipo = document.getElementById('subtipo').hidden=false;
+                    var div = "<div>";                    
                     div += ('<select class="form-select">')
                     div += ('<option value="" selected>Seleccionar</option>');
                     $.each(json.response.data, function(index) {                     
