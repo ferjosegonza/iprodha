@@ -7,7 +7,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h3 class="page__heading">Crear Alumno</h3>
+            <h3 class="page__heading">Crear Alumnos</h3>
         </div>
         {!! Form::open(['route' => 'alumnos.store', 'class' => 'formulario', 'method' => 'POST']) !!}
 
