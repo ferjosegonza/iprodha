@@ -66,7 +66,7 @@
                                 <div class="d-flex mb-3">
                                     <div class="me-auto"></div>
                                     <div class="p-1">
-                                        @if ($laObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                                        @if ($laObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                         {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
                                         @endif
                                         {!! Form::close() !!}

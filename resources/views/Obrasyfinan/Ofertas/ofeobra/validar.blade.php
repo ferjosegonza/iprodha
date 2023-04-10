@@ -453,7 +453,7 @@
                                     
                                     {!! Form::submit('RECHAZAR', ['class' => 'btn btn-danger', 'style' => 'width: 40%; display:none', 'id'=>'btnRechazar']) !!}
                                     {!! Form::close() !!}
-                                    @if ($obra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado == 2)
+                                    @if ($obra->getEstados->sortByDesc('actual')->first()->getEstado->idestado == 2)
                                         {!! Form::open([
                                             'method' => 'POST',
                                             'route' => ['ofeobra.validar', encrypt($data->idobra)],

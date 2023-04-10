@@ -18,7 +18,8 @@ class Ofe_estadoxobra extends Model
     protected $fillable = [ 
         'idobra',
         'idestado',
-        'fechacambio'        
+        'fechacambio',
+        'actual'        
     ];
 
     public function getEstado()
