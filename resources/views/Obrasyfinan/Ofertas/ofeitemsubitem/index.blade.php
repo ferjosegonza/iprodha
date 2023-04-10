@@ -7,7 +7,7 @@
                 <div class="titulo py-1">Subitems - Item: <strong>{{ $unItem->nom_item }}</strong>   Obra: <strong>{{ $unaObra->nomobra}}</strong></div>
             </div>
             <div class="ms-auto">
-                @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                @if ($unaObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                     {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
                     {!! Form::submit('Crear Sub-Item', ['class' => 'btn  btn-success mt-2 ']) !!}
                     {!! Form::close() !!}
@@ -27,33 +27,26 @@
                             <div class="table-responsive">
                                 <table id="example" class="table table-hover mt-2">
                                     <thead>
-                                        {{-- <th class="text-center" scope="col" style="color:#fff;width:5%;">Obra</th> --}}
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Item</th>                        
                                         <th class="text-center" scope="col" style="color:#fff;width:25%;">Denominación</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:15%;">Unidad</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Cantidad</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:15%;">Costo Unitario</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:15%;">Costo Sub-Item</th>
-                                        @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                                        @if ($unaObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                         <th class="text-center" scope="col" style="color:#fff;width:30%;">Acciones</th>
-                                        {{-- <th>                  
-                                            {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
-                                            {!! Form::submit('Crear', ['class' => 'btn  btn-success mt-2 ']) !!}
-                                            {!! Form::close() !!}
-                                        </th> --}}
                                         @endif
                                     </thead>
                                     <tbody>                        
                                         @foreach ($subitemxitem as $unSubItem)
                                             <tr>
-                                                {{-- <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->idobra }}</td> --}}
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->iditem }}</td>
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->denominacion }}</td>                                
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->getUnidad->unidad }}</td>
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->cantidad }}</td>
                                                 <td class="text-center" style="vertical-align: middle;">@money($unSubItem->costounitario)</td>
                                                 <td class="text-center" style="vertical-align: middle;">@money($unSubItem->cantidad * $unSubItem->costounitario)</td>
-                                                @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                                                @if ($unaObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                                 <td class="text-center" style="vertical-align: middle;">
                                                         {!! Form::open(['method' => 'GET','route' => ['ofeobraitemdet.editar',$unSubItem->idsubitem,$unItem->iditem ],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}

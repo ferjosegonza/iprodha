@@ -7,7 +7,7 @@
                 <div class="titulo page__heading py-1">Items de la obra: {{$laObra->nomobra}}</div>
             </div>
             <div class="ms-auto">
-                @if ($laObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)  
+                @if ($laObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)  
                     {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitems.crear',$laObra]]) !!}
                     {!! Form::submit('Crear Item', ['class' => 'btn  btn-success mt-2 ']) !!}
                     {!! Form::close() !!}
@@ -34,19 +34,11 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Costo</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:15%;">Porc. Inc.</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:30%;">Acciones</th>
-                                        {{-- <th>                  
-                                            @if ($laObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)  
-                                            {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitems.crear',$laObra]]) !!}
-                                            {!! Form::submit('Crear', ['class' => 'btn  btn-success mt-2 ']) !!}
-                                            {!! Form::close() !!}
-                                            @endif
-                                        </th> --}}
                                     </thead>
                                     <tfoot align="right" style=''>
                                         <tr> <th></th> <th></th> <th></th> <th></th> <th class='text-center'></th> <th class='text-center'></th> <th></th></tr>
                                     </tfoot>
                                     <tbody>
-                
                                         @foreach ($itemsxobra as $unItem)
                                             <tr>
                                                 <td class= 'text-center'>{{ $unItem->orden }}</td>
@@ -69,7 +61,7 @@
                                                 <td class= 'text-center'>@money($unItem->costo)</td>
                                                 <td class= 'text-center'>{{ $unItem->por_inc }}</td>
                                                 <td class= 'text-center'>
-                                                    @if ($laObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                                                    @if ($laObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                                         {!! Form::open(['method' => 'GET','route' => ['ofeobraitems.edit', $unItem->iditem],'style' => 'display:inline',]) !!}
                                                         {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
                                                         {!! Form::close() !!}   
