@@ -462,6 +462,10 @@
                                             'files'=>'true']) !!}
                                         
                                         {!! Form::submit('VALIDAR', ['class' => 'btn btn-success mr-2', 'style' => 'width: 40%; display: ;', 'id'=>'btnValidar']) !!}
+                                        <div hidden>
+                                            {!! Form::text('nombobra', $data->nomobra, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id' => 'info-obra-input']) !!}
+                                            {!! Form::text('nom_emp', $data->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id'=>'empresa']) !!}
+                                        </div>
                                         {!! Form::close() !!}
                                     @endif
                                 </div>

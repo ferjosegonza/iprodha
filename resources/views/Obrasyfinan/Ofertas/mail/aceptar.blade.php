@@ -133,18 +133,18 @@
                                                       <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,Helvetica,Arial,sans-serif,&#39;Apple Color Emoji&#39;,&#39;Segoe UI Emoji&#39;,&#39;Segoe UI Symbol&#39;;font-size:16px;line-height:1.5em;margin-top:0;text-align:left"
                                                       >
-                                                      La oferta de obra "{{$oferta}}" fue rechazada debido a:
+                                                      ¡Felicitaciones! La oferta de obra "{{$oferta}}" fue aceptada.
                                                       </p>
-                                                      <p
+                                                      {{-- <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,Helvetica,Arial,sans-serif,&#39;Apple Color Emoji&#39;,&#39;Segoe UI Emoji&#39;,&#39;Segoe UI Symbol&#39;;font-size:16px;line-height:1.5em;margin-top:0;text-align:left"
                                                       >
                                                       {{$comentario}}
-                                                      </p>
-                                                      <p
+                                                      </p> --}}
+                                                      {{-- <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,Helvetica,Arial,sans-serif,&#39;Apple Color Emoji&#39;,&#39;Segoe UI Emoji&#39;,&#39;Segoe UI Symbol&#39;;font-size:16px;line-height:1.5em;margin-top:0;text-align:left"
                                                       >
-                                                      pero la oferta de obra se encuentra nuevamente activa para que se puedan solventar los problemas y volver a presentarlo.
-                                                      </p>
+                                                      pero la obra se encuentra nuevamente activa para que se puedan solventar los problemas y volver a presentarlo.
+                                                      </p> --}}
                                                       
 
                                                       <table
@@ -175,7 +175,7 @@
                                                                       align="center"
                                                                       style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Roboto,Helvetica,Arial,sans-serif,&#39;Apple Color Emoji&#39;,&#39;Segoe UI Emoji&#39;,&#39;Segoe UI Symbol&#39;"
                                                                     >
-                                                                      <table
+                                                                      {{-- <table
                                                                         border="0"
                                                                         cellpadding="0"
                                                                         cellspacing="0"
@@ -198,7 +198,7 @@
                                                                             </td>
                                                                           </tr>
                                                                         </tbody>
-                                                                      </table>
+                                                                      </table> --}}
                                                                     </td>
                                                                   </tr>
                                                                 </tbody>

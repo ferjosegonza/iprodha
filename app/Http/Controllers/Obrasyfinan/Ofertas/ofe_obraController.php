@@ -24,7 +24,9 @@ use \PDF;
 use iio\libmergepdf\Merger;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderShipped;
+use App\Mail\Obrasyfinan\Ofertas\RechazarOfeObra;
+use App\Mail\Obrasyfinan\Ofertas\AceptarOfeObra;
+use App\Mail\Obrasyfinan\Ofertas\CrearOfeObra;
 
 
 class ofe_obraController extends Controller
@@ -124,6 +126,10 @@ class ofe_obraController extends Controller
         
         $laOferta->save();
         Ofe_estadoxobra::create(['idobra' => $laOferta->idobra, 'idestado' => 1]);
+        $for = "lisandrosilvero@gmail.com";
+        $datOfe = Ofe_obra::where('idobra', $laOferta->idobra)->first();
+        Mail::to($for)->send(new CrearOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
+        
         // $estado->save();
         return redirect()->route('ofeobra.index')->with('mensaje','Oferta '.$laOferta->nomobra.' fue creada.');
     }
@@ -236,7 +242,8 @@ class ofe_obraController extends Controller
     {
         // return 'Cuidado al ingresar aca';
         Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 3]);
-        
+        $name = $request->input('nom_emp');
+        $oferta = $request->input('nombobra');
         $result = null;
         $procedureName = 'iprodha.SP_OFE_MIGRAOBRA';
         $bindings = [
@@ -251,6 +258,8 @@ class ofe_obraController extends Controller
 
         if($succeeded) {
             // return ($result);
+            $for = "lisandrosilvero@gmail.com";
+            Mail::to($for)->send(new AceptarOfeObra($name, $oferta));
             return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
         }
         else {
@@ -266,7 +275,7 @@ class ofe_obraController extends Controller
         $oferta = $request->input('nombobra');
         $subject = "Asunto del correo";
         $for = "lisandrosilvero@gmail.com";
-        Mail::to($for)->send(new OrderShipped($name, $oferta, $comentario));
+        Mail::to($for)->send(new RechazarOfeObra($name, $oferta, $comentario));
         // Mail::send('Obrasyfinan.Ofertas.mail.rechazar',$request->all(), function($msj) use($subject,$for){
         //     $msj->from("tucorreo@gmail.com","NombreQueApareceráComoEmisor");
         //     $msj->subject($subject);

@@ -1,28 +1,26 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Obrasyfinan\Ofertas;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderShipped extends Mailable
+class CrearOfeObra extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $name;
     public $oferta;
-    public $comentario;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($name, $oferta, $comentario)
+    public function __construct($name, $oferta)
     {
         $this->name = $name;
-        $this->comentario = $comentario;
         $this->oferta = $oferta;
     }
 
@@ -35,6 +33,6 @@ class OrderShipped extends Mailable
     {
         return $this->from('no-reply@iprodha.misiones.gob.ar', 'IPRODHA')
                     ->subject('Oferta de Obra')
-                    ->view('Obrasyfinan.Ofertas.mail.rechazar');
+                    ->view('Obrasyfinan.Ofertas.mail.crear');
     }
 }
