@@ -242,8 +242,7 @@ class ofe_obraController extends Controller
     {
         // return 'Cuidado al ingresar aca';
         Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 3]);
-        $name = $request->input('nom_emp');
-        $oferta = $request->input('nombobra');
+        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
         $result = null;
         $procedureName = 'iprodha.SP_OFE_MIGRAOBRA';
         $bindings = [
@@ -259,7 +258,7 @@ class ofe_obraController extends Controller
         if($succeeded) {
             // return ($result);
             $for = "lisandrosilvero@gmail.com";
-            Mail::to($for)->send(new AceptarOfeObra($name, $oferta));
+            Mail::to($for)->send(new AceptarOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
             return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
         }
         else {
