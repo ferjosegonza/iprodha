@@ -15,24 +15,28 @@ class ArchivoController extends Controller
         $this->middleware('auth');  
     }
 
+
     public function consultar(){
         $archivos = Vw_dig_parabuscararchivo::orderBy('ano_archivo', 'desc')->simplePaginate();
-
-        $TipoDocumento = Dig_tipoarchivo::orderBy('id_tipoarchivo')->get();
+       foreach($archivos as $a){
+            $a->path_archivo = 'http:\\\\localhost'.substr($a->path_archivo, 14);
+        } 
+        $TipoDocumento = Dig_tipoarchivo::orderBy('nombre_corto')->get();
+        $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
         
         return view('archivo.index')
             ->with('TipoDocumento',$TipoDocumento)
+            ->with('SubTipoDocumento',$SubTipoDocumento)
             ->with('archivos',$archivos);
+    }
+
+    public function getpdf($path){
+        $pathsinip = substr($path, 14);
+        $file = Storage::get($pathsinip);
+        return $file;
     }
 
     public function buscar(){
         return view('archivo.index');
-    }
-
-    public function subtipos(Request $request){
-        $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipoarchivo', '=', 9)->get();
-
-        $response['data'] = $SubTipoDocumento;        
-        return response()->json(['response' => $response]);
     }
 }
