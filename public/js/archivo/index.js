@@ -112,7 +112,7 @@ function year(){
 }
 
 function subtipos(){
-    if(document.getElementById('subtipo').value[0] == undefined){
+    if(document.getElementById('subtipo').value == 'sel'){
         var table = $('#archivos').DataTable()
         table
         .columns( '.sub' ).search("").draw();
