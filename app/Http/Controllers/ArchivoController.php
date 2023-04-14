@@ -24,7 +24,7 @@ class ArchivoController extends Controller
             $a->path_archivo = substr($a->path_archivo, 14);
         } 
         $TipoDocumento = Dig_tipoarchivo::orderBy('nombre_corto')->get();
-        $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
+        $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
         
         return view('archivo.index')
             ->with('TipoDocumento',$TipoDocumento)
