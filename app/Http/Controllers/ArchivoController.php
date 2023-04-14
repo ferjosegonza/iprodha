@@ -23,7 +23,7 @@ class ArchivoController extends Controller
        foreach($archivos as $a){
             $a->path_archivo = substr($a->path_archivo, 14);
         } 
-        $TipoDocumento = Dig_tipoarchivo::orderBy('nombre_corto')->get();
+        $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
         $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
         
         return view('archivo.index')
