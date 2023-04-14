@@ -2,7 +2,7 @@ function tipos(){
     if(document.getElementById('tipo').value[0] == undefined){
         document.getElementById('subtipo').hidden = true;
         document.getElementById('placeholder').hidden = false;        
-        document.getElementById('subtipo').value = ""
+        document.getElementById('subtipo').value = "sel"
         var table = $('#archivos').DataTable()
         table
         .columns( '.tipo' ).search("").draw()
@@ -12,16 +12,19 @@ function tipos(){
     else{
         var tipo = document.getElementById('tipo').value;
         var tipoId = document.getElementById('tipo').value[0];     
-        document.getElementById('subtipo').value = ""
+        document.getElementById('subtipo').value = "sel"
         var tipoNombre;
-        var bandera= 0;        
+        var bandera= 0;       
         for(i = 1; i < tipo.length; i++){ 
             if (bandera==0)
             {
                 if(isNaN(document.getElementById('tipo').value[i]))
-                {
-                    tipoNombre = document.getElementById('tipo').value[i];  
-                    bandera =1;
+                {                    
+                    if(document.getElementById('tipo').value[i] != '|')
+                    {
+                        tipoNombre = document.getElementById('tipo').value[i];
+                        bandera =1;
+                    }      
                 }
                 else{
                     var tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
@@ -44,7 +47,7 @@ function tipos(){
         var subtid
 
         //console.log("Hay " + subtipo.options.length + " subitems")
-        for(i=0; i<subtipo.options.length; i++){
+        for(i=1; i<subtipo.options.length; i++){
             if(subtipo.options[i].value != null){
                 //console.log("Hay " + subtipo.options[i].value.length + " caracteres en: " + subtipo.options[i].value)
                 bandera=0;
@@ -117,23 +120,53 @@ function subtipos(){
     else{
     var subtipo = document.getElementById('subtipo').value; 
     var subtipoNombre;
-    var bandera= 0;   
+    var bandera= 0; 
+    var bandera2 = 0;      
     for(i = 0; i < subtipo.length; i++){ 
         if (bandera==0)
         {
             if(isNaN(document.getElementById('subtipo').value[i]))
             {
-                subtipoNombre = document.getElementById('subtipo').value[i];  
-                bandera =1;
+                console.log(subtipo)                
+                if(document.getElementById('subtipo').value[i] != '|')
+                {subtipoNombre = document.getElementById('subtipo').value[i];  bandera =1; }
+                else{
+                    if(bandera2==0)
+                    {
+                        bandera2=1;
+                    }
+                    else{
+                        i=subtipo.length;
+                    }
+                }
+                
+               
             }
         }
         else{
-            subtipoNombre = subtipoNombre + document.getElementById('subtipo').value[i];}  
+            if(document.getElementById('subtipo').value[i] != '|')
+                {subtipoNombre = subtipoNombre + document.getElementById('subtipo').value[i];  }
+                else{
+                    if(bandera2==0)
+                    {
+                        bandera2=1;
+                    }
+                    else{
+                        i=subtipo.length;
+                    }
+                }}  
         }
     console.log(subtipoNombre);
     var table = $('#archivos').DataTable()
-    table
-        .columns( '.sub' ).search(subtipoNombre).draw();}
+    if(subtipoNombre != 'sel'){
+        table
+        .columns( '.sub' ).search(subtipoNombre).draw();
+    }
+    else{
+        table
+        .columns( '.sub' ).search("").draw();
+    }
+    }
 }
 
 function create(){
@@ -202,7 +235,15 @@ $('#archivos tbody').empty();
 });
 }
 
- 
+function betweenyears(){
+    var fecha1 = document.getElementById("fecha1");
+    var fecha2 = document.getElementById("fecha2");
+    var table = $('#archivos').DataTable();
+    if (fecha1 == null && fecha2 !=null){
+        table
+        .columns('.fecha').search(fecha2.value).draw();
+    }
+} 
     
 
 
@@ -215,6 +256,22 @@ $(document).ready(function () {
     var table = $('#archivos').DataTable({
         orderCellsTop: true,
         fixedHeader: true,
+        "bSort":false,
+        language: {
+            lengthMenu: 'Mostrar _MENU_ registros por página',
+            zeroRecords: 'No se han encontrado registros',
+            info: 'Mostrando página _PAGE_ de _PAGES_',
+            infoEmpty: 'No se han encontrado registros',
+            infoFiltered: '(Filtrado de _MAX_ registros totales)',
+            search: 'Buscar',
+            paginate:{
+                first:"Prim.",
+                last: "Ult.",
+                previous: 'Ant.',
+                next: 'Sig.',
+            },
+        },
+        order: [[ 1, 'asc' ]],
         initComplete: function() {
             var api = this.api();
             // For each column
@@ -244,22 +301,7 @@ $(document).ready(function () {
 
 
 
-            "bSort":false,
-        language: {
-            lengthMenu: 'Mostrar _MENU_ registros por página',
-            zeroRecords: 'No se han encontrado registros',
-            info: 'Mostrando página _PAGE_ de _PAGES_',
-            infoEmpty: 'No se han encontrado registros',
-            infoFiltered: '(Filtrado de _MAX_ registros totales)',
-            search: 'Buscar',
-            paginate:{
-                first:"Prim.",
-                last: "Ult.",
-                previous: 'Ant.',
-                next: 'Sig.',
-            },
-        },
-        order: [[ 1, 'asc' ]],
+            
         
     });   
     $('#archivos tbody').on('click', 'tr', function () {
@@ -275,6 +317,7 @@ $(document).ready(function () {
         //document.getElementById('ruta').innerHTML= data[6]
         //alert('You clicked on ' + data[6] + "'s row");
     });
+    
 });
 
 function cancelarbusqueda(){
@@ -330,3 +373,52 @@ function cancelarbusqueda(){
     table.columns( '.nro' ).search("").draw();
     document.getElementById('preview').hidden = true
 }
+
+function toggle() {
+    var year = document.getElementById("yearIn");
+    var date = document.getElementById("dateIn");
+    if (year.hidden == true) {
+        year.hidden=false
+        date.hidden=true
+        document.getElementById("yearIn").value = 'sel'
+        document.getElementById('labelswitch').innerHTML="Elegir entre fechas"
+    } else {       
+        year.hidden=true
+        date.hidden=false
+        document.getElementById('labelswitch').innerHTML="Elegir año"
+    }
+  }
+
+
+  window.addEventListener("DOMContentLoaded", (event) => {
+    const submitBtn = document.getElementById('btnb')
+
+const año = document.getElementById('año')
+const tipo = document.getElementById('tipo')
+const busqueda = document.getElementById('busq')
+const fecha1 = document.getElementById('min')
+const fecha2 = document.getElementById('max')
+// run this function whenever the values of any of the above 4 inputs change.
+// this is to check if the input for all 4 is valid.  if so, enable submitBtn.
+// otherwise, disable it.
+const checkEnableButton = () => {
+    
+
+    //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
+    if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
+    || fecha2.value != '' && tipo.value != 'sel' || busqueda.value){
+        submitBtn.removeAttribute('disabled')
+    }
+    else{
+        submitBtn.setAttribute('disabled', 'disabled')
+    }   
+}
+
+
+if(fecha1){fecha1.addEventListener('change', checkEnableButton)}
+if(fecha2){fecha2.addEventListener('change', checkEnableButton)}
+año.addEventListener('change', checkEnableButton)
+tipo.addEventListener('change', checkEnableButton)
+busqueda.addEventListener('change', checkEnableButton)
+});
+
