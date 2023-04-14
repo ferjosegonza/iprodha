@@ -322,11 +322,12 @@ $(document).ready(function () {
 
 function cancelarbusqueda(){
     var table = $('#archivos').DataTable()
-    
-    if(document.getElementById('tipo').value[0] == undefined){
+    //console.log(document.getElementById('tipo').value)
+    if(document.getElementById('tipo').value == 'sel'){
         table
         .columns( '.tipo' ).search("").draw()
         .columns( '.sub' ).search("").draw();
+        //console.log("no hay tipo")
     }
     else{
         var tipo = document.getElementById('tipo').value; 
@@ -337,16 +338,18 @@ function cancelarbusqueda(){
             {
                 if(isNaN(document.getElementById('tipo').value[i]))
                 {
-                    tipoNombre = document.getElementById('tipo').value[i];  
+                    tipoNombre = document.getElementById('tipo').value[i+1];  
                     bandera =1;
+                    i=i+1;
                 }
             }
             else{
                 tipoNombre = tipoNombre + document.getElementById('tipo').value[i];}  
             }
+            console.log(tipoNombre)
         table
             .columns( '.tipo' ).search(tipoNombre).draw();
-        if (document.getElementById('subtipo').value[0] == undefined){
+        if (document.getElementById('subtipo').value == 'sel'){
             table
             .columns( '.sub' ).search("").draw();
         }
@@ -354,17 +357,40 @@ function cancelarbusqueda(){
             var subtipo = document.getElementById('subtipo').value; 
             var subtipoNombre;
             var bandera= 0;   
+            var bandera2 = 0;      
             for(i = 0; i < subtipo.length; i++){ 
                 if (bandera==0)
                 {
                     if(isNaN(document.getElementById('subtipo').value[i]))
                     {
-                        subtipoNombre = document.getElementById('subtipo').value[i];  
-                        bandera =1;
+                        console.log(subtipo)                
+                        if(document.getElementById('subtipo').value[i] != '|')
+                        {subtipoNombre = document.getElementById('subtipo').value[i];  bandera =1; }
+                        else{
+                            if(bandera2==0)
+                            {
+                                bandera2=1;
+                            }
+                            else{
+                                i=subtipo.length;
+                            }
+                        }
+                        
+                       
                     }
                 }
                 else{
-                    subtipoNombre = subtipoNombre + document.getElementById('subtipo').value[i];}  
+                    if(document.getElementById('subtipo').value[i] != '|')
+                        {subtipoNombre = subtipoNombre + document.getElementById('subtipo').value[i];  }
+                        else{
+                            if(bandera2==0)
+                            {
+                                bandera2=1;
+                            }
+                            else{
+                                i=subtipo.length;
+                            }
+                        }}  
                 }
                 table
                 .columns( '.sub' ).search(subtipoNombre).draw();
@@ -401,8 +427,7 @@ const fecha2 = document.getElementById('max')
 // run this function whenever the values of any of the above 4 inputs change.
 // this is to check if the input for all 4 is valid.  if so, enable submitBtn.
 // otherwise, disable it.
-const checkEnableButton = () => {
-    
+const checkEnableButton = () => {    
 
     //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
     if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
