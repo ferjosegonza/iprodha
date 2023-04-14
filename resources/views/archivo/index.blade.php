@@ -80,16 +80,18 @@
                     {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}
                 </div> 
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
+                    <label>Encuentre lo que busca:</label>
                     {!! Form::submit('Buscar', ['class' => 'btn btn-success', 'id'=>'btnb', 'disabled' => 'disabled']) !!}
                     
                 </div>          
                 <br>    
                 
             </div>
-            {!! Form::close() !!}
+            {!! Form::close() !!}            
             <a href="{{ route('archivos.consultar') }}" id="areset">Recargar los archivos</a>
-            <div class="row abajo">
-                <div class="tabla table-responsive col-xs-9 col-sm-9 col-md-9 col-lg-9 flex">
+            <label id="aclaracion">(Por defecto verás los archivos correspondientes al último boletín)</label>
+            <div class="row abajo card">
+                <div class="tabla card-body table-responsive col-xs-9 col-sm-9 col-md-9 col-lg-9 flex">
                     <table id="archivos" class="table display table-hover mt-2" class="display">
                         <thead>
                             <tr>

@@ -8,8 +8,9 @@ body{
     background-color:rgba(255, 205, 172, 0.267);
     align-content: center;
     align-items: center;
-    height: 175px;
+    height: 150px;
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .abajo{
@@ -61,6 +62,7 @@ thead input {
 #btnbusq{   
     margin-left: 3%;
     margin-top: 1.5%;
+    margin-bottom: 1.5%;
     
 }
 #btnb{
@@ -147,4 +149,14 @@ thead input {
  }
  .form-select{
   background-image:none;
+ }
+ #areset{
+  color: grey;
+  border: 1px solid;
+  padding: 5px;
+  border-radius: 5px;
+ }
+ #aclaracion{
+  color: rgb(134, 134, 134);
+  font-size: 12px;
  }
