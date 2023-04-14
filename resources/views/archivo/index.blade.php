@@ -1,8 +1,17 @@
 @extends('layouts.app')
+
 @section('content')  
-
-<head><link rel="stylesheet" href="{{asset('css/archivo/index.css')}}"></head>
-
+<head><link rel="stylesheet" href="{{asset('css/archivo/index.css')}}">
+    <script src="{{ asset('js/archivo/index.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">  
+</head>
     <section class="section">
         <div class="section-header">
             <div class="titulo page__heading">Búsqueda de Archivos Digitalizados</div>
@@ -10,52 +19,75 @@
         </div>
         <div class="section-body">            
             @include('layouts.modal.mensajes')
-            <div class="row barraBusqueda">                
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 flex">                        
-                    {!! Form::label('Año:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    <select class="form-select" id="año" onchange="year()">
+            {!! Form::open(['route' => 'archivos.buscar', 'method' => 'GET']) !!}
+            <div class="row barraBusqueda align-items-center">                
+                <div class="col-xs-2 col-sm-2 col-md-3 col-lg-2 flex">     
+                    <label id="labelswitch">Elegir entre fechas</label>
+                    <label class="switch">
+                        <input type="checkbox" name="betwenyears" onclick="toggle()">
+                        <span class="slider round"></span>
+                    </label>          
+                     
+                    <div id="yearIn">
+                        {!! Form::label('Año:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                        <select class="form-select" id="año" onchange="year()" name="ano">
                         <option value="sel" selected>Seleccionar</option>
                         @for($i=date("Y");$i>=1990;$i--)
                             <option value="{{$i}}">{{$i}}</option>                                     
                         @endfor                    
-                    </select>   
+                    </select>  </div>       
+                    <div id="dateIn" hidden>
+                        <input type="date" id='min' name="fecha1" value="sel">
+                        <label>to</label>
+                        <input type="date" id='max' name="fecha2" value="sel">                        
+                    </div> 
+                     
                     
                 </div>                       
-                <div class="col-xs-2 col-sm-3 col-md-3 col-lg-3 flex">
+                <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2 flex">
                 {!! Form::label('Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                    <select class="form-select" id="tipo" onchange="tipos()">
-                        <option value="" selected>Seleccionar</option>
+                    <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
+                        <option value="sel" selected>Seleccionar</option>
                         @php
                                $i=0; 
                         @endphp
                         @foreach ($TipoDocumento as $tipo)                            
-                            <option value="{{$tipo->id_tipoarchivo}}{{$tipo->nombre_corto}}">{{$tipo->nombre_corto}}</option>
+                            <option value="{{$tipo->id_tipoarchivo}}|{{$tipo->nombre_corto}}">{{$tipo->nombre_corto}}</option>
                             @php
                                 $i++;
                             @endphp
                         @endforeach                        
                     </select>   
                 </div>    
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 flex" >
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 flex" >
                     {!! Form::label('Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    <select class="form-select" id="subtipo" onchange="subtipos()" hidden>
-                        <option value="" selected>Seleccionar</option>
+                    <select class="form-select" id="subtipo" onchange="subtipos()" name="subtipo" hidden>
+                        <option value="sel" selected>Seleccionar</option>
                         @php
                         $i=0; 
                         @endphp
                         @foreach ($SubTipoDocumento as $subtipo)
-                            <option id= "sub{{$i}}" value="{{$subtipo->id_tipoarchivo}}{{$subtipo->dessubtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
+                            <option id= "sub{{$i}}" value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->dessubtipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
                             @php
                                 $i++;
                             @endphp
                         @endforeach                        
                     </select>                 
                     <P id="placeholder">---</P>    
-                </div>                
                 </div>  
-                <div class="archivos">                    
-                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 flex">
+                    {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                    {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq']) !!}
+                </div> 
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
+                    {!! Form::submit('Buscar', ['class' => 'btn btn-success', 'id'=>'btnb', 'disabled' => 'disabled']) !!}
+                    
+                </div>          
+                <br>    
+                
             </div>
+            {!! Form::close() !!}
+            <a href="{{ route('archivos.consultar') }}" id="areset">Recargar los archivos</a>
             <div class="row abajo">
                 <div class="tabla table-responsive col-xs-9 col-sm-9 col-md-9 col-lg-9 flex">
                     <table id="archivos" class="table display table-hover mt-2" class="display">
@@ -103,9 +135,3 @@
     @include('layouts.modal.confirmation') 
 @endsection
     
-@section('js')
-<script src="{{ asset('js/archivo/index.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
-@endsection
