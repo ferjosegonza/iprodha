@@ -111,6 +111,22 @@ function year(){
     
 }
 
+function filtrar(){
+    if(document.getElementById('busq').value == ""){
+        // $( "#archivos" ).DataTable().ajax.reload()
+        var table = $('#archivos').DataTable()
+        table
+        .columns( '.asun' ).search("").draw();
+     }
+     else{
+         var asunto = document.getElementById('busq').value; 
+         console.log(asunto);
+         var table = $('#archivos').DataTable()
+         table
+             .columns( '.asun' ).search(asunto).draw();
+     }
+}
+
 function subtipos(){
     if(document.getElementById('subtipo').value == 'sel'){
         var table = $('#archivos').DataTable()
@@ -272,6 +288,7 @@ $(document).ready(function () {
             },
         },
         order: [[ 1, 'asc' ]],
+
         initComplete: function() {
             var api = this.api();
             // For each column
