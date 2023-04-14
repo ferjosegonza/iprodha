@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Iprodha\Vw_dig_parabuscararchivo;
 use App\Models\Iprodha\Dig_tipoarchivo;
 use App\Models\Iprodha\Dig_subtipoarchivo;
+use DB;
 
 
 class ArchivoController extends Controller
@@ -17,7 +18,8 @@ class ArchivoController extends Controller
 
 
     public function consultar(){
-        $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->orderBy('ano_archivo', 'desc')->simplePaginate(100);
+        $boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
+        $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('ano_archivo', 'desc')->get();
        foreach($archivos as $a){
             $a->path_archivo = substr($a->path_archivo, 14);
         } 

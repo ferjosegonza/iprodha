@@ -37,8 +37,8 @@
                         @endfor                    
                     </select>  </div>       
                     <div id="dateIn" hidden>
+                        {!! Form::label('Rango de fechas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                         <input type="date" id='min' name="fecha1" value="sel">
-                        <label>to</label>
                         <input type="date" id='max' name="fecha2" value="sel">                        
                     </div> 
                      
