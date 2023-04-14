@@ -20,8 +20,8 @@
         <div class="section-body">            
             @include('layouts.modal.mensajes')
             {!! Form::open(['route' => 'archivos.buscar', 'method' => 'GET']) !!}
-            <div class="row barraBusqueda align-items-center">                
-                <div class="col-xs-2 col-sm-2 col-md-3 col-lg-2 flex">     
+            <div class="row barraBusqueda align-items-center">                               
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 flex">     
                     <label id="labelswitch">Elegir entre fechas</label>
                     <label class="switch">
                         <input type="checkbox" name="betwenyears" onclick="toggle()">
@@ -75,9 +75,9 @@
                     </select>                 
                     <P id="placeholder">---</P>    
                 </div>  
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 flex">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 flex w-25">
                     {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                    {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq']) !!}
+                    {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}
                 </div> 
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
                     {!! Form::submit('Buscar', ['class' => 'btn btn-success', 'id'=>'btnb', 'disabled' => 'disabled']) !!}

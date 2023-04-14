@@ -59,8 +59,9 @@ thead input {
     width: 100%;
 }
 #btnbusq{   
-    margin-left: 10%;
+    margin-left: 3%;
     margin-top: 1.5%;
+    
 }
 #btnb{
     width: 90%;
@@ -143,4 +144,7 @@ thead input {
   border-radius: 5px;
   width: 100%;
   border-color: rgb(196, 196, 196);
+ }
+ .form-select{
+  background-image:none;
  }
