@@ -17,11 +17,7 @@ class ArchivoController extends Controller
 
 
     public function consultar(){
-<<<<<<< HEAD
-        $archivos = Vw_dig_parabuscararchivo::orderBy('ano_archivo', 'desc')->simplePaginate(1000);
-=======
         $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->orderBy('ano_archivo', 'desc')->simplePaginate(100);
->>>>>>> 8e0ff9ffd62f80bd80fef8cfc772da81b7c83947
        foreach($archivos as $a){
             $a->path_archivo = substr($a->path_archivo, 14);
         } 
