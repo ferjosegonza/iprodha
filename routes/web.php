@@ -168,6 +168,5 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth']], function () {
     Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
-    Route::get('archivos/json', [ArchivoController::class, 'tablaJSON'])->name('archivos.json');
-    Route::post('archivos/filtro', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
+    Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
     });
