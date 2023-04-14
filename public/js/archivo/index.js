@@ -1,5 +1,5 @@
 function tipos(){
-    if(document.getElementById('tipo').value[0] == undefined){
+    if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
         document.getElementById('placeholder').hidden = false;        
         document.getElementById('subtipo').value = "sel"
