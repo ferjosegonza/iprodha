@@ -59,7 +59,7 @@ class ArchivoController extends Controller
         if($request->subtipo != 'sel'){
             $subtipo = $subtipo[2];
         }    
-        $busqueda = $request->busqueda;
+        $busqueda = strtoupper($request->busqueda);
         $fecha1=$request->fecha1;
         $fecha2=$request->fecha2;
 
@@ -82,40 +82,31 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::whereBetween('ano_archivo',[$fe1y,$fe2y])
-                            ->whereBetween('mes_archivo',[$fe1m,$fe2m])
-                            ->whereBetween('dia_archivo',[$fe1d,$fe2d])
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
+                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+
                         }
                         else{
                             //no hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::whereBetween('ano_archivo',[$fe1y,$fe2y])
-                            ->whereBetween('mes_archivo',[$fe1m,$fe2m])
-                            ->whereBetween('dia_archivo',[$fe1d,$fe2d])
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
+                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo'"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::whereBetween('ano_archivo',[$fe1y,$fe2y])
-                            ->whereBetween('mes_archivo',[$fe1m,$fe2m])
-                            ->whereBetween('dia_archivo',[$fe1d,$fe2d])
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
+                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                         else{
                             //no hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::whereBetween('ano_archivo',[$fe1y,$fe2y])
-                            ->whereBetween('mes_archivo',[$fe1m,$fe2m])
-                            ->whereBetween('dia_archivo',[$fe1d,$fe2d])
-                            ->where('id_tipoarchivo', '=', $tipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
+                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'"));                           
                         }
                     }
                 }
@@ -123,16 +114,14 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::whereBetween('ano_archivo',[$fe1y,$fe2y])
-                        ->whereBetween('mes_archivo',[$fe1m,$fe2m])
-                        ->whereBetween('dia_archivo',[$fe1d,$fe2d])
-                        ->where('nro_archivo','=',$busqueda)
-                        ->orWhere('claves_archivo','LIKE', $busqueda)->get();}
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
+                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));}
                     else{
-                        //no hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::whereBetween('ano_archivo',[$fe1y,$fe2y])
-                        ->whereBetween('mes_archivo',[$fe1m,$fe2m])
-                        ->whereBetween('dia_archivo',[$fe1d,$fe2d])->get();
+                        //no hay busqueda (no deberia suceder)
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
+                        AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d'"));
+                        
                     }
                 }
             }
@@ -148,40 +137,29 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe1y)
-                            ->where('mes_archivo','>=',$fe1m)
-                            ->where('dia_archivo','>=',$fe1d)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
+                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                         else{
                             //no hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe1y)
-                            ->where('mes_archivo','>=',$fe1m)
-                            ->where('dia_archivo','>=',$fe1d)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
+                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo'"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe1y)
-                            ->where('mes_archivo','>=',$fe1m)
-                            ->where('dia_archivo','>=',$fe1d)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
+                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                         else{
                             //no hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe1y)
-                            ->where('mes_archivo','>=',$fe1m)
-                            ->where('dia_archivo','>=',$fe1d)
-                            ->where('id_tipoarchivo', '=', $tipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
+                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'"));
                         }
                     }
                 }
@@ -189,17 +167,15 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe1y)
-                        ->where('mes_archivo','>=',$fe1m)
-                        ->where('dia_archivo','>=',$fe1d)
-                        ->where('nro_archivo','=',$busqueda)
-                        ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
+                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                     }
                     else{
-                        //no hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe1y)
-                        ->where('mes_archivo','>=',$fe1m)
-                        ->where('dia_archivo','>=',$fe1d)->get();
+                        //no hay busqueda (NO DEBERIA SUCEDER)
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
+                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d'"));
                     }
                 }
             }
@@ -215,40 +191,29 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe2y)
-                            ->where('mes_archivo','>=',$fe2m)
-                            ->where('dia_archivo','>=',$fe2d)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
+                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));                           
                         }
                         else{
                             //no hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe2y)
-                            ->where('mes_archivo','>=',$fe2m)
-                            ->where('dia_archivo','>=',$fe2d)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
+                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo'"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe2y)
-                            ->where('mes_archivo','>=',$fe2m)
-                            ->where('dia_archivo','>=',$fe2d)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
+                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));                            
                         }
                         else{
                             //no hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe2y)
-                            ->where('mes_archivo','>=',$fe2m)
-                            ->where('dia_archivo','>=',$fe2d)
-                            ->where('id_tipoarchivo', '=', $tipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
+                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'"));                            
                         }
                     }
                 }
@@ -256,17 +221,14 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe2y)
-                        ->where('mes_archivo','>=',$fe2m)
-                        ->where('dia_archivo','>=',$fe2d)
-                        ->where('nro_archivo','=',$busqueda)
-                        ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
+                        AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d'
+                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                     }
                     else{
-                        //no hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','>=',$fe2y)
-                        ->where('mes_archivo','>=',$fe2m)
-                        ->where('dia_archivo','>=',$fe2d)->get();
+                        //no hay busqueda (no deberia suceder)
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
+                        AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d'"));
                     }
                 }
             }            
@@ -278,28 +240,26 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                         else{
-                            //no hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)->get();
+                            //no hay una busqueda (no deberia suceder)
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'
+                            AND id_subtipoarchivo = '$subtipo'"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                         else{
-                            //no hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)->get();
+                            //no hay busqueda (no deberia suceder)
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'"));                            
                         }
                     }
                 }
@@ -307,8 +267,7 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%'"));
                     }
                 }
             }            
@@ -322,32 +281,28 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','=',$año)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                         else{
                             //no hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','=',$año)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','=',$año)
-                            ->where('id_tipoarchivo', '=', $tipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
+                            AND id_tipoarchivo = '$tipo'
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                             }
                         else{
                             //no hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','=',$año)
-                            ->where('id_tipoarchivo', '=', $tipo)->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
+                            AND id_tipoarchivo = '$tipo'"));
                         }
                     }
                 }
@@ -355,13 +310,12 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','=',$año)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'                            
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                     else{
-                        //no hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('ano_archivo','=',$año)->get();
+                        //no hay busqueda (no debe pasar)
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'"));
                     }
                 }
             }
@@ -373,29 +327,28 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
+                            id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                         else{
-                            //no hay una busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)
-                            ->where('id_subtipoarchivo', '=', $subtipo)->get();
+                            //no hay una busqueda (no deberia pasar)
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
+                            id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)
-                            ->where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
+                            id_tipoarchivo = '$tipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                             }
                         else{
-                            //no hay busqueda
-                            $archivos = Vw_dig_parabuscararchivo::where('id_tipoarchivo', '=', $tipo)
-                            ->get();
+                            //no hay busqueda (no deberia pasar)
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
+                            id_tipoarchivo = '$tipo'"));;
                         }
                     }
                 }
@@ -403,8 +356,8 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = Vw_dig_parabuscararchivo::where('nro_archivo','=',$busqueda)
-                            ->orWhere('claves_archivo','LIKE','%'.strtoupper($busqueda).'%')->get();
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
+                            (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
                         }
                 }      
             }
