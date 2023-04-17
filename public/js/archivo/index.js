@@ -446,9 +446,10 @@ const fecha2 = document.getElementById('max')
 // otherwise, disable it.
 const checkEnableButton = () => {    
 
+    console.log(busqueda.value)
     //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
     if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
-    || fecha2.value != '' && tipo.value != 'sel' || busqueda.value){
+    || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != ''){
         submitBtn.removeAttribute('disabled')
     }
     else{
@@ -461,6 +462,6 @@ if(fecha1){fecha1.addEventListener('change', checkEnableButton)}
 if(fecha2){fecha2.addEventListener('change', checkEnableButton)}
 año.addEventListener('change', checkEnableButton)
 tipo.addEventListener('change', checkEnableButton)
-busqueda.addEventListener('change', checkEnableButton)
+busqueda.addEventListener('keyup', checkEnableButton)
 });
 

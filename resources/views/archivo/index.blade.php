@@ -77,7 +77,8 @@
                 </div>  
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 flex w-25">
                     {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                    {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}
+                    <input type="text" name="busqueda" id="busq" onkeyup="filtrar()" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">
+                    {{--  {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}  --}}
                 </div> 
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
                     <label>Encuentre lo que busca:</label>
@@ -90,6 +91,7 @@
             {!! Form::close() !!}            
             <a href="{{ route('archivos.consultar') }}" id="areset">Recargar los archivos</a>
             <label id="aclaracion">(Por defecto verás los archivos correspondientes al último boletín)</label>
+
             <div class="row abajo card">
                 <div class="tabla card-body table-responsive col-xs-9 col-sm-9 col-md-9 col-lg-9 flex">
                     <table id="archivos" class="table display table-hover mt-2" class="display">
@@ -118,17 +120,17 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="preview col-xs-3 col-sm-3 col-md-3 col-lg-3 flex" id="preview" hidden>
-                    <div class="card cardpre">
-                        <div class="card-body">
-                            <button id="cancelar" class="btn btn-danger" onclick="cancelarbusqueda()">X</button>
-                            <h5 class="card-title" id="pdftitle">PDF:</h5> 
-                            <p id="despdf"> </p>
-                            <object id="pdfver" data="http:\\localhost\Documentos\Cedulas\CED-ADJ-0018146349-20230316.pdf" type="application/pdf" ></object>
-                            <a id="linkpdf" href="https://www.africau.edu/images/default/sample.pdf" target="_blank">Ver más</a>
-                            {{-- <p id="ruta"></p> --}}
-                        </div>
+                </div>                
+            </div>
+            <div class="preview row" id="preview" hidden>
+                <div class="card cardpre">
+                    <div class="card-body">
+                        <button id="cancelar" class="btn btn-danger" onclick="cancelarbusqueda()">X</button>
+                        <h5 class="card-title" id="pdftitle">PDF:</h5> 
+                        <p id="despdf"> </p>
+                        <object id="pdfver" data="http:\\localhost\Documentos\Cedulas\CED-ADJ-0018146349-20230316.pdf" type="application/pdf" ></object>
+                        <a id="linkpdf" href="https://www.africau.edu/images/default/sample.pdf" target="_blank">Ver más</a>
+                        {{-- <p id="ruta"></p> --}}
                     </div>
                 </div>
             </div>
