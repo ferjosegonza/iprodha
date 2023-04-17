@@ -25,5 +25,10 @@ class Empresa extends Model
      {
          return $this->hasMany(Ofe_obra::class,'idempresa','id_emp');
      }
+
+     public function getObras()
+     {
+         return $this->hasMany(Ob_obra::class,'id_emp','id_emp');
+     }
      
 }

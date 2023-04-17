@@ -49,4 +49,12 @@ class Localidad extends Model
         //return $this->belongsTo(Localidad::class,'id_loc','id_loc');
         return $this->hasMany(Barrio::class,'id_loc','id_loc');
     }
+
+    public function getEtapas(){
+        return $this->hasMany(Ob_etapa::class,'id_localidad','id_loc');
+    }
+
+    public function getObras(){
+        return $this->hasMany(Ob_obra::class, 'id_loc', 'id_loc');
+    }
 }
