@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div hidden>
-                            {!! Form::text('emp', 0, ['style' => 'disabled;' ]) !!}
+                            {!! Form::text('emp', 1, ['style' => 'disabled;' ]) !!}
                         </div>
                     </div>
                     <div class="col-md-6">

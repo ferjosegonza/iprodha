@@ -45,6 +45,9 @@ use App\Http\Controllers\NotificacionController;
 Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
 
+Route::get('/registerEmpIprodha',function(){
+        return view('auth.registerEmp');
+});
 // Jorge
 //Route::get('/terrenos', [TerrenosController::class, 'index']);
 Route::group(['middleware' => ['auth']], function(){
