@@ -38,6 +38,7 @@ class ArchivoController extends Controller
         $tipo= explode('|',$request->tipo);
         if($request->tipo != 'sel')
         {
+            $nomtipo=$tipo[1];
             $tipo = $tipo[0];
         }
         $subtipo = explode('|', $request->subtipo);
@@ -78,7 +79,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera = 1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d' 
-                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'  AND id_subtipoarchivo = '$subtipo' 
                                         AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));            
                                     }
@@ -88,7 +89,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d'  
-                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo'
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                     }
                                 }
@@ -100,7 +101,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d' 
-                                        AND id_tipoarchivo = '$tipo' 
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' 
                                         AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                     }
@@ -110,7 +111,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d'  
-                                        AND id_tipoarchivo = '$tipo'
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                     }
                                 }
@@ -138,7 +139,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' 
-                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                                         AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
             
@@ -148,7 +149,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' 
-                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo'
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                     }
                                 }
@@ -159,7 +160,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d'
-                                        AND id_tipoarchivo = '$tipo' 
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' 
                                         AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));}
                                     else{
@@ -167,7 +168,7 @@ class ArchivoController extends Controller
                                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                                         WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
                                         AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d'
-                                        AND id_tipoarchivo = '$tipo'
+                                        AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                     }
                                 }
@@ -197,7 +198,7 @@ class ArchivoController extends Controller
                                     AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
                                     OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
                                     OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
-                                    AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                    AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                                     AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                     order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));        
                                 }
@@ -208,7 +209,7 @@ class ArchivoController extends Controller
                                     AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
                                     OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
                                     OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
-                                    AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                                    AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo'
                                     order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                 }
                             }
@@ -221,7 +222,7 @@ class ArchivoController extends Controller
                                     AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
                                     OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
                                     OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
-                                    AND id_tipoarchivo = '$tipo'
+                                    AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                                     AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                     order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                 }
@@ -232,7 +233,7 @@ class ArchivoController extends Controller
                                     AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
                                     OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
                                     OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
-                                    AND id_tipoarchivo = '$tipo'
+                                    AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                                     order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                                 }
                             }
@@ -266,7 +267,7 @@ class ArchivoController extends Controller
                                 or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
                                 or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
                                 or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
-                                AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                                 AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                 order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
                             }
@@ -278,7 +279,7 @@ class ArchivoController extends Controller
                                 or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
                                 or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
                                 or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
-                                AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                                 order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
                             }
                         }
@@ -292,7 +293,7 @@ class ArchivoController extends Controller
                                 or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
                                 or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
                                 or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
-                                AND id_tipoarchivo = '$tipo'
+                                AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                                 AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                                 order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
                             }
@@ -304,7 +305,7 @@ class ArchivoController extends Controller
                                 or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
                                 or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
                                 or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
-                                AND id_tipoarchivo = '$tipo'
+                                AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                                 order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
                             }
                         }
@@ -341,7 +342,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
                             or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
                             or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
@@ -351,7 +352,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
                             or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
                             or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo'
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
@@ -363,7 +364,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
                             or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
                             or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
-                            AND id_tipoarchivo = '$tipo'  
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'  
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
@@ -373,7 +374,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
                             or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
                             or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
-                            AND id_tipoarchivo = '$tipo'
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
@@ -407,7 +408,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
                             or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
                             or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));                                                      
                         }
@@ -417,7 +418,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
                             or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
                             or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));      
                         }
                     }
@@ -429,7 +430,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
                             or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
                             or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
-                            AND id_tipoarchivo = '$tipo'
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));         
                         }
@@ -439,7 +440,7 @@ class ArchivoController extends Controller
                             WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
                             or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
                             or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
-                            AND id_tipoarchivo = '$tipo' 
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' 
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));      
                         }
                     }
@@ -467,7 +468,7 @@ class ArchivoController extends Controller
                             //hay una busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                             WHERE id_tipocabecera =1
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
@@ -482,7 +483,7 @@ class ArchivoController extends Controller
                         if($busqueda != null){
                             //hay busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
-                            WHERE id_tipocabecera =1 AND id_tipoarchivo = '$tipo'
+                            WHERE id_tipocabecera =1 AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                             order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
@@ -515,14 +516,14 @@ class ArchivoController extends Controller
                             //hay una busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                             WHERE id_tipocabecera =1 AND ano_archivo = '$año' 
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                         else{
                             //no hay una busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                             WHERE id_tipocabecera =1 AND ano_archivo = '$año'
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
                     else{
@@ -531,14 +532,14 @@ class ArchivoController extends Controller
                             //hay busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                             WHERE id_tipocabecera =1 AND ano_archivo = '$año'
-                            AND id_tipoarchivo = '$tipo'
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                             }
                         else{
                             //no hay busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                             WHERE id_tipocabecera =1 AND ano_archivo = '$año'
-                            AND id_tipoarchivo = '$tipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
                 }
@@ -566,14 +567,14 @@ class ArchivoController extends Controller
                             //hay una busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                             WHERE id_tipocabecera =1 
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                         /* else{
                             //no hay una busqueda (no deberia pasar)
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
                             WHERE id_tipocabecera =1 
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                            AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         } */
                     }
                     else{
@@ -581,7 +582,7 @@ class ArchivoController extends Controller
                         if($busqueda != null){
                             //hay busqueda
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
-                            WHERE id_tipocabecera =1 AND id_tipoarchivo = '$tipo' 
+                            WHERE id_tipocabecera =1 AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' 
                             AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                             }
                         /* else{
