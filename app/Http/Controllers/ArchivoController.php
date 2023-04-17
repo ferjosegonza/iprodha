@@ -19,7 +19,7 @@ class ArchivoController extends Controller
 
     public function consultar(){
         $boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
-        $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('ano_archivo', 'desc')->get();
+        $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('nombre_corto', 'asc')->orderBy('ano_archivo', 'desc')->orderBy('mes_archivo', 'desc')->orderBy('dia_archivo', 'desc')->get();
        foreach($archivos as $a){
             $a->path_archivo = substr($a->path_archivo, 14);
         } 
@@ -35,21 +35,6 @@ class ArchivoController extends Controller
     public function buscar(Request $request){
 
         //return $request;
-        
-        if($request->ano=="sel" and $request->fecha1 == null and $request->fecha2 ==null and $request->tipo == "sel" and $request->subtipo== "sel" and $request->busqueda ==null){
-            $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->orderBy('ano_archivo', 'desc')->simplePaginate(100);
-            foreach($archivos as $a){
-                    $a->path_archivo = substr($a->path_archivo, 14);
-                } 
-                $TipoDocumento = Dig_tipoarchivo::orderBy('nombre_corto')->get();
-                $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
-                
-                return view('archivo.index')
-                    ->with('TipoDocumento',$TipoDocumento)
-                    ->with('SubTipoDocumento',$SubTipoDocumento)
-                    ->with('archivos',$archivos);
-        }
-
         $tipo= explode('|',$request->tipo);
         if($request->tipo != 'sel')
         {
@@ -67,6 +52,9 @@ class ArchivoController extends Controller
             //checkbox on
            
             if($fecha1 != null and $fecha2 != null){
+
+                //hay un rango de fechas
+
                 $fecha1 = explode('-',$request->fecha1);
                 $fecha2 = explode('-',$request->fecha2);
                 $fe1y=$fecha1[0];
@@ -75,55 +63,267 @@ class ArchivoController extends Controller
                 $fe2y=$fecha2[0];
                 $fe2m=$fecha2[1];
                 $fe2d=$fecha2[2];
-                //hay un rango de fecha
-                if($tipo !=['sel']){
-                    //se eligio un tipo
-                    if($subtipo != ['sel']){
-                        //se eligio un subtipo
-                        if($busqueda != null){
-                            //hay una busqueda
 
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
-                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
-
+                if($fe1y == $fe2y){
+                    if($fe1m == $fe2m){
+                        if($fe1d == $fe2d){
+                            //consulta un dia especifico
+                            if($tipo !=['sel']){
+                                //se eligio un tipo
+                                if($subtipo != ['sel']){
+                                    //se eligio un subtipo
+                                    if($busqueda != null)
+                                    {
+                                        //hay una busqueda            
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera = 1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d' 
+                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));            
+                                    }
+                                    else
+                                    {
+                                        //no hay una busqueda
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d'  
+                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                    }
+                                }
+                                else{
+                                    //no hay subtipo
+                                    if($busqueda != null)
+                                    {
+                                        //hay busqueda
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d' 
+                                        AND id_tipoarchivo = '$tipo' 
+                                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                    }
+                                    else
+                                    {
+                                        //no hay busqueda
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d'  
+                                        AND id_tipoarchivo = '$tipo'
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                    }
+                                }
+                            }
+                            else{
+                                //no se eligio tipo
+                                if($busqueda != null){
+                                    //hay busqueda
+                                    $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo = '$fe1d'  
+                                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                        }                                
+                            }
                         }
                         else{
-                            //no hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
-                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo'"));
+                            //la diferencia es de dias
+                            if($tipo !=['sel']){
+                                //se eligio un tipo
+                                if($subtipo != ['sel']){
+                                    //se eligio un subtipo
+                                    if($busqueda != null){
+                                        //hay una busqueda            
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' 
+                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+            
+                                    }
+                                    else{
+                                        //no hay una busqueda
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' 
+                                        AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                    }
+                                }
+                                else{
+                                    //no hay subtipo
+                                    if($busqueda != null){
+                                        //hay busqueda
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d'
+                                        AND id_tipoarchivo = '$tipo' 
+                                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));}
+                                    else{
+                                        //no hay busqueda
+                                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d'
+                                        AND id_tipoarchivo = '$tipo'
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                    }
+                                }
+                            }
+                            else{
+                                //no se eligio tipo
+                                if($busqueda != null){
+                                    //hay busqueda
+                                    $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                        WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                        AND mes_archivo = '$fe1m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d'
+                                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));}
+                            }
                         }
                     }
                     else{
-                        //no hay subtipo
+                        //la diferencia es de meses
+                        if($tipo !=['sel']){
+                            //se eligio un tipo
+                            if($subtipo != ['sel']){
+                                //se eligio un subtipo
+                                if($busqueda != null){
+                                    //hay una busqueda            
+                                    $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                    WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                    AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
+                                    OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
+                                    OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
+                                    AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                    AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                    order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));        
+                                }
+                                else{
+                                    //no hay una busqueda
+                                    $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                    WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                    AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
+                                    OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
+                                    OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
+                                    AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                                    order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                }
+                            }
+                            else{
+                                //no hay subtipo
+                                if($busqueda != null){
+                                    //hay busqueda
+                                    $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                    WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                    AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
+                                    OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
+                                    OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
+                                    AND id_tipoarchivo = '$tipo'
+                                    AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                    order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                }
+                                else{
+                                    //no hay busqueda
+                                    $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                    WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                    AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
+                                    OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
+                                    OR (mes_archivo=$fe2m and dia_archivo <= $fe2d)) 
+                                    AND id_tipoarchivo = '$tipo'
+                                    order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                                }
+                            }
+                        }
+                        else{
+                            //no se eligio tipo
+                            if($busqueda != null)
+                            {
+                                //hay busqueda
+                                $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                    WHERE id_tipocabecera =1 AND ano_archivo = '$fe1y' 
+                                    AND (mes_archivo BETWEEN $fe1m+1 AND $fe2m-1 
+                                    OR (mes_archivo = $fe1m AND dia_archivo >= $fe1d) 
+                                    OR (mes_archivo=$fe2m and dia_archivo <= $fe2d))
+                                    order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                            }                        
+                        }
+                    }
+                }
+                else{                    
+                    //busqueda entre años
+                    if($tipo !=['sel']){
+                        //se eligio un tipo
+                        if($subtipo != ['sel']){
+                            //se eligio un subtipo
+                            if($busqueda != null){
+                                //hay una busqueda
+                                $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                WHERE id_tipocabecera =1 AND (ano_archivo between $fe1y+1 and $fe2y-1 
+                                or (ano_archivo = $fe1y and mes_archivo>$fe1m+1 
+                                or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
+                                or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
+                                or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
+                                AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
+                            }
+                            else{
+                                //no hay una busqueda
+                                $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                WHERE id_tipocabecera =1 AND (ano_archivo between $fe1y+1 and $fe2y-1 
+                                or (ano_archivo = $fe1y and mes_archivo>$fe1m+1 
+                                or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
+                                or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
+                                or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
+                                AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                                order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
+                            }
+                        }
+                        else{
+                            //no hay subtipo
+                            if($busqueda != null){
+                                //hay busqueda
+                                $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                WHERE id_tipocabecera =1 AND (ano_archivo between $fe1y+1 and $fe2y-1 
+                                or (ano_archivo = $fe1y and mes_archivo>$fe1m+1 
+                                or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
+                                or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
+                                or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
+                                AND id_tipoarchivo = '$tipo'
+                                AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                                order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
+                            }
+                            else{
+                                //no hay busqueda
+                                $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                                WHERE id_tipocabecera =1 AND (ano_archivo between $fe1y+1 and $fe2y-1 
+                                or (ano_archivo = $fe1y and mes_archivo>$fe1m+1 
+                                or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
+                                or (ano_archivo = $fe2y and mes_archivo<$fe2m-1 
+                                or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
+                                AND id_tipoarchivo = '$tipo'
+                                order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
+                            }
+                        }
+                    }
+                    else{
+                        //no se eligio tipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
-                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo between $fe1y+1 and $fe2y-1 
+                            or (ano_archivo = $fe1y and mes_archivo>=$fe1m+1 
+                            or (ano_archivo=$fe1y and mes_archivo=$fe1m and dia_archivo>=$fe1d)) 
+                            or (ano_archivo = $fe2y and mes_archivo>=$fe2m-1 
+                            or (ano_archivo=$fe2y and mes_archivo=$fe2m and dia_archivo<=$fe2d)))
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc")); 
                         }
-                        else{
-                            //no hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
-                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' AND id_tipoarchivo = '$tipo'"));                           
-                        }
-                    }
-                }
-                else{
-                    //no se eligio tipo
-                    if($busqueda != null){
-                        //hay busqueda
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
-                            AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d' 
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));}
-                    else{
-                        //no hay busqueda (no deberia suceder)
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo BETWEEN '$fe1y' AND '$fe2y' 
-                        AND mes_archivo BETWEEN '$fe1m' AND '$fe2m' AND dia_archivo BETWEEN '$fe1d' AND '$fe2d'"));
-                        
-                    }
-                }
+                    }    
+                }                
             }
             else if($fecha1 != null and $fecha2 == null){
                 $fecha1 = explode('-',$request->fecha1);
@@ -137,29 +337,44 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
-                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
+                            or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
+                            or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                         else{
                             //no hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
-                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo'"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
+                            or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
+                            or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
-                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
+                            or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
+                            or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
+                            AND id_tipoarchivo = '$tipo'  
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                         else{
                             //no hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
-                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' AND id_tipoarchivo = '$tipo'"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
+                            or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
+                            or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
+                            AND id_tipoarchivo = '$tipo'
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
                 }
@@ -167,15 +382,12 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
-                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d' 
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
-                    }
-                    else{
-                        //no hay busqueda (NO DEBERIA SUCEDER)
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo >= '$fe1y'
-                            AND mes_archivo >= '$fe1m' AND dia_archivo >= '$fe1d'"));
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo > $fe1y 
+                            or (ano_archivo = $fe1y and mes_archivo > $fe1m) 
+                            or (ano_archivo = $fe1y and mes_archivo = $fe1m and dia_archivo >= $fe1d))
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                     }
                 }
             }
@@ -191,29 +403,44 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
-                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));                           
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
+                            or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
+                            or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));                                                      
                         }
                         else{
                             //no hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
-                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo'"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
+                            or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
+                            or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));      
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
-                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));                            
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
+                            or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
+                            or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
+                            AND id_tipoarchivo = '$tipo'
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));         
                         }
                         else{
                             //no hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
-                            AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d' AND id_tipoarchivo = '$tipo'"));                            
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
+                            or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
+                            or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
+                            AND id_tipoarchivo = '$tipo' 
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));      
                         }
                     }
                 }
@@ -221,15 +448,13 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
-                        AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d'
-                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
-                    }
-                    else{
-                        //no hay busqueda (no deberia suceder)
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo <= '$fe2y'
-                        AND mes_archivo <= '$fe2m' AND dia_archivo <= '$fe2d'"));
-                    }
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND (ano_archivo < $fe2y 
+                            or (ano_archivo = $fe2y and mes_archivo < $fe2m) 
+                            or (ano_archivo = $fe2y and mes_archivo = $fe2m and dia_archivo <= $fe2d))
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));      
+                    }                   
                 }
             }            
             else{
@@ -240,34 +465,41 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo' AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
-                        else{
+                        /* else{
                             //no hay una busqueda (no deberia suceder)
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'
-                            AND id_subtipoarchivo = '$subtipo'"));
-                        }
+                            AND id_subtipoarchivo = '$subtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                        } */
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND id_tipoarchivo = '$tipo'
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                            order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
-                        else{
+                        /* else{
                             //no hay busqueda (no deberia suceder)
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'"));                            
-                        }
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipoarchivo = '$tipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));                            
+                        } */
                     }
                 }
                 else{
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%'"));
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                        WHERE id_tipocabecera =1 
+                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
+                        order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                     }
                 }
             }            
@@ -281,28 +513,32 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND ano_archivo = '$año' 
                             AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                         else{
                             //no hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
-                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND ano_archivo = '$año'
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND ano_archivo = '$año'
                             AND id_tipoarchivo = '$tipo'
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                             }
                         else{
                             //no hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'
-                            AND id_tipoarchivo = '$tipo'"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND ano_archivo = '$año'
+                            AND id_tipoarchivo = '$tipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                     }
                 }
@@ -310,13 +546,14 @@ class ArchivoController extends Controller
                     //no se eligio tipo
                     if($busqueda != null){
                         //hay busqueda
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'                            
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                        WHERE id_tipocabecera = 1 AND ano_archivo = '$año'                            
+                        AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
-                    else{
+                    /* else{
                         //no hay busqueda (no debe pasar)
-                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'"));
-                    }
+                        $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                    } */
                 }
             }
             else{
@@ -327,29 +564,31 @@ class ArchivoController extends Controller
                         //se eligio un subtipo
                         if($busqueda != null){
                             //hay una busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
-                            id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
-                        else{
+                        /* else{
                             //no hay una busqueda (no deberia pasar)
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
-                            id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'"));
-                        }
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 
+                            AND id_tipoarchivo = '$tipo' AND id_subtipoarchivo = '$subtipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
+                        } */
                     }
                     else{
                         //no hay subtipo
                         if($busqueda != null){
                             //hay busqueda
-                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
-                            id_tipoarchivo = '$tipo' 
-                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
+                            WHERE id_tipocabecera =1 AND id_tipoarchivo = '$tipo' 
+                            AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                             }
-                        else{
+                        /* else{
                             //no hay busqueda (no deberia pasar)
                             $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
-                            id_tipoarchivo = '$tipo'"));;
-                        }
+                            id_tipoarchivo = '$tipo'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));;
+                        } */
                     }
                 }
                 else{
@@ -357,24 +596,19 @@ class ArchivoController extends Controller
                     if($busqueda != null){
                         //hay busqueda
                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE
-                            (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')"));
+                            id_tipocabecera  AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%') order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                         }
                 }      
             }
             
         }
 
-
-
-
-
-
         foreach($archivos as $a){
             $a->path_archivo = substr($a->path_archivo, 14);
             
         } 
-        $TipoDocumento = Dig_tipoarchivo::orderBy('nombre_corto')->get();
-        $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
+        $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
+        $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
         
         return view('archivo.index')
             ->with('TipoDocumento',$TipoDocumento)
