@@ -326,6 +326,7 @@ $(document).ready(function () {
         table.columns( '.sub' ).search(data[2]).draw();
         table.columns( '.tipo' ).search(data[1]).draw();
         table.columns( '.nro' ).search(data[4]).draw();
+        table.columns( '.fecha' ).search(data[3]).draw();
         document.getElementById('preview').hidden = false
         document.getElementById('pdfver').setAttribute('data', data[6])
         document.getElementById('linkpdf').setAttribute('href', data[6])
@@ -413,7 +414,16 @@ function cancelarbusqueda(){
                 .columns( '.sub' ).search(subtipoNombre).draw();
         }
     }
-    table.columns( '.nro' ).search("").draw();
+    table.columns( '.nro' ).search("").draw();    
+    if(document.getElementById('año').value == "sel"){
+        table.columns( '.fecha' ).search("").draw();
+        console.log('nada')
+    }
+    else{
+        var year = document.getElementById('año').value; 
+        console.log(year)
+        table.columns( '.fecha' ).search(year).draw();
+    }    
     document.getElementById('preview').hidden = true
 }
 
