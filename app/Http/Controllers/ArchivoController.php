@@ -47,8 +47,55 @@ public function buscar(Request $request){
     $busqueda = strtoupper($request->busqueda);
     $fecha1=$request->fecha1;
     $fecha2=$request->fecha2;
+    $año = $request->ano;
 
+    $query = "SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipocabecera = 1";
     if($request->betwenyears == 'on'){
+        //checkbox on    
+        if($fecha1 != null and $fecha2 != null){
+            //rango de fechas
+            $query = $query . " AND fecha_archivo between to_date('$fecha1', 'YYYY-MM-DD') and to_date('$fecha2', 'YYYY-MM-DD')";
+        }
+        else if ($fecha1 != null and $fecha2 == null){
+            //fecha bigger than
+            $query = $query . " AND fecha_archivo >= to_date('$fecha1', 'YYYY-MM-DD')";
+        }
+        else if($fecha1 == null and $fecha2 != null){
+            //fecha less than
+            $query = $query . " AND fecha_archivo <= to_date('$fecha2', 'YYYY-MM-DD')";
+        }
+    }
+    else{     
+        //checkbox off
+        if($año != 'sel'){
+            //hay un año
+            $query = $query . " AND ano_archivo = '$año'";
+        }
+    }
+    if($tipo != ['sel']){
+        //hay un tipo
+        $query = $query . " AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo'";
+        if($subtipo != ['sel']){
+            //hay un subtipo
+            $query = $query . " AND id_subtipoarchivo = '$subtipo'";
+        }
+    }
+    if($busqueda != null){
+        //hay una busqueda
+        $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
+    }    
+    //ordenamos
+    $query = $query . " order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc";
+
+
+    $archivos = DB::select( DB::raw($query));
+
+
+
+
+
+
+    /* if($request->betwenyears == 'on'){
         //checkbox on    
         if($fecha1 != null and $fecha2 != null){
             //hay un rango de fechas
@@ -114,7 +161,7 @@ public function buscar(Request $request){
                     if($busqueda != null){
                         //hay una busqueda
                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
-                        WHERE id_tipocabecera =1 AND fecha_archivo between >= to_date('$fecha1', 'YYYY-MM-DD')
+                        WHERE id_tipocabecera =1 AND fecha_archivo >= to_date('$fecha1', 'YYYY-MM-DD')
                         AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo' 
                         AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')
                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
@@ -122,7 +169,7 @@ public function buscar(Request $request){
                     else{
                         //no hay una busqueda
                         $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo 
-                        WHERE id_tipocabecera =1 AND fecha_archivo between >= to_date('$fecha1', 'YYYY-MM-DD')
+                        WHERE id_tipocabecera =1 AND fecha_archivo >= to_date('$fecha1', 'YYYY-MM-DD')
                         AND id_tipoarchivo = '$tipo' AND nombre_corto like '$nomtipo' AND id_subtipoarchivo = '$subtipo'
                         order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
                     }
@@ -296,7 +343,7 @@ public function buscar(Request $request){
                 /* else{
                     //no hay busqueda (no debe pasar)
                     $archivos = DB::select( DB::raw("SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE ano_archivo = '$año'order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc"));
-                } */
+                } 
             }
         }
         else{
@@ -333,7 +380,7 @@ public function buscar(Request $request){
             }      
         }
         
-    }
+    } */
 
     foreach($archivos as $a){
         $a->path_archivo = substr($a->path_archivo, 14);
@@ -348,9 +395,12 @@ public function buscar(Request $request){
         ->with('archivos',$archivos);
 
 } 
-    public function getpdf($path){
-        $pathsinip = substr($path, 14);
-        $file = Storage::get($pathsinip);
-        return $file;
-    }
+
+public function getpdf($path){
+    $pathsinip = substr($path, 14);
+    $file = Storage::get($pathsinip);
+    return $file;
+}
+
+
 }
