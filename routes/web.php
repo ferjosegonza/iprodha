@@ -47,6 +47,10 @@ Route::get('/sintaxis',function()
 
 Route::get('/registerEmpIprodha',function(){
         return view('auth.registerEmp');
+})->name('register.emp');
+
+Route::get('/loginIprodha',function(){
+    return view('auth.loginEmp');
 });
 // Jorge
 //Route::get('/terrenos', [TerrenosController::class, 'index']);

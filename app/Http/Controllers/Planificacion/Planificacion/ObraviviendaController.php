@@ -92,4 +92,9 @@ class ObraviviendaController extends Controller
         }     
         return $viviendas;
     }
+
+    public function verEta($id){
+        $obra = Ob_obra::find($id);
+        return view('Planificacion.Planificacion.Obravivienda.altaeta', compact('obra'));
+    }
 }
