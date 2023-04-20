@@ -1,32 +1,26 @@
 @extends('layouts.app')
 @section('content')
 <style>
-    #viv table {
-        max-width:980px;
-        table-layout:fixed;
-        margin:auto;
-    }
-    /* #viv th, #viv td {
-        padding:5px 10px;
-        border:1px solid #000;
-    } */
-    #viv thead, #viv tfoot {
-        display:table;
-        width:100%;
-        width:calc(100% - 18px);
-    }
-    #viv tbody {
-        height:300px;
-        overflow:auto;
-        overflow-x:hidden;
-        display:block;
-        width:100%;
-    }
-    #viv tbody tr {
-        display:table;
-        width:100%;
-        table-layout:fixed;
-    }
+     .tableFixHead {
+        overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+        height: 500px; /* gives an initial height of 200px to the table */
+      }
+      .tableFixHead thead th {
+        position: sticky; /* make the table heads sticky */
+        top: 0px; /* table head will be placed from the top of the table and sticks to it */
+      }
+      #viv table {
+        border-collapse: collapse; /* make the table borders collapse to each other */
+        width: 100%;
+      }
+      /* #viv th,
+      #viv td {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+      }*/
+      #viv th {
+        background: #ee9b27;
+      } 
 </style>
 <section class="section">
     <div class="section-header">
@@ -317,9 +311,11 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="tableFixHead">
                             <table id="viv" class="table table-hover mt-2" class="display">
                                 <thead style="">
                                     <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
                                     <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
                                     <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
                                     <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
@@ -327,9 +323,11 @@
                                     <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
                                     <th class="text-center" scope="col" style="color:#fff;width:10%;">Parcela</th>
                                     <th class="text-center" scope="col" style="color:#fff;width:10%;">Finca</th>
-                                    <th class="text-center" scope="col" style="color:#fff;width:10%;">Superficie</th>
-                                    <th class="text-center" scope="col" style="color:#fff;width:25%;">Deslinde</th>
-                                    <th class="text-center" scope="col" style="color:#fff;width:10%;">Plano</th>
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Edif.</th>
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Piso</th>
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Dpto</th>
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
+                                    {{-- <th class="text-center" scope="col" style="color:#fff;width:5%;">Superficie</th> --}}
                                 </thead>
                                 <tbody>
                                     {{-- {{$obra->getEtapas->first()->getEntregas->last()->getViviendas}} --}}
@@ -337,17 +335,21 @@
                                         @foreach ($etapa->getEntregas as $entrega)
                                             @foreach ($entrega->getViviendas as $vivienda)
                                                 <tr>                                          
-                                                    <td class= 'text-center align-middle'>{{$vivienda->orden}}</td>
-                                                    <td class= 'text-center align-middle'>{{$etapa->nro_eta}}</td>   
-                                                    <td class= 'text-center align-middle'>{{$entrega->num_ent}}</td>                                           
-                                                    <td class= 'text-center'>{{$vivienda->seccion}}</td>
-                                                    <td class= 'text-center'>{{$vivienda->chacra}}</td>
-                                                    <td class= 'text-center'>{{$vivienda->manzana}}</td>
-                                                    <td class= 'text-center'>{{$vivienda->parcela}}</td>
-                                                    <td class= 'text-center'>{{$vivienda->finca}}</td>
-                                                    <td class= 'text-center'>{{$vivienda->sup_lot}}</td>
-                                                    <td class= 'text-center'>{{$vivienda->deslinde}}</td>
-                                                    <td class= 'text-center'>{{$vivienda->plano}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->orden}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->plano}}</td>
+                                                    <td class= 'text-center' >{{$etapa->nro_eta}}</td>   
+                                                    <td class= 'text-center' >{{$entrega->num_ent}}</td>                                           
+                                                    <td class= 'text-center' >{{$vivienda->seccion}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->chacra}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->manzana}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->parcela}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->finca}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->edificio}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->piso}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->departamento}}</td>
+                                                    <td class= 'text-center' >{{$vivienda->escalera}}</td>
+                                                    {{-- <td class= 'text-center' >{{$vivienda->sup_lot}}</td> --}}
+                                                    
                                                     {{-- <td class= 'text-center' style="vertical-align: middle;">{{$vivienda->orden}}</td>   --}}
                                                 </tr>
                                             @endforeach
@@ -365,6 +367,7 @@
                                     @endforeach --}}
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>

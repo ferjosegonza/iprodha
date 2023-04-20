@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Iprodha\Ob_obra;
 use App\Models\Iprodha\Ob_vivienda;
 use App\Models\Iprodha\Ob_entrega;
+use App\Models\Iprodha\Localidad;
+use App\Models\Iprodha\Empresa;
 
 class ObraviviendaController extends Controller
 {
@@ -38,7 +40,9 @@ class ObraviviendaController extends Controller
     
     public function create(Request $request)
     {
-        
+        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
+        $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp'); 
+        return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa'));
     }
 
     public function store(Request $request)
@@ -69,4 +73,23 @@ class ObraviviendaController extends Controller
           
     }
 
+    public function verViv($id){
+        $obra = Ob_obra::find($id);
+        return view('Planificacion.Planificacion.Obravivienda.altaviv', compact('obra'));
+    }
+
+    public function viviendaDeObra($id, $orden){
+        $obra = Ob_obra::find($id);
+        $viviendas = null;
+        foreach($obra->getEtapas as $etapa){
+            foreach($etapa->getEntregas as $entrega){
+                foreach ($entrega->getViviendas as $vivienda) {
+                    if($vivienda->orden == $orden){
+                        $viviendas = $vivienda;
+                    }
+                }
+            }
+        }     
+        return $viviendas;
+    }
 }

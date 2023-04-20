@@ -34,11 +34,11 @@
                                 </div>
                                 
                                 <div class="col-lg-2">
-                                    {{-- @can('CREAR-RUBROS')
-                                        {!! Form::open(['method' => 'GET', 'route' => ['rubros.create'], 'class' => 'd-flex justify-content-end']) !!}
-                                            {!! Form::submit('Nuevo Rubro', ['class' => 'btn btn-success my-1']) !!}
+                                    @can('CREAR-OBRAS')
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.create'], 'class' => 'd-flex justify-content-end']) !!}
+                                            {!! Form::submit('Nueva Obra', ['class' => 'btn btn-success my-1']) !!}
                                         {!! Form::close() !!}
-                                    @endcan --}}
+                                    @endcan
                                 </div>
                                 
                             </div>
@@ -84,6 +84,12 @@
                                                         @can('VER-OBRAS')
                                                             {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.show',$obra->id_obr], 'style' => 'display:inline']) !!}
                                                             {!! Form::submit('Ver', ['class' => 'btn btn-primary mr-2']) !!}
+                                                            {!! Form::close() !!}
+                                                        @endcan
+
+                                                        @can('VER-OBRAS')
+                                                            {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
+                                                            {!! Form::submit('Viviendas', ['class' => 'btn btn-success mr-2']) !!}
                                                             {!! Form::close() !!}
                                                         @endcan
                                                         {{--
