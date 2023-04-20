@@ -3,12 +3,11 @@ body{
 }
 .barraBusqueda{
     border: 1px solid ghostwhite;
-    padding: 10px;
+    padding: 25px;
     border-radius: 7px;
     background-color:rgba(255, 205, 172, 0.267);
     align-content: center;
     align-items: center;
-    height: 150px;
     width: 100%;
     margin-bottom: 20px;
 }
