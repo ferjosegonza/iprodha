@@ -21,7 +21,7 @@
             @include('layouts.modal.mensajes')
             {!! Form::open(['route' => 'archivos.buscar', 'method' => 'GET']) !!}
             <div class="row barraBusqueda align-items-center">                               
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 flex">     
+                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 flex">     
                     <label id="labelswitch">Elegir entre fechas</label>
                     <label class="switch">
                         <input type="checkbox" name="betwenyears" onclick="toggle()">
@@ -44,7 +44,7 @@
                      
                     
                 </div>                       
-                <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2 flex">
+                <div class="col-xs-2 col-sm-3 col-md-4 col-lg-2 flex">
                 {!! Form::label('Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                     <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
                         <option value="sel" selected>Seleccionar</option>
@@ -75,7 +75,7 @@
                     </select>                 
                     <P id="placeholder">---</P>    
                 </div>  
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 flex w-25">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 flex">
                     {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                     <input type="text" name="busqueda" id="busq" onkeyup="filtrar()" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">
                     {{--  {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}  --}}
