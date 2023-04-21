@@ -266,7 +266,7 @@
                                         {!! Form::number('num_eta', 1, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
                                     <div class="form-group">
                                         {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::text('descrip', null, ['class' => 'form-control']) !!}
@@ -287,6 +287,8 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
                                     <div class="form-group">
                                         {!! Form::label('Acciones:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
@@ -300,27 +302,40 @@
                                     <div class="tableFix">
                                     <table id="viv" class="table table-hover mt-2" class="display">
                                         <thead style="">
-                                            <th class="text-center" scope="col" style="color:#fff;width:5%;">N° Etapa</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:50%;">Descripcion</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">0 Dormitorios</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">2 Dormitorios</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">3 Dormitorios</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">4 Dormitorios</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:5%;">Acciones</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">N° Entrega</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">Cant. viviendas</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:55%;">Descripcion</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">Fecha Entrega</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:15%;">Acciones</th>
                                         </thead>
                                         <tbody>
                                             @foreach ($obra->getEtapas as $etapa)
-                                                <tr>                                          
-                                                    <td class= 'text-center' >{{$etapa->nro_eta}}</td>
-                                                    <td class= 'text-center' >{{$etapa->descripcion}}</td>
-                                                    <td class= 'text-center' >0</td>   
-                                                    <td class= 'text-center' >{{$etapa->can_viv_2}}</td>                                           
-                                                    <td class= 'text-center' >{{$etapa->can_viv_3}}</td>
-                                                    <td class= 'text-center' >{{$etapa->can_viv_4}}</td>
-                                                    <td class= 'text-center' >
-                                                        boton editar
-                                                    </td>
-                                                </tr>
+                                                @foreach ($etapa->getEntregas as $entrega)
+                                                    <tr>                                          
+                                                        <td class= 'text-center' >{{$entrega->num_ent}}</td>
+                                                        <td class= 'text-center' >{{$entrega->cant_viv}}</td>
+                                                        <td class= 'text-center' >{{$entrega->descripcion}}</td>   
+                                                        @if (is_null($entrega->fec_ent))
+                                                            <td class= 'text-center'>SIN FECHA</td>
+                                                        @else
+                                                            <td class= 'text-center'>{{Carbon\Carbon::parse($entrega->fec_ent)->format('d-m-Y')}}</td>
+                                                        @endif
+                                                        <td class= 'text-center' >
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                                                                    {!! Form::submit('Editar', ['class' => 'btn btn-primary']) !!}
+                                                                    {!! Form::close() !!}
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                                                                    {!! Form::submit('viviendas', ['class' => 'btn btn-success']) !!}
+                                                                    {!! Form::close() !!}
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -331,75 +346,6 @@
                     </div>
                 </div>
                 {{-- ---------------------------------------- --}}
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="card">
-                        <div class="card-head">
-                            <br>
-                            <div class="text-center"><h5>Viviendas</h5></div>                        
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <div class="tableFixHead">
-                                <table id="viv" class="table table-hover mt-2" class="display">
-                                    <thead style="">
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Parcela</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Finca</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Edif.</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Piso</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Dpto</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
-                                        {{-- <th class="text-center" scope="col" style="color:#fff;width:5%;">Superficie</th> --}}
-                                    </thead>
-                                    <tbody>
-                                        {{-- {{$obra->getEtapas->first()->getEntregas->last()->getViviendas}} --}}
-                                        @foreach ($obra->getEtapas as $etapa)
-                                            @foreach ($etapa->getEntregas as $entrega)
-                                                @foreach ($entrega->getViviendas as $vivienda)
-                                                    <tr>                                          
-                                                        <td class= 'text-center' >{{$vivienda->orden}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->plano}}</td>
-                                                        <td class= 'text-center' >{{$etapa->nro_eta}}</td>   
-                                                        <td class= 'text-center' >{{$entrega->num_ent}}</td>                                           
-                                                        <td class= 'text-center' >{{$vivienda->seccion}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->chacra}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->manzana}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->parcela}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->finca}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->edificio}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->piso}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->departamento}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->escalera}}</td>
-                                                        {{-- <td class= 'text-center' >{{$vivienda->sup_lot}}</td> --}}
-                                                        
-                                                        {{-- <td class= 'text-center' style="vertical-align: middle;">{{$vivienda->orden}}</td>   --}}
-                                                    </tr>
-                                                @endforeach
-                                            @endforeach
-                                        @endforeach
-                                        {{-- @foreach ($obra->getEtapas as $etapa)
-                                        {{$etapa->getEntregas}}
-                                            <tr>
-                                                <td class= 'text-center' style="vertical-align: middle;">{{$etapa->nro_eta}}</td>                                            
-                                                <td class= 'text-center align-middle'>{{$etapa->descripcion}}</td>                                            
-                                                <td class= 'text-center'>{{$etapa->can_viv_2}}</td>
-                                                <td class= 'text-center'>{{$etapa->can_viv_3}}</td>
-                                                <td class= 'text-center'>{{$etapa->can_viv_4}}</td>
-                                            </tr>
-                                        @endforeach --}}
-                                    </tbody>
-                                </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>

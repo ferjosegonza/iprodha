@@ -97,4 +97,9 @@ class ObraviviendaController extends Controller
         $obra = Ob_obra::find($id);
         return view('Planificacion.Planificacion.Obravivienda.altaeta', compact('obra'));
     }
+
+    public function asignarVivEnt($id, $entrega){
+        $obra = Ob_obra::find($id);
+        return view('Planificacion.Planificacion.Obravivienda.asignarviv', compact('obra', 'entrega'));
+    }
 }

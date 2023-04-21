@@ -185,6 +185,6 @@ class RubroController extends Controller
     }
 
     public function todosLosRubros(){
-        return $rubros = Pat_rubro_emp::orderBy('rubro', 'asc')->get();;
+        return $rubros = Pat_rubro_emp::orderBy('rubro', 'asc')->get();
     }
 }
