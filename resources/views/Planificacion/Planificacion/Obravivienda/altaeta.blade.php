@@ -262,6 +262,17 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
                                     <div class="form-group">
+                                        {!! Form::label('N° Etapa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
+                                        <select class="form-select" name="orden" placeholder="Seleccionar" id='selected-etapa'>
+                                            <option disabled selected>Seleccionar</option>
+                                            @foreach ($obra->getEtapas as $etapa)
+                                                <option value={{"$etapa->id_etapa"}}>{{$etapa->nro_eta}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
+                                    <div class="form-group">
                                         {!! Form::label('N° Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::number('num_eta', 1, ['class' => 'form-control']) !!}
                                     </div>
@@ -285,8 +296,6 @@
                                                 'class' => 'form-control',
                                             ]) !!}
                                     </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
                                     <div class="form-group">
@@ -328,7 +337,7 @@
                                                                     {!! Form::close() !!}
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.entrega', $obra->id_obr, $entrega->id_ent], 'style' => '']) !!}
                                                                     {!! Form::submit('viviendas', ['class' => 'btn btn-success']) !!}
                                                                     {!! Form::close() !!}
                                                                 </div>
