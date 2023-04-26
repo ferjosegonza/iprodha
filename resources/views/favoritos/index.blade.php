@@ -21,7 +21,7 @@
                             </a>
                             <ul class="dropdown-menu">
                               <li>
-                                {!! Form::open(['id' => 'editar'.$Favorito->ruta,'method' => 'GET', 'route' => ['favorito.edit', $Favorito->ruta], 'style' => 'display:inline']) !!}
+                                {!! Form::open(['id' => 'editar'.$Favorito->ruta,'method' => 'GET', 'route' => ['favorito.edit', $Favorito->idfav], 'style' => 'display:inline']) !!}
                                   <a class="dropdown-item" href="#" onclick="document.getElementById('editar{{$Favorito->ruta}}').submit()">Editar</a>
                                 {!! Form::close() !!}
 
@@ -39,7 +39,7 @@
                                 {!! Form::open([
                                     'method' => 'DELETE',
                                     'class' => 'formulario',
-                                    'route' => ['favorito.destroy', $Favorito->ruta],
+                                    'route' => ['favorito.destroy', $Favorito->idfav],
                                     'style' => 'display:inline',
                                     'id' => 'laruta'.$Favorito->ruta,
                                 ]) !!}

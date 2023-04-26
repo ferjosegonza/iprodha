@@ -228,11 +228,7 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         $id =  Crypt::decrypt($id);
-        $favoritos = Fav_Favorito::where('idusuario', '=', $id)->get();
-        foreach ($favoritos as $favorito) {
-            // return $favorito;
-            return Fav_Favorito::where('idusuario', $favorito->idusuario)->where('ruta', $favorito->ruta)->delete();
-        }
+        Fav_Favorito::where('idusuario', '=', $id)->delete();
         User::find($id)->delete();
         return redirect()->route('usuarios.index')->with('mensaje','Borrado exitosamente.');
     }
