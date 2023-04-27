@@ -261,6 +261,31 @@ function betweenyears(){
     }
 } 
     
+function obtenerTagFormato(id){
+    let route = '/archivo/tag';   
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id: id
+        }),
+        dataType: 'json',
+        success: function(res) {
+            return res
+        },
+        error: function(res){
+            console.log(res)
+        }});
+}
+
 function tags(){
     var cont=0;
     let idtag = document.getElementById('tag').value;
