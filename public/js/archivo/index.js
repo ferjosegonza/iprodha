@@ -3,18 +3,18 @@ function tipos(){
         document.getElementById('subtipo').hidden = true;
         document.getElementById('placeholder').hidden = false;        
         document.getElementById('subtipo').value = "sel"
-        var table = $('#archivos').DataTable()
+        let table = $('#archivos').DataTable()
         table
         .columns( '.tipo' ).search("").draw()
         .columns( '.sub' ).search("").draw();
 
     }  
     else{
-        var tipo = document.getElementById('tipo').value;
-        var tipoId = document.getElementById('tipo').value[0];     
+        let tipo = document.getElementById('tipo').value;
+        let tipoId = document.getElementById('tipo').value[0];     
         document.getElementById('subtipo').value = "sel"
-        var tipoNombre;
-        var bandera= 0;       
+        let tipoNombre;
+        let bandera= 0;       
         for(i = 1; i < tipo.length; i++){ 
             if (bandera==0)
             {
@@ -27,7 +27,7 @@ function tipos(){
                     }      
                 }
                 else{
-                    var tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
+                    let tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
                 }
             }
             else{
@@ -37,14 +37,14 @@ function tipos(){
         
         console.log(tipoId);
         console.log(tipoNombre);
-        var table = $('#archivos').DataTable()
+        let table = $('#archivos').DataTable()
         table
         .columns( '.tipo' ).search(tipoNombre).draw()
         .columns( '.sub' ).search("").draw();
         document.getElementById('subtipo').hidden = false;
         document.getElementById('placeholder').hidden = true;
-        var subtipo = document.getElementById('subtipo')
-        var subtid
+        let subtipo = document.getElementById('subtipo')
+        let subtid
 
         //console.log("Hay " + subtipo.options.length + " subitems")
         for(i=1; i<subtipo.options.length; i++){
@@ -322,7 +322,7 @@ $(document).ready(function () {
         
     });   
     $('#archivos tbody').on('click', 'tr', function () {
-        var data = table.row(this).data();
+        let data = table.row(this).data();
         table.columns( '.sub' ).search(data[2]).draw();
         table.columns( '.tipo' ).search(data[1]).draw();
         table.columns( '.nro' ).search(data[4]).draw();
@@ -339,7 +339,7 @@ $(document).ready(function () {
 });
 
 function cancelarbusqueda(){
-    var table = $('#archivos').DataTable()
+    let table = $('#archivos').DataTable()
     //console.log(document.getElementById('tipo').value)
     if(document.getElementById('tipo').value == 'sel'){
         table
@@ -348,9 +348,9 @@ function cancelarbusqueda(){
         //console.log("no hay tipo")
     }
     else{
-        var tipo = document.getElementById('tipo').value; 
-        var tipoNombre;
-        var bandera= 0;        
+        let tipo = document.getElementById('tipo').value; 
+        let tipoNombre;
+        let bandera= 0;        
         for(i = 1; i < tipo.length; i++){ 
             if (bandera==0)
             {
@@ -372,10 +372,10 @@ function cancelarbusqueda(){
             .columns( '.sub' ).search("").draw();
         }
         else{
-            var subtipo = document.getElementById('subtipo').value; 
-            var subtipoNombre;
-            var bandera= 0;   
-            var bandera2 = 0;      
+            let subtipo = document.getElementById('subtipo').value; 
+            let subtipoNombre;
+            let bandera= 0;   
+            let bandera2 = 0;      
             for(i = 0; i < subtipo.length; i++){ 
                 if (bandera==0)
                 {
@@ -420,7 +420,7 @@ function cancelarbusqueda(){
         console.log('nada')
     }
     else{
-        var year = document.getElementById('año').value; 
+        let year = document.getElementById('año').value; 
         console.log(year)
         table.columns( '.fecha' ).search(year).draw();
     }    
@@ -428,8 +428,8 @@ function cancelarbusqueda(){
 }
 
 function toggle() {
-    var year = document.getElementById("yearIn");
-    var date = document.getElementById("dateIn");
+    let year = document.getElementById("yearIn");
+    let date = document.getElementById("dateIn");
     if (year.hidden == true) {
         year.hidden=false
         date.hidden=true
