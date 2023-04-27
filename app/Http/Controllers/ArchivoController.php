@@ -115,6 +115,19 @@ public function getpdf($path){
     return $file;
 }
 
+public function obtenerTagFormato(Request $request){
+    $tag = Dig_tags::where("dt.id_tag", "=", $request->id)->first();
+    if($tag->estructura == 2){
+        $query = "SELECT dt.id_tag, dt.descripcion, id_tag_hijo, orden, sc1.descripcion as deschijo, 
+        sc1.dato_tipo, sc1.dato from iprodha.dig_tags dt inner join iprodha.dig_tags_complejo dtc 
+        on dtc.id_tag_padre = dt.id_tag 
+        inner join (select * from iprodha.dig_tags where estructura = 1)sc1
+        on sc1.id_tag = dtc.id_tag_hijo 
+        WHERE dt.id_tag = $tag->id_tag";     
+        $tag = DB::select( DB::raw($query));   
+    }
+    return response()->json($tag);
+}
 
 public function digitalizar(){
     $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
