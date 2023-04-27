@@ -855,7 +855,78 @@ function completarTag(){
 }
 
 function agregarTag(){
-    
+    var cont=0;
+    let idtag = document.getElementById('tag').value;
+    let tag = obtenerTagFormato(idtag);
+    let div = document.getElementById('tag-agregar');
+    let div2 = document.createElement("div");    
+    if(tag.length>1){
+        
+    }
+    else{
+        let lab = document.createElement('label');
+        lab.innerHTML = tag.descripcion;
+        div2.appendChild(lab);
+        if(tag.dato == 1){
+            let input = document.createElement('input')
+            if(tag.dato_tipo == 1){
+                input.type = "number"
+                input.className="no-spin"
+            }
+            else{
+                input.type = "text"
+            }
+        }
+        if(tag.dato == 2){
+            let input = document.createElement("select");
+            getSelects(input, tag.id)
+        }
+        if(tag.dato == 3){
+            let input = document.createElement("input");
+            if(dato == 1){                               
+            input.type = "number";
+            input.className="no-spin"
+            }
+            else{
+                input.type = "text";
+            }                      
+            input.setAttribute('list', "opciones-"+tag.id_tag);
+            input.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+                }
+            });
+        }
+        div2.className = "col-lg-12";
+        div2.appendChild(input)        
+    }
+    div.appendChild(div2);
+}
+
+function obtenerTagFormato(id){
+    let route = '/archivo/tag';   
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            texto: texto,
+            id: id
+        }),
+        dataType: 'json',
+        success: function(res) {
+            return res
+        },
+        error: function(res){
+            console.log(res)
+        }});
 }
 
 function contadorchar(label, input, max){
@@ -870,7 +941,6 @@ function contadorchar(label, input, max){
     }
 
 }
-
 
 function findTexto(texto, id, padre, idlista){
 

@@ -178,6 +178,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('archivo/selects', [ArchivoController::class, 'getSelects'])->name('archivos.selects');
     Route::get('archivo/campos', [ArchivoController::class, 'getCampos'])->name('archivos.campos');
     Route::get('archivo/tags', [ArchivoController::class, 'tags'])->name('archivos.tags');
+    Route::get('archivo/tag', [ArchivoController::class, 'obtenerTagFormato'])->name('archivos.tag');
     Route::get('archivo/complejos', [ArchivoController::class, 'complejos'])->name('archivos.complejos');
     Route::get('archivo/busquedadirigida', [ArchivoController::class, 'busquedaDirigida'])->name('archivos.busquedaDirigida');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
