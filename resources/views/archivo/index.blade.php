@@ -41,8 +41,6 @@
                         <input type="date" id='min' name="fecha1" value="sel">
                         <input type="date" id='max' name="fecha2" value="sel">                        
                     </div> 
-                     
-                    
                 </div>                       
                 <div class="col-xs-2 col-sm-3 col-md-4 col-lg-2 flex">
                 {!! Form::label('Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
