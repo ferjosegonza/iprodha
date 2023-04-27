@@ -160,14 +160,13 @@
                                     @foreach ($Tags as $tag)
                                         <option value="{{$tag->id_tag}}">{{$tag->descripcion}}</option>
                                     @endforeach       
-                                </select>
-                                <div id='completar'>
-                                </div>        
+                                </select>  
                                 <button class="btn btn-success" id='btn-tag' onclick="agregarTag()">Agregar</button>
                                 </div>  
-                                <div>
-
+                                <div id="tag-agregar" class="row">
                                 </div>
+                                <button class="btn btn-success" id='btn-conf' onclick="confirmar()" hidden>Confirmar</button>
+                                </div> 
                             </div>
                             </div>                          
                             
