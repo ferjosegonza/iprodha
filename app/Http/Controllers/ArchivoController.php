@@ -29,10 +29,12 @@ class ArchivoController extends Controller
         } 
         $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
         $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
-        
+        $Tags = Dig_tags::where('estructura','=','1')->get();
+
         return view('archivo.index')
             ->with('TipoDocumento',$TipoDocumento)
             ->with('SubTipoDocumento',$SubTipoDocumento)
+            ->with('Tags',$Tags)
             ->with('archivos',$archivos);
     }
 

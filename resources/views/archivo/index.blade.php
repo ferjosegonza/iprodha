@@ -77,7 +77,22 @@
                     
                 </div>
                 <div class="row align-items-center col-lg-9">    
-
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex">
+                        {!! Form::label('Tags:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                            <select class="form-select" id="tag" onchange="tags()" name="tag">
+                                <option value="sel" selected>Seleccionar</option>                                
+                                @foreach ($Tags as $tag)                            
+                                    <option value="{{$tag->id_tag}}">{{$tag->descripcion}}</option>                                    
+                                @endforeach                        
+                            </select>   
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex" >
+                            <div id="inp-tag" hidden>
+                                {!! Form::label('Completar:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                <div id="tag-comp"></div>
+                            </div>                                      
+                            <P id="placeholder-tag">---</P>    
+                        </div>  
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 flex">
                         {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                         <input type="text" name="busqueda" id="busq" onkeyup="filtrar()" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">

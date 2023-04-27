@@ -261,7 +261,54 @@ function betweenyears(){
     }
 } 
     
+function tags(){
+    var cont=0;
+    let idtag = document.getElementById('tag').value;
+    let tag = obtenerTagFormato(idtag);
+    let div = document.getElementById('tag-comp');
+    let div2 = document.createElement("div");    
+    let lab = document.createElement('label');
+    document.getElementById('inp-tag').removeAttribute('hidden');
+    document.getElementById('placeholder-tag').hidden = true;
+    lab.innerHTML = tag.descripcion;
+    div2.appendChild(lab);
+    if(tag.dato == 1){
+        let input = document.createElement('input')
+        if(tag.dato_tipo == 1){
+            input.type = "number"
+            input.className="no-spin"
+        }
+        else{
+            input.type = "text"
+        }
+    }
+    if(tag.dato == 2){
+        let input = document.createElement("select");
+        getSelects(input, tag.id)
+    }
+    if(tag.dato == 3){
+        let input = document.createElement("input");
+        if(dato == 1){                               
+        input.type = "number";
+        input.className="no-spin"
+        }
+        else{
+            input.type = "text";
+        }                      
+        input.setAttribute('list', "opciones-"+tag.id_tag);
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+            findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+            }
+        });
+    }
+    input.setAttribute('name','input'+cont);
+    cont++;
+    div2.className = "col-lg-12";
+    div2.appendChild(input)       
 
+    div.appendChild(div2);
+}
 
 $(document).ready(function () {
      //create();
