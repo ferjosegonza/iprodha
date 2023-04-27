@@ -20,73 +20,76 @@
         <div class="section-body">            
             @include('layouts.modal.mensajes')
             {!! Form::open(['route' => 'archivos.buscar', 'method' => 'GET']) !!}
-            <div class="row barraBusqueda align-items-center">                               
-                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 flex">     
-                    <label id="labelswitch">Elegir entre fechas</label>
-                    <label class="switch">
-                        <input type="checkbox" name="betwenyears" onclick="toggle()">
-                        <span class="slider round"></span>
-                    </label>          
-                     
-                    <div id="yearIn">
-                        {!! Form::label('Año:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                        <select class="form-select" id="año" onchange="year()" name="ano">
-                        <option value="sel" selected>Seleccionar</option>
-                        @for($i=date("Y");$i>=1990;$i--)
-                            <option value="{{$i}}">{{$i}}</option>                                     
-                        @endfor                    
-                    </select>  </div>       
-                    <div id="dateIn" hidden>
-                        {!! Form::label('Rango de fechas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                        <input type="date" id='min' name="fecha1" value="sel">
-                        <input type="date" id='max' name="fecha2" value="sel">                        
+            <div class="container row barraBusqueda">
+                <div class="row align-items-center col-lg-9">                               
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex">     
+                        <label id="labelswitch">Elegir entre fechas</label>
+                        <label class="switch">
+                            <input type="checkbox" name="betwenyears" onclick="toggle()">
+                            <span class="slider round"></span>
+                        </label>          
+                         
+                        <div id="yearIn">
+                            {!! Form::label('Año:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                            <select class="form-select" id="año" onchange="year()" name="ano">
+                            <option value="sel" selected>Seleccionar</option>
+                            @for($i=date("Y");$i>=1990;$i--)
+                                <option value="{{$i}}">{{$i}}</option>                                     
+                            @endfor                    
+                        </select>  </div>       
+                        <div id="dateIn" hidden>
+                            {!! Form::label('Rango de fechas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                            <input type="date" id='min' name="fecha1" value="sel">
+                            <input type="date" id='max' name="fecha2" value="sel">                        
+                        </div> 
+                    </div>                       
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex">
+                    {!! Form::label('Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                        <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
+                            <option value="sel" selected>Seleccionar</option>
+                            @php
+                                   $i=0; 
+                            @endphp
+                            @foreach ($TipoDocumento as $tipo)                            
+                                <option value="{{$tipo->id_tipoarchivo}}|{{$tipo->nombre_corto}}">{{$tipo->nombre_corto}}</option>
+                                @php
+                                    $i++;
+                                @endphp
+                            @endforeach                        
+                        </select>   
+                    </div>    
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex" >
+                        {!! Form::label('Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                        <select class="form-select" id="subtipo" onchange="subtipos()" name="subtipo" hidden>
+                            <option value="sel" selected>Seleccionar</option>
+                            @php
+                            $i=0; 
+                            @endphp
+                            @foreach ($SubTipoDocumento as $subtipo)
+                                <option id= "sub{{$i}}" value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->dessubtipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
+                                @php
+                                    $i++;
+                                @endphp
+                            @endforeach                        
+                        </select>                 
+                        <P id="placeholder">---</P>    
+                    </div>  
+                    
+                </div>
+                <div class="row align-items-center col-lg-9">    
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 flex">
+                        {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                        <input type="text" name="busqueda" id="busq" onkeyup="filtrar()" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">
+                        {{--  {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}  --}}
                     </div> 
-                </div>                       
-                <div class="col-xs-2 col-sm-3 col-md-4 col-lg-2 flex">
-                {!! Form::label('Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                    <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
-                        <option value="sel" selected>Seleccionar</option>
-                        @php
-                               $i=0; 
-                        @endphp
-                        @foreach ($TipoDocumento as $tipo)                            
-                            <option value="{{$tipo->id_tipoarchivo}}|{{$tipo->nombre_corto}}">{{$tipo->nombre_corto}}</option>
-                            @php
-                                $i++;
-                            @endphp
-                        @endforeach                        
-                    </select>   
-                </div>    
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 flex" >
-                    {!! Form::label('Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    <select class="form-select" id="subtipo" onchange="subtipos()" name="subtipo" hidden>
-                        <option value="sel" selected>Seleccionar</option>
-                        @php
-                        $i=0; 
-                        @endphp
-                        @foreach ($SubTipoDocumento as $subtipo)
-                            <option id= "sub{{$i}}" value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->dessubtipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
-                            @php
-                                $i++;
-                            @endphp
-                        @endforeach                        
-                    </select>                 
-                    <P id="placeholder">---</P>    
-                </div>  
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 flex">
-                    {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                    <input type="text" name="busqueda" id="busq" onkeyup="filtrar()" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">
-                    {{--  {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}  --}}
-                </div> 
+                </div>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
                     <label>Encuentre lo que busca:</label>
                     {!! Form::submit('Buscar', ['class' => 'btn btn-success', 'id'=>'btnb', 'disabled' => 'disabled']) !!}
-                    
-                </div>          
-                <br>    
-                
-            </div>
-            {!! Form::close() !!}            
+                </div>        
+                {!! Form::close() !!}        
+            </div>                
             <a href="{{ route('archivos.consultar') }}" id="areset">Recargar los archivos</a>
             <label id="aclaracion">(Por defecto verás los archivos correspondientes al último boletín)</label>
 
