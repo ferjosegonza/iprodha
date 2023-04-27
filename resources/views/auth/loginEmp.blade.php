@@ -87,13 +87,13 @@
                                 </div>
                 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-warning btn-lg btn-block" tabindex="4">
+                                    <button type="submit" class="btn btn-warning btn-lg btn-block fs-5" tabindex="4">
                                         Iniciar Sesión
                                     </button>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <a href="{{ route('register.emp') }}" tabindex="4" class="text-small btn btn-secondary btn-lg btn-block">
+                                    <a href="{{ route('register.emp') }}" tabindex="4" class="fs-5 btn btn-primary btn-lg btn-block">
                                         Registrarse
                                     </a>
                                 </div>

@@ -51,7 +51,7 @@ Route::get('/registerEmpIprodha',function(){
 
 Route::get('/loginIprodha',function(){
     return view('auth.loginEmp');
-});
+})->name('login.iprodha');
 // Jorge
 //Route::get('/terrenos', [TerrenosController::class, 'index']);
 Route::group(['middleware' => ['auth']], function(){
