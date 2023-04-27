@@ -1,0 +1,34 @@
+body{
+    align-content: center;
+}
+#taggeo{
+    padding: 15px;
+    margin-right: 3%;
+}
+#preview{
+    padding: 15px;
+}
+.no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.no-spin {
+    -moz-appearance:textfield !important;
+}
+
+.rowtag{
+    padding: 8px;
+    justify-content: center;
+}
+.rowbot{
+    justify-content: center;
+}   
+#claves{
+    height: 100px;
+}
+.complejos{
+    font-size: 15px;
+    font-weight: bold !important;
+    margin-top: 10px;  
+}

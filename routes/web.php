@@ -173,7 +173,17 @@ Route::group(['middleware' => ['auth']], function () {
     });//agregar noti
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');
+    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');    
+    Route::get('archivo/check', [ArchivoController::class, 'check'])->name('archivos.check');
+    Route::get('archivo/selects', [ArchivoController::class, 'getSelects'])->name('archivos.selects');
+    Route::get('archivo/campos', [ArchivoController::class, 'getCampos'])->name('archivos.campos');
+    Route::get('archivo/tags', [ArchivoController::class, 'tags'])->name('archivos.tags');
+    Route::get('archivo/complejos', [ArchivoController::class, 'complejos'])->name('archivos.complejos');
+    Route::get('archivo/busquedadirigida', [ArchivoController::class, 'busquedaDirigida'])->name('archivos.busquedaDirigida');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
     Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
-    });
+    Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivos.digitalizar');
+    Route::delete('archivo/{archivo}/borrar', [ArchivoController::class, 'borrar'])->name('archivos.borrar');
+    Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');
+    Route::put('archivo/{archivo}/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
+});
