@@ -15,6 +15,7 @@ function tipos(){
         document.getElementById('subtipo').value = "sel"
         let tipoNombre;
         let bandera= 0;       
+        console.log(tipo)
         for(i = 1; i < tipo.length; i++){ 
             if (bandera==0)
             {
@@ -41,55 +42,63 @@ function tipos(){
         table
         .columns( '.tipo' ).search(tipoNombre).draw()
         .columns( '.sub' ).search("").draw();
-        document.getElementById('subtipo').hidden = false;
-        document.getElementById('placeholder').hidden = true;
+        
         let subtipo = document.getElementById('subtipo')
         let subtid
-
-        //console.log("Hay " + subtipo.options.length + " subitems")
-        for(i=1; i<subtipo.options.length; i++){
-            if(subtipo.options[i].value != null){
-                //console.log("Hay " + subtipo.options[i].value.length + " caracteres en: " + subtipo.options[i].value)
-                bandera=0;
-                for(j=0; j<subtipo.options[i].value.length; j++){       
-                    //console.log("Recorriendo el caracter nro " + j)             
-                    if (bandera==0){
-                        console.log("La bandera es 0")    
-                        if(j==0){
-                            //console.log("J es 0")                            
-                            subtid = subtipo.options[i].value[j].toString();
-                            //console.log("subtid: " + subtid)
-                        }
-                        else{
-                            //console.log("J es " + j)
-                            if(isNaN(subtipo.options[i].value[j])){
-                                //console.log("El valor de subtipo no es un nro: " + subtipo.options[i].value[j])
-                                bandera=1;
-                                //console.log("Es el subtid: " + subtid + " igual al tipoid: "+tipoId+ "?")
-                                if(subtid == tipoId)
-                                {
-                                    //console.log("Si")
-                                    subtipo.options[i].hidden = false
-                                }
-                                else{
-                                    //console.log("No")
-                                    subtipo.options[i].hidden = true                                    
-                                }
-                                //console.log("Resultado: " + subtid)
-                                subtid=""
-                            }
-                            else{
-                                subtid = subtid + subtipo.options[i].value[j].toString();
+        console.log(subtipo.options.length)
+        if (subtipo.options.length != 0){
+            document.getElementById('subtipo').removeAttribute("hidden");
+            document.getElementById('placeholder').hidden = true;
+            for(i=1; i<subtipo.options.length; i++){
+                if(subtipo.options[i].value != null){
+                     //console.log("Hay " + subtipo.options[i].value.length + " caracteres en: " + subtipo.options[i].value)
+                    bandera=0;
+                    for(j=0; j<subtipo.options[i].value.length; j++){       
+                        //console.log("Recorriendo el caracter nro " + j)             
+                        if (bandera==0){
+                            console.log("La bandera es 0")    
+                            if(j==0){
+                                //console.log("J es 0")                            
+                                subtid = subtipo.options[i].value[j].toString();
                                 //console.log("subtid: " + subtid)
                             }
+                            else{
+                                //console.log("J es " + j)
+                                if(isNaN(subtipo.options[i].value[j])){
+                                    //console.log("El valor de subtipo no es un nro: " + subtipo.options[i].value[j])
+                                    bandera=1;
+                                    //console.log("Es el subtid: " + subtid + " igual al tipoid: "+tipoId+ "?")
+                                    if(subtid == tipoId)
+                                    {
+                                        //console.log("Si")
+                                        subtipo.options[i].hidden = false
+                                    }
+                                    else{
+                                        //console.log("No")
+                                        subtipo.options[i].hidden = true                                    
+                                    }
+                                    //console.log("Resultado: " + subtid)
+                                    subtid=""
+                                }
+                                else{
+                                    subtid = subtid + subtipo.options[i].value[j].toString();
+                                    //console.log("subtid: " + subtid)
+                                }
+                            }
                         }
-                    }
-                    else{
-                        j=subtipo.options[i].value.length
+                        else{
+                            j=subtipo.options[i].value.length
+                        }
                     }
                 }
             }
         }
+        else{
+            document.getElementById('subtipo').hidden = true;
+            document.getElementById('placeholder').removeAttribute("hidden");
+        }
+        //console.log("Hay " + subtipo.options.length + " subitems")
+        
         
     }
 }    
@@ -259,80 +268,112 @@ function betweenyears(){
         table
         .columns('.fecha').search(fecha2.value).draw();
     }
-} 
-    
-function obtenerTagFormato(id){
-    let route = '/archivo/tag';   
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $.ajax({
-        url: route,
-        type: 'GET',
-        cache: false,
-        data: ({
-            _token: $('#signup-token').val(),
-            id: id
-        }),
-        dataType: 'json',
-        success: function(res) {
-            return res
-        },
-        error: function(res){
-            console.log(res)
-        }});
 }
 
 function tags(){
-    var cont=0;
-    let idtag = document.getElementById('tag').value;
-    let tag = obtenerTagFormato(idtag);
-    let div = document.getElementById('tag-comp');
-    let div2 = document.createElement("div");    
-    let lab = document.createElement('label');
-    document.getElementById('inp-tag').removeAttribute('hidden');
-    document.getElementById('placeholder-tag').hidden = true;
-    lab.innerHTML = tag.descripcion;
-    div2.appendChild(lab);
-    if(tag.dato == 1){
-        let input = document.createElement('input')
-        if(tag.dato_tipo == 1){
-            input.type = "number"
-            input.className="no-spin"
+
+    let tag = document.getElementById('tag').value;
+    let idtag = document.getElementById('tag').value[0];     
+         
+    if (tag.value != 'sel')
+    {
+        let bandera= 0;  
+        for(i = 1; i < tag.length; i++){ 
+        if (bandera==0)
+        {
+            if(isNaN(document.getElementById('tag').value[i]))
+            {                    
+                if(document.getElementById('tag').value[i] != '|')
+                {
+                    bandera =1;
+                }      
+            }
+            else{
+                idtag = idtag + document.getElementById('tag').value[i].toString(); 
+            }
         }
-        else{
-            input.type = "text"
-        }
-    }
-    if(tag.dato == 2){
-        let input = document.createElement("select");
-        getSelects(input, tag.id)
-    }
-    if(tag.dato == 3){
-        let input = document.createElement("input");
-        if(dato == 1){                               
-        input.type = "number";
-        input.className="no-spin"
-        }
-        else{
-            input.type = "text";
-        }                      
-        input.setAttribute('list', "opciones-"+tag.id_tag);
-        input.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-            findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+   
+        let route = '/archivo/tag';   
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        return $.ajax({
+            url: route,
+            type: 'GET',
+            cache: false,
+            data: ({
+                _token: $('#signup-token').val(),
+                id: idtag
+            }),
+            dataType: 'json',
+            success: function(tag) {
+                console.log(tag)
+                let div = document.getElementById('tag-comp');
+                while(div.hasChildNodes()){
+                    div.removeChild(div.lastChild)
+                }
+                let div2 = document.createElement("div");    
+                let lab = document.createElement('label');
+                document.getElementById('inp-tag').removeAttribute('hidden');
+                document.getElementById('placeholder-tag').hidden = true;
+                lab.innerHTML = tag.descripcion;
+                div2.appendChild(lab);
+                let input;
+                if(tag.dato == 1){
+                    input = document.createElement('input')
+                    if(tag.dato_tipo == 1){
+                        input.type = "number"
+                        input.className="no-spin"
+                    }
+                    else{
+                        input.type = "text"
+                    }
+                    input.className = "form-control"
+                }
+                if(tag.dato == 2){
+                    input = document.createElement("select");
+                    input.className="form-select"
+                    getSelects(input, tag.id_tag)
+                }
+                if(tag.dato == 3){
+                    input = document.createElement("input");
+                    if(tag.dato_tipo == 1){                               
+                    input.type = "number";
+                    input.className="no-spin"
+                    }
+                    else{
+                        input.type = "text";
+                    }   
+                    input.className = "form-control"                   
+                    input.setAttribute('list', "opciones");
+                    input.addEventListener('keyup', function (e) {
+                        if (e.key === 'Enter') {
+                            console.log("Enter")
+                        findTexto(input.value, tag.id_tag, input, "opciones");
+                        }
+                    });
+                }
+                input.setAttribute('name','input_tag');
+                input.id= 'input_tag'
+                input.name= 'input_tag'
+                div2.className = "col-lg-12";
+                div2.appendChild(input);
+                div.appendChild(div2);
+            },
+            error: function(res){
+                console.log(res)
+            }});
+        }
     }
-    input.setAttribute('name','input'+cont);
-    cont++;
-    div2.className = "col-lg-12";
-    div2.appendChild(input)       
-
-    div.appendChild(div2);
+    else{
+        document.getElementById('inp_tag').hidden = true;
+        document.getElementById('placeholder-tag').removeAttribute('hidden');
+    }
+    
+    
 }
 
 $(document).ready(function () {
@@ -408,6 +449,13 @@ $(document).ready(function () {
         //alert('You clicked on ' + data[6] + "'s row");
     });
     
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+
 });
 
 function cancelarbusqueda(){
@@ -515,28 +563,64 @@ function toggle() {
   }
 
 
-  window.addEventListener("DOMContentLoaded", (event) => {
-    const submitBtn = document.getElementById('btnb')
+window.addEventListener("DOMContentLoaded", (event) => {
+const submitBtn = document.getElementById('btnb')
+const addBtn = document.getElementById('btn-agregar-tag')
 
 const año = document.getElementById('año')
 const tipo = document.getElementById('tipo')
 const busqueda = document.getElementById('busq')
 const fecha1 = document.getElementById('min')
 const fecha2 = document.getElementById('max')
+const tag_sel = document.getElementById('tag')
+
+
 // run this function whenever the values of any of the above 4 inputs change.
 // this is to check if the input for all 4 is valid.  if so, enable submitBtn.
 // otherwise, disable it.
 const checkEnableButton = () => {    
-
+    let tag = document.getElementById('input_tag');  
     console.log(busqueda.value)
     //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
     if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
-    || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != ''){
+    || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != '' 
+    || tag.value != 'sel' && tag.value != ''){
         submitBtn.removeAttribute('disabled')
     }
     else{
         submitBtn.setAttribute('disabled', 'disabled')
     }   
+}
+
+const checkInput = () => {
+    if(tag_sel.value != 'sel'){
+        $.when(tags()).done(function(a1){            
+            const tag = document.getElementById('input_tag');   
+            console.log(tag.value)
+            tag.addEventListener('change', checkEnableButton)
+            tag.addEventListener('keypress', checkEnableButton)
+            tag.addEventListener('change', checkAddButton)
+            tag.addEventListener('keypress', checkAddButton)
+        });        
+    }
+}
+const setValue= () => {
+    const tag = document.getElementById('input_tag');   
+    addBtn.setAttribute('disabled', 'disabled')
+    if(tag){tag.value = ''}
+    
+}
+
+const checkAddButton = () => {    
+    addBtn.removeAttribute('disabled')
+    let tag = document.getElementById('input_tag');   
+    console.log(tag.value)
+    if(tag.value != '' && tag.value != 'sel'){
+        addBtn.removeAttribute('disabled')
+    }
+    else{
+        addBtn.setAttribute('disabled', 'disabled')
+    }
 }
 
 
@@ -545,5 +629,122 @@ if(fecha2){fecha2.addEventListener('change', checkEnableButton)}
 año.addEventListener('change', checkEnableButton)
 tipo.addEventListener('change', checkEnableButton)
 busqueda.addEventListener('keyup', checkEnableButton)
+tag_sel.addEventListener('change', checkInput)
+tag_sel.addEventListener('change', setValue)
+
+
 });
 
+
+function getSelects(padre, id){
+    console.log(id)
+    let route = '/archivo/selects';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id: id
+        }),
+        dataType: 'json',
+        success: function(res) {          
+            for(i=0;i<res.length;i++){
+                let option = document.createElement("option");
+                option.value = res[i].campo1;
+                option.text = res[i].campo1;
+                padre.appendChild(option);
+            }
+        },
+        error: function(res){
+            console.log(res)
+        }});
+}
+
+function findTexto(texto, id, padre, idlista){
+
+    let route = '/archivo/busquedadirigida';   
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            texto: texto,
+            id: id
+        }),
+        dataType: 'json',
+        success: function(res) {
+            let lista = document.createElement("datalist");
+            lista.id = idlista;
+            for(i=0;i<res.length;i++){                
+                let option = document.createElement("option");
+                option.value = res[i].campo1;
+                option.text = res[i].campo1;
+                lista.appendChild(option);
+            }
+            padre.appendChild(lista)
+        },
+        error: function(res){
+            console.log(res)
+        }});
+
+}
+
+function agregarTag(){
+    let input = document.getElementById('input_tag').value;
+    let sel = document.getElementById('tag');
+    console.log(sel.value)
+    let tag = sel.options[sel.selectedIndex].text
+    let acumulado = document.getElementById('tag-acumulado');
+    acumulado.value = acumulado.value + '|' + '<' + tag + ':' + input + '>';    
+    console.log(acumulado.value);
+    let añadidas = document.getElementById('tags-añadidos');
+    añadidas.removeAttribute('hidden'); 
+    filtro = document.createElement('div');
+    filtro.className = "btn btn-secondary col-lg-3 col-md-3 col-sm-3 col-xs-3 filtro";
+    filtro.id = '&lt' + tag + ':' + input + '&gt'
+    filtro.innerHTML=  '&lt' + tag + ':' + input + '&gt' + '<a class="cancelarFiltro" onclick="removeFiltro(\''+ tag + '\', \'' +input +'\')">X</a>'
+    console.log(filtro)
+    añadidas.appendChild(filtro)
+}
+
+function removeFiltro(tag, input){
+    document.getElementById('&lt' + tag + ':' + input + '&gt').remove();
+    let  acumulado = document.getElementById('tag-acumulado');
+    let string= '<'+tag+':'+input+'>'
+    for(let i = 0; i<acumulado.value.length; i++){
+        if(acumulado.value[i] == '<'){
+            let bandera=0
+            for(let j=0; j<string.length; j++){
+                if(acumulado.value[i+j] != string[j]){
+                    console.log(acumulado.value[i+j],string[j])
+                    bandera=1;
+                }
+            }
+            if (bandera==0){
+                    let ac = acumulado.value
+                    console.log(ac)              
+                    let str = '|<'+tag+':'+input+'>'
+                    acumulado.value = ac.replace(str,'')
+                    console.log(acumulado.value)
+            }
+        }
+    }    
+    if(acumulado.value == ''){ 
+        document.getElementById('tags-añadidos').hidden= true;
+    }
+   
+    
+}

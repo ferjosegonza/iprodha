@@ -17,10 +17,10 @@
             <div class="titulo page__heading">Búsqueda de Archivos Digitalizados</div>
             @include('layouts.favorito.fav', ['modo' => 'Agregar'])
         </div>
+        {!! Form::open(['route' => 'archivos.buscar', 'method' => 'GET']) !!}
         <div class="section-body">            
-            @include('layouts.modal.mensajes')
-            {!! Form::open(['route' => 'archivos.buscar', 'method' => 'GET']) !!}
-            <div class="container row barraBusqueda">
+            @include('layouts.modal.mensajes')            
+            <div class="container row barraBusqueda">                
                 <div class="row align-items-center col-lg-9">                               
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex">     
                         <label id="labelswitch">Elegir entre fechas</label>
@@ -47,14 +47,8 @@
                     {!! Form::label('Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                         <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
                             <option value="sel" selected>Seleccionar</option>
-                            @php
-                                   $i=0; 
-                            @endphp
                             @foreach ($TipoDocumento as $tipo)                            
                                 <option value="{{$tipo->id_tipoarchivo}}|{{$tipo->nombre_corto}}">{{$tipo->nombre_corto}}</option>
-                                @php
-                                    $i++;
-                                @endphp
                             @endforeach                        
                         </select>   
                     </div>    
@@ -77,18 +71,21 @@
                     
                 </div>
                 <div class="row align-items-center col-lg-9">    
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex">
+                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 flex" hidden>
+                        <br>
+                        <button class="btn btn-success" id="btn-agregar-tag" type="button" onclick="agregarTag()" disabled>+</button>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 flex">
                         {!! Form::label('Tags:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                             <select class="form-select" id="tag" onchange="tags()" name="tag">
                                 <option value="sel" selected>Seleccionar</option>                                
                                 @foreach ($Tags as $tag)                            
-                                    <option value="{{$tag->id_tag}}">{{$tag->descripcion}}</option>                                    
+                                    <option value="{{$tag->id_tag}}|{{$tag->descripcion}}">{{$tag->descripcion}}</option>                                    
                                 @endforeach                        
                             </select>   
                         </div>
-                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex" >
-                            <div id="inp-tag" hidden>
-                                {!! Form::label('Completar:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 flex" >
+                            <div id="inp-tag" hidden>                                
                                 <div id="tag-comp"></div>
                             </div>                                      
                             <P id="placeholder-tag">---</P>    
@@ -103,11 +100,16 @@
                     <label>Encuentre lo que busca:</label>
                     {!! Form::submit('Buscar', ['class' => 'btn btn-success', 'id'=>'btnb', 'disabled' => 'disabled']) !!}
                 </div>        
-                {!! Form::close() !!}        
-            </div>                
-            <a href="{{ route('archivos.consultar') }}" id="areset">Recargar los archivos</a>
-            <label id="aclaracion">(Por defecto verás los archivos correspondientes al último boletín)</label>
-
+                                    
+            </div>            
+            <div class="row tags-añadidos" id="tags-añadidos" hidden>
+                <input type="text" id='tag-acumulado' name="tag-acumulado" hidden>  
+            </div>   
+            <div>
+                 <a href="{{ route('archivos.consultar') }}" id="areset">Recargar los archivos</a>
+                <label id="aclaracion">(Por defecto verás los archivos correspondientes al último boletín)</label>
+            </div>
+            {!! Form::close() !!} 
             <div class="row abajo card">
                 <div class="tabla card-body table-responsive col-xs-9 col-sm-9 col-md-9 col-lg-9 flex">
                     <table id="archivos" class="table display table-hover mt-2" class="display">

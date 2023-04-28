@@ -158,7 +158,7 @@
                                 <select class="form-select" id="tag" name="tag" onchange="completartag()">
                                     <option value="sel" selected>Seleccionar</option>                                    
                                     @foreach ($Tags as $tag)
-                                        <option value="{{$tag->id_tag}}">{{$tag->descripcion}}</option>
+                                        <option value="{{$tag->id_tag}}|{{$tag->descripcion}}">{{$tag->descripcion}}</option>
                                     @endforeach       
                                 </select>  
                                 <button class="btn btn-success" id='btn-tag' onclick="agregarTag()">Agregar</button>
