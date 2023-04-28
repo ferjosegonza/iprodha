@@ -41,7 +41,7 @@ use App\Http\Controllers\NotificacionController;
 |
 */
 Route::get('/ipusuario', function(Request $request){
-    echo $request->ip();
+    echo $_SERVER['REMOTE_ADDR'];
 });
 
 Route::get('/sintaxis',function()
