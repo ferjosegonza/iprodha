@@ -42,7 +42,7 @@ use App\Http\Controllers\NotificacionController;
 |
 */
 Route::get('/ipusuario', function(Request $request){
-    echo $request->getClientIp();
+    print_r($_SERVER);
 });
 
 Route::get('/sintaxis',function()
