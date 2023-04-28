@@ -52,6 +52,18 @@ class TicketController extends Controller
         return view('Coordinacion.Informatica.ticket.crear',compact('Categorias'));
     }
 
+    public function getClientIP(){       
+        if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)){
+               return  $_SERVER["HTTP_X_FORWARDED_FOR"];  
+        }else if (array_key_exists('REMOTE_ADDR', $_SERVER)) { 
+               return $_SERVER["REMOTE_ADDR"]; 
+        }else if (array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
+               return $_SERVER["HTTP_CLIENT_IP"]; 
+        } 
+   
+        return '';
+   }
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -72,7 +84,8 @@ class TicketController extends Controller
         $modelo->idusuario = Auth::user()->id;
         $modelo->idcatprobsub = $request->input('subcateg');
         if(!$mobile){
-            $modelo->iporigentarea = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            // $modelo->iporigentarea = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            $modelo->iporigentarea = $this->getClientIP();
         }else{
             $modelo->iporigentarea = $_SERVER['REMOTE_ADDR'];
         }
@@ -467,5 +480,5 @@ class TicketController extends Controller
     public function isMobileDevice() {
         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
-        
+    
 }
