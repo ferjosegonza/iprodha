@@ -21,22 +21,22 @@ class ArchivoController extends Controller
         $this->middleware('auth');  
     }
 
-    public function consultar(){
-        $boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
-        $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('nombre_corto', 'asc')->orderBy('ano_archivo', 'desc')->orderBy('mes_archivo', 'desc')->orderBy('dia_archivo', 'desc')->get();
-       foreach($archivos as $a){
-            $a->path_archivo = substr($a->path_archivo, 14);
-        } 
-        $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
-        $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
-        $Tags = Dig_tags::where('estructura','=','1')->get();
-
-        return view('archivo.index')
-            ->with('TipoDocumento',$TipoDocumento)
-            ->with('SubTipoDocumento',$SubTipoDocumento)
-            ->with('Tags',$Tags)
-            ->with('archivos',$archivos);
-    }
+public function consultar(){
+    $boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
+    $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('nombre_corto', 'asc')->orderBy('ano_archivo', 'desc')->orderBy('mes_archivo', 'desc')->orderBy('dia_archivo', 'desc')->get();
+    foreach($archivos as $a){
+        $a->path_archivo = substr($a->path_archivo, 14);
+    } 
+    $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
+    $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
+    $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
+    
+    return view('archivo.index')
+        ->with('TipoDocumento',$TipoDocumento)
+        ->with('SubTipoDocumento',$SubTipoDocumento)
+        ->with('Tags',$Tags)
+        ->with('archivos',$archivos);
+}
 
 public function buscar(Request $request){
     //return $request;
@@ -54,6 +54,8 @@ public function buscar(Request $request){
     $fecha1=$request->fecha1;
     $fecha2=$request->fecha2;
     $año = $request->ano;
+    $tag =  explode('|',$request->tag);
+    $info = $request->input_tag;    
 
     $query = "SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipocabecera = 1";
     if($request->betwenyears == 'on'){
@@ -90,6 +92,9 @@ public function buscar(Request $request){
         //hay una busqueda
         $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
     }    
+    if($tag != null and $info != null){
+        $query = $query . " AND claves_archivo LIKE '%<$tag[1]:$info>%'";
+    }
     //ordenamos
     $query = $query . " order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc";
 
@@ -102,10 +107,11 @@ public function buscar(Request $request){
     } 
     $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
-    
+    $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
 
     return view('archivo.index')
         ->with('TipoDocumento',$TipoDocumento)
+        ->with('Tags',$Tags)
         ->with('SubTipoDocumento',$SubTipoDocumento)
         ->with('archivos',$archivos);
 
@@ -118,7 +124,7 @@ public function getpdf($path){
 }
 
 public function obtenerTagFormato(Request $request){
-    $tag = Dig_tags::where("dt.id_tag", "=", $request->id)->first();
+    $tag = Dig_tags::where("id_tag", "=", $request->id)->first();
     if($tag->estructura == 2){
         $query = "SELECT dt.id_tag, dt.descripcion, id_tag_hijo, orden, sc1.descripcion as deschijo, 
         sc1.dato_tipo, sc1.dato from iprodha.dig_tags dt inner join iprodha.dig_tags_complejo dtc 

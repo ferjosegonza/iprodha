@@ -1,15 +1,19 @@
 body{
     align-content: center;
+    margin-right: 0px !important;
 }
 .barraBusqueda{
     border: 1px solid ghostwhite;
-    padding: 25px;
+    padding: 15px;
+    padding-top: 25px;
     border-radius: 7px;
     background-color:rgba(255, 205, 172, 0.267);
     align-content: center;
-    align-items: center;
-    width: 100%;
+    align-items: center;    
     margin-bottom: 20px;
+    max-width: 1980px;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
 }
 
 .abajo{
@@ -159,3 +163,29 @@ thead input {
   color: rgb(134, 134, 134);
   font-size: 12px;
  }
+.tags-añadidos{
+  border: 1px solid orange;
+  margin-top: -17px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.151);
+  border-end-end-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-left: 0;
+  width: 100%;
+  align-content: center;
+  align-items: center;    
+}
+#btn-agregar-tag{
+  padding: 5px;
+  padding-inline: 15px;
+}
+.filtro {
+  color: black;
+  padding-inline: 15px;
+  text-overflow: ellipsis;
+}
+.cancelarFiltro{
+  color: red;
+  text-decoration: none;
+}
