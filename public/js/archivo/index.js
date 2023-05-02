@@ -121,6 +121,7 @@ function year(){
 }
 
 function filtrar(){
+    evt.preventDefault();
     if(document.getElementById('busq').value == ""){
         // $( "#archivos" ).DataTable().ajax.reload()
         var table = $('#archivos').DataTable()
@@ -195,6 +196,7 @@ function subtipos(){
 }
 
 function create(){
+    evt.preventDefault();
 $(document).ready(function () {
 if ($.fn.DataTable.isDataTable('#archivos')) {
     $('#archivos').DataTable().destroy();
@@ -268,9 +270,11 @@ function betweenyears(){
         table
         .columns('.fecha').search(fecha2.value).draw();
     }
+    evt.preventDefault();
 }
 
 function tags(){
+    evt.preventDefault();
 
     let tag = document.getElementById('tag').value;
     let idtag = document.getElementById('tag').value[0];     
@@ -459,6 +463,7 @@ $(document).ready(function () {
 });
 
 function cancelarbusqueda(){
+    evt.preventDefault();
     let table = $('#archivos').DataTable()
     //console.log(document.getElementById('tipo').value)
     if(document.getElementById('tipo').value == 'sel'){
@@ -637,6 +642,7 @@ tag_sel.addEventListener('change', setValue)
 
 
 function getSelects(padre, id){
+    evt.preventDefault();
     console.log(id)
     let route = '/archivo/selects';    
     $.ajaxSetup({
@@ -703,6 +709,7 @@ function findTexto(texto, id, padre, idlista){
 }
 
 function agregarTag(){
+    evt.preventDefault();
     let input = document.getElementById('input_tag').value;
     let sel = document.getElementById('tag');
     console.log(sel.value)
@@ -721,6 +728,7 @@ function agregarTag(){
 }
 
 function removeFiltro(tag, input){
+    evt.preventDefault();
     document.getElementById('&lt' + tag + ':' + input + '&gt').remove();
     let  acumulado = document.getElementById('tag-acumulado');
     let string= '<'+tag+':'+input+'>'

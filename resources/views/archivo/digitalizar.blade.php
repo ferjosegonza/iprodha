@@ -155,7 +155,7 @@
                                 <div class="row">
                                 <div id="agregar" hidden>
                                 {!! Form::label('Agregar una clave:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                <select class="form-select" id="tag" name="tag" onchange="completartag()">
+                                <select class="form-select" id="tag" name="tag" onchange="completarTag()">
                                     <option value="sel" selected>Seleccionar</option>                                    
                                     @foreach ($Tags as $tag)
                                         <option value="{{$tag->id_tag}}|{{$tag->descripcion}}">{{$tag->descripcion}}</option>
@@ -169,11 +169,11 @@
                                 </div> 
                             </div>
                             </div>                          
-                            
+                             <hr>{!! Form::textarea('claves', null, ['id'=>'claves','maxlenght'=>'1040', 'style' => 'text-transform:uppercase', 'class' => 'form-control', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("characla", "claves", 1040)'])!!}
+                            <label for="claves" id="characla">Quedan 1040 caracteres.</label>
+                            <hr>
                         </div>
-                        <hr>{!! Form::textarea('claves', null, ['id'=>'claves','maxlenght'=>'1040', 'style' => 'text-transform:uppercase', 'class' => 'form-control', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("characla", "claves", 1040)'])!!}
-                        <label for="claves" id="characla">Quedan 1040 caracteres.</label>
-                        <hr>
+                       
                         <div class="row rowbot">
                             <div class="col-lg-4 btnes flex" id="div-btnborrar" hidden> 
                                 <button id="btnborrar" class="btn btn-danger btn-block">Borrar</button>
