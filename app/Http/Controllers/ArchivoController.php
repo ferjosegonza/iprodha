@@ -124,7 +124,8 @@ public function getpdf($path){
 }
 
 public function obtenerTagFormato(Request $request){
-    $tag = Dig_tags::where("id_tag", "=", $request->id)->first();
+    $idtag = explode('|', $request->id);
+    $tag = Dig_tags::where("id_tag", "=", $idtag[0])->first();
     if($tag->estructura == 2){
         $query = "SELECT dt.id_tag, dt.descripcion, id_tag_hijo, orden, sc1.descripcion as deschijo, 
         sc1.dato_tipo, sc1.dato from iprodha.dig_tags dt inner join iprodha.dig_tags_complejo dtc 

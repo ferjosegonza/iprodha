@@ -16,7 +16,7 @@ function tipos(){
                 i=tipo.length+1;    
             }
             else{
-                let tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
+                tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
             }
         }    
         document.getElementById('subtipo').hidden = false;
@@ -172,7 +172,6 @@ function existeCheck(){
                     }),
                     dataType: 'json',
                     success: function(res) {    
-                        console.log(res)        
                         //obligatorio:   
                         let containerOb =  document.getElementById('comp-obligatorio'); //aca van los tags obligatorios
                         let containerRe =  document.getElementById('comp-recomendado'); //aca van los tags recomendados
@@ -220,9 +219,9 @@ function existeCheck(){
                                         divmayorOb.className = "row";
                                         containerOb.appendChild(divmayorOb)
                                     }                                 
-                                    if(res.response[i].dato == 1){//Si el dato es tipeado   
-                                                                           
-                                        crearInputSimple(divmayorOb, res.response[i].dato_tipo, res.response[i].descripcion, 1, i)                      
+                                    if(res.response[i].dato == 1){//Si el dato es tipeado                                                                              
+                                        crearInputSimple(divmayorOb, res.response[i].dato_tipo, res.response[i].descripcion, 1, i) 
+                                                             
                                     }
                                     else if(res.response[i].dato == 2){//Si el dato se busca en la BD
                                         crearSelect(divmayorOb, res.response[i].id_tag, res.response[i].descripcion, 1,i) 
@@ -263,9 +262,7 @@ function existeCheck(){
                                             containerRe.appendChild(divmayorRe)
                                         } 
                                         if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                           crearInputSimple(divmayorRe, res.response[i].dato_tipo, res.response[i].descripcion, 1, i)                                       
-                                             
-
+                                           crearInputSimple(divmayorRe, res.response[i].dato_tipo, res.response[i].descripcion, 1, i)                                      
                                         }
                                         else if(res.response[i].dato == 2){//Si el dato se busca en la BD
                                             crearSelect(divmayorRe, res.response[i].id_tag, res.response[i].descripcion, 1, i)
@@ -376,7 +373,7 @@ function existeCheck(){
                                             }
                                             if (bandera==0){                                                 
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
-                                                let divmedioOb = document.createElement("div")
+                                                var divmedioOb = document.createElement("div")
                                                 divmedioOb.className = "col-lg-6 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
@@ -395,8 +392,8 @@ function existeCheck(){
                                                 bandera=1; //Ya no es el primer hijo
                                             }
                                             else{       
-                                                let divmedioOb = document.createElement("div")
-                                                divmedioOb.className = "col-lg-6 col-md-12 row"                                          
+                                                //let divmedioOb = document.createElement("div")
+                                                //divmedioOb.className = "col-lg-6 col-md-12 row"                                          
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
                                                     crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
                                                      
@@ -444,7 +441,7 @@ function existeCheck(){
                                                 
                                                  
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
-                                                let divmedioRe = document.createElement("div")
+                                                var divmedioRe = document.createElement("div")
                                                 divmedioRe.className = "col-lg-6 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
@@ -464,8 +461,8 @@ function existeCheck(){
                                                 bandera=1; //Ya no es el primer hijo
                                             }
                                             else{        
-                                                let divmedioRe = document.createElement("div")
-                                                divmedioRe.className = "col-lg-6 col-md-12 row"                                           
+                                                //let divmedioRe = document.createElement("div")
+                                                //divmedioRe.className = "col-lg-6 col-md-12 row"                                           
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
                                                     crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
                                                      
@@ -512,7 +509,7 @@ function existeCheck(){
                                             if (bandera==0){
                                                 
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
-                                                let divmedioOp = document.createElement("div")
+                                                var divmedioOp = document.createElement("div")
                                                 divmedioOp.className = "col-lg-6 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
@@ -531,8 +528,8 @@ function existeCheck(){
                                                 bandera=1; //Ya no es el primer hijo
                                             }
                                             else{       
-                                                let divmedioOp = document.createElement("div")
-                                                divmedioOp.className = "col-lg-6 col-md-12 row"                                           
+                                                //let divmedioOp = document.createElement("div")
+                                                //divmedioOp.className = "col-lg-6 col-md-12 row"                                           
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
                                                     crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
                                                      
@@ -579,7 +576,6 @@ function existeCheck(){
                 else{
                     mostrarPagina(2)
                 }   
-                console.log("mostrar")
             }
             else{
                 document.getElementById('sectags').hidden=true;
@@ -684,7 +680,6 @@ function crearSelect(padre, id, nombre, medida, i){
         input.placeholder = cargarDatos(nombre)
     }
     else{
-        console.log(cargarDatos(nombre))
         input.placeholder = cargarDatos(nombre)
         input.value = cargarDatos(nombre)
     }
@@ -712,17 +707,14 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
     divmenor.appendChild(lab);
     //
     let input = document.createElement("input");
-    console.log(input)
     if(dato == 1){//Si el dato es numérico                                     
       input.type = "number";
       input.className="no-spin"
     }
     else{//Si el tipo de dato es texto
         input.type = "text";
-    }                                        
-    console.log(input)
+    }                                  
     input.className = 'form-control'; //
-    console.log(input)
     if(medida==1){
         input.name = 'input' + i;
         input.id = 'input' + i;
@@ -731,7 +723,6 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
         input.name = 'hijo' + i;
         input.id = 'hijo' + i;
     }
-    console.log(input)
     input.setAttribute('list', "opciones"+i);
     input.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
@@ -785,7 +776,6 @@ function cargarDatos(tag){
     let cont=0;
     let band=0;
     let claves = document.getElementById('claves').value;
-    console.log(claves)
     for(let i = 0; i<claves.length; i++){
         if(claves[i] == '>'){
             cont++;
@@ -805,7 +795,6 @@ function cargarDatos(tag){
             info[cont] = info[cont] + claves[i];
         }
     } 
-    console.log(tags.length)
     for(let i=0; i<tags.length; i++){
         if(tags[i] == tag)
         {
@@ -857,50 +846,55 @@ function completarTag(){
 function agregarTag(){
     var cont=0;
     let idtag = document.getElementById('tag').value;
-    let tag = obtenerTagFormato(idtag);
-    let div = document.getElementById('tag-agregar');
-    let div2 = document.createElement("div");    
-    if(tag.length>1){
-        
-    }
-    else{
-        let lab = document.createElement('label');
-        lab.innerHTML = tag.descripcion;
-        div2.appendChild(lab);
-        if(tag.dato == 1){
-            let input = document.createElement('input')
-            if(tag.dato_tipo == 1){
-                input.type = "number"
-                input.className="no-spin"
-            }
-            else{
-                input.type = "text"
-            }
+    var tag;
+    $.when(tag = obtenerTagFormato(idtag)).then(function(){
+        let div = document.getElementById('tag-agregar');
+        console.log(div)
+        let div2 = document.createElement("div");    
+        console.log(tag)
+        if(tag.length>1){
+            
         }
-        if(tag.dato == 2){
-            let input = document.createElement("select");
-            getSelects(input, tag.id)
-        }
-        if(tag.dato == 3){
-            let input = document.createElement("input");
-            if(dato == 1){                               
-            input.type = "number";
-            input.className="no-spin"
-            }
-            else{
-                input.type = "text";
-            }                      
-            input.setAttribute('list', "opciones-"+tag.id_tag);
-            input.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+        else{
+            let lab = document.createElement('label');
+            lab.innerHTML = tag.descripcion;
+            div2.appendChild(lab);
+            if(tag.dato == 1){
+                let input = document.createElement('input')
+                if(tag.dato_tipo == 1){
+                    input.type = "number"
+                    input.className="no-spin"
                 }
-            });
+                else{
+                    input.type = "text"
+                }
+            }
+            if(tag.dato == 2){
+                let input = document.createElement("select");
+                getSelects(input, tag.id)
+            }
+            if(tag.dato == 3){
+                let input = document.createElement("input");
+                if(dato == 1){                               
+                input.type = "number";
+                input.className="no-spin"
+                }
+                else{
+                    input.type = "text";
+                }                      
+                input.setAttribute('list', "opciones-"+tag.id_tag);
+                input.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                    findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+                    }
+                });
+            }
+            div2.className = "col-lg-12";
+            div2.appendChild(input)        
         }
-        div2.className = "col-lg-12";
-        div2.appendChild(input)        
-    }
-    div.appendChild(div2);
+        div.appendChild(div2);
+    })
+    
 }
 
 function obtenerTagFormato(id){
@@ -917,7 +911,6 @@ function obtenerTagFormato(id){
         cache: false,
         data: ({
             _token: $('#signup-token').val(),
-            texto: texto,
             id: id
         }),
         dataType: 'json',

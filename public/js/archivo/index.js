@@ -274,6 +274,7 @@ function betweenyears(){
         table
         .columns('.fecha').search(fecha2.value).draw();
     }
+    evt.preventDefault();
 }
 
 function tags(){
@@ -464,7 +465,8 @@ $(document).ready(function () {
 });
 
 function cancelarbusqueda(){
-    
+
+    evt.preventDefault();
     let table = $('#archivos').DataTable()
     //console.log(document.getElementById('tipo').value)
     if(document.getElementById('tipo').value == 'sel'){
