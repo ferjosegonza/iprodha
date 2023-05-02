@@ -24,9 +24,21 @@
      } 
 </style>
     <section class="section">
-        <div class="section-header">
-            <div class="titulo py-1">Gestion de Viviendas de la Obra</div>
-        </div>
+        <div class="section-header d-flex">
+                <div class="flex-grow-1">
+                    <div class="titulo page__heading">Gestion de Viviendas de la Obra</div>
+                </div>
+                <div class="px-1">
+                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                    {!! Form::submit('Carga Individual', ['class' => 'btn btn-primary']) !!}
+                    {!! Form::close() !!}
+                </div>
+                <div class="px-1">
+                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                    {!! Form::submit('Carga Masiva', ['class' => 'btn btn-primary']) !!}
+                    {!! Form::close() !!}
+                </div>
+    </div>
         <div class="section-body">
             <div class="row">
                 @include('layouts.modal.mensajes')
@@ -76,12 +88,12 @@
                                         {!! Form::number('can_viv', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Etapas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         {!! Form::number('can_eta', $obra->getEtapas->last()->nro_eta, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
-                                </div>  
+                                </div>   --}}
                             </div>
                         </div>
                     </div>
@@ -163,7 +175,9 @@
                     <div class="card">
                         <div class="card-head">
                             <br>
-                            <div class="text-center"><h6>Vivienda</h6></div>
+                            <div class="text-center">
+                                <h6>Vivienda</h6>
+                            </div>
                         </div>
                         <div class="card-body">
                             {!! Form::open(['method' => 'POST','route' => 'obravivienda.guardarvivienda']) !!}

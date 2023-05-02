@@ -1,4 +1,5 @@
 function tipos(){
+    evt.preventDefault();
     if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
         document.getElementById('placeholder').hidden = false;        
@@ -28,7 +29,7 @@ function tipos(){
                     }      
                 }
                 else{
-                    let tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
+                    tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
                 }
             }
             else{
@@ -104,6 +105,7 @@ function tipos(){
 }    
 
 function year(){
+    evt.preventDefault();
     if(document.getElementById('año').value == "sel"){
        // $( "#archivos" ).DataTable().ajax.reload()
        var table = $('#archivos').DataTable()
@@ -138,6 +140,7 @@ function filtrar(){
 }
 
 function subtipos(){
+    evt.preventDefault();
     if(document.getElementById('subtipo').value == 'sel'){
         var table = $('#archivos').DataTable()
         table
@@ -263,6 +266,7 @@ $('#archivos tbody').empty();
 }
 
 function betweenyears(){
+    evt.preventDefault();
     var fecha1 = document.getElementById("fecha1");
     var fecha2 = document.getElementById("fecha2");
     var table = $('#archivos').DataTable();
@@ -275,7 +279,6 @@ function betweenyears(){
 
 function tags(){
     evt.preventDefault();
-
     let tag = document.getElementById('tag').value;
     let idtag = document.getElementById('tag').value[0];     
          
@@ -382,7 +385,6 @@ function tags(){
 
 $(document).ready(function () {
      //create();
-     
     // Setup - add a text input to each footer cell
     $('#archivos thead tr').clone(true).addClass('filters').appendTo( '#archivos thead' );
 
@@ -463,6 +465,7 @@ $(document).ready(function () {
 });
 
 function cancelarbusqueda(){
+
     evt.preventDefault();
     let table = $('#archivos').DataTable()
     //console.log(document.getElementById('tipo').value)
@@ -553,6 +556,7 @@ function cancelarbusqueda(){
 }
 
 function toggle() {
+    evt.preventDefault();
     let year = document.getElementById("yearIn");
     let date = document.getElementById("dateIn");
     if (year.hidden == true) {
@@ -673,7 +677,7 @@ function getSelects(padre, id){
 }
 
 function findTexto(texto, id, padre, idlista){
-
+    evt.preventDefault();
     let route = '/archivo/busquedadirigida';   
 
     $.ajaxSetup({
