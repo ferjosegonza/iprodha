@@ -28,7 +28,7 @@ function tipos(){
                     }      
                 }
                 else{
-                    let tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
+                    tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
                 }
             }
             else{
