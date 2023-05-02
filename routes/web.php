@@ -124,7 +124,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAS']], fu
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-BARRIO']], function () {
     Route::get('/barrio', [BarrioController::class, 'index'])->name('index');
     Route::get('/barrio/{barrio}/editar', [BarrioController::class, 'edit'])->name('barrio.editar');
-    Route::put('/barrio/{barrio}', [BarrioController::class, 'update']);
+    Route::post('/barrio/{barrio}', [BarrioController::class, 'update']);
     Route::delete('/barrio/eliminar/{barrio}', [BarrioController::class, 'destroy'])->name('barrio.eliminar');
     //Route::get('/obras', [ObrasCertifController::class, 'index'])->name('index');
     //Route::get('/barrio/{barrio}/detalle', [BarrioCertifController::class, 'detalle'])->name('barrioCertif.detalle');

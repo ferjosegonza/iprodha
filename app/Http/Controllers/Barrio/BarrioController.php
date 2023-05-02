@@ -1,128 +1,96 @@
 <?php
-
-namespace App\Http\Controllers\Barrio;
-use App\Http\Controllers\Controller;
-use App\Models\Iprodha\Barrio;
-use App\Models\Iprodha\Obras;
-use App\Models\Iprodha\Localidad;
-use App\Models\Iprodha\Barrio_vw_tipoxtipologia;
-use App\Models\Iprodha\Barrio_programa;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
-use Illuminate\Support\Facades\DB;
-class BarrioController extends Controller
-{
-
-    function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('permission:VER-BARRIO|CREAR-BARRIO|EDITAR-BARRIO|BORRAR-BARRIO', ['only' => ['index']]);
-        $this->middleware('permission:CREAR-BARRIO', ['only' => ['create','store']]);
-        $this->middleware('permission:EDITAR-BARRIO', ['only' => ['edit','update']]);
-        $this->middleware('permission:BORRAR-BARRIO', ['only' => ['destroy']]);
-    }
-    
-    public function index(Request $request)
-    {
-
-        $name = strtoupper($request->query->get('name'));
-
-        if (!isset($name)) {
-            $Barrios = Barrio::orderBy('barrio', 'desc')->paginate(10);           
-            //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
-        } else {
-            //$roles = Role::where('name', 'like', '%' .$name . '%')->orderBy('updated_at', 'DESC')->paginate(10);
-            $Barrios = Barrio::whereRaw('UPPER(nombarrio) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('barrio', 'desc')->paginate(10);
-        }            
-        return view('barrio.index',compact('Barrios'));
-            //Con paginación
-            //$obras = Obras::all();
-            //return view('obras.index', ['Obras' => $obras]);
-            //return view('barrio.index',compact('Barrios'));
-            //al usar esta paginacion, recordar poner en el el index.blade.php este codigo
-            //  {!! $roles->links() !!}
-    }
-    
-    public function create(Request $request)
-    {
-        return view('barrio.crear');   
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */    
-    public function store(Request $request)
-    {
-        //return redirect()->route('obras.index')->with('mensaje','Usuario creado con éxito!.');
-        $validatedData = $request->validate([
-            //'id_obra' => 'required|unique|integer',
-            'nombarrio' => 'required|min:10|max:250|string',
-            'fecha_alta' => 'required|min:9|max:9|string',
-        ]);
-        //$show = Obras::create($validatedData);
-        //crea directamente sin ID
-        $input = $request->all();
-        $modelo = new Barrio;
-        $modelo->barrio = $request->input('barrio');
-        $modelo->nombarrio = $request->input('nombarrio');
-        $modelo->fecha_alta = $request->input('fecha_alta');          
-        $data = Barrio::latest('barrio')->first();
-        if(($data['barrio'] )=='') {
-            $modelo->barrio=    1;
-        }else{
-            $modelo->barrio= $data['barrio'] +1;
+    namespace App\Http\Controllers\Barrio;
+    use App\Http\Controllers\Controller;
+    use App\Models\Iprodha\Barrio;
+    use App\Models\Iprodha\Obras;
+    use App\Models\Iprodha\Localidad;
+    use App\Models\Iprodha\Barrio_vw_tipoxtipologia;
+    use App\Models\Iprodha\Barrio_programa;
+    use Illuminate\Http\Request;
+    use Illuminate\Validation\Validator;
+    use Illuminate\Support\Facades\DB;
+    class BarrioController extends Controller{
+        function __construct(){
+            $this->middleware('auth');
+            $this->middleware('permission:VER-BARRIO|CREAR-BARRIO|EDITAR-BARRIO|BORRAR-BARRIO',['only'=>['index']]);
+            $this->middleware('permission:CREAR-BARRIO',['only'=>['create','store']]);
+            $this->middleware('permission:EDITAR-BARRIO',['only'=>['edit','update']]);
+            $this->middleware('permission:BORRAR-BARRIO',['only'=>['destroy']]);
+        }        
+        public function index(Request $request){
+            $name=strtoupper($request->query->get('name'));
+            if(!isset($name)){
+                $Barrios=Barrio::orderBy('barrio','desc')->paginate(10);
+                //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
+            }else{
+                //$roles = Role::where('name', 'like', '%' .$name . '%')->orderBy('updated_at', 'DESC')->paginate(10);
+                $Barrios=Barrio::whereRaw('UPPER(nombarrio) LIKE ?',['%'.strtoupper($name).'%'])->orderBy('barrio','desc')->paginate(10);
+            }            
+            return view('barrio.index',compact('Barrios'));                
+        }        
+        public function create(Request $request){            
+            $Localidad=Localidad::pluck('nom_loc','id_loc');
+            $Obra=Obras::pluck('nom_obr','id_obr'); 
+            $Programa=Barrio_programa::pluck('descripcion','id_programa');
+            $Tipo=Barrio_vw_tipoxtipologia::pluck('tipologia','idtipologia'); 
+            $Tipologia=Barrio_vw_tipoxtipologia::pluck('tipobarrio','idtipbarrio');
+            return view('barrio.crear',compact('Localidad','Obra','Programa','Tipo','Tipologia'));
         }
-        
-        $modelo->save();
-        return redirect()->route('barrio.index')->with('mensaje','El barrio '.$modelo->nom_obr.' creado con exito.');
-    }
-    
-    public function edit( $barrio)
-    {
-            $unbarrio = Barrio::find($barrio);
-            
-            $Localidad= Localidad::pluck('nom_loc','id_loc'); 
-            $Obra= Obras::pluck('nom_obr','id_obr'); 
-            $Tipo= Barrio_vw_tipoxtipologia::pluck('tipologia','idtipologia'); 
-            $Tipologia= Barrio_vw_tipoxtipologia::pluck('tipobarrio','idtipbarrio'); 
-            $Programa= Barrio_programa::pluck('descripcion','id_programa');             
+        public function store(Request $request){                        
+            $this->validate($request,['nombarrio'=>'required|min:5|max:250|string']);            
+            $unbarrio=new Barrio;
+            $unbarrio->barrio=Barrio::max('barrio')+1;            
+            $unbarrio->nombarrio=$request->input('nombarrio');
+            $unbarrio->id_obr=$request->input('id_obr');
+            $unbarrio->id_loc=$request->input('id_loc');
+            $unbarrio->tipofinan=($request->input('tipofinan')=='Si')?1:0;
+            $unbarrio->factura=($request->input('factura')=='Si')?1:0;
+            $unbarrio->fec_entrega=$request->input('fec_entrega');
+            $unbarrio->idzona=$request->input('idzona');
+            $unbarrio->id_programa=$request->input('id_programa');
+            $unbarrio->IDTIPBARRIO=$request->input('idtipBarrio');
+            $unbarrio->IDTIPOLOGIA=$request->input('idtipologia');
+            $unbarrio->tipoprecio=$request->input('tipoPrecio');
+            $unbarrio->cuentabco=$request->input('cuentabco');
+            $unbarrio->porfin=$request->input('porfin');
+            $unbarrio->canviv=$request->input('canviv');
+            $unbarrio->nro_res=$request->input('nro_res');                                    
+            $unbarrio->save();
+            return redirect()->route('barrio.index')->with('mensaje','El barrio '.$unbarrio->nom_obr.' creado con exito.');
+        }        
+        public function edit($barrio){
+            $unbarrio=Barrio::find($barrio);            
+            $Localidad=Localidad::pluck('nom_loc','id_loc'); 
+            $Obra=Obras::pluck('nom_obr','id_obr'); 
+            $Tipo=Barrio_vw_tipoxtipologia::pluck('tipologia','idtipologia'); 
+            $Tipologia=Barrio_vw_tipoxtipologia::pluck('tipobarrio','idtipbarrio'); 
+            $Programa=Barrio_programa::pluck('descripcion','id_programa');             
             return view('barrio.editar',compact('unbarrio','Localidad','Obra','Tipo','Tipologia','Programa'));
+        }        
+        public function update(Request $request,$barrio){
+            $this->validate($request,['nombarrio'=>'required|min:5|max:250|string']);                        
+            $unbarrio=Barrio::find($barrio);
+            $unbarrio->nombarrio=$request->input('nombarrio');
+            $unbarrio->id_obr=$request->input('id_obrBarrio');
+            $unbarrio->id_loc=$request->input('id_locBarrio');
+            $unbarrio->tipofinan=($request->input('uvi')=='Si')?1:0;
+            $unbarrio->factura=($request->input('factura1')=='Si')?1:0;
+            $unbarrio->fec_entrega=$request->input('fec_entrega');
+            $unbarrio->idzona=$request->input('idzona');
+            $unbarrio->id_programa=$request->input('Programa');
+            $unbarrio->IDTIPBARRIO=$request->input('tipoBarrio');
+            $unbarrio->IDTIPOLOGIA=$request->input('tipologiaBarrio');
+            $unbarrio->tipoprecio=$request->input('tipoPrecioBarrio');
+            $unbarrio->cuentabco=$request->input('cuentabco');
+            $unbarrio->porfin=$request->input('porfin');
+            $unbarrio->canviv=$request->input('canviv');
+            $unbarrio->nro_res=$request->input('nro_res');            
+            $unbarrio->save();
+            return redirect()->route('barrio.index')->with('mensaje','Barrio '.$request->input('nombarrio').' editado con éxito!.');
+        }
+        public function destroy($barrio){        
+            $unbarrio=Barrio::find($barrio);            
+            $unbarrio->delete();
+            return redirect()->route('barrio.index')->with('mensaje','Barrio '. $unbarrio->nombarrio.' borrado con éxito!.');
+        }
     }
-    /*public function show(){ 
-        return redirect()->route('obras.update');
-     }   */
- 
-
-    public function update(Request $request,$barrio)
-    {   
-        $this->validate($request, [
-            //'id_obra' => 'required|min:4|max:6|string',
-            'nombarrio' => 'required|min:5|max:250|string',
-            'fecha_alta' => 'required|min:9|max:9|string',
-        ]);
-        
-        //$input = $request->all();
-        //$data = Obras::where('id_obra', $input['id_obra'])->first();
-        /*if (isset($data['id_obra'])) {
-            if ($idconcepto != $data['id_obra']) {
-                return redirect()->route('Obras.index')->with('alerta','Ya existe la obra.!');
-            }
-        }*/
-        $unbarrio = Barrio::find($barrio);
-        $unbarrio->nombarrio = $request->input('nombarrio');
-        $unbarrio->fec_creacion = $request->input('fecha_alta');
-        $unbarrio->save();
-        return redirect()->route('barrrio.index')->with('mensaje','Barrio '.$request->input('nombarrio').' editado con éxito!.');
-    }
-
-    public function destroy($barrio)
-    {        
-        $unbarrio = Barrios::find($barrio);
-        //Obras::find($id_obra)->delete();
-        $unbarrio->delete();
-        return redirect()->route('barrio.index')->with('mensaje','Barrio '. $unbarrio->nombarrio.' borrado con éxito!.');  
-    }
-}

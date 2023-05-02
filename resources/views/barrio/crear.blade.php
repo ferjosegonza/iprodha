@@ -1,108 +1,89 @@
 
 @extends('layouts.app')
-
 @section('content')
     <section class="section">
-        <div class="section-header">
-            <h3 class="page__heading">Alta Barrios</h3>
-        </div>
-        <form method="post" action="{{ route('barrio.store') }}">
-            <div class="card-body">    
-
-            @include('layouts.modal.mensajes')
-            </div>
-
+        <div class="section-header"><h3 class="page__heading">Alta Barrios</h3></div>
+        <form method="post" action="{{route('barrio.store')}}">
+            <div class="card-body">@include('layouts.modal.mensajes')</div>
             @csrf
             @method('POST')
             <div style="width:99%;float:left;">
                 <div style="width:30%;float:left;margin-left:1%;">
-                    {!! Form::label('Nombre:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    {!! Form::text('nombarrio', old('nombarrio'), ['type'=>'text','class' => 'form-control','placeholder'=>'']) !!}
-                </div>
+                    {!!Form::label('Nombre:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('nombarrio',old('nombarrio'),['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
+                </div>                
                 <div style="width:30%;float:left;margin-left:1%;">
-                    {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::select('empresa', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
-                </div>
-                <div style="width:30%;float:left;margin-left:1%;">
-                    {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::select('web', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
-                </div>
-
-            </div>
-            <!--div class="form-group d-flex align-items-center ">
-
-            </div-->
-            <!--div class="form-group d-flex align-items-left" style="width:95%;float:left;"-->
-            <div style="width:99%;float:left;margin-top:2%;">
+                    {!!Form::label('Localidad:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::select('id_loc',$Localidad,['placeholder'=>'Seleccionar','class'=>'form-select'])!!}
+                </div>            
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Es uvi:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;margin-left:1%;']) !!}
-                    {{ Form::radio('uvi', 'Si', true,['style' => 'white-space: nowrap;']) }} <span>Si</span>
-                    {{ Form::radio('uvi', 'No',false,['style' => 'white-space: nowrap;']) }} <span>No</span>
+                    {!!Form::label('Es uvi:',null,['class'=>'control-label','style'=>'white-space:nowrap;margin-left:1%'])!!}
+                    {{Form::radio('tipofinan','Si',true,['style'=>'white-space:nowrap'])}}<span>Si</span>
+                    {{Form::radio('tipofinan','No',false,['style'=>'white-space:nowrap'])}}<span>No</span>
                 </div>
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Factura:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {{ Form::radio('factura', 'Si', true,['style' => 'white-space: nowrap;']) }} <span>Si</span>
-                    {{ Form::radio('factura', 'No',false,['style' => 'white-space: nowrap;']) }} <span>No</span>
+                    {!!Form::label('Factura:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {{Form::radio('factura','Si',true,['style'=>'white-space:nowrap'])}}<span>Si</span>
+                    {{Form::radio('factura','No',false,['style'=>'white-space:nowrap'])}}<span>No</span>
                 </div>
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                    {!! Form::select('obra', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
-                </div>
-                <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Fec.Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:10%; ']) !!}
-                    {!! Form::text('fec_entrega', old('fec_entrega'), ['type'=>'text','class' => 'form-control','placeholder'=>'']) !!}
+                    {!!Form::label('Fec.Entrega:',null,['class'=>'control-label','style'=>'white-space:nowrap;width:10%'])!!}
+                    {!!Form::date('fec_entrega',date('Y-m-d'),['id'=>'fec_entrega','class'=>'form-control'])!!}
                 </div>
             </div>
             <div style="width:99%;float:left;margin-top:2%;">
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Zona:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    {!! Form::select('zonaBarrio', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                    {!!Form::label('Obra:',null,['class'=>'control-label','style'=>'white-space:nowrap;width:20%']) !!}
+                    {!!Form::select('id_obr',$Obra,['placeholder'=>'Seleccionar','class'=>'form-select'])!!}
+                </div>                
+            </div>
+            <div style="width:99%;float:left;margin-top:2%;">
+                <div style="width:20%;float:left;margin-left:1%;">
+                    {!!Form::label('Zona:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::select('idzona',['0'=>'0','1'=>'1','2'=>'2','3'=>'3'],['placeholder'=>'Seleccionar','class'=>'form-select'])!!}
                 </div>
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Programa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    {!! Form::select('programaBarrio', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                    {!!Form::label('Programa:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::select('id_programa',$Programa,['placeholder'=>'Seleccionar','class'=>'form-select'])!!}
                 </div>
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Tipo Barrio:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::select('tipoBarrio', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                    {!!Form::label('Tipo Barrio:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::select('idtipBarrio',$Tipo,['placeholder'=>'Seleccionar','class'=>'form-select'])!!}
                 </div>
+                <br><br>
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Tipología:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::select('tipologiaBarrio', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                    {!!Form::label('Tipología:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::select('idtipologia',$Tipologia,['placeholder'=>'Seleccionar','class'=>'form-select'])!!}
                 </div>
                 <div style="width:10%;float:left;margin-left:1%;">
-                    {!! Form::label('Tipo de Precio:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::select('tipoPrecioBarrio', ['1' => 'SI', '0' => 'NO'], null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                    {!!Form::label('Tipo de Precio:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::select('tipoPrecio',[0=>'Sin Asignar',1=>'Normal',2=>'Reducido'],['placeholder'=>'Seleccionar','class'=>'form-select'])!!}
                 </div>                
             </div>            
             <div style="width:99%;float:left;margin-top:2%;">
                 <div style="width:10%;float:left;margin-left:1%;">
-                    {!! Form::label('Cta.Bano:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    {!! Form::text('ctaBancoBarrio', old('nombarrio'), ['type'=>'text','class' => 'form-control','placeholder'=>'10384']) !!}
+                    {!!Form::label('Cta. Banco:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('cuentabco','',['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
                 </div>                
                 <div style="width:10%;float:left;margin-left:1%;">
-                    {!! Form::label('Porc.Finan:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                    {!! Form::text('porceFinanBarrio', old('nombarrio'), ['type'=>'text','class' => 'form-control','placeholder'=>'']) !!}
+                    {!!Form::label('Porc. Finan:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('porfin','',['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
                 </div>
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Cant. Viv.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::text('cantVivBarrio', old('nombarrio'), ['type'=>'text','class' => 'form-control','placeholder'=>'']) !!}
+                    {!!Form::label('Cant. Viv.:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('canviv','',['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
                 </div>
                 <div style="width:20%;float:left;margin-left:1%;">
-                    {!! Form::label('Nro. Resol:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::text('nroResolBarrio', old('nombarrio'), ['type'=>'text','class' => 'form-control','placeholder'=>'']) !!}
+                    {!!Form::label('Nro. Resol:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('nro_res','',['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
                 </div>
-
             </div>
-
-
-            @can('CREAR-BARRIO')
-            <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-            @endcan
-
-        </div>
-
-
-        </form>
+            <div style="width:99%;float:left;margin-top:2%;">
+                @can('CREAR-BARRIO')
+                    <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                @endcan
+                <a class="btn btn-info" href="{{route('barrio.index')}}">Volver</a>            
+            </div>
+        </form>            
     </section>
 @endsection
