@@ -1,5 +1,4 @@
 function tipos(){
-    evt.preventDefault();
     if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
         document.getElementById('placeholder').hidden = false;        
@@ -105,7 +104,6 @@ function tipos(){
 }    
 
 function year(){
-    evt.preventDefault();
     if(document.getElementById('año').value == "sel"){
        // $( "#archivos" ).DataTable().ajax.reload()
        var table = $('#archivos').DataTable()
@@ -123,7 +121,6 @@ function year(){
 }
 
 function filtrar(){
-    evt.preventDefault();
     if(document.getElementById('busq').value == ""){
         // $( "#archivos" ).DataTable().ajax.reload()
         var table = $('#archivos').DataTable()
@@ -140,7 +137,6 @@ function filtrar(){
 }
 
 function subtipos(){
-    evt.preventDefault();
     if(document.getElementById('subtipo').value == 'sel'){
         var table = $('#archivos').DataTable()
         table
@@ -199,7 +195,6 @@ function subtipos(){
 }
 
 function create(){
-    evt.preventDefault();
 $(document).ready(function () {
 if ($.fn.DataTable.isDataTable('#archivos')) {
     $('#archivos').DataTable().destroy();
@@ -266,7 +261,6 @@ $('#archivos tbody').empty();
 }
 
 function betweenyears(){
-    evt.preventDefault();
     var fecha1 = document.getElementById("fecha1");
     var fecha2 = document.getElementById("fecha2");
     var table = $('#archivos').DataTable();
@@ -274,11 +268,9 @@ function betweenyears(){
         table
         .columns('.fecha').search(fecha2.value).draw();
     }
-    evt.preventDefault();
 }
 
 function tags(){
-    evt.preventDefault();
     let tag = document.getElementById('tag').value;
     let idtag = document.getElementById('tag').value[0];     
          
@@ -556,7 +548,6 @@ function cancelarbusqueda(){
 }
 
 function toggle() {
-    evt.preventDefault();
     let year = document.getElementById("yearIn");
     let date = document.getElementById("dateIn");
     if (year.hidden == true) {
@@ -646,7 +637,6 @@ tag_sel.addEventListener('change', setValue)
 
 
 function getSelects(padre, id){
-    evt.preventDefault();
     console.log(id)
     let route = '/archivo/selects';    
     $.ajaxSetup({
@@ -677,7 +667,6 @@ function getSelects(padre, id){
 }
 
 function findTexto(texto, id, padre, idlista){
-    evt.preventDefault();
     let route = '/archivo/busquedadirigida';   
 
     $.ajaxSetup({
@@ -713,7 +702,6 @@ function findTexto(texto, id, padre, idlista){
 }
 
 function agregarTag(){
-    evt.preventDefault();
     let input = document.getElementById('input_tag').value;
     let sel = document.getElementById('tag');
     console.log(sel.value)
@@ -732,7 +720,6 @@ function agregarTag(){
 }
 
 function removeFiltro(tag, input){
-    evt.preventDefault();
     document.getElementById('&lt' + tag + ':' + input + '&gt').remove();
     let  acumulado = document.getElementById('tag-acumulado');
     let string= '<'+tag+':'+input+'>'
