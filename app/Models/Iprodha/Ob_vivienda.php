@@ -11,7 +11,7 @@
 
         protected $table = 'iprodha.ob_vivienda';
 
-        protected $primaryKey = 'id_ent';
+        protected $primaryKey = 'id_viv';
 
         public $incrementing = false;
 

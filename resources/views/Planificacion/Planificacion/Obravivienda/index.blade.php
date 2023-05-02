@@ -57,11 +57,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped mt-2" id="example">
                                     <thead style="height:50px;">
-                                        <th class='ml-3 text-center' style="color:#fff;">Numero</th>
-                                        <th class='text-center' style="color:#fff;">Obra</th>
-                                        <th class='text-center' style="color:#fff;">Empresa</th>
-                                        <th class='text-center' style="color:#fff;">Localidad</th>
-                                        <th class='text-center' style="color: #fff;">Acciones</th>
+                                        <th class='ml-3 text-center' style="color:#fff; width:5%;">Numero</th>
+                                        <th class='text-center' style="color:#fff; width:20%;">Obra</th>
+                                        <th class='text-center' style="color:#fff; width:20%;">Empresa</th>
+                                        <th class='text-center' style="color:#fff; width:10%;">Localidad</th>
+                                        <th class='text-center' style="color: #fff; width:5%;">Acciones</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($obras as $obra)

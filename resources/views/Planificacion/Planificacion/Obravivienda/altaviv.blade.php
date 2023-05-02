@@ -29,7 +29,6 @@
         </div>
         <div class="section-body">
             <div class="row">
-                {!! Form::open(['route' => 'ofeobra.store', 'method' => 'POST']) !!}
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-12">
                     <div class="card">
@@ -167,7 +166,11 @@
                             <div class="text-center"><h6>Vivienda</h6></div>
                         </div>
                         <div class="card-body">
+                            {!! Form::open(['method' => 'POST','route' => 'obravivienda.guardarvivienda']) !!}
                             <div class="row">
+                                <div class="" hidden>
+                                    {!! Form::text('id_obr', $obra->id_obr, ['class' => 'form-control']) !!}
+                                </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Plano:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
@@ -197,11 +200,14 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('orden:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        <select class="form-select" name="orden" placeholder="Seleccionar" id='selected-orden'>
+                                        <select class="form-select" name="vivienda" placeholder="Seleccionar" id='selected-orden'>
                                             <option disabled selected>Seleccionar</option>
-                                            @for ($i = 1; $i <= $obra->can_viv; $i++)
-                                                <option value={{"$i"}}>{{$i}}</option>
-                                            @endfor
+                                            @foreach ($viviendas as $vivienda)
+                                                <option value={{"$vivienda->id_viv"}}>{{$vivienda->orden}}</option>
+                                            @endforeach
+                                            {{-- @for ($i = 1; $i <= $obra->can_viv; $i++)
+                                                
+                                            @endfor --}}
                                         </select>
                                     </div>
                                 </div>
@@ -333,7 +339,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                             <div class="form-group">
                                                 {!! Form::label('Superficie Lote:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('sup_lote', null, ['class' => 'form-control', 'id' => 'idsuplote']) !!}
+                                                {!! Form::number('sup_lote', null, ['class' => 'form-control', 'id' => 'idsuplote', 'step' => '.01']) !!}
                                             </div>
                                         </div>
                                         {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
@@ -357,7 +363,7 @@
                                     <div class="me-auto"></div>
                                     <div class="p-1">
                                         @can('CREAR-OBRAS')
-                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                         @endcan
                                         {!! Form::close() !!}
                                     </div>

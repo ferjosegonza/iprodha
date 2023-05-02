@@ -214,10 +214,25 @@ class ObraviviendaController extends Controller
 
     public function verViv($id){
         $obra = Ob_obra::find($id);
-        return view('Planificacion.Planificacion.Obravivienda.altaviv', compact('obra'));
+        $viviendas = array();;
+        foreach($obra->getEtapas as $etapa){
+            foreach($etapa->getEntregas as $entrega){
+                foreach ($entrega->getViviendas as $vivienda) {
+                    array_push($viviendas, (object)[
+                        'id_viv' => $vivienda->id_viv,
+                        'orden' => $vivienda->orden]);
+                }
+            }
+        } 
+        return view('Planificacion.Planificacion.Obravivienda.altaviv', compact('obra', 'viviendas'));
     }
 
-    public function viviendaDeObra($id, $orden){
+    public function viviendaDeObra($id){
+        return Ob_vivienda::find($id);
+    }
+
+    public function viviendaDeObraId($id){
+        
         $obra = Ob_obra::find($id);
         $viviendas = null;
         foreach($obra->getEtapas as $etapa){
@@ -230,6 +245,151 @@ class ObraviviendaController extends Controller
             }
         }     
         return $viviendas;
+    }
+
+    public function guardarVivienda(Request $request){
+        $this->validate($request, [
+            'vivienda' => 'required',
+        ]);
+        // return $request;
+        $id_viv = $request->input('vivienda');
+        $id_obr = $request->input('id_obr');
+
+        $vivienda = Ob_vivienda::find($id_viv);
+        //{"_token":"1soB2pFkgdUStxJ507a2aciyoFjxIazZNhl7WpHB","id_obr":"11581","plano":"123546","partida":"1254","partidaucac":null,"vivdisc":"0","vivienda":"137563","seccion":null,"chacra":null,"manzana":null,"parcela":null,"finca":null,"edif":"0","piso":"0","depto":"0","esca":"0","unfun":"0","letmanza":null,"lote":null,"numcalle":null,"nomcalle":null,"ent_calles":null,"num_finca":"0","sup_lote":null,"deslinde":null}
+        if($request->input('plano')){
+            $vivienda->update([
+                'plano' => $request->input('plano')
+            ]);
+        }
+
+        if($request->input('partida')){
+            $vivienda->update([
+                'partida' => $request->input('partida')
+            ]);
+        }
+
+        if($request->input('partidaucac')){
+            $vivienda->update([
+                'partida_2' => $request->input('partidaucac')
+            ]);
+        }
+
+        if(!is_null($request->input('vivdisc'))){
+            $vivienda->update([
+                'discap' => $request->input('vivdisc')
+            ]);
+        }
+
+        if($request->input('seccion')){
+            $vivienda->update([
+                'seccion' => $request->input('seccion')
+            ]);
+        }
+
+        if($request->input('chacra')){
+            $vivienda->update([
+                'chacra' => $request->input('chacra')
+            ]);
+        }
+
+        if($request->input('manzana')){
+            $vivienda->update([
+                'manzana' => $request->input('manzana')
+            ]);
+        }
+
+        if($request->input('parcela')){
+            $vivienda->update([
+                'parcela' => $request->input('parcela')
+            ]);
+        }
+
+        if($request->input('finca')){
+            $vivienda->update([
+                'finca' => $request->input('finca')
+            ]);
+        }
+        
+        if($request->input('edif') != 0){
+            $vivienda->update([
+                'edificio' => $request->input('edif')
+            ]);
+        }
+
+        if($request->input('piso') != 0){
+            $vivienda->update([
+                'piso' => $request->input('piso')
+            ]);
+        }
+
+        if($request->input('depto') != 0){
+            $vivienda->update([
+                'departamento' => $request->input('depto')
+            ]);
+        }
+
+        if($request->input('esca') != 0){
+            $vivienda->update([
+                'escalera' => $request->input('esca')
+            ]);
+        }
+
+        if($request->input('unfun') != 0){
+            $vivienda->update([
+                'uni_fun' => $request->input('unfun')
+            ]);
+        }
+
+        if($request->input('letmanza')){
+            $vivienda->update([
+                'man_emp' => $request->input('letmanza')
+            ]);
+        }
+
+        if($request->input('lote')){
+            $vivienda->update([
+                'lot_emp' => $request->input('lote')
+            ]);
+        }
+
+        if($request->input('numcalle')){
+            $vivienda->update([
+                'num_cal' => $request->input('numcalle')
+            ]);
+        }
+
+        if($request->input('nomcalle')){
+            $vivienda->update([
+                'nom_cal' => $request->input('nomcalle')
+            ]);
+        }
+
+        if($request->input('ent_calles')){
+            $vivienda->update([
+                'entrecalles' => $request->input('ent_calles')
+            ]);
+        }
+
+        if($request->input('num_finca')){
+            $vivienda->update([
+                'sup_fin' => $request->input('num_finca')
+            ]);
+        }
+
+        if($request->input('sup_lote')){
+            $vivienda->update([
+                'sup_lot' => $request->input('sup_lote')
+            ]);
+        }
+
+        if($request->input('deslinde')){
+            $vivienda->update([
+                'deslinde' => $request->input('deslinde')
+            ]);
+        }
+
+        return redirect()->route('obravivienda.viviendas', $id_obr)->with('mensaje','La vivienda se modifico con exito.');
     }
 
     public function verEta($id){

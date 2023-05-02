@@ -1,11 +1,12 @@
 $(function(){
     $('#selected-orden').on('change', onBuscarVivienda);
+    // $('#guardarVivienda').on('click', alert('Se guardaron los datos de la vivienda'));
 });
 
 function onBuscarVivienda(){
     
     // let mes = $(this).val();
-    let orden = $("#selected-orden").val();
+    let idviv = $("#selected-orden").val();
     let plano = document.getElementById('idplano');
     let partida = document.getElementById('idpartida');
     let partidaucac = document.getElementById('idpartidaucac');
@@ -32,9 +33,9 @@ function onBuscarVivienda(){
     
     $.when($.ajax({
         type: "post",
-        url: '/obra/vivienda/'+obra+'/'+orden,
+        url: '/obra/vivienda/'+idviv,
         data: {
-             periodo: obra
+             periodo: idviv
          },
         success: function (response) {
             plano.value = response.plano;
@@ -56,7 +57,7 @@ function onBuscarVivienda(){
             nucalle.value = response.num_cal;
             nomcalle.value = response.nom_cal;
             entrecalle.value = response.entrecalles;
-            numFinca.value = response.uni_fun;
+            numFinca.value = response.sup_fin;
             supLote.value = response.sup_lot;
             deslinde.value = response.deslinde;
             console.log(response);
