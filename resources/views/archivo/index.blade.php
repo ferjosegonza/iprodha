@@ -127,7 +127,7 @@
                         <tbody>                            
                             @foreach ($archivos as $archivo)
                             <tr>
-                                <td> <button class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button></td>
+                                <td> <button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button></td>
                                 <td>{{$archivo->nombre_corto}}</td>
                                 <td>{{$archivo->dessubtipoarchivo}}</td>
                                 <td>{{$archivo->dia_archivo}}-{{$archivo->mes_archivo}}-{{$archivo->ano_archivo}}</td>
@@ -143,7 +143,7 @@
             <div class="preview row" id="preview" hidden>
                 <div class="card cardpre">
                     <div class="card-body">
-                        <button id="cancelar" class="btn btn-danger" onclick="cancelarbusqueda()">X</button>
+                        <button id="cancelar" type="button" class="btn btn-danger" onclick="cancelarbusqueda()">X</button>
                         <h5 class="card-title" id="pdftitle">PDF:</h5> 
                         <p id="despdf"> </p>
                         <object id="pdfver" data="http:\\localhost\Documentos\Cedulas\CED-ADJ-0018146349-20230316.pdf" type="application/pdf" ></object>
