@@ -580,7 +580,6 @@ const tag_sel = document.getElementById('tag')
 // otherwise, disable it.
 const checkEnableButton = () => {    
     let tag = document.getElementById('input_tag');  
-    console.log(busqueda.value)
     //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
     if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
     || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != '' 
@@ -595,12 +594,11 @@ const checkEnableButton = () => {
 const checkInput = () => {
     if(tag_sel.value != 'sel'){
         $.when(tags()).done(function(a1){            
-            const tag = document.getElementById('input_tag');   
-            console.log(tag.value)
+            const tag = document.getElementById('input_tag');
             tag.addEventListener('change', checkEnableButton)
-            tag.addEventListener('keypress', checkEnableButton)
+            tag.addEventListener('keyup', checkEnableButton)
             tag.addEventListener('change', checkAddButton)
-            tag.addEventListener('keypress', checkAddButton)
+            tag.addEventListener('keyup', checkAddButton)
         });        
     }
 }
