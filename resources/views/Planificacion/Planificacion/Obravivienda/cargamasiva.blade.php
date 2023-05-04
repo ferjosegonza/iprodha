@@ -293,8 +293,8 @@
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
-                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-outline-primary']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas', $obra->id_obr], 'style' => '']) !!}
+                                        {!! Form::submit('Volver', ['class' => 'btn btn-outline-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>

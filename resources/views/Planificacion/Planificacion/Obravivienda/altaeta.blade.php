@@ -113,112 +113,36 @@
                 {{-- Etapas de la obra --}}
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="card">
-                        <div class="card-head">
-                            <br>
-                            <div class="text-center"><h5>Etapas</h5></div>
-                        </div>
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row pb-1">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('N° Etapa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('num_eta', 1, ['class' => 'form-control']) !!}
-                                    </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                    <div class="form-group">
-                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('descrip', null, ['class' => 'form-control']) !!}
-                                    </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 text-center">
+                                    <h5>Etapas</h5>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('0 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control']) !!}
-                                    </div>
+                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.nuevaetapa', $obra->id_obr], 'style' => '']) !!}
+                                    {!! Form::submit('Crear', ['class' => 'btn btn-success w-100']) !!}
+                                    {!! Form::close() !!}
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('2 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('3 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('4 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('Acciones:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
-                                        {!! Form::submit('Guardar', ['class' => 'btn btn-success form-control']) !!}
-                                        {!! Form::close() !!}
-                                    </div>
-                                </div>  
                             </div>
-                            {{-- <div class="row">
-                                {!! Form::label('Cantidad de Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('0 (CERO):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('2 (DOS):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('can_viv_2', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('3 (TRES):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('can_viv_3', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('4 (CUATRO):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('can_viv_4', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Cantidad de Viviendas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::number('can_viv', 0, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Etapas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::number('can_eta', 1, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                            </div> --}}
+                            
                             <div class="row">
                                 <div class="table-responsive">
                                     <div class="tableFix">
                                     <table id="viv" class="table table-hover mt-2" class="display">
                                         <thead style="">
                                             <th class="text-center" scope="col" style="color:#fff;width:5%;">N° Etapa</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:50%;">Descripcion</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:40%;">Descripcion</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">0 Dormitorios</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">2 Dormitorios</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">3 Dormitorios</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">4 Dormitorios</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:5%;">Acciones</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:15%;">Acciones</th>
                                         </thead>
                                         <tbody>
                                             {{-- {{$obra->getEtapas->first()->getEntregas->last()->getViviendas}} --}}
-                                            @foreach ($obra->getEtapas as $etapa)
+                                            @foreach ($obra->getEtapas->sortBy('nro_eta') as $etapa)
                                                 <tr>                                          
                                                     <td class= 'text-center' >{{$etapa->nro_eta}}</td>
                                                     <td class= 'text-center' >{{$etapa->descripcion}}</td>
@@ -227,7 +151,19 @@
                                                     <td class= 'text-center' >{{$etapa->can_viv_3}}</td>
                                                     <td class= 'text-center' >{{$etapa->can_viv_4}}</td>
                                                     <td class= 'text-center' >
-                                                        boton editar
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.editaretapa', $etapa->id_etapa], 'style' => '']) !!}
+                                                                {!! Form::submit('Editar', ['class' => 'btn btn-primary']) !!}
+                                                                {!! Form::close() !!}
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                {!! Form::open([
+                                                                    'method' => 'DELETE','route' => ['obravivienda.eliminaretapa', $etapa->id_etapa],'style' => '',]) !!}
+                                                                {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('¿Está seguro que desea ELIMINAR la etapa?')",]) !!}
+                                                                {!! Form::close() !!}
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -251,61 +187,23 @@
                 </div>
                  {{-- -------------------------------- --}}
 
-                 {{-- Entregas de la obra --}} 
+                 {{-- Entregas de la obra --}}
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="card">
-                        <div class="card-head">
-                            <br>
-                            <div class="text-center"><h5>Entregas</h5></div>
-                        </div>
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row pb-1">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('N° Etapa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        <select class="form-select" name="orden" placeholder="Seleccionar" id='selected-etapa'>
-                                            <option disabled selected>Seleccionar</option>
-                                            @foreach ($obra->getEtapas as $etapa)
-                                                <option value={{"$etapa->id_etapa"}}>{{$etapa->nro_eta}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 text-center">
+                                    <h5>Entregas</h5>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('N° Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('num_eta', 1, ['class' => 'form-control']) !!}
-                                    </div>
+                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.vernuevaentrega', $obra->id_obr], 'style' => '']) !!}
+                                    {!! Form::submit('Crear', ['class' => 'btn btn-success w-100']) !!}
+                                    {!! Form::close() !!}
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-                                    <div class="form-group">
-                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('descrip', null, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Fecha Entrega:', null, [
-                                                'class' => 'control-label',
-                                                'style' => 'white-space: nowrap;',
-                                            ]) !!}
-                                            {!! Form::date('fec_ter', null, [
-                                                'min' => '1900-01-01',
-                                                'max' => \Carbon\Carbon::now()->year . '-12',
-                                                'id' => 'periodo',
-                                                'class' => 'form-control',
-                                            ]) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('Acciones:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
-                                        {!! Form::submit('Guardar', ['class' => 'btn btn-success form-control']) !!}
-                                        {!! Form::close() !!}
-                                    </div>
-                                </div>  
                             </div>
+                            
                             <div class="row">
                                 <div class="table-responsive">
                                     <div class="tableFix">
@@ -313,9 +211,9 @@
                                         <thead style="">
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">N° Entrega</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">Cant. viviendas</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:55%;">Descripcion</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:45%;">Descripcion</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">Fecha Entrega</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:15%;">Acciones</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:22%;">Acciones</th>
                                         </thead>
                                         <tbody>
                                             @foreach ($obra->getEtapas as $etapa)
@@ -331,14 +229,22 @@
                                                         @endif
                                                         <td class= 'text-center' >
                                                             <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                                                                <div class="col-lg-3">
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.editarentrega', $entrega->id_ent, $obra->id_obr], 'style' => '']) !!}
                                                                     {!! Form::submit('Editar', ['class' => 'btn btn-primary']) !!}
                                                                     {!! Form::close() !!}
                                                                 </div>
+
+                                                                <div class="col-lg-3">
+                                                                    {!! Form::open([
+                                                                        'method' => 'DELETE','route' => ['obravivienda.eliminarentrega', $entrega->id_ent],'style' => '',]) !!}
+                                                                    {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('¿Está seguro que desea ELIMINAR la entrega?')",]) !!}
+                                                                    {!! Form::close() !!}
+                                                                </div>
+
                                                                 <div class="col-lg-6">
                                                                     {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.entrega', $obra->id_obr, $entrega->id_ent], 'style' => '']) !!}
-                                                                    {!! Form::submit('viviendas', ['class' => 'btn btn-success']) !!}
+                                                                    {!! Form::submit('Viviendas', ['class' => 'btn btn-info']) !!}
                                                                     {!! Form::close() !!}
                                                                 </div>
                                                             </div>
@@ -354,7 +260,28 @@
                         </div>
                     </div>
                 </div>
-                {{-- ---------------------------------------- --}}
+                 {{-- -------------------------------- --}}
+
+                <div class="col-xs-12 col-sm-8 col-md-6 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row pt-3">
+                                <div class="d-flex">
+                                    <div class="me-auto">
+                                        {{-- (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong> --}}
+                                    </div>
+                                    <div class="p-1">
+                                    </div>
+                                    <div class="p-1">
+                                        {!! Form::open(['method' => 'GET', 'route' => 'obravivienda.index', 'style' => '']) !!}
+                                        {!! Form::submit('Volver', ['class' => 'btn btn-primary']) !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
