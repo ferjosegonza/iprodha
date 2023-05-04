@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 //agregamos lo siguiente
 use App\Models\User;
 use App\Models\Diegoz\MenuM;
+use App\Models\Iprodha\Fav_Favorito;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
@@ -227,6 +228,7 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         $id =  Crypt::decrypt($id);
+        Fav_Favorito::where('idusuario', '=', $id)->delete();
         User::find($id)->delete();
         return redirect()->route('usuarios.index')->with('mensaje','Borrado exitosamente.');
     }

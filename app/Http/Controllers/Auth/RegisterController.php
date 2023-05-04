@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Iprodha\Fav_Favorito;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -78,6 +79,11 @@ class RegisterController extends Controller
             $rol = Role::where('name', '=',$name)->first();
             $user->assignRole($rol->id);
             $user->syncPermissions(['CREAR-TICKET', 'EDITAR-TICKET', 'VER-ARCHIVOS', 'VER-TICKET']);
+
+            //Creacion de atajo a documentacion digital
+            Fav_Favorito::create(['idusuario' => $user->id , 'ruta' => 'ticket.index', 'titulo' => 'Ticket para el Soporte Informático', 'descripcion' => 'Generar tickets para soporte informático.']);
+            //Creacion de atajo a documentacion digital
+            Fav_Favorito::create(['idusuario' => $user->id , 'ruta' => 'archivos.consultar', 'titulo' => 'Búsqueda de Archivos Digitalizados', 'descripcion' => 'Busqueda de archivos que se encuentras digitalizados.']);
         }
 
         return $user;

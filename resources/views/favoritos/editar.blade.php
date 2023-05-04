@@ -10,7 +10,7 @@
             <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
                 <div class="card">
                     <div class="card-body">
-                    {!! Form::model($Favorito, ['method' => 'PATCH', 'route' => ['favorito.update', $Favorito->ruta]]) !!}
+                    {!! Form::model($Favorito, ['method' => 'PATCH', 'route' => ['favorito.update', $Favorito->idfav]]) !!}
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">

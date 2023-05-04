@@ -25,11 +25,11 @@
 <body>
 <div id="app">
     <section class="section">
-        <div class="container mt-5">
+        <div class="container mt-1">
             <div class="row">
                 <div class="col-md-6 offset-md-3">
                     <div class="login-brand">
-                        <img src="{{ asset('img/logo3.png') }}" alt="logo" width="150"
+                        <img src="{{ asset('img/logo3.png') }}" alt="logo" width="80"
                              class="shadow-light rounded-circle ">
                     </div>
                     @yield('content')

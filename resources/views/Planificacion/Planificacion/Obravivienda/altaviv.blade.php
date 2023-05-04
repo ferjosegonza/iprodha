@@ -24,12 +24,23 @@
      } 
 </style>
     <section class="section">
-        <div class="section-header">
-            <div class="titulo py-1">Gestion de Viviendas de la Obra</div>
-        </div>
+        <div class="section-header d-flex">
+                <div class="flex-grow-1">
+                    <div class="titulo page__heading">Gestion de Viviendas de la Obra</div>
+                </div>
+                <div class="px-1">
+                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                    {!! Form::submit('Carga Individual', ['class' => 'btn btn-primary']) !!}
+                    {!! Form::close() !!}
+                </div>
+                <div class="px-1">
+                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.cargamasiva', $obra->id_obr], 'style' => '']) !!}
+                    {!! Form::submit('Carga Masiva', ['class' => 'btn btn-primary']) !!}
+                    {!! Form::close() !!}
+                </div>
+    </div>
         <div class="section-body">
             <div class="row">
-                {!! Form::open(['route' => 'ofeobra.store', 'method' => 'POST']) !!}
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-12">
                     <div class="card">
@@ -77,12 +88,12 @@
                                         {!! Form::number('can_viv', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Etapas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         {!! Form::number('can_eta', $obra->getEtapas->last()->nro_eta, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
-                                </div>  
+                                </div>   --}}
                             </div>
                         </div>
                     </div>
@@ -100,9 +111,10 @@
                                 <table id="viv" class="table table-hover mt-2" class="display">
                                     <thead style="">
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Partida</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
@@ -121,9 +133,10 @@
                                                 @foreach ($entrega->getViviendas as $vivienda)
                                                     <tr>                                          
                                                         <td class= 'text-center' >{{$vivienda->orden}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->plano}}</td>
                                                         <td class= 'text-center' >{{$etapa->nro_eta}}</td>   
-                                                        <td class= 'text-center' >{{$entrega->num_ent}}</td>                                           
+                                                        <td class= 'text-center' >{{$entrega->num_ent}}</td>
+                                                        <td class= 'text-center' >{{$vivienda->plano}}</td>
+                                                        <td class= 'text-center' >{{$vivienda->partida}}</td>                                           
                                                         <td class= 'text-center' >{{$vivienda->seccion}}</td>
                                                         <td class= 'text-center' >{{$vivienda->chacra}}</td>
                                                         <td class= 'text-center' >{{$vivienda->manzana}}</td>
@@ -162,10 +175,16 @@
                     <div class="card">
                         <div class="card-head">
                             <br>
-                            <div class="text-center"><h6>Vivienda</h6></div>
+                            <div class="text-center">
+                                <h6>Vivienda</h6>
+                            </div>
                         </div>
                         <div class="card-body">
+                            {!! Form::open(['method' => 'POST','route' => 'obravivienda.guardarvivienda']) !!}
                             <div class="row">
+                                <div class="" hidden>
+                                    {!! Form::text('id_obr', $obra->id_obr, ['class' => 'form-control']) !!}
+                                </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Plano:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
@@ -195,11 +214,14 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('orden:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        <select class="form-select" name="orden" placeholder="Seleccionar" id='selected-orden'>
+                                        <select class="form-select" name="vivienda" placeholder="Seleccionar" id='selected-orden'>
                                             <option disabled selected>Seleccionar</option>
-                                            @for ($i = 1; $i <= $obra->can_viv; $i++)
-                                                <option value={{"$i"}}>{{$i}}</option>
-                                            @endfor
+                                            @foreach ($viviendas->sortBy('orden') as $vivienda)
+                                                <option value={{"$vivienda->id_viv"}}>{{$vivienda->orden}}</option>
+                                            @endforeach
+                                            {{-- @for ($i = 1; $i <= $obra->can_viv; $i++)
+                                                
+                                            @endfor --}}
                                         </select>
                                     </div>
                                 </div>
@@ -331,7 +353,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                             <div class="form-group">
                                                 {!! Form::label('Superficie Lote:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('sup_lote', null, ['class' => 'form-control', 'id' => 'idsuplote']) !!}
+                                                {!! Form::number('sup_lote', null, ['class' => 'form-control', 'id' => 'idsuplote', 'step' => '.01']) !!}
                                             </div>
                                         </div>
                                         {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
@@ -355,7 +377,7 @@
                                     <div class="me-auto"></div>
                                     <div class="p-1">
                                         @can('CREAR-OBRAS')
-                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                         @endcan
                                         {!! Form::close() !!}
                                     </div>
