@@ -34,7 +34,7 @@
                     {!! Form::close() !!}
                 </div>
                 <div class="px-1">
-                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
+                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.cargamasiva', $obra->id_obr], 'style' => '']) !!}
                     {!! Form::submit('Carga Masiva', ['class' => 'btn btn-primary']) !!}
                     {!! Form::close() !!}
                 </div>
@@ -216,7 +216,7 @@
                                         {!! Form::label('orden:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
                                         <select class="form-select" name="vivienda" placeholder="Seleccionar" id='selected-orden'>
                                             <option disabled selected>Seleccionar</option>
-                                            @foreach ($viviendas as $vivienda)
+                                            @foreach ($viviendas->sortBy('orden') as $vivienda)
                                                 <option value={{"$vivienda->id_viv"}}>{{$vivienda->orden}}</option>
                                             @endforeach
                                             {{-- @for ($i = 1; $i <= $obra->can_viv; $i++)
