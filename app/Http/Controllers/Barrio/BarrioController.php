@@ -85,6 +85,10 @@
             $unbarrio->porfin=$request->input('porfin');
             $unbarrio->canviv=$request->input('canviv');
             $unbarrio->nro_res=$request->input('nro_res');            
+            $unbarrio->mts1=$request->input('mts1');
+            $unbarrio->mts2=$request->input('mts2');
+            $unbarrio->mts3=$request->input('mts3');
+            $unbarrio->mts4=$request->input('mts4');
             $unbarrio->save();
             return redirect()->route('barrio.index')->with('mensaje','Barrio '.$request->input('nombarrio').' editado con éxito!.');
         }
