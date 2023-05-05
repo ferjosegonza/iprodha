@@ -93,7 +93,7 @@ public function buscar(Request $request){
         $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
     }    
     if($tag != null and $info != null){
-        $query = $query . " AND claves_archivo LIKE '%$tag[1]:$info%'";
+        $query = $query . " AND claves_archivo LIKE '%<$tag[1]:$info>%'";
     }
     //ordenamos
     $query = $query . " order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc";
