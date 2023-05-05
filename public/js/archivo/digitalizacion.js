@@ -1100,25 +1100,32 @@ function guardarTag(idinput, tagname, tipo, cont){
     if(tipo == 1){
         let first = -1;
         let last = -1;
-        for(let i = 0; i<claves.value.length; i++){
+        console.log("Empezamos")
+        for(let i = 0; i<claves.value.length; i++){            
+            console.log(claves.value[i])
             let cont2 = 0;
             let band=0;
             if(band == 0){
-                if(claves.value[i] == '>'){                       
+                if(claves.value[i] == '>'){        
+                    console.log('Es igual a >')               
                     if(band==0){
                         last = i;
+                        console.log('la palabra es la misma')
                     }
                     else{
                         last = -1;
                         first = -1;
+                        console.log('la palabra es distina')
                     }
-                    if(ac == cont){
-                        break;
+                    if(ac == cont)
+                    {console.log('stop')
+                        break;                        
                     }
                     ac++;
                 }
                 if(claves.value[i] != tagname[cont2]){
                     band=1;
+                    console.log(claves.value[i] + ' es distinto de ' + tagname[cont2])
                 }
                 cont2++;                
                 if(claves.value[i] == '<'){      
@@ -1128,6 +1135,7 @@ function guardarTag(idinput, tagname, tipo, cont){
                 }                
             }
         }
+        console.log(first, last)
         let stringNew = ''
         for(let i=0; i<first; i++){
             stringNew = stringNew + claves.value[i];
@@ -1136,8 +1144,9 @@ function guardarTag(idinput, tagname, tipo, cont){
         for(let i=last+1; i<claves.value.length; i++){
             stringNew = stringNew + claves.value[i];
         }
+        console.log(claves.value)
         claves.value = stringNew
-
+        console.log(claves.value)
         /* if(claves.value.indexOf('<'+tagname+':')!= -1){
             let first = claves.value.indexOf('<'+tagname+':');
             let last = -1;
