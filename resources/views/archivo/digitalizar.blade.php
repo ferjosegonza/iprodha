@@ -152,20 +152,22 @@
                                 
                                 <div id="comp-opcional" class="container-fluid"></div>
                                 <br>
-                                <div class="row">
-                                <div id="agregar" hidden>
-                                {!! Form::label('Agregar una clave:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                <select class="form-select" id="tag" name="tag" onchange="completarTag()">
-                                    <option value="sel" selected>Seleccionar</option>                                    
-                                    @foreach ($Tags as $tag)
-                                        <option value="{{$tag->id_tag}}|{{$tag->descripcion}}">{{$tag->descripcion}}</option>
-                                    @endforeach       
-                                </select>  
-                                <button class="btn btn-success" id='btn-tag' onclick="agregarTag()">Agregar</button>
-                                </div>  
-                                <div id="tag-agregar" class="row">
-                                </div>
-                                <button class="btn btn-success" id='btn-conf' onclick="confirmar()" hidden>Confirmar</button>
+                                <div class="row" id="agregar" hidden>
+                                    <div class="col-lg-10">
+                                    {!! Form::label('Agregar una clave:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                    <select class="form-select" id="tag" name="tag" onchange="completarTag()">
+                                        <option value="sel" selected>Seleccionar</option>                                    
+                                        @foreach ($Tags as $tag)
+                                            <option value="{{$tag->id_tag}}|{{$tag->descripcion}}">{{$tag->descripcion}}</option>
+                                        @endforeach       
+                                    </select>  
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <br>
+                                        <button class="btn btn-success" id='btn-tag' onclick="agregarTag()" disabled>+</button>
+                                    </div>                 
+                                        <div id="tag-agregar" class="row" hidden>
+                                    </div>
                                 </div> 
                             </div>
                             </div>                          

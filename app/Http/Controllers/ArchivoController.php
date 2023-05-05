@@ -143,7 +143,7 @@ public function digitalizar(){
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Empresas = Empresa::orderBy('nom_emp','asc')->get();
     $Localidades = Localidad::select('nom_loc','id_loc')->get();
-    $Tags = Dig_tags::orderBy('descripcion','asc')->get();
+    $Tags = Dig_tags::where('estructura', '=', 1)->orderBy('descripcion','asc')->get();
 
     return view('archivo.digitalizar')
         ->with('TipoDocumento',$TipoDocumento)
@@ -308,6 +308,15 @@ public function modificar(Request $request){
     return response()->json($res);    
 }
 
+
+public function derivados(Request $request){
+    $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
+
+    $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
+
+    $datos = DB::select( DB::raw($query));
+    return response()->json($datos);
+}
 
 }
 
