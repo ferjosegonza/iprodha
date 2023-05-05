@@ -1,3 +1,14 @@
+class elemento{
+    constructor(tag){
+        this.tag = tag;
+        this.cont = 0;
+    }
+}
+
+var elementos = []
+
+
+
 function tipos(){
     if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
@@ -601,6 +612,21 @@ function existeCheck(){
 }
 
 function crearInputSimple(padre, dato, nombre, medida, i){
+
+    let contador=0;
+    band=0;
+    elementos.forEach(element => {
+        if(elemento.tag==nombre){
+            band=1;
+            elemento.cont+=1;
+            contador = elemento.cont;
+        }
+    });
+    if(band == 0){
+        let el = new elemento(nombre);
+        elementos.push(el);
+    }
+
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -645,7 +671,7 @@ function crearInputSimple(padre, dato, nombre, medida, i){
     }
     input.addEventListener("keyup", function(event) {
         if (event.key === "Enter") {
-            guardarTag(input.id, nombre);
+            guardarTag(input.id, nombre, 1, contador);
         }    
     });
     divmenor.appendChild(input);
@@ -654,6 +680,21 @@ function crearInputSimple(padre, dato, nombre, medida, i){
 }
 
 function crearSelect(padre, id, nombre, medida, i){   
+
+    let contador=0;
+    band=0;
+    elementos.forEach(element => {
+        if(elemento.tag==nombre){
+            band=1;
+            elemento.cont+=1;
+            contador = elemento.cont;
+        }
+    });
+    if(band == 0){
+        let el = new elemento(nombre);
+        elementos.push(el);
+    }
+
     let divmenor = document.createElement("div")      
     if(medida==1){ //Esta medida solo la tienen los no-complejos
         divmenor.className = "col-lg-3 col-md-4"
@@ -689,13 +730,28 @@ function crearSelect(padre, id, nombre, medida, i){
         input.placeholder = cargarDatos(nombre)
         input.value = cargarDatos(nombre)
     }    
-    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
+    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
     return(input.id)
 }
 
 function crearSemiSelect(padre, dato, id, nombre, medida, i){
+
+    let contador=0;
+    band=0;
+    elementos.forEach(element => {
+        if(elemento.tag==nombre){
+            band=1;
+            elemento.cont+=1;
+            contador = elemento.cont;
+        }
+    });
+    if(band == 0){
+        let el = new elemento(nombre);
+        elementos.push(el);
+    }
+
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -733,8 +789,7 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
     input.setAttribute('list', "opciones"+i);
     input.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
-          findTexto(input.value, id, input, "opciones"+i);          
-          guardarTag(input.value, nombre);
+          findTexto(input.value, id, input, "opciones"+i);
         }
     });
     if(cargarDatos(nombre) == 'No asignado')
@@ -744,8 +799,8 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
     else{
         input.value = cargarDatos(nombre)
     }    
-    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
-    input.setAttribute('oninput', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
+    //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
+    input.setAttribute('oninput', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id +')');
     }      
@@ -781,17 +836,29 @@ function derivado(id, idtag){
         dataType: 'json',
         success: function(res) {
             console.log(res)
-                hijo.value=res[0].dato
-                let lab = "label-o-" + number
-                tagname = document.getElementById(lab).innerHTML
-                guardarTag(hijo.id, tagname)
+            hijo.value=res[0].dato
+            let lab = "label-o-" + number
+            tagname = document.getElementById(lab).innerHTML
+            let contador=0;
+            band=0;
+            elementos.forEach(element => {
+                if(elemento.tag==tagname){
+                    band=1;
+                    elemento.cont+=1;
+                    contador = elemento.cont;
+                }
+            });
+            if(band == 0){
+                let el = new elemento(tagname);
+                elementos.push(el);
+            }
+            guardarTag(hijo.id, tagname, 1, contador)
         },
         error: function(res){
             console.log(res)
         }});
 
 }
-
 
 function mostrarPagina(tipo){
     //TIPO 1: AGREGAR
@@ -992,7 +1059,7 @@ function agregarTag(){
                 let btn = document.createElement('button')
                 btn.type = 'button'
                 btn.innerHTML = 'Agregar'               
-                btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\' )');
+                btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ')');
                 btn.className = 'btn btn-success';               
                 btn.id= 'btnTagAgregar' 
                 div3.className = 'col-lg-2';
@@ -1024,12 +1091,54 @@ function checkGuardarTag(){
     }
 }
 
-function guardarTag(idinput, tagname){
+function guardarTag(idinput, tagname, tipo, cont){
 
     let input = document.getElementById(idinput).value;
-
     let claves = document.getElementById('claves');
-        if(claves.value.indexOf('<'+tagname+':')!= -1){
+    let ac=0;
+
+    if(tipo == 1){
+        let first = -1;
+        let last = -1;
+        for(let i = 0; i<claves.value.length; i++){
+            let cont2 = 0;
+            let band=0;
+            if(band == 0){
+                if(claves.value[i] == '>'){                       
+                    if(band==0){
+                        last = i;
+                    }
+                    else{
+                        last = -1;
+                        first = -1;
+                    }
+                    if(ac == cont){
+                        break;
+                    }
+                    ac++;
+                }
+                if(claves.value[i] != tagname[cont2]){
+                    band=1;
+                }
+                cont2++;                
+                if(claves.value[i] == '<'){      
+                    first = i;              
+                    band=0;
+                    cont2=0;
+                }                
+            }
+        }
+        let stringNew = ''
+        for(let i=0; i<first; i++){
+            stringNew = stringNew + claves.value[i];
+        }
+        stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
+        for(let i=last+1; i<claves.value.length; i++){
+            stringNew = stringNew + claves.value[i];
+        }
+        claves.value = stringNew
+
+        /* if(claves.value.indexOf('<'+tagname+':')!= -1){
             let first = claves.value.indexOf('<'+tagname+':');
             let last = -1;
             let band = 0;
@@ -1045,15 +1154,21 @@ function guardarTag(idinput, tagname){
             for(let i=0; i<first; i++){
                 stringNew = stringNew + claves.value[i];
             }
-            stringNew = stringNew + '<' + tagname + ':' + input + '>';
+            stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
             for(let i=last+1; i<claves.value.length; i++){
                 stringNew = stringNew + claves.value[i];
             }
             claves.value = stringNew
         }
-        else{
-            claves.value = claves.value + '<' + tagname + ':' + input + '>'
-        }        
+        else{ 
+            claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+        }     */
+    }
+    else{
+        claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+    }
+
+             
     
 }
 
