@@ -32,3 +32,16 @@ body{
     font-weight: bold !important;
     margin-top: 10px;  
 }
+#btn-tag{
+    margin-top: 8.5px;
+}
+#btnTagAgregar{
+    margin-top: 8.5px;
+}
+.botoncito{
+    display: inline-grid;
+    align-content: center;
+    justify-content: center;
+    height: 15px;
+    width: 15px;
+}

@@ -93,7 +93,7 @@ public function buscar(Request $request){
         $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
     }    
     if($tag != null and $info != null){
-        $query = $query . " AND claves_archivo LIKE '%$tag[1]:$info%'";
+        $query = $query . " AND claves_archivo LIKE '%<$tag[1]:$info>%'";
     }
     //ordenamos
     $query = $query . " order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc";
@@ -143,7 +143,7 @@ public function digitalizar(){
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Empresas = Empresa::orderBy('nom_emp','asc')->get();
     $Localidades = Localidad::select('nom_loc','id_loc')->get();
-    $Tags = Dig_tags::orderBy('descripcion','asc')->get();
+    $Tags = Dig_tags::where('estructura', '=', 1)->orderBy('descripcion','asc')->get();
 
     return view('archivo.digitalizar')
         ->with('TipoDocumento',$TipoDocumento)
@@ -194,10 +194,10 @@ public function getCampos(Request $request){
 public function getSelects(Request $request){
     $tag = Dig_tag_busqueda::where('id_tag','=',$request->id)->first();
     if($tag->campo2 != null){
-        $query= "SELECT $tag->campo1 as campo1, $tag->campo2 as campo2 FROM $tag->esquema.$tag->tabla";
+        $query= "SELECT $tag->campo1 as campo1, $tag->campo2 as campo2 FROM $tag->esquema.$tag->tabla order by campo1";
     }
     else{
-        $query = $query= "SELECT $tag->campo1 as campo1 FROM $tag->esquema.$tag->tabla";
+        $query = $query= "SELECT $tag->campo1 as campo1 FROM $tag->esquema.$tag->tabla order by campo1";
     }    
     $opciones = DB::select( DB::raw($query));
     return response()->json($opciones);
@@ -308,6 +308,15 @@ public function modificar(Request $request){
     return response()->json($res);    
 }
 
+
+public function derivados(Request $request){
+    $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
+
+    $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
+
+    $datos = DB::select( DB::raw($query));
+    return response()->json($datos);
+}
 
 }
 
