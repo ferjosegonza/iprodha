@@ -271,11 +271,10 @@ function betweenyears(){
 }
 
 function tags(){
-    let tag = document.getElementById('tag').value;
-    let idtag = document.getElementById('tag').value[0];     
-         
+    let tag = document.getElementById('tag').value;      
     if (tag.value != 'sel')
     {
+        let idtag = document.getElementById('tag').value[0];
         let bandera= 0;  
         for(i = 1; i < tag.length; i++){ 
         if (bandera==0)
@@ -368,6 +367,9 @@ function tags(){
         }
     }
     else{
+        while(document.getElementById('inp_tag').hasChildNodes()){
+            document.getElementById('inp_tag').removeChild(document.getElementById('inp_tag').lastChild)
+        }
         document.getElementById('inp_tag').hidden = true;
         document.getElementById('placeholder-tag').removeAttribute('hidden');
     }
@@ -457,8 +459,6 @@ $(document).ready(function () {
 });
 
 function cancelarbusqueda(){
-
-    evt.preventDefault();
     let table = $('#archivos').DataTable()
     //console.log(document.getElementById('tipo').value)
     if(document.getElementById('tipo').value == 'sel'){
@@ -560,8 +560,7 @@ function toggle() {
         date.hidden=false
         document.getElementById('labelswitch').innerHTML="Elegir año"
     }
-  }
-
+}
 
 window.addEventListener("DOMContentLoaded", (event) => {
 const submitBtn = document.getElementById('btnb')
@@ -632,7 +631,6 @@ tag_sel.addEventListener('change', setValue)
 
 
 });
-
 
 function getSelects(padre, id){
     console.log(id)
