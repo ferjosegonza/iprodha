@@ -272,7 +272,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div class="tableFixHead">
-                                <table id="viv" class="table table-hover mt-2" class="display">
+                                <table id="tablaviv" class="table table-hover mt-2" class="display">
                                     <thead style="">
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
@@ -287,7 +287,7 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
                                         {{-- <th class="text-center" scope="col" style="color:#fff;width:5%;">Superficie</th> --}}
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tablavivbody">
                                         @foreach ($entre->getViviendas as $vivienda)
                                         <tr>                                          
                                             <td class= 'text-center' >{{$vivienda->orden}}</td>
