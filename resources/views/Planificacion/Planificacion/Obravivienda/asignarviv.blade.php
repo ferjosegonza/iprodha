@@ -196,7 +196,7 @@
                             <h4 class="pb-2">Viviendas:</h4>
                             <div class="row">
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
-                                    <input id="buscarubro" name="name" type="text" class="form-control" placeholder="Buscar Vivienda" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    <input id="buscavivienda" name="name" type="text" class="form-control" placeholder="Buscar Vivienda" aria-label="Recipient's username" aria-describedby="button-addon2">
                                 </div>
                                 {{-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 my-auto">
                                     {!! Form::submit('Buscar', ['class' => 'btn btn-primary mr-2']) !!}
@@ -211,7 +211,7 @@
                                         <div class="">
                                             <label>Viviendas:</label>
                                         </div>
-                                        <div id="rubrosParaAsignar" class="d-flex flex-column overflow-auto" style="height: 225px;">
+                                        <div id="viviendasParaAsignar" class="d-flex flex-column overflow-auto" style="height: 225px;">
                                             <div class="ms-auto d-flex align-items-center">
                                                 <input id="checkpermisos" onclick="seleccionarpermisostodos()" class="me-2 name" name="checkpermisos" type="checkbox">
                                                 <div>Selec. todo</div>
@@ -226,59 +226,29 @@
                                                     } 
                                                 @endphp
                                                 @if ($bandera)
-                                                    <label id='{{$viv->id_viv}}'><input checked onclick="" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
+                                                    <label id='{{$viv->id_viv}}'><input checked onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
                                                 @else
-                                                    <label id='{{$viv->id_viv}}'><input onclick="" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
+                                                    <label id='{{$viv->id_viv}}'><input onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
                                                 @endif
 
                                                 
                                             @endforeach
-                                            {{-- @for ($i = 1; $i <= $obra->can_viv; $i++)
-                                                @php
-                                                    $bandera = array_search($rubro->id, $listaRubros);
-                                                    if(in_array($rubro->id, $listaRubros)){
-                                                        $bandera = true;
-                                                    }else{
-                                                        $bandera = false;
-                                                    }
-                                                @endphp
-
-                                                <label id='{{$i}}'><input checked onclick="" class="radiockeck{{$i}}" name="" type="checkbox" value="{{$i}}"> {{'Viv. Orden N°: '.$i}} </label>
-                                            @endfor --}}
-                                            {{-- @foreach($rubros as $rubro)
-                                                @php
-                                                    $bandera = array_search($rubro->id, $listaRubros);
-                                                    if(in_array($rubro->id, $listaRubros)){
-                                                        $bandera = true;
-                                                    }else{
-                                                        $bandera = false;
-                                                    }
-
-                                                @endphp
-                                                
-                                                @if ($bandera)
-                                                    <label id='{{$rubro->id}}'><input checked onclick="agregarRubro('{{$rubro->id}}','{{$rubro->rubro}}')" class="radiockeck{{$rubro->id}}" name="" type="checkbox" value="{{$rubro->id}}"> {{$rubro->rubro}} </label>
-                                                @else
-                                                    <label id='{{$rubro->id}}'><input onclick="agregarRubro('{{$rubro->id}}','{{$rubro->rubro}}')" class="radiockeck{{$rubro->id}}" name="" type="checkbox" value="{{$rubro->id}}"> {{$rubro->rubro}} </label>
-                                                @endif
-                                                
-                                            @endforeach --}}
                                         </div>
                                     </div>
 
                                     <div class="card me-3  mt-3 " style="background-color: rgb(255, 255, 255);height: 225px; width:100% ">
                                         <h6 class="card-title ms-4 mt-4 pb-0 mb-2">Viviendas Asignadas</h6>
                                         {!! Form::open([
-                                            'method' => 'GET',
-                                            // 'route' => ['rubros.show', $empresa->id_emp],
+                                            'method' => 'POST',
+                                            'route' => ['obravivienda.asignarviviendas', $entre->id_ent, $etapa->id_etapa],
                                             'style' => 'display:inline',
                                             'class' => 'validar overflow-auto'
                                         ]) !!}
                                         <div class="overflow-auto">
-                                            <div class="card-body d-flex flex-column pt-0 overflow-auto" id="rubrosAsignados">
+                                            <div class="card-body d-flex flex-column pt-0 overflow-auto" id="viviendasAsignadas">
                                                 @foreach($entre->getViviendas as $viv)
                                                 {{-- onclick="eliminarRubro('{{$rubroAsignado->id}}')" class="ru{{$rubroAsignado->id}}" --}}
-                                                    <label id="viv{{$viv->orden}}"><input checked name="vivs[]" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}}</label> 
+                                                    <label id="viv{{$viv->orden}}"><input checked onclick="eliminarVivienda('{{$viv->orden}}')" name="vivs[]" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}}</label> 
                                                 @endforeach
                                             </div>
                                         </div>
@@ -343,10 +313,31 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-xs-12 col-sm-8 col-md-6 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row pt-3">
+                                <div class="d-flex">
+                                    <div class="me-auto">
+                                        {{-- (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong> --}}
+                                    </div>
+                                    <div class="p-1">
+                                    </div>
+                                    <div class="p-1">
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.etapas', $obra->id_obr], 'style' => '']) !!}
+                                        {!! Form::submit('Volver', ['class' => 'btn btn-primary']) !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-    <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/altaviv_obravivienda.js') }}"></script>
+    <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/asignarviv_obravivienda.js') }}"></script>
     <script>
         obra = {{$obra->id_obr}}
     </script>

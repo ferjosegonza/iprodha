@@ -93,7 +93,7 @@ public function buscar(Request $request){
         $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
     }    
     if($tag != null and $info != null){
-        $query = $query . " AND claves_archivo LIKE '%$tag[1]:$info%'";
+        $query = $query . " AND claves_archivo LIKE '%<$tag[1]:$info>%'";
     }
     //ordenamos
     $query = $query . " order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc";
@@ -194,10 +194,10 @@ public function getCampos(Request $request){
 public function getSelects(Request $request){
     $tag = Dig_tag_busqueda::where('id_tag','=',$request->id)->first();
     if($tag->campo2 != null){
-        $query= "SELECT $tag->campo1 as campo1, $tag->campo2 as campo2 FROM $tag->esquema.$tag->tabla";
+        $query= "SELECT $tag->campo1 as campo1, $tag->campo2 as campo2 FROM $tag->esquema.$tag->tabla order by campo1";
     }
     else{
-        $query = $query= "SELECT $tag->campo1 as campo1 FROM $tag->esquema.$tag->tabla";
+        $query = $query= "SELECT $tag->campo1 as campo1 FROM $tag->esquema.$tag->tabla order by campo1";
     }    
     $opciones = DB::select( DB::raw($query));
     return response()->json($opciones);
