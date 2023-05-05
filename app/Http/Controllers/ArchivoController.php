@@ -194,10 +194,10 @@ public function getCampos(Request $request){
 public function getSelects(Request $request){
     $tag = Dig_tag_busqueda::where('id_tag','=',$request->id)->first();
     if($tag->campo2 != null){
-        $query= "SELECT $tag->campo1 as campo1, $tag->campo2 as campo2 FROM $tag->esquema.$tag->tabla";
+        $query= "SELECT $tag->campo1 as campo1, $tag->campo2 as campo2 FROM $tag->esquema.$tag->tabla order by campo1";
     }
     else{
-        $query = $query= "SELECT $tag->campo1 as campo1 FROM $tag->esquema.$tag->tabla";
+        $query = $query= "SELECT $tag->campo1 as campo1 FROM $tag->esquema.$tag->tabla order by campo1";
     }    
     $opciones = DB::select( DB::raw($query));
     return response()->json($opciones);
