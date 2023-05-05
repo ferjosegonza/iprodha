@@ -57,11 +57,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped mt-2" id="example">
                                     <thead style="height:50px;">
-                                        <th class='ml-3 text-center' style="color:#fff;">Numero</th>
-                                        <th class='text-center' style="color:#fff;">Obra</th>
-                                        <th class='text-center' style="color:#fff;">Empresa</th>
-                                        <th class='text-center' style="color:#fff;">Localidad</th>
-                                        <th class='text-center' style="color: #fff;">Acciones</th>
+                                        <th class='ml-3 text-center' style="color:#fff; width:5%;">Numero</th>
+                                        <th class='text-center' style="color:#fff; width:20%;">Obra</th>
+                                        <th class='text-center' style="color:#fff; width:20%;">Empresa</th>
+                                        <th class='text-center' style="color:#fff; width:10%;">Localidad</th>
+                                        <th class='text-center' style="color: #fff; width:5%;">Acciones</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($obras as $obra)
@@ -80,29 +80,41 @@
                                                 
 
                                                 <td>
-                                                    <div class="d-flex justify-content-center" style="vertical-align: middle;">
-                                                        @can('VER-OBRAS')
-                                                            {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.show',$obra->id_obr], 'style' => 'display:inline']) !!}
-                                                            {!! Form::submit('Ver', ['class' => 'btn btn-primary mr-2']) !!}
-                                                            {!! Form::close() !!}
-                                                        @endcan
-
-                                                        @can('VER-OBRAS')
-                                                            {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
-                                                            {!! Form::submit('Viviendas', ['class' => 'btn btn-success mr-2']) !!}
-                                                            {!! Form::close() !!}
-                                                        @endcan
-                                                        {{--
-                                                        @can('BORRAR-RUBROS')
-                                                            {!! Form::open([
-                                                                'method' => 'DELETE',
-                                                                'class' => 'formulario',
-                                                                'route' => ['rubros.destroy', $rubro->id],
-                                                                'style' => 'display:inline',
-                                                            ]) !!}
-                                                            {!! Form::submit('Borrar', ['class' => 'btn btn-danger']) !!}
-                                                            {!! Form::close() !!}
-                                                        @endcan --}}
+                                                    <div>
+                                                        <div class="row mb-2 ">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                                                @can('VER-OBRAS')
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.show',$obra->id_obr], 'style' => 'display:inline']) !!}
+                                                                    {!! Form::submit('Ver', ['class' => 'btn btn-primary w-100']) !!}
+                                                                    {!! Form::close() !!}
+                                                                @endcan
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                                                @can('VER-OBRAS')
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.edit',$obra->id_obr], 'style' => 'display:inline']) !!}
+                                                                    {!! Form::submit('Editar', ['class' => 'btn btn-primary w-100']) !!}
+                                                                    {!! Form::close() !!}
+                                                                @endcan
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                @can('VER-OBRAS')
+                                                                {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
+                                                                {!! Form::submit('Viviendas', ['class' => 'btn btn-success mb-2 w-100']) !!}
+                                                                {!! Form::close() !!}
+                                                            @endcan
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                            @can('VER-OBRAS')
+                                                                {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.etapas', $obra->id_obr], 'style' => 'display:inline']) !!}
+                                                                {!! Form::submit('Etapas/Entregas', ['class' => 'btn btn-success mr-2 w-100']) !!}
+                                                                {!! Form::close() !!}
+                                                            @endcan
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>

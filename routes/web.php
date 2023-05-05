@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -40,7 +41,9 @@ use App\Http\Controllers\NotificacionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// Route::get('/ipusuario', function(Request $request){
+//     echo request()->ip();
+// });
 
 Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
@@ -51,7 +54,7 @@ Route::get('/registerEmpIprodha',function(){
 
 Route::get('/loginIprodha',function(){
     return view('auth.loginEmp');
-});
+})->name('login.iprodha');
 // Jorge
 //Route::get('/terrenos', [TerrenosController::class, 'index']);
 Route::group(['middleware' => ['auth']], function(){
@@ -173,7 +176,18 @@ Route::group(['middleware' => ['auth']], function () {
     });//agregar noti
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');
+    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');    
+    Route::get('archivo/check', [ArchivoController::class, 'check'])->name('archivos.check');
+    Route::get('archivo/selects', [ArchivoController::class, 'getSelects'])->name('archivos.selects');
+    Route::get('archivo/campos', [ArchivoController::class, 'getCampos'])->name('archivos.campos');
+    Route::get('archivo/tags', [ArchivoController::class, 'tags'])->name('archivos.tags');
+    Route::get('archivo/tag', [ArchivoController::class, 'obtenerTagFormato'])->name('archivos.tag');
+    Route::get('archivo/complejos', [ArchivoController::class, 'complejos'])->name('archivos.complejos');
+    Route::get('archivo/busquedadirigida', [ArchivoController::class, 'busquedaDirigida'])->name('archivos.busquedaDirigida');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
     Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
-    });
+    Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivos.digitalizar');
+    Route::delete('archivo/{archivo}/borrar', [ArchivoController::class, 'borrar'])->name('archivos.borrar');
+    Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');
+    Route::put('archivo/{archivo}/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
+});

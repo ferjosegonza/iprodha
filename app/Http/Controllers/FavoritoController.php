@@ -48,7 +48,7 @@ class FavoritoController extends Controller
    
     public function edit(Request $request, $id)
     {
-        $Favorito =  Fav_Favorito::where('idusuario', Auth::user()->id)->where('ruta', $id)->first();
+        $Favorito =  Fav_Favorito::find($id);
         return view('favoritos.editar',compact('Favorito'));
     }
 
@@ -60,7 +60,7 @@ class FavoritoController extends Controller
             'descripcion' => 'required|string',
         ]);
         
-        $Favorito =  Fav_Favorito::where('idusuario', Auth::user()->id)->where('ruta', $id)->first();
+        $Favorito =  Fav_Favorito::find($id);
         $Favorito->titulo = $request->get('titulo');
         $Favorito->descripcion = $request->get('descripcion');
         $Favorito->save();
@@ -69,7 +69,7 @@ class FavoritoController extends Controller
 
     public function destroy($id)
     {
-        $favorito = Fav_Favorito::where('idusuario', Auth::user()->id)->where('ruta', $id)->delete();
+        $favorito = Fav_Favorito::find($id)->delete();
         return redirect()->route('inicio')->with('mensaje','Favorito borrado con éxito!.');     
     }
 
