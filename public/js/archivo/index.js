@@ -459,8 +459,6 @@ $(document).ready(function () {
 });
 
 function cancelarbusqueda(){
-
-    evt.preventDefault();
     let table = $('#archivos').DataTable()
     //console.log(document.getElementById('tipo').value)
     if(document.getElementById('tipo').value == 'sel'){
