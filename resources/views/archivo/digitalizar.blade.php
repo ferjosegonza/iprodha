@@ -101,7 +101,7 @@
                                 <div class="row pdfrow">
                                     <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
                                     <br>                                                   
-                                    <object id="pdfver" data="https://www.africau.edu/images/default/sample.pdf" type="application/pdf" height="100%" width="100%"></object>
+                                    <object id="pdfverpdf" data=" " type="application/pdf" height="100%" width="100%"></object>
                                 </div>       
                                 <div class="row" style="margin-top: 40px">
                                     <br>

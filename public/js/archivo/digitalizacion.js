@@ -124,7 +124,7 @@ function existeCheck(){
                     document.getElementById('linkpdf').setAttribute('href', path);
                     document.getElementById('pdfver').removeAttribute("hidden");
                     console.log(path)
-                    document.getElementById('pdfver').setAttribute('data', path);
+                    document.getElementById('pdfverpdf').setAttribute('data', path);
                 }
                 let tags=[];
                 let info=[];
