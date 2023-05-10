@@ -1,3 +1,13 @@
+class elemento{
+    constructor(tag){
+        this.tag = tag;
+        this.cont = 0;
+    }
+}
+
+var elementos = []
+
+
 function tipos(){
     if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
@@ -374,7 +384,7 @@ function existeCheck(){
                                             if (bandera==0){                                                 
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
                                                 var divmedioOb = document.createElement("div")
-                                                divmedioOb.className = "col-lg-6 col-md-12 row"   
+                                                divmedioOb.className = "col-lg-12 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
                                                      crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
@@ -437,12 +447,10 @@ function existeCheck(){
                                                 divmayorRe.className = "row";                                                
                                                 containerRe.appendChild(divmayorRe)
                                             }
-                                            if (bandera==0){
-                                                
-                                                 
+                                            if (bandera==0){          
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
                                                 var divmedioRe = document.createElement("div")
-                                                divmedioRe.className = "col-lg-6 col-md-12 row"   
+                                                divmedioRe.className = "col-lg-12 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
                                                     crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
@@ -497,10 +505,7 @@ function existeCheck(){
                                                 if (bandera==0){
                                                 //Es el primer hijo
                                                 //Al ser el primer hijo también creamos el nombre del padre
-                                                let texto = document.createElement("h6");
-                                                texto.innerHTML=res.response[i].descripcion
-                                                texto.className = 'complejos';
-                                                containerOp.appendChild(texto);                                                 
+                                                                                        
                                                 }
                                                 var divmayorOp=document.createElement("div");                                        
                                                 divmayorOp.className = "row";                                                
@@ -510,7 +515,7 @@ function existeCheck(){
                                                 
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
                                                 var divmedioOp = document.createElement("div")
-                                                divmedioOp.className = "col-lg-6 col-md-12 row"   
+                                                divmedioOp.className = "col-lg-12 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
                                                     crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
@@ -601,6 +606,20 @@ function existeCheck(){
 }
 
 function crearInputSimple(padre, dato, nombre, medida, i){
+    let contador=0;
+    let band=0;
+    elementos.forEach(elemento => {
+        if(elemento.tag==nombre){
+            band=1;
+            elemento.cont+=1;
+            contador = elemento.cont;
+        }
+    });
+    if(band == 0){
+        let el = new elemento(nombre);
+        elementos.push(el);
+    }
+    console.log(elementos)
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -645,7 +664,7 @@ function crearInputSimple(padre, dato, nombre, medida, i){
     }
     input.addEventListener("keyup", function(event) {
         if (event.key === "Enter") {
-            guardarTag(input.id, nombre);
+            guardarTag(input.id, nombre, 1, contador);
         }    
     });
     divmenor.appendChild(input);
@@ -654,6 +673,20 @@ function crearInputSimple(padre, dato, nombre, medida, i){
 }
 
 function crearSelect(padre, id, nombre, medida, i){   
+    let contador=0;
+    let band=0;
+    elementos.forEach(elemento => {
+        if(elemento.tag==nombre){
+            band=1;
+            elemento.cont+=1;
+            contador = elemento.cont;
+        }
+    });
+    if(band == 0){
+        let el = new elemento(nombre);
+        elementos.push(el);
+    }
+    console.log(elementos)
     let divmenor = document.createElement("div")      
     if(medida==1){ //Esta medida solo la tienen los no-complejos
         divmenor.className = "col-lg-3 col-md-4"
@@ -689,13 +722,27 @@ function crearSelect(padre, id, nombre, medida, i){
         input.placeholder = cargarDatos(nombre)
         input.value = cargarDatos(nombre)
     }    
-    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
+    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
     return(input.id)
 }
 
 function crearSemiSelect(padre, dato, id, nombre, medida, i){
+    let contador=0;
+    let band=0;
+    elementos.forEach(elemento => {
+        if(elemento.tag==nombre){
+            band=1;
+            elemento.cont+=1;
+            contador = elemento.cont;
+        }
+    });
+    if(band == 0){
+        let el = new elemento(nombre);
+        elementos.push(el);
+    }
+    console.log(elementos)
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -733,8 +780,7 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
     input.setAttribute('list', "opciones"+i);
     input.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
-          findTexto(input.value, id, input, "opciones"+i);          
-          guardarTag(input.value, nombre);
+          findTexto(input.value, id, input, "opciones"+i);
         }
     });
     if(cargarDatos(nombre) == 'No asignado')
@@ -744,10 +790,11 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
     else{
         input.value = cargarDatos(nombre)
     }    
-    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
-    input.setAttribute('oninput', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
+    //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
+    input.setAttribute('oninput', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
+    console.log(contador)
     if(medida != 1){
-        input.setAttribute('onchange', 'derivado('+ i + ',' + id +')');
+        input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
     }      
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
@@ -758,8 +805,6 @@ function derivado(id, idtag){
     let number = id + 1
     let id2= 'hijo' + number;
     let hijo = document.getElementById(id2)
-
-    console.log(idtag, valor)
 
     let route = '/archivo/derivados';    
 
@@ -780,18 +825,22 @@ function derivado(id, idtag){
         }),
         dataType: 'json',
         success: function(res) {
-            console.log(res)
-                hijo.value=res[0].dato
-                let lab = "label-o-" + number
-                tagname = document.getElementById(lab).innerHTML
-                guardarTag(hijo.id, tagname)
+            hijo.value=res[0].dato
+            let lab = "label-o-" + number
+            tagname = document.getElementById(lab).innerHTML  
+            let contador=0;
+            elementos.forEach(elemento => {
+                if(elemento.tag==tagname){
+                    contador = elemento.cont;
+                }
+            });      
+            guardarTag(hijo.id, tagname, 1, contador)
         },
         error: function(res){
             console.log(res)
         }});
 
 }
-
 
 function mostrarPagina(tipo){
     //TIPO 1: AGREGAR
@@ -812,7 +861,7 @@ function mostrarPagina(tipo){
         if(tipo == 1){
             document.getElementById('div-btnborrar').hidden=true;
             document.getElementById('div-btnmodificar').hidden=true;
-            document.getElementById('agregar').removeAttribute("hidden");
+            document.getElementById('div-btnguardar').removeAttribute("hidden");
         }
         else{
             document.getElementById('div-btnmodificar').removeAttribute("hidden"); 
@@ -926,81 +975,74 @@ function agregarTag(){
             id: idtag
         }),
         dataType: 'json',
-        success: function(res) {
-            
+        success: function(res) {            
             tag = res
             let div = document.getElementById('tag-agregar');
-            let div2 = document.createElement("div");    
-            console.log(tag)
-            if(tag.length>1){
+            let div2 = document.createElement("div");   
+            let lab = document.createElement('label');
+            lab.innerHTML = tag.descripcion;
+            div2.appendChild(lab);
+            if(tag.dato == 1){
+                let input = document.createElement('input')
+                if(tag.dato_tipo == 1){
+                    input.type = "number"
+                    input.className="no-spin"
+                }
+                else{
+                    input.type = "text"
+                }
+                input.id='agregarTag';
+                input.setAttribute('onkeyup','checkGuardarTag()');
+                input.className = 'form-control';
+                div2.className = "col-lg-8";
+                div2.appendChild(input)     
+                div.appendChild(div2);   
+            }
+            if(tag.dato == 2){
+                let input = document.createElement("select");
+                getSelects(input, tag.id_tag);
+                input.id='agregarTag';
+                input.className = 'form-control';
+                input.setAttribute('onchange','checkGuardarTag()');
+                div2.className = "col-lg-8";
+                div2.appendChild(input)     
+                div.appendChild(div2);   
+            }
+            if(tag.dato == 3){
+                let input = document.createElement("input");
+                if(tag.dato_tipo == 1){                               
+                input.type = "number";
+                input.className="no-spin"
+                }
+                else{
+                    input.type = "text";
+                }                      
+                input.setAttribute('list', "opciones-"+tag.id_tag);
+                input.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                    findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+                    }
+                });
+                input.id='agregarTag';
+                input.className = 'form-control';
+                input.setAttribute('onkeyup','checkGuardarTag()');
+                div2.className = "col-lg-8";                
+                div2.appendChild(input)     
+                div.appendChild(div2);   
                 
             }
-            else{
-                let lab = document.createElement('label');
-                lab.innerHTML = tag.descripcion;
-                div2.appendChild(lab);
-                if(tag.dato == 1){
-                    let input = document.createElement('input')
-                    if(tag.dato_tipo == 1){
-                        input.type = "number"
-                        input.className="no-spin"
-                    }
-                    else{
-                        input.type = "text"
-                    }
-                    input.id='agregarTag';
-                    input.setAttribute('onkeyup','checkGuardarTag()');
-                    input.className = 'form-control';
-                    div2.className = "col-lg-8";
-                    div2.appendChild(input)     
-                    div.appendChild(div2);   
-                }
-                if(tag.dato == 2){
-                    let input = document.createElement("select");
-                    getSelects(input, tag.id_tag);
-                    input.id='agregarTag';
-                    input.className = 'form-control';
-                    input.setAttribute('onchange','checkGuardarTag()');
-                    div2.className = "col-lg-8";
-                    div2.appendChild(input)     
-                    div.appendChild(div2);   
-                }
-                if(tag.dato == 3){
-                    let input = document.createElement("input");
-                    if(tag.dato_tipo == 1){                               
-                    input.type = "number";
-                    input.className="no-spin"
-                    }
-                    else{
-                        input.type = "text";
-                    }                      
-                    input.setAttribute('list', "opciones-"+tag.id_tag);
-                    input.addEventListener('keypress', function (e) {
-                        if (e.key === 'Enter') {
-                        findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
-                        }
-                    });
-                    input.id='agregarTag';
-                    input.className = 'form-control';
-                    input.setAttribute('onkeyup','checkGuardarTag()');
-                    div2.className = "col-lg-8";                
-                    div2.appendChild(input)     
-                    div.appendChild(div2);   
-                    
-                }
-                let div3 = document.createElement('div')
-                let btn = document.createElement('button')
-                btn.type = 'button'
-                btn.innerHTML = 'Agregar'               
-                btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\' )');
-                btn.className = 'btn btn-success';               
-                btn.id= 'btnTagAgregar' 
-                div3.className = 'col-lg-2';
-                btn.setAttribute('disabled','disabled')
-                div3.appendChild(document.createElement('br'))
-                div3.appendChild(btn)
-                div.appendChild(div3)
-            }
+            let div3 = document.createElement('div')
+            let btn = document.createElement('button')
+            btn.type = 'button'
+            btn.innerHTML = 'Agregar'               
+            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ')');
+            btn.className = 'btn btn-success';               
+            btn.id= 'btnTagAgregar' 
+            div3.className = 'col-lg-2';
+            btn.setAttribute('disabled','disabled')
+            div3.appendChild(document.createElement('br'))
+            div3.appendChild(btn)
+            div.appendChild(div3)            
             },
             error: function(res){
                 console.log(res)
@@ -1009,13 +1051,9 @@ function agregarTag(){
     
 }
 
-
 function checkGuardarTag(){
     let input=document.getElementById('agregarTag')
     let btn = document.getElementById('btnTagAgregar')
-
-    console.log(input.value)
-
     if(input.value == ''){
         btn.setAttribute('disabled', 'disabled');
     }
@@ -1024,12 +1062,77 @@ function checkGuardarTag(){
     }
 }
 
-function guardarTag(idinput, tagname){
+function guardarTag(idinput, tagname, tipo, cont){
 
     let input = document.getElementById(idinput).value;
-
     let claves = document.getElementById('claves');
+    let ac=-1;
+
+    if(tipo == 1){
+        console.log('Hay que cambiar el tag ' + tagname + ' que esta repetido ' + cont + ' veces e ingresar el valor ' + input)
+        console.log('Existe el tag ' + tagname + ' ya en las claves?')
         if(claves.value.indexOf('<'+tagname+':')!= -1){
+            console.log('Si existe')
+            let first = -1;
+            let last = -1;
+            let comienza = 0;
+            let band=0;
+            let guardado =0;
+            for(let i = 0; i<claves.value.length; i++){  
+                if(claves.value[i] == '<'){
+                    //empieza un tag
+                    comienza=0;
+                    i++;
+                }            
+                if(comienza == 0){
+                    for(let j=0; j<tagname.length; j++){
+                        console.log(claves.value[i+j] + '=' + tagname[j] + '?')
+                        if(claves.value[i+j] != tagname[j]){
+                            band=1;
+                        }
+                    } 
+                    comienza = 1;
+                    if(band == 0){
+                        ac++;
+                        console.log(ac)
+                        if(ac == cont){
+                            first = i-1; 
+                            guardado = 1;
+                        }              
+                    }
+                }
+                if(claves.value[i] == '>'){
+                    if(comienza == 1 && band == 0 && ac==cont){
+                        last = i;
+                    }
+                    else{
+                        comienza = 0;                        
+                        band=0;                        
+                    }
+                }
+            }
+            if(guardado == 1){
+                let stringNew = ''
+                for(let i=0; i<first; i++){
+                    stringNew = stringNew + claves.value[i];
+                }
+                stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
+                for(let i=last+1; i<claves.value.length; i++){
+                    stringNew = stringNew + claves.value[i];
+                }
+                claves.value = stringNew
+            }
+            else{
+                claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+            }
+            
+        }
+        else{
+            console.log('No existe')
+            claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+        }
+        
+        /* if(claves.value.indexOf('<'+tagname+':')!= -1){
             let first = claves.value.indexOf('<'+tagname+':');
             let last = -1;
             let band = 0;
@@ -1045,18 +1148,23 @@ function guardarTag(idinput, tagname){
             for(let i=0; i<first; i++){
                 stringNew = stringNew + claves.value[i];
             }
-            stringNew = stringNew + '<' + tagname + ':' + input + '>';
+            stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
             for(let i=last+1; i<claves.value.length; i++){
                 stringNew = stringNew + claves.value[i];
             }
             claves.value = stringNew
         }
-        else{
-            claves.value = claves.value + '<' + tagname + ':' + input + '>'
-        }        
+        else{ 
+            claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+        }     */
+    }
+    else{
+        claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+    }
+
+             
     
 }
-
 
 function contadorchar(label, input, max){
     let lab = document.getElementById(label);
@@ -1109,7 +1217,6 @@ function findTexto(texto, id, padre, idlista){
 
 function getSelects(padre, id){
     let route = '/archivo/selects';    
-    console.log(id)
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1141,4 +1248,104 @@ function getSelects(padre, id){
         error: function(res){
             console.log(res)
         }});
+}
+
+function borrar(){ 
+    let subtipo = document.getElementById('subtipo').value;
+    let doc = document.getElementById('doc').value;
+    let fecha = document.getElementById('fecha').value;
+    let orden = document.getElementById('orden').value;
+
+    let route = '/archivo/borrar';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: subtipo,
+            doc: doc,
+            fecha: fecha,
+            orden: orden
+        }),
+        dataType: 'json',
+        success: function(res) {
+            console.log(res)
+        },
+        error: function(res){
+            console.log(res)
+    }});
+}
+
+function modificar() { 
+    let subtipo = document.getElementById('subtipo').value;
+    let doc = document.getElementById('doc').value;
+    let fecha = document.getElementById('fecha').value;
+    let claves = document.getElementById('claves').value;
+    let orden = document.getElementById('orden').value;
+
+    let route = '/archivo/modificar';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: subtipo,
+            doc: doc,
+            fecha: fecha,
+            claves: claves,
+            orden: orden
+        }),
+        dataType: 'json',
+        success: function(res) {
+            console.log(res)
+        },
+        error: function(res){
+            console.log(res)
+    }});
+}
+
+function guardar(){
+    let subtipo = document.getElementById('subtipo').value;
+    let doc = document.getElementById('doc').value;
+    let fecha = document.getElementById('fecha').value;
+    let claves = document.getElementById('claves').value;
+    let orden = document.getElementById('orden').value;
+
+    let route = '/archivo/crear';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: subtipo,
+            doc: doc,
+            fecha: fecha,
+            claves: claves,
+            orden: orden
+        }),
+        dataType: 'json',
+        success: function(res) {
+            console.log(res)
+        },
+        error: function(res){
+            console.log(res)
+    }});
 }

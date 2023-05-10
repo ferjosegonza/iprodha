@@ -245,9 +245,10 @@ public function busquedaDirigida(Request $request){
 
 public function borrar(Request $request){
     $fecha = explode("-", $request->fecha);
+    $tipo = explode('|', $request->tipo);
 
-    $res = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
-                ->where('id_subtipoarchivo','=', $request->subtipo)
+    $res = Dig_archivos::where('id_tipoarchivo','=', $tipo[0])
+                ->where('id_subtipoarchivo','=', $tipo[1])
                 ->where('nro_archivo','=', $request->doc)
                 ->where('ano_archivo','=',$fecha[0])
                 ->where('mes_archivo','=',$fecha[1])
@@ -260,10 +261,11 @@ public function borrar(Request $request){
 
 public function crear(Request $request){
     $fecha = explode("-", $request->fecha);
+    $tipo = explode('|', $request->tipo);
 
     $archivo = new Dig_archivos;
-    $archivo->id_tipoarchivo = $request->tipo;
-    $archivo->id_subtipoarchivo = $request->subtipo;
+    $archivo->id_tipoarchivo = $tipo[0];
+    $archivo->id_subtipoarchivo = $tipo[1];
     $archivo->nro_archivo = $request->doc;
     $archivo->ano_archivo = $fecha[0];
     $archivo->mes_archivo = $fecha[1];
@@ -283,17 +285,18 @@ public function crear(Request $request){
 
 public function modificar(Request $request){
     $fecha = explode("-", $request->fecha);
+    $tipo = explode('|', $request->tipo);
 
-    $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
-                ->where('id_subtipoarchivo','=', $request->subtipo)
+    $archivo = Dig_archivos::where('id_tipoarchivo','=', $tipo[0])
+                ->where('id_subtipoarchivo','=', $tipo[1])
                 ->where('nro_archivo','=', $request->doc)
                 ->where('ano_archivo','=',$fecha[0])
                 ->where('mes_archivo','=',$fecha[1])
                 ->where('dia_archivo','=',$fecha[2])
                 ->first();
 
-    $archivo->id_tipoarchivo = $request->tipo;
-    $archivo->id_subtipoarchivo = $request->subtipo;
+    $archivo->id_tipoarchivo = $tipo[0];
+    $archivo->id_subtipoarchivo = $tipo[1];
     $archivo->nro_archivo = $request->doc;
     $archivo->ano_archivo = $fecha[0];
     $archivo->mes_archivo = $fecha[1];

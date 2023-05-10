@@ -60,26 +60,7 @@
                             {!! Form::number('orden', 1, ['class' => 'form-control', 'id'=>'orden', 'min'=>'1', 'max'=>'5']) !!}
                         </div>          
                     </div>
-                    <div class="row rowtag">
-                        {{-- <div class="col-lg-3">
-                            {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                            <select class="form-select" id="empresa" name="empresa">
-                                <option value="sel" selected>Seleccionar</option>
-                                @foreach ($Empresas as $emp)                           
-                                    <option value="{{$emp->id_emp}}">{{$emp->nom_emp}}</option>
-                                @endforeach                        
-                            </select>   
-                        </div>
-                        <div class="col-lg-3">
-                            {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                            <select class="form-select" id="local" name="local">
-                                <option value="sel" selected>Seleccionar</option>
-                                @foreach ($Localidades as $loc)                           
-                                    <option value="{{$loc->id_loc}}">{{$loc->nom_loc}}</option>
-                                @endforeach                        
-                            </select>   
-                        </div> --}}
-                       
+                    <div class="row rowtag">                       
                         <div class="col-lg-3">
                             {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             {!! Form::number('doc', null, ['class' => 'form-control no-spin', 'id'=>'doc', 'min'=>'0']) !!}
