@@ -10,7 +10,7 @@
        position: sticky; /* make the table heads sticky */
        top: 0px; /* table head will be placed from the top of the table and sticks to it */
      }
-     #viv table {
+     #tablaviv table {
        border-collapse: collapse; /* make the table borders collapse to each other */
        width: 100%;
      }
@@ -19,7 +19,7 @@
        padding: 8px 16px;
        border: 1px solid #ccc;
      }*/
-     #viv th {
+     #tablaviv th {
        background: #ee9b27;
      } 
 </style>
@@ -226,9 +226,9 @@
                                                     } 
                                                 @endphp
                                                 @if ($bandera)
-                                                    <label id='{{$viv->id_viv}}'><input checked onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
+                                                    <label id='{{$viv->id_viv}}'><input checked onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->id_viv}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
                                                 @else
-                                                    <label id='{{$viv->id_viv}}'><input onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
+                                                    <label id='{{$viv->id_viv}}'><input onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->id_viv}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
                                                 @endif
 
                                                 
@@ -248,7 +248,7 @@
                                             <div class="card-body d-flex flex-column pt-0 overflow-auto" id="viviendasAsignadas">
                                                 @foreach($entre->getViviendas as $viv)
                                                 {{-- onclick="eliminarRubro('{{$rubroAsignado->id}}')" class="ru{{$rubroAsignado->id}}" --}}
-                                                    <label id="viv{{$viv->orden}}"><input checked onclick="eliminarVivienda('{{$viv->orden}}')" name="vivs[]" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}}</label> 
+                                                    <label id="viv{{$viv->id_viv}}"><input checked onclick="eliminarVivienda('{{$viv->orden}}','{{$viv->id_viv}}')" name="vivs[]" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}}</label> 
                                                 @endforeach
                                             </div>
                                         </div>

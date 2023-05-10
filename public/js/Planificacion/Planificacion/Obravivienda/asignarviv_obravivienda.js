@@ -66,8 +66,8 @@ function agregarVivienda(id, orden){
     let table = document.getElementById('tablavivbody');
     var rowCount = table.rows.length;
     
-    if($('.radiockeck'+orden).is(':checked')){
-        viviendasListaAsignados.innerHTML += '<label id=viv'+orden+'><input checked onclick="eliminarVivienda('+orden+')" class="vi'+orden+'" name="vivs[]" type="checkbox" value="'+id+'"> Viv. Orden N°: '+orden+'</label>';
+    if($('.radiockeck'+id).is(':checked')){
+        viviendasListaAsignados.innerHTML += '<label id=viv'+id+'><input checked onclick="eliminarVivienda('+id+')" class="vi'+orden+'" name="vivs[]" type="checkbox" value="'+id+'"> Viv. Orden N°: '+orden+'</label>';
 
         $.when($.ajax({
             type: "post",
@@ -119,9 +119,9 @@ function agregarVivienda(id, orden){
         }));
         
     }else{
-        $('.radiockeck'+orden).prop("checked", false);
+        $('.radiockeck'+id).prop("checked", false);
         // $('.permisoscheck'+id).prop("checked", false);
-        $('#viv'+orden).remove();
+        $('#viv'+id).remove();
         // $("#tablaviv").find("td:contains('"+orden+"')").closest('tr').remove();
         for (var i = 0, row; row = table.rows[i]; i++) {
             //alert(cell[i].innerText);
@@ -139,15 +139,14 @@ function agregarVivienda(id, orden){
     } 
 }
 
-function eliminarVivienda(orden){
-    $('.radiockeck'+orden).prop("checked", false);
-    $('#viv'+orden).remove();
+function eliminarVivienda(orden, id){
+    $('.radiockeck'+id).prop("checked", false);
+    $('#viv'+id).remove();
 
     let table = document.getElementById('tablavivbody');
 
     for (var i = 0, row; row = table.rows[i]; i++) {
         if(row.cells[0].innerText === orden.toString()){
-            console.log('chau');
             table.deleteRow(i);
         }
     }
