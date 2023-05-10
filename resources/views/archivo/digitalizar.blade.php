@@ -97,15 +97,19 @@
                     <hr>
                     <div id="sectags" hidden>
                         <div class="row rowtag">
-                            <div id="pdfver" hidden>          
-                                <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
-                                <br>                                                   
-                                <object id="pdfver" data="https://www.africau.edu/images/default/sample.pdf" type="application/pdf"></object>
-                                <br>
-                                <a href="" id="linkpdf">Ver más</a>     
-                                <br>
-                                {!! Form::label('Cambiar pdf:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                                {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!}
+                            <div id="pdfver" hidden>  
+                                <div class="row pdfrow">
+                                    <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
+                                    <br>                                                   
+                                    <object id="pdfver" data="https://www.africau.edu/images/default/sample.pdf" type="application/pdf" height="100%" width="100%"></object>
+                                </div>       
+                                <div class="row" style="margin-top: 40px">
+                                    <br>
+                                    <a href="" id="linkpdf">Ver más</a>     
+                                    <br>
+                                    {!! Form::label('Cambiar pdf:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                                    {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!}
+                                </div> 
                             </div>
                             <div id="pdfguar" hidden>
                                 {!! Form::label('Subir archivo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
