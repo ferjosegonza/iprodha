@@ -11,9 +11,7 @@
                         <div class="card  rounded">
                             <div class="card-body  ">
                                 <div class="text-nowrap table-responsive">
-                                    <a class="btn btn-success" href="{{route('barrio.crear')}}">
-                                        Nuevo
-                                    </a>
+                                    <a class="btn btn-success" href="{{route('barrio.crear')}}">Nuevo</a>
                                     <table id="tablaconceptos" style="width:100%;" class="table  table-striped mt-2 ">
                                         <thead style="height:50px;">
                                             <th scope="col" style="color:#fff;">Nro. Barrio</th>
@@ -30,14 +28,10 @@
                                                     <td>
                                                         @csrf                                                        
                                                         @can('EDITAR-BARRIO')
-                                                            <a class="btn btn-info" href="{{route('barrio.editar',$unbarrio)}}">
-                                                                Editar
-                                                            </a>
+                                                            <a class="btn btn-info" href="{{route('barrio.editar',$unbarrio)}}">Editar</a>
                                                         @endcan
                                                         @can('VER-BARRIO')
-                                                            <a class="btn btn-info" href="{{route('barrio.verCostos',$unbarrio)}}">
-                                                                Costos
-                                                            </a>
+                                                            <a class="btn btn-info" href="{{route('barrio.verCostos',$unbarrio)}}">Costos</a>
                                                         @endcan                                                        
                                                         @method('DELETE')
                                                         @can('BORRAR-BARRIO')
@@ -52,6 +46,7 @@
                                                             !!}                                                            
                                                             {!!Form::close()!!}
                                                         @endcan
+                                                        <a class="btn btn-info" href="{{route('barrio.terrenoSup',$unbarrio->barrio)}}">Superficies</a>
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -6,7 +6,7 @@
         use HasFactory;
         public$timestamps=false;        
         protected$table='iprodha.barrio_terreno';
-        protected$primaryKey=['idtipoterre','barrio'];
+        protected$primaryKey=['barrio','idtipoterre'];
         public$incrementing=false;
         protected$fillable=['BARRIO','SUPERFICIE','IDTIPOTERRE'];
         protected function setKeysForSaveQuery($query){
@@ -14,5 +14,5 @@
             ->where('barrio','=',$this->getAttribute('barrio'))
             ->where('idtipoterre','=',$this->getAttribute('idtipoterre'));
             return$query;
-        }     
+        }
     }

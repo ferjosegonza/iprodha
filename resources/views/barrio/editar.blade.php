@@ -76,6 +76,24 @@
                 </div>
             </div>
             <div style="width:99%;float:left;margin-top:2%;">
+                <div style="width:10%;float:left;margin-left:1%;">
+                    {!!Form::label('1 Dorm:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('mts1',$unbarrio->mts1,['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
+                </div>
+                <div style="width:10%;float:left;margin-left:1%;">
+                    {!!Form::label('2 Dorm:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('mts2',$unbarrio->mts2,['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
+                </div>
+                <div style="width:10%;float:left;margin-left:1%;">                    
+                    {!!Form::label('3 Dorm:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('mts3',$unbarrio->mts3,['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
+                </div>
+                <div style="width:10%;float:left;margin-left:1%;">
+                    {!!Form::label('4 Dorm:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::text('mts4',$unbarrio->mts4,['type'=>'text','class'=>'form-control','placeholder'=>''])!!}
+                </div>
+            </div> 
+            <div style="width:99%;float:left;margin-top:2%;">
                 @can('CREAR-BARRIO')
                     <button type="submit" class="btn btn-primary mr-2">Guardar</button>
                 @endcan                

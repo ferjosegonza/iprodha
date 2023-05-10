@@ -17,16 +17,9 @@
             $this->middleware('permission:EDITAR-BARRIO',['only'=>['edit','update']]);
             $this->middleware('permission:BORRAR-BARRIO',['only'=>['destroy']]);
         }        
-        public function index(Request $request){
-            $name=strtoupper($request->query->get('name'));
-            if(!isset($name)){
-                $Barrios=Barrio::orderBy('barrio','desc')->paginate(10);
-                //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
-            }else{
-                //$roles = Role::where('name', 'like', '%' .$name . '%')->orderBy('updated_at', 'DESC')->paginate(10);
-                $Barrios=Barrio::whereRaw('UPPER(nombarrio) LIKE ?',['%'.strtoupper($name).'%'])->orderBy('barrio','desc')->paginate(10);
-            }            
-            return view('barrio.index',compact('Barrios'));                
+        public function index(){            
+            $Barrios=Barrio::orderBy('barrio','desc')->paginate(10);            
+            return view('barrio.index',compact('Barrios'));
         }        
         public function create(Request $request){            
             $Localidad=Localidad::pluck('nom_loc','id_loc');
@@ -55,6 +48,10 @@
             $unbarrio->porfin=$request->input('porfin');
             $unbarrio->canviv=$request->input('canviv');
             $unbarrio->nro_res=$request->input('nro_res');                                    
+            $unbarrio->mts1=$request->input('mts1');
+            $unbarrio->mts2=$request->input('mts2');
+            $unbarrio->mts3=$request->input('mts3');
+            $unbarrio->mts4=$request->input('mts4');
             $unbarrio->save();
             return redirect()->route('barrio.index')->with('mensaje','El barrio '.$unbarrio->nom_obr.' creado con exito.');
         }        
