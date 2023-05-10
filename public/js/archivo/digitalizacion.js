@@ -121,8 +121,9 @@ function existeCheck(){
                 else{                    
                     document.getElementById('pdfguar').hidden = true;   //hay que mostrar un pdf
                     let path = res.response.path_archivo + res.response.nombre_archivo;
-                    document.getElementById('linkpdf').innerHTML = res.response.nombre_archivo;
+                    document.getElementById('linkpdf').setAttribute('href', path);
                     document.getElementById('pdfver').removeAttribute("hidden");
+                    console.log(path)
                     document.getElementById('pdfver').setAttribute('data', path);
                 }
                 let tags=[];
@@ -619,7 +620,6 @@ function crearInputSimple(padre, dato, nombre, medida, i){
         let el = new elemento(nombre);
         elementos.push(el);
     }
-    console.log(elementos)
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -686,7 +686,6 @@ function crearSelect(padre, id, nombre, medida, i){
         let el = new elemento(nombre);
         elementos.push(el);
     }
-    console.log(elementos)
     let divmenor = document.createElement("div")      
     if(medida==1){ //Esta medida solo la tienen los no-complejos
         divmenor.className = "col-lg-3 col-md-4"
@@ -742,7 +741,6 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
         let el = new elemento(nombre);
         elementos.push(el);
     }
-    console.log(elementos)
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -792,7 +790,7 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
     }    
     //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
     input.setAttribute('oninput', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
-    console.log(contador)
+    
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
     }      
@@ -1069,10 +1067,7 @@ function guardarTag(idinput, tagname, tipo, cont){
     let ac=-1;
 
     if(tipo == 1){
-        console.log('Hay que cambiar el tag ' + tagname + ' que esta repetido ' + cont + ' veces e ingresar el valor ' + input)
-        console.log('Existe el tag ' + tagname + ' ya en las claves?')
         if(claves.value.indexOf('<'+tagname+':')!= -1){
-            console.log('Si existe')
             let first = -1;
             let last = -1;
             let comienza = 0;
@@ -1086,7 +1081,6 @@ function guardarTag(idinput, tagname, tipo, cont){
                 }            
                 if(comienza == 0){
                     for(let j=0; j<tagname.length; j++){
-                        console.log(claves.value[i+j] + '=' + tagname[j] + '?')
                         if(claves.value[i+j] != tagname[j]){
                             band=1;
                         }
@@ -1094,7 +1088,6 @@ function guardarTag(idinput, tagname, tipo, cont){
                     comienza = 1;
                     if(band == 0){
                         ac++;
-                        console.log(ac)
                         if(ac == cont){
                             first = i-1; 
                             guardado = 1;
@@ -1128,7 +1121,6 @@ function guardarTag(idinput, tagname, tipo, cont){
             
         }
         else{
-            console.log('No existe')
             claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
         }
         
@@ -1322,6 +1314,7 @@ function guardar(){
     let fecha = document.getElementById('fecha').value;
     let claves = document.getElementById('claves').value;
     let orden = document.getElementById('orden').value;
+     
 
     let route = '/archivo/crear';    
     $.ajaxSetup({
