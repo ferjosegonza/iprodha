@@ -98,8 +98,10 @@
                     <div id="sectags" hidden>
                         <div class="row rowtag">
                             <div id="pdfver" hidden>          
-                                <label for="pdfver">PDF Actual:</label>                                                                
-                                <object id="pdfver" data="" type="application/pdf"></object>
+                                <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
+                                <br>                                                   
+                                <object id="pdfver" data="https://www.africau.edu/images/default/sample.pdf" type="application/pdf"></object>
+                                <br>
                                 <a href="" id="linkpdf">Ver más</a>     
                                 <br>
                                 {!! Form::label('Cambiar pdf:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
