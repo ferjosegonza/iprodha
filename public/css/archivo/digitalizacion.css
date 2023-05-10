@@ -48,3 +48,6 @@ body{
 #labelpdf{
     font-size: 20px;
 }
+.pdfrow{
+    height: 250px;
+}
