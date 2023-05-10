@@ -579,6 +579,7 @@ const tag_sel = document.getElementById('tag')
 // otherwise, disable it.
 const checkEnableButton = () => {    
     let tag = document.getElementById('input_tag');  
+    console.log(tag.value)
     //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
     if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
     || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != '' 
@@ -594,21 +595,21 @@ const checkInput = () => {
     if(tag_sel.value != 'sel'){
         $.when(tags()).done(function(a1){            
             const tag = document.getElementById('input_tag');
-            tag.addEventListener('change', checkEnableButton)
-            tag.addEventListener('keyup', checkEnableButton)
-            tag.addEventListener('change', checkAddButton)
-            tag.addEventListener('keyup', checkAddButton)
+            tag.addEventListener('input', checkEnableButton)
+           /*  tag.addEventListener('keyup', checkEnableButton) */
+            /* tag.addEventListener('change', checkAddButton)
+            tag.addEventListener('keyup', checkAddButton) */
         });        
     }
 }
-const setValue= () => {
+/* const setValue= () => {
     const tag = document.getElementById('input_tag');   
     addBtn.setAttribute('disabled', 'disabled')
     if(tag){tag.value = ''}
     
-}
+} */
 
-const checkAddButton = () => {    
+/* const checkAddButton = () => {    
     addBtn.removeAttribute('disabled')
     let tag = document.getElementById('input_tag');   
     console.log(tag.value)
@@ -618,7 +619,7 @@ const checkAddButton = () => {
     else{
         addBtn.setAttribute('disabled', 'disabled')
     }
-}
+} */
 
 
 if(fecha1){fecha1.addEventListener('change', checkEnableButton)}
@@ -627,7 +628,7 @@ año.addEventListener('change', checkEnableButton)
 tipo.addEventListener('change', checkEnableButton)
 busqueda.addEventListener('keyup', checkEnableButton)
 tag_sel.addEventListener('change', checkInput)
-tag_sel.addEventListener('change', setValue)
+//tag_sel.addEventListener('change', setValue)
 
 
 });
