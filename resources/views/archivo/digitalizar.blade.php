@@ -100,7 +100,7 @@
                             <div id="pdfver" hidden>          
                                 <label for="pdfver">PDF Actual:</label>                                                                
                                 <object id="pdfver" data="" type="application/pdf"></object>
-                                <a href="" id="linkpdf"></a>     
+                                <a href="" id="linkpdf">Ver más</a>     
                                 <br>
                                 {!! Form::label('Cambiar pdf:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                                 {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!}
