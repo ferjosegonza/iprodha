@@ -5,6 +5,8 @@
 
     class Ob_obra extends Model{
 
+        // protected $connection = 'oracleuser';
+
         use HasFactory;
 
         public $timestamps=false;        
