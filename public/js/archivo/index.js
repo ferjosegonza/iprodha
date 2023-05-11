@@ -579,7 +579,7 @@ const tag_sel = document.getElementById('tag')
 // otherwise, disable it.
 const checkEnableButton = () => {    
     let tag = document.getElementById('input_tag');  
-    console.log(tag.value)
+    //console.log(tag.value)
     //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
     if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
     || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != '' 
