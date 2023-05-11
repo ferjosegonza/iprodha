@@ -106,9 +106,7 @@
                                 <div class="row" style="margin-top: 40px">
                                     <br>
                                     <a href="" id="linkpdf">Ver más</a>     
-                                    <br>
-                                    {!! Form::label('Cambiar pdf:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                                    {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!}
+                                    <br>                                    
                                 </div> 
                             </div>
                             <div id="pdfguar" hidden>
