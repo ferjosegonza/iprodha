@@ -657,9 +657,10 @@ function crearInputSimple(padre, dato, nombre, medida, i){
     }    
     if(cargarDatos(nombre) == 'No asignado')
     {
-        input.placeholder = cargarDatos(nombre)
+        input.placeholder = "No asignado"
     }
     else{
+        console.log(contador)
         input.value = cargarDatos(nombre)
     }
     input.addEventListener("keyup", function(event) {
@@ -669,7 +670,6 @@ function crearInputSimple(padre, dato, nombre, medida, i){
     });
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
-    
 }
 
 function crearSelect(padre, id, nombre, medida, i){   
@@ -715,16 +715,16 @@ function crearSelect(padre, id, nombre, medida, i){
     }
     if(cargarDatos(nombre) == 'No asignado')
     {
-        input.placeholder = cargarDatos(nombre)
+        input.placeholder = 'No asignado'
     }
     else{
+        console.log(contador)
         input.placeholder = cargarDatos(nombre)
         input.value = cargarDatos(nombre)
     }    
     input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
     divmenor.appendChild(input);
-    padre.appendChild(divmenor)
-    return(input.id)
+    padre.appendChild(divmenor);
 }
 
 function crearSemiSelect(padre, dato, id, nombre, medida, i){
@@ -783,9 +783,10 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
     });
     if(cargarDatos(nombre) == 'No asignado')
     {
-        input.placeholder = cargarDatos(nombre)
+        input.placeholder = 'No asignado'
     }
     else{
+        console.log(contador)
         input.value = cargarDatos(nombre)
     }    
     //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
@@ -870,6 +871,14 @@ function mostrarPagina(tipo){
 }
 
 function cargarDatos(tag){
+
+    let conta=0;
+    elementos.forEach(elemento => {
+        if(elemento.tag==tag){            
+            conta = elemento.cont;
+        }
+    });
+
     let tags=[];
     let info=[];
     let cont=0;
@@ -894,10 +903,18 @@ function cargarDatos(tag){
             info[cont] = info[cont] + claves[i];
         }
     } 
+    aux=0;
+    console.log(conta)
     for(let i=0; i<tags.length; i++){
         if(tags[i] == tag)
         {
-            return info[i]
+            if(conta == aux){
+                return info[i]
+            }
+            else{
+                aux++;
+            }
+            
         }
     }
     return ("No asignado")
@@ -1281,6 +1298,7 @@ function modificar() {
     let claves = document.getElementById('claves').value;
     let orden = document.getElementById('orden').value;
 
+
     let route = '/archivo/modificar';    
     $.ajaxSetup({
         headers: {
@@ -1314,7 +1332,6 @@ function guardar(){
     let fecha = document.getElementById('fecha').value;
     let claves = document.getElementById('claves').value;
     let orden = document.getElementById('orden').value;
-     
 
     let route = '/archivo/crear';    
     $.ajaxSetup({
