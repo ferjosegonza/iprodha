@@ -125,8 +125,9 @@
                             <div class="table-responsive">
                                 <table id="items" class="table table-hover mt-2" class="display">
                                     <thead>
-                                        <th class="text-center" scope="col" style="color:#fff;width:15%;">Entrega</th>                                    
-                                        <th class="text-center" scope="col" style="color:#fff;width:55%;">Descripcion</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Etapa</th> 
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Entrega</th>                                    
+                                        <th class="text-center" scope="col" style="color:#fff;width:50%;">Descripcion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:20%;">Fecha</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Cant. Viviendas</th>
                                     </thead>
@@ -134,6 +135,7 @@
                                         @foreach ($obra->getEtapas as $etapa)
                                             @foreach ($etapa->getEntregas as $entrega)
                                                 <tr>
+                                                    <td class= 'text-center align-middle'>{{$etapa->nro_eta}}</td>
                                                     <td class= 'text-center' style="vertical-align: middle;">{{$entrega->num_ent}}</td>                                            
                                                     <td class= 'text-center align-middle'>{{$entrega->descripcion}}</td>
                                                     @if (is_null($entrega->fec_ent))
@@ -172,46 +174,42 @@
                                 <div class="tableFixHead">
                                 <table id="viv" class="table table-hover mt-2" class="display">
                                     <thead style="">
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Viv. Adaptada</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>                                                            
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Parcela</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Finca</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Viv. Adaptada</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Edif.</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Piso</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Dpto</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
                                     <tbody>
-                                        @foreach ($obra->getEtapas->sortBy('nro_eta') as $etapa)
-                                            @foreach ($etapa->getEntregas as $entrega)
-                                                @foreach ($entrega->getViviendas as $vivienda)
-                                                    <tr>                                          
-                                                        <td class= 'text-center' >{{$etapa->nro_eta}}</td>
-                                                        <td class= 'text-center' >{{$entrega->num_ent}}</td>                                            
-                                                        <td class= 'text-center' >{{$vivienda->orden}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->plano}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->seccion}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->chacra}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->manzana}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->parcela}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->finca}}</td>
-                                                        @if ($vivienda->discap == 1)
-                                                            <td class= 'text-center' >SI</td>
-                                                        @else
-                                                            <td class= 'text-center' >NO</td>
-                                                        @endif
-                                                        <td class= 'text-center' >{{$vivienda->edificio}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->piso}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->departamento}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->escalera}}</td>
-                                                    </tr>
-                                                @endforeach
-                                            @endforeach
+                                        @foreach ($viviendas as $vivienda)
+                                            <tr>    
+                                                <td class= 'text-center' >{{$vivienda->orden}}</td>                                      
+                                                <td class= 'text-center' >{{$vivienda->etapa}}</td>
+                                                <td class= 'text-center' >{{$vivienda->entrega}}</td>
+                                                @if ($vivienda->discap == 1)
+                                                    <td class= 'text-center' >SI</td>
+                                                @else
+                                                    <td class= 'text-center' >NO</td>
+                                                @endif
+                                                <td class= 'text-center' >{{$vivienda->plano}}</td>
+                                                <td class= 'text-center' >{{$vivienda->seccion}}</td>
+                                                <td class= 'text-center' >{{$vivienda->chacra}}</td>
+                                                <td class= 'text-center' >{{$vivienda->manzana}}</td>
+                                                <td class= 'text-center' >{{$vivienda->parcela}}</td>
+                                                <td class= 'text-center' >{{$vivienda->finca}}</td>
+                                                <td class= 'text-center' >{{$vivienda->edificio}}</td>
+                                                <td class= 'text-center' >{{$vivienda->piso}}</td>
+                                                <td class= 'text-center' >{{$vivienda->departamento}}</td>
+                                                <td class= 'text-center' >{{$vivienda->escalera}}</td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

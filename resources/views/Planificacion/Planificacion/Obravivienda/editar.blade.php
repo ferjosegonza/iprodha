@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="p-1">
                                         {!! Form::open(['method' => 'GET', 'route' => 'obravivienda.index', 'style' => '']) !!}
-                                    {!! Form::submit('Volver', ['class' => 'btn btn-outline-primary']) !!}
+                                    {!! Form::submit('Volver', ['class' => 'btn btn-primary']) !!}
                                     {!! Form::close() !!}
                                     </div>
                                 </div>

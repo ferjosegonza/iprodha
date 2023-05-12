@@ -44,7 +44,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('0 Dormitorios:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control', 'readonly']) !!}
+                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">

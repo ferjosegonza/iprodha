@@ -25,9 +25,6 @@
                         <div class="card-body">
                             {!! Form::open(['method' => 'POST','route' => 'obravivienda.guardarvivienda']) !!}
                             <div class="row">
-                                <div class="" hidden>
-                                    {!! Form::text('id_obr', $obra->id_obr, ['class' => 'form-control']) !!}
-                                </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Etapa:', null, ['class' => 'control-label fs-6', 'style' => '']) !!} <span class="obligatorio">*</span>
@@ -188,8 +185,8 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                             <div class="form-group">
-                                                {!! Form::label('N° Finca:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('num_finca', null, ['class' => 'form-control', 'id' => 'idnumfinca']) !!}
+                                                {!! Form::label('Superficie cubierta:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
+                                                {!! Form::number('sup_fin', null, ['class' => 'form-control', 'id' => 'idnumfinca', 'step' => '.01']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">

@@ -144,27 +144,19 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:20%;">Entre calles</th>
                                     </thead>
                                     <tbody>
-                                        {{-- {{$obra->getEtapas->first()->getEntregas->last()->getViviendas}} --}}
-                                        @foreach ($obra->getEtapas as $etapa)
-                                            @foreach ($etapa->getEntregas as $entrega)
-                                                @foreach ($entrega->getViviendas->sortBy('orden') as $vivienda)
-                                                    <tr>                                          
-                                                        <td class= 'text-center' >{{$vivienda->orden}}</td>
-                                                        <td class= 'text-center' >{{$etapa->nro_eta}}</td>   
-                                                        <td class= 'text-center' >{{$entrega->num_ent}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->plano}}</td>                                           
-                                                        <td class= 'text-center' >{{$vivienda->seccion}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->chacra}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->manzana}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->man_emp}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->nom_cal}}</td>
-                                                        <td class= 'text-center' >{{$vivienda->entrecalles}}</td>
-                                                        {{-- <td class= 'text-center' >{{$vivienda->sup_lot}}</td> --}}
-                                                        
-                                                        {{-- <td class= 'text-center' style="vertical-align: middle;">{{$vivienda->orden}}</td>   --}}
-                                                    </tr>
-                                                @endforeach
-                                            @endforeach
+                                        @foreach ($viviendas as $vivienda)
+                                            <tr>                                          
+                                                <td class= 'text-center' >{{$vivienda->orden}}</td>
+                                                <td class= 'text-center' >{{$vivienda->etapa}}</td>   
+                                                <td class= 'text-center' >{{$vivienda->entrega}}</td>
+                                                <td class= 'text-center' >{{$vivienda->plano}}</td>                                           
+                                                <td class= 'text-center' >{{$vivienda->seccion}}</td>
+                                                <td class= 'text-center' >{{$vivienda->chacra}}</td>
+                                                <td class= 'text-center' >{{$vivienda->manzana}}</td>
+                                                <td class= 'text-center' >{{$vivienda->man_emp}}</td>
+                                                <td class= 'text-center' >{{$vivienda->nom_cal}}</td>
+                                                <td class= 'text-center' >{{$vivienda->entrecalles}}</td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -182,27 +174,29 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                {!! Form::label('Viviendas por N° de orden:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4" style="background-color: #ff9500b6">
+                                    {!! Form::label('Viviendas por N° de orden:', null, ['class' => 'control-label text-black', 'style' => 'white-space: nowrap;']) !!}
+                                </div>
                             </div>
                             {!! Form::open(['route' => ['obravivienda.guardarcargamasiva', $obra->id_obr], 'method' => 'POST']) !!}
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2" style="background-color: #ff9500b6">
                                     <div class="form-group">
                                         {!! Form::label('Desde:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <select class="form-select" name="ordenDesde" placeholder="Seleccionar" id='selected-orden-desde'>
                                             <option disabled selected>Seleccionar</option>
-                                            @for ($i = 1; $i <= $obra->can_viv; $i++)
+                                            @for ($i = 1; $i <= $totalViviendas; $i++)
                                                 <option value={{"$i"}}>{{$i}}</option>
                                             @endfor
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2" style="background-color: #ff9500b6">
                                     <div class="form-group">
                                         {!! Form::label('Hasta:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <select class="form-select" name="ordenHasta" placeholder="Seleccionar" id='selected-orden-hasta'>
                                             <option disabled selected>Seleccionar</option>
-                                            @for ($i = 1; $i <= $obra->can_viv; $i++)
+                                            @for ($i = 1; $i <= $totalViviendas; $i++)
                                                 <option value={{"$i"}}>{{$i}}</option>
                                             @endfor
                                         </select>
@@ -289,7 +283,7 @@
                                     </div>
                                     <div class="p-1">
                                         {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas', $obra->id_obr], 'style' => '']) !!}
-                                        {!! Form::submit('Volver', ['class' => 'btn btn-outline-primary']) !!}
+                                        {!! Form::submit('Volver', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>

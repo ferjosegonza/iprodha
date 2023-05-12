@@ -111,8 +111,8 @@
                                 
                             </div>
                             
-                            <div class="row border">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7  border">
                                     {!! Form::label('Etapa INICIAL:', null, ['class' => 'control-label fs-7', 'style' => 'white-space: nowrap; ']) !!}
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -124,13 +124,14 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
                                             <div class="form-group">
                                                 {!! Form::label('Descripcion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                                <span class="obligatorio">*</span>
                                                 {!! Form::text('descrip', null, ['class' => 'form-control', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'required']) !!}
                                             </div>
                                         </div>
                                         
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                         {!! Form::label('Cantidad de Dormitorios:', null, ['class' => 'control-label fs-7', 'style' => 'white-space: nowrap; ']) !!}
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
@@ -159,7 +160,7 @@
                                             </div>
                                         </div>
                                     
-                                </div>
+                                </div> --}}
                                 
                                 
                             </div>
@@ -177,7 +178,7 @@
                                     </div>
                                     <div class="p-1">
                                         {!! Form::open(['method' => 'GET', 'route' => 'obravivienda.index', 'style' => '']) !!}
-                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-outline-primary']) !!}
+                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
