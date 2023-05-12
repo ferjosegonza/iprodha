@@ -67,7 +67,7 @@ function agregarVivienda(id, orden){
     var rowCount = table.rows.length;
     
     if($('.radiockeck'+id).is(':checked')){
-        viviendasListaAsignados.innerHTML += '<label id=viv'+id+'><input checked onclick="eliminarVivienda('+id+')" class="vi'+orden+'" name="vivs[]" type="checkbox" value="'+id+'"> Viv. Orden N°: '+orden+'</label>';
+        viviendasListaAsignados.innerHTML += '<label id=viv'+id+'><input checked onclick="eliminarVivienda('+orden+','+id+')" class="vi'+orden+'" name="vivs[]" type="checkbox" value="'+id+'"> Viv. Orden N°: '+orden+'</label>';
 
         $.when($.ajax({
             type: "post",
@@ -88,6 +88,7 @@ function agregarVivienda(id, orden){
             let cell9 = row.insertCell(8);
             let cell10 = row.insertCell(9);
             let cell11 = row.insertCell(10);
+            let cell12 = row.insertCell(11);
 
             cell1.classList.add("text-center");
             cell2.classList.add("text-center");
@@ -100,18 +101,24 @@ function agregarVivienda(id, orden){
             cell9.classList.add("text-center");
             cell10.classList.add("text-center");
             cell11.classList.add("text-center");
+            cell12.classList.add("text-center");
 
             cell1.innerHTML = response.orden;
-            cell2.innerHTML = response.plano;
-            cell3.innerHTML = response.seccion;
-            cell4.innerHTML = response.chacra;
-            cell5.innerHTML = response.manzana;
-            cell6.innerHTML = response.parcela;
-            cell7.innerHTML = response.finca;
-            cell8.innerHTML = response.edificio;
-            cell9.innerHTML = response.piso;
-            cell10.innerHTML = response.departamento;
-            cell11.innerHTML = response.escalera;
+            if (response.discap == 1) {
+                cell2.innerHTML = 'SI';
+            } else {
+                cell2.innerHTML = 'NO';
+            }
+            cell3.innerHTML = response.plano;
+            cell4.innerHTML = response.seccion;
+            cell5.innerHTML = response.chacra;
+            cell6.innerHTML = response.manzana;
+            cell7.innerHTML = response.parcela;
+            cell8.innerHTML = response.finca;
+            cell9.innerHTML = response.edificio;
+            cell10.innerHTML = response.piso;
+            cell11.innerHTML = response.departamento;
+            cell12.innerHTML = response.escalera;
         },
         error: function (error) {
             console.log(error);

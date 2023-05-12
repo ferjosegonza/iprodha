@@ -207,7 +207,7 @@
                             </div>
                             <div class="row">
                                 <div class="d-flex flex-row align-items-start justify-content-around mb-3">
-                                    <div class="card-body ms-2 d-flex flex-column" style="height: 250px;width:50%">
+                                    <div class="card-body ms-2 d-flex flex-column" style="height: 250px;width:100%">
                                         <div class="">
                                             <label>Viviendas:</label>
                                         </div>
@@ -275,6 +275,7 @@
                                 <table id="tablaviv" class="table table-hover mt-2" class="display">
                                     <thead style="">
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Viv. adaptada</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
