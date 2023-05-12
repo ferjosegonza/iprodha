@@ -1,3 +1,22 @@
+class elemento{
+    constructor(tag){
+        this.tag = tag;
+        this.cont = 0;
+    }
+}
+
+class complejo{
+    constructor(tag1, tag2){
+        this.tag1 = tag1;
+        this.tag2 = tag2;
+        this.cont = 0;
+    }
+}
+
+var elementos = []
+var complejos = []
+
+
 function tipos(){
     if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
@@ -111,9 +130,10 @@ function existeCheck(){
                 else{                    
                     document.getElementById('pdfguar').hidden = true;   //hay que mostrar un pdf
                     let path = res.response.path_archivo + res.response.nombre_archivo;
-                    document.getElementById('linkpdf').innerHTML = res.response.nombre_archivo;
+                    document.getElementById('linkpdf').setAttribute('href', path);
                     document.getElementById('pdfver').removeAttribute("hidden");
-                    document.getElementById('pdfver').setAttribute('data', path);
+                    console.log(path)
+                    document.getElementById('pdfverpdf').setAttribute('data', path);
                 }
                 let tags=[];
                 let info=[];
@@ -219,17 +239,20 @@ function existeCheck(){
                                         divmayorOb.className = "row";
                                         containerOb.appendChild(divmayorOb)
                                     }                                 
-                                    if(res.response[i].dato == 1){//Si el dato es tipeado                                                                              
-                                        crearInputSimple(divmayorOb, res.response[i].dato_tipo, res.response[i].descripcion, 1, i) 
-                                                             
+                                    if(res.response[i].dato == 1){//Si el dato es tipeado      
+                                        let cont = contadorSimple(res.response[i].descripcion);                                                                        
+                                        let idinput = crearInputSimple(divmayorOb, res.response[i].dato_tipo, res.response[i].descripcion, 1, i, cont) 
+                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion);                                                             
                                     }
                                     else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                        crearSelect(divmayorOb, res.response[i].id_tag, res.response[i].descripcion, 1,i) 
-                                         
+                                        let cont = contadorSimple(res.response[i].descripcion); 
+                                        let idinput = crearSelect(divmayorOb, res.response[i].id_tag, res.response[i].descripcion, 1,i, cont) 
+                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
                                     }
-                                    else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                        crearSemiSelect(divmayorOb, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1, i) 
-                                         
+                                    else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo.
+                                        let cont = contadorSimple(res.response[i].descripcion); 
+                                        let idinput = crearSemiSelect(divmayorOb, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1, i, cont) 
+                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion);  
                                     }  
                                     rowOb+=3
                                     if(rowOb==12){                
@@ -261,15 +284,20 @@ function existeCheck(){
                                             divmayorRe.className = "row";
                                             containerRe.appendChild(divmayorRe)
                                         } 
-                                        if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                           crearInputSimple(divmayorRe, res.response[i].dato_tipo, res.response[i].descripcion, 1, i)                                      
+                                        if(res.response[i].dato == 1){//Si el dato es tipeado      
+                                            let cont = contadorSimple(res.response[i].descripcion);                                  
+                                            let idinput = crearInputSimple(divmayorRe, res.response[i].dato_tipo, res.response[i].descripcion, 1, i, cont)                                      
+                                            cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
                                         }
                                         else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                            crearSelect(divmayorRe, res.response[i].id_tag, res.response[i].descripcion, 1, i)
+                                            let cont = contadorSimple(res.response[i].descripcion); 
+                                            let idinput = crearSelect(divmayorRe, res.response[i].id_tag, res.response[i].descripcion, 1, i, cont)
+                                            cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
                                         }  
                                         else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                           crearSemiSelect(divmayorRe, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1,i) 
-                                             
+                                            let cont = contadorSimple(res.response[i].descripcion); 
+                                            let idinput = crearSemiSelect(divmayorRe, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1,i, cont) 
+                                            cargarDatosSimples(cont, idinput, res.response[i].descripcion);  
                                         }
                                         rowRe+=3
                                         if(rowRe==12){                    
@@ -300,14 +328,19 @@ function existeCheck(){
                                         containerOp.appendChild(divmayorOp)
                                     }                              
                                     if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                       crearInputSimple(divmayorOp, res.response[i].dato_tipo, res.response[i].descripcion, 1, i)                                       
-                                          
+                                        let cont = contadorSimple(res.response[i].descripcion); 
+                                        let idinput = crearInputSimple(divmayorOp, res.response[i].dato_tipo, res.response[i].descripcion, 1, i, cont)                                       
+                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion);   
                                     }
                                     else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                        crearSelect(divmayorOp, res.response[i].id_tag, res.response[i].descripcion, 1,i) 
-                                     }
+                                        let cont = contadorSimple(res.response[i].descripcion); 
+                                        let idinput = crearSelect(divmayorOp, res.response[i].id_tag, res.response[i].descripcion, 1,i, cont) 
+                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
+                                    }
                                     else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                      crearSemiSelect(divmayorOp, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1, i)
+                                        let cont = contadorSimple(res.response[i].descripcion); 
+                                        let idinput = crearSemiSelect(divmayorOp, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1, i, cont)
+                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
                                     } 
                                     rowOp+=3
                                     if(rowOp==12){                         
@@ -365,27 +398,28 @@ function existeCheck(){
                                                     let texto = document.createElement("p");
                                                     texto.innerHTML=res.response[i].descripcion
                                                     texto.className = 'complejos';
-                                                    containerOb.appendChild(texto);                                                 
+                                                    containerOb.appendChild(texto);     
                                                     }
                                                 var divmayorOb=document.createElement("div");                                        
                                                 divmayorOb.className = "row";                                                
-                                                containerOb.appendChild(divmayorOb)
+                                                containerOb.appendChild(divmayorOb)           
                                             }
-                                            if (bandera==0){                                                 
+                                            if (bandera==0){                 
+                                                var contaComplejo = contadorComplejo(res.response[i].deschijo, res.response[i+1].deschijo);                                
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
                                                 var divmedioOb = document.createElement("div")
-                                                divmedioOb.className = "col-lg-6 col-md-12 row"   
+                                                divmedioOb.className = "col-lg-12 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                     crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
+                                                     var idinput1 = crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
                                                      
                                                 }
                                                 else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                     crearSelect(divmedioOb, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i) 
+                                                     var idinput1 = crearSelect(divmedioOb, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
                                                      
                                                 }
                                                 else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                     crearSemiSelect(divmedioOb, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i) 
+                                                     var idinput1 = crearSemiSelect(divmedioOb, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
                                                      
                                                 }                          
                                                 divmayorOb.appendChild(divmedioOb); 
@@ -395,18 +429,19 @@ function existeCheck(){
                                                 //let divmedioOb = document.createElement("div")
                                                 //divmedioOb.className = "col-lg-6 col-md-12 row"                                          
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
+                                                    var idinput2 = crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
                                                      
                                                 }
                                                 else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    crearSelect(divmedioOb, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i) 
+                                                    var idinput2 = crearSelect(divmedioOb, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
                                                      
                                                 }
                                                 else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    crearSemiSelect(divmedioOb, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i) 
+                                                    var idinput2 = crearSemiSelect(divmedioOb, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
                                                      
                                                 }      
                                                 divmayorOb.appendChild(divmedioOb); 
+                                                cargarDatosComplejos(contaComplejo, idinput1, idinput2, res.response[i-1].deschijo, res.response[i].deschijo)
                                             }
                                            
                                             rowCoOb+=6;  
@@ -437,23 +472,22 @@ function existeCheck(){
                                                 divmayorRe.className = "row";                                                
                                                 containerRe.appendChild(divmayorRe)
                                             }
-                                            if (bandera==0){
-                                                
-                                                 
+                                            if (bandera==0){          
+                                                var contaComplejo = contadorComplejo(res.response[i].deschijo, res.response[i+1].deschijo);
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
                                                 var divmedioRe = document.createElement("div")
-                                                divmedioRe.className = "col-lg-6 col-md-12 row"   
+                                                divmedioRe.className = "col-lg-12 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
+                                                    var idinput1 = crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
                                                      
                                                 }
                                                 else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    crearSelect(divmedioRe, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i) 
+                                                    var idinput1 = crearSelect(divmedioRe, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
                                                      
                                                 }  
                                                 else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    crearSemiSelect(divmedioRe, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i) 
+                                                    var idinput1 = crearSemiSelect(divmedioRe, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
                                                      
                                                 } 
                                                 divmayorRe.appendChild(divmedioRe); 
@@ -464,19 +498,20 @@ function existeCheck(){
                                                 //let divmedioRe = document.createElement("div")
                                                 //divmedioRe.className = "col-lg-6 col-md-12 row"                                           
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
+                                                    var idinput2 = crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
                                                      
                                                 }
                                                 else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    crearSelect(divmedioRe, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i) 
+                                                    var idinput2 = crearSelect(divmedioRe, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
                                                      
                                                 }  
                                                 else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    crearSemiSelect(divmedioRe, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i) 
+                                                    var idinput2 = crearSemiSelect(divmedioRe, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
                                                      
                                                 } 
                                                 divmayorRe.appendChild(divmedioRe); 
                                                 rowCoRe+=6;     
+                                                cargarDatosComplejos(contaComplejo, idinput1, idinput2, res.response[i-1].deschijo, res.response[i].deschijo)
                                             }
                                            
                                             if(rowCoRe==12){   
@@ -497,31 +532,28 @@ function existeCheck(){
                                                 if (bandera==0){
                                                 //Es el primer hijo
                                                 //Al ser el primer hijo también creamos el nombre del padre
-                                                let texto = document.createElement("h6");
-                                                texto.innerHTML=res.response[i].descripcion
-                                                texto.className = 'complejos';
-                                                containerOp.appendChild(texto);                                                 
+                                                                                        
                                                 }
                                                 var divmayorOp=document.createElement("div");                                        
                                                 divmayorOp.className = "row";                                                
                                                 containerOp.appendChild(divmayorOp)
                                             }
                                             if (bandera==0){
-                                                
+                                                var contaComplejo = contadorComplejo(res.response[i].deschijo, res.response[i+1].deschijo);
                                                 //Como hay 2 inputs por complejo, creamos otro div que los contenga
                                                 var divmedioOp = document.createElement("div")
-                                                divmedioOp.className = "col-lg-6 col-md-12 row"   
+                                                divmedioOp.className = "col-lg-12 col-md-12 row"   
                                                 //
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
+                                                    var idinput1 = crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
                                                      
                                                 }
                                                 else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    crearSelect(divmedioOp, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i) 
+                                                    var idinput1 = crearSelect(divmedioOp, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
                                                      
                                                 }  
                                                 else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    crearSemiSelect(divmedioOp, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i) 
+                                                    var idinput1 = crearSemiSelect(divmedioOp, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
                                                     
                                                 } 
                                                 divmayorOp.appendChild(divmedioOp); 
@@ -531,23 +563,23 @@ function existeCheck(){
                                                 //let divmedioOp = document.createElement("div")
                                                 //divmedioOp.className = "col-lg-6 col-md-12 row"                                           
                                                 if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i)                                       
+                                                    var idinput2 = crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
                                                      
                                                 }
                                                 else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    crearSelect(divmedioOp, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i) 
+                                                    var idinput2 = crearSelect(divmedioOp, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
                                                      
                                                 }  
                                                 else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    crearSemiSelect(divmedioOp, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i) 
+                                                    var idinput2 = crearSemiSelect(divmedioOp, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
                                                      
                                                 }    
                                                 divmayorOp.appendChild(divmedioOp); 
-                                            }
-                                           
+                                                cargarDatosComplejos(contaComplejo, idinput1, idinput2, res.response[i-1].deschijo, res.response[i].deschijo)
+                                            }                                           
                                             rowCoOp+=6;  
                                             if(rowCoOp==12){   
-                                                //Es el ultimo elemento permitido y se reinicializa la fila                                    
+                                                //Es el ultimo elemento permitido y se reinicializa la fila     
                                                 rowCoOp=0
                                             }                                                                                                    
                                         }      
@@ -600,7 +632,43 @@ function existeCheck(){
 
 }
 
-function crearInputSimple(padre, dato, nombre, medida, i){
+function contadorSimple(nombre){
+    console.log(nombre)
+    let contador=0;
+    let band=0;
+    elementos.forEach(elemento => {
+        if(elemento.tag==nombre){
+            band=1;
+            elemento.cont+=1;
+            contador = elemento.cont;
+        }
+    });
+    if(band == 0){
+        let el = new elemento(nombre);
+        elementos.push(el);
+    }
+    console.log(contador)
+    return contador;
+}
+
+function contadorComplejo(tag1, tag2){
+    let contador=0;
+    let band=0;
+    complejos.forEach(complejo => {
+        if(complejo.tag1 == tag1 && complejo.tag2 == tag2){
+            band=1;
+            complejo.cont+=1;
+            contador = complejo.cont;
+        }
+    });
+    if(band == 0){
+        let co = new complejo(tag1, tag2);
+        complejos.push(co);
+    }
+    return contador;
+}
+
+function crearInputSimple(padre, dato, nombre, medida, i, contador){  
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -608,14 +676,14 @@ function crearInputSimple(padre, dato, nombre, medida, i){
     if(medida==2){
         divmenor.className = "col-lg-6"
     }                     
-    let lab = document.createElement("label")           
-    lab.innerHTML=nombre    
+    let lab = document.createElement("label")        
     if(medida==1){
         lab.id= "label-i-"+i
     }
     else{
         lab.id= "label-o-"+i
     }
+    lab.innerHTML=nombre    
     divmenor.appendChild(lab);
     //
     let input = document.createElement("input");
@@ -636,18 +704,17 @@ function crearInputSimple(padre, dato, nombre, medida, i){
         input.name = 'hijo' + i;
         input.id = 'hijo' + i;
     }    
-    if(cargarDatos(nombre) == 'No asignado')
-    {
-        input.placeholder = cargarDatos(nombre)
-    }
-    else{
-        input.value = cargarDatos(nombre)
-    }
+    input.addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+            guardarTag(input.id, nombre, 1, contador);
+        }    
+    });
     divmenor.appendChild(input);
-    padre.appendChild(divmenor)
+    padre.appendChild(divmenor);
+    return input.id;
 }
 
-function crearSelect(padre, id, nombre, medida, i){   
+function crearSelect(padre, id, nombre, medida, i, contador){ 
     let divmenor = document.createElement("div")      
     if(medida==1){ //Esta medida solo la tienen los no-complejos
         divmenor.className = "col-lg-3 col-md-4"
@@ -674,21 +741,14 @@ function crearSelect(padre, id, nombre, medida, i){
     else{
         input.name = 'hijo' + i;
         input.id = 'hijo' + i;
-    }
-    if(cargarDatos(nombre) == 'No asignado')
-    {
-        input.placeholder = cargarDatos(nombre)
-    }
-    else{
-        input.placeholder = cargarDatos(nombre)
-        input.value = cargarDatos(nombre)
-    }
+    }   
+    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
     divmenor.appendChild(input);
-    padre.appendChild(divmenor)
-    return(input.id)
+    padre.appendChild(divmenor);
+    return input.id;
 }
 
-function crearSemiSelect(padre, dato, id, nombre, medida, i){
+function crearSemiSelect(padre, dato, id, nombre, medida, i, contador){   
     let divmenor = document.createElement("div")           
     if(medida==1){ //La medida 1 la tienen solo los no-complejos
         divmenor.className = "col-lg-3 col-md-4"     
@@ -728,17 +788,58 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i){
         if (e.key === 'Enter') {
           findTexto(input.value, id, input, "opciones"+i);
         }
-    });
-    if(cargarDatos(nombre) == 'No asignado')
-    {
-        input.placeholder = cargarDatos(nombre)
-    }
-    else{
-        input.value = cargarDatos(nombre)
-    }
+    });   
+    //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
+    input.setAttribute('oninput', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
+    
+    if(medida != 1){
+        input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
+    }      
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
-    return(input.id)
+    return input.id;
+}
+
+function derivado(id, idtag){
+    let valor = document.getElementById('hijo'+id).value;   
+    let number = id + 1
+    let id2= 'hijo' + number;
+    let hijo = document.getElementById(id2)
+
+    let route = '/archivo/derivados';    
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id: idtag,
+            value: valor
+        }),
+        dataType: 'json',
+        success: function(res) {
+            hijo.value=res[0].dato
+            let lab = "label-o-" + number
+            tagname = document.getElementById(lab).innerHTML  
+            let contador=0;
+            elementos.forEach(elemento => {
+                if(elemento.tag==tagname){
+                    contador = elemento.cont;
+                }
+            });      
+            guardarTag(hijo.id, tagname, 1, contador)
+        },
+        error: function(res){
+            console.log(res)
+        }});
+
 }
 
 function mostrarPagina(tipo){
@@ -760,7 +861,7 @@ function mostrarPagina(tipo){
         if(tipo == 1){
             document.getElementById('div-btnborrar').hidden=true;
             document.getElementById('div-btnmodificar').hidden=true;
-            document.getElementById('agregar').removeAttribute("hidden");
+            document.getElementById('div-btnguardar').removeAttribute("hidden");
         }
         else{
             document.getElementById('div-btnmodificar').removeAttribute("hidden"); 
@@ -770,7 +871,7 @@ function mostrarPagina(tipo){
     }
 }
 
-function cargarDatos(tag){
+function cargarDatosSimples(conta, idinput, tag){   
     let tags=[];
     let info=[];
     let cont=0;
@@ -795,13 +896,76 @@ function cargarDatos(tag){
             info[cont] = info[cont] + claves[i];
         }
     } 
+    let aux=0;
+    console.log(conta)
+    let val=0;
     for(let i=0; i<tags.length; i++){
         if(tags[i] == tag)
         {
-            return info[i]
+            if(conta == aux){
+                document.getElementById(idinput).value = info[i];
+                document.getElementById(idinput).placeholder = info[i];
+                val=1;
+            }
+            else{
+                aux++;
+            }
+            
         }
     }
-    return ("No asignado")
+    if(val == 0){
+        document.getElementById(idinput).placeholder = 'No asignado';
+    }
+}
+
+function cargarDatosComplejos(conta, idinput1, idinput2, tag1, tag2){
+    let tags=[];
+    let info=[];
+    let cont=0;
+    let band=0;
+    let claves = document.getElementById('claves').value;
+    for(let i = 0; i<claves.length; i++){
+        if(claves[i] == '>'){
+            cont++;
+            band=0;
+        }
+        else if(claves[i] == ':'){
+            band=1;
+        }
+        else if(claves[i] == '<'){
+            tags[cont]=''
+            info[cont]=''
+        }
+        else if(band == 0){
+            tags[cont] = tags[cont] + claves[i];
+        }
+        else{
+            info[cont] = info[cont] + claves[i];
+        }
+    } 
+    let aux=0;
+    console.log(conta + ' ' + tag1 + ' ' + tag2)
+    let val=0;
+    for(let i=0; i<tags.length; i++){
+        if(tags[i] == tag1 && tags[i+1] == tag2)
+        {
+            if(conta == aux){
+                document.getElementById(idinput1).value = info[i];
+                document.getElementById(idinput1).placeholder = info[i];
+                document.getElementById(idinput2).value = info[i+1];
+                document.getElementById(idinput2).placeholder = info[i+1];
+                val=1;
+            }
+            else{
+                aux++;
+            }
+            
+        }
+    }
+    if(val == 0){
+        document.getElementById(idinput1).placeholder = 'No asignado';
+        document.getElementById(idinput2).placeholder = 'No asignado';
+    }
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
@@ -840,64 +1004,24 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 function completarTag(){
     const tag = document.getElementById('tag')    
-    //sigue
+    let btn = document.getElementById('btn-tag')
+    let div = document.getElementById('tag-agregar');
+    while(div.hasChildNodes()){
+        div.removeChild(div.lastChild)
+    }
+    if(tag.value!='sel'){
+        btn.removeAttribute('disabled')       
+        div.removeAttribute('hidden')
+    }
+    else{
+        btn.setAttribute('disabled','disabled')
+        div.hidden=true;
+    }    
 }
 
 function agregarTag(){
-    var cont=0;
     let idtag = document.getElementById('tag').value;
     var tag;
-    $.when(tag = obtenerTagFormato(idtag)).then(function(){
-        let div = document.getElementById('tag-agregar');
-        console.log(div)
-        let div2 = document.createElement("div");    
-        console.log(tag)
-        if(tag.length>1){
-            
-        }
-        else{
-            let lab = document.createElement('label');
-            lab.innerHTML = tag.descripcion;
-            div2.appendChild(lab);
-            if(tag.dato == 1){
-                let input = document.createElement('input')
-                if(tag.dato_tipo == 1){
-                    input.type = "number"
-                    input.className="no-spin"
-                }
-                else{
-                    input.type = "text"
-                }
-            }
-            if(tag.dato == 2){
-                let input = document.createElement("select");
-                getSelects(input, tag.id)
-            }
-            if(tag.dato == 3){
-                let input = document.createElement("input");
-                if(dato == 1){                               
-                input.type = "number";
-                input.className="no-spin"
-                }
-                else{
-                    input.type = "text";
-                }                      
-                input.setAttribute('list', "opciones-"+tag.id_tag);
-                input.addEventListener('keypress', function (e) {
-                    if (e.key === 'Enter') {
-                    findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
-                    }
-                });
-            }
-            div2.className = "col-lg-12";
-            div2.appendChild(input)        
-        }
-        div.appendChild(div2);
-    })
-    
-}
-
-function obtenerTagFormato(id){
     let route = '/archivo/tag';   
 
     $.ajaxSetup({
@@ -911,15 +1035,192 @@ function obtenerTagFormato(id){
         cache: false,
         data: ({
             _token: $('#signup-token').val(),
-            id: id
+            id: idtag
         }),
         dataType: 'json',
-        success: function(res) {
-            return res
-        },
-        error: function(res){
-            console.log(res)
-        }});
+        success: function(res) {            
+            tag = res
+            let div = document.getElementById('tag-agregar');
+            let div2 = document.createElement("div");   
+            let lab = document.createElement('label');
+            lab.innerHTML = tag.descripcion;
+            div2.appendChild(lab);
+            if(tag.dato == 1){
+                let input = document.createElement('input')
+                if(tag.dato_tipo == 1){
+                    input.type = "number"
+                    input.className="no-spin"
+                }
+                else{
+                    input.type = "text"
+                }
+                input.id='agregarTag';
+                input.setAttribute('onkeyup','checkGuardarTag()');
+                input.className = 'form-control';
+                div2.className = "col-lg-8";
+                div2.appendChild(input)     
+                div.appendChild(div2);   
+            }
+            if(tag.dato == 2){
+                let input = document.createElement("select");
+                getSelects(input, tag.id_tag);
+                input.id='agregarTag';
+                input.className = 'form-control';
+                input.setAttribute('onchange','checkGuardarTag()');
+                div2.className = "col-lg-8";
+                div2.appendChild(input)     
+                div.appendChild(div2);   
+            }
+            if(tag.dato == 3){
+                let input = document.createElement("input");
+                if(tag.dato_tipo == 1){                               
+                input.type = "number";
+                input.className="no-spin"
+                }
+                else{
+                    input.type = "text";
+                }                      
+                input.setAttribute('list', "opciones-"+tag.id_tag);
+                input.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                    findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+                    }
+                });
+                input.id='agregarTag';
+                input.className = 'form-control';
+                input.setAttribute('onkeyup','checkGuardarTag()');
+                div2.className = "col-lg-8";                
+                div2.appendChild(input)     
+                div.appendChild(div2);   
+                
+            }
+            let div3 = document.createElement('div')
+            let btn = document.createElement('button')
+            btn.type = 'button'
+            btn.innerHTML = 'Agregar'               
+            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ')');
+            btn.className = 'btn btn-success';               
+            btn.id= 'btnTagAgregar' 
+            div3.className = 'col-lg-2';
+            btn.setAttribute('disabled','disabled')
+            div3.appendChild(document.createElement('br'))
+            div3.appendChild(btn)
+            div.appendChild(div3)            
+            },
+            error: function(res){
+                console.log(res)
+            }});
+        
+    
+}
+
+function checkGuardarTag(){
+    let input=document.getElementById('agregarTag')
+    let btn = document.getElementById('btnTagAgregar')
+    if(input.value == ''){
+        btn.setAttribute('disabled', 'disabled');
+    }
+    else{
+        btn.removeAttribute('disabled')
+    }
+}
+
+function guardarTag(idinput, tagname, tipo, cont){
+
+    let input = document.getElementById(idinput).value;
+    let claves = document.getElementById('claves');
+    let ac=-1;
+
+    if(tipo == 1){
+        if(claves.value.indexOf('<'+tagname+':')!= -1){
+            let first = -1;
+            let last = -1;
+            let comienza = 0;
+            let band=0;
+            let guardado =0;
+            for(let i = 0; i<claves.value.length; i++){  
+                if(claves.value[i] == '<'){
+                    //empieza un tag
+                    comienza=0;
+                    i++;
+                }            
+                if(comienza == 0){
+                    for(let j=0; j<tagname.length; j++){
+                        if(claves.value[i+j] != tagname[j]){
+                            band=1;
+                        }
+                    } 
+                    comienza = 1;
+                    if(band == 0){
+                        ac++;
+                        if(ac == cont){
+                            first = i-1; 
+                            guardado = 1;
+                        }              
+                    }
+                }
+                if(claves.value[i] == '>'){
+                    if(comienza == 1 && band == 0 && ac==cont){
+                        last = i;
+                    }
+                    else{
+                        comienza = 0;                        
+                        band=0;                        
+                    }
+                }
+            }
+            if(guardado == 1){
+                let stringNew = ''
+                for(let i=0; i<first; i++){
+                    stringNew = stringNew + claves.value[i];
+                }
+                stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
+                for(let i=last+1; i<claves.value.length; i++){
+                    stringNew = stringNew + claves.value[i];
+                }
+                claves.value = stringNew
+            }
+            else{
+                claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+            }
+            
+        }
+        else{
+            claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+        }
+        
+        /* if(claves.value.indexOf('<'+tagname+':')!= -1){
+            let first = claves.value.indexOf('<'+tagname+':');
+            let last = -1;
+            let band = 0;
+            for(let i=first; i<claves.value.length; i++){
+                if(band == 0){
+                    if(claves.value[i] == '>'){
+                        last=i;
+                        band= 1;
+                    }
+                }
+            }
+            let stringNew = ''
+            for(let i=0; i<first; i++){
+                stringNew = stringNew + claves.value[i];
+            }
+            stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
+            for(let i=last+1; i<claves.value.length; i++){
+                stringNew = stringNew + claves.value[i];
+            }
+            claves.value = stringNew
+        }
+        else{ 
+            claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+        }     */
+    }
+    else{
+        claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+    }
+
+             
+    
 }
 
 function contadorchar(label, input, max){
@@ -988,15 +1289,121 @@ function getSelects(padre, id){
         }),
         dataType: 'json',
         success: function(res) {
+            let option = document.createElement("option");
+            option.value = 'sel';
+            option.text = 'Seleccionar';            
+            padre.appendChild(option);
             for(i=0;i<res.length;i++){
                 let option = document.createElement("option");
                 option.value = res[i].campo1;
                 option.text = res[i].campo1;
                 padre.appendChild(option);
             }
+            padre.val='sel';
             return res;
         },
         error: function(res){
             console.log(res)
         }});
+}
+
+function borrar(){ 
+    let subtipo = document.getElementById('subtipo').value;
+    let doc = document.getElementById('doc').value;
+    let fecha = document.getElementById('fecha').value;
+    let orden = document.getElementById('orden').value;
+
+    let route = '/archivo/borrar';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: subtipo,
+            doc: doc,
+            fecha: fecha,
+            orden: orden
+        }),
+        dataType: 'json',
+        success: function(res) {
+            console.log(res)
+        },
+        error: function(res){
+            console.log(res)
+    }});
+}
+
+function modificar() { 
+    let subtipo = document.getElementById('subtipo').value;
+    let doc = document.getElementById('doc').value;
+    let fecha = document.getElementById('fecha').value;
+    let claves = document.getElementById('claves').value;
+    let orden = document.getElementById('orden').value;
+
+
+    let route = '/archivo/modificar';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: subtipo,
+            doc: doc,
+            fecha: fecha,
+            claves: claves,
+            orden: orden
+        }),
+        dataType: 'json',
+        success: function(res) {
+            console.log(res)
+        },
+        error: function(res){
+            console.log(res)
+    }});
+}
+
+function guardar(){
+    let subtipo = document.getElementById('subtipo').value;
+    let doc = document.getElementById('doc').value;
+    let fecha = document.getElementById('fecha').value;
+    let claves = document.getElementById('claves').value;
+    let orden = document.getElementById('orden').value;
+
+    let route = '/archivo/crear';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: subtipo,
+            doc: doc,
+            fecha: fecha,
+            claves: claves,
+            orden: orden
+        }),
+        dataType: 'json',
+        success: function(res) {
+            console.log(res)
+        },
+        error: function(res){
+            console.log(res)
+    }});
 }

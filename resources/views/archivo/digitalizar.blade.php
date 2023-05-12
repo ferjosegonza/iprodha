@@ -60,26 +60,7 @@
                             {!! Form::number('orden', 1, ['class' => 'form-control', 'id'=>'orden', 'min'=>'1', 'max'=>'5']) !!}
                         </div>          
                     </div>
-                    <div class="row rowtag">
-                        {{-- <div class="col-lg-3">
-                            {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                            <select class="form-select" id="empresa" name="empresa">
-                                <option value="sel" selected>Seleccionar</option>
-                                @foreach ($Empresas as $emp)                           
-                                    <option value="{{$emp->id_emp}}">{{$emp->nom_emp}}</option>
-                                @endforeach                        
-                            </select>   
-                        </div>
-                        <div class="col-lg-3">
-                            {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                            <select class="form-select" id="local" name="local">
-                                <option value="sel" selected>Seleccionar</option>
-                                @foreach ($Localidades as $loc)                           
-                                    <option value="{{$loc->id_loc}}">{{$loc->nom_loc}}</option>
-                                @endforeach                        
-                            </select>   
-                        </div> --}}
-                       
+                    <div class="row rowtag">                       
                         <div class="col-lg-3">
                             {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             {!! Form::number('doc', null, ['class' => 'form-control no-spin', 'id'=>'doc', 'min'=>'0']) !!}
@@ -116,13 +97,17 @@
                     <hr>
                     <div id="sectags" hidden>
                         <div class="row rowtag">
-                            <div id="pdfver" hidden>          
-                                <label for="pdfver">PDF Actual:</label>                                                                
-                                <object id="pdfver" data="" type="application/pdf"></object>
-                                <a href="" id="linkpdf"></a>     
-                                <br>
-                                {!! Form::label('Cambiar pdf:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                                {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!}
+                            <div id="pdfver" hidden>  
+                                <div class="row pdfrow">
+                                    <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
+                                    <br>                                                   
+                                    <object id="pdfverpdf" data=" " type="application/pdf" height="100%" width="100%"></object>
+                                </div>       
+                                <div class="row" style="margin-top: 40px">
+                                    <br>
+                                    <a href="" id="linkpdf">Ver más</a>     
+                                    <br>                                    
+                                </div> 
                             </div>
                             <div id="pdfguar" hidden>
                                 {!! Form::label('Subir archivo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
@@ -152,20 +137,22 @@
                                 
                                 <div id="comp-opcional" class="container-fluid"></div>
                                 <br>
-                                <div class="row">
-                                <div id="agregar" hidden>
-                                {!! Form::label('Agregar una clave:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                <select class="form-select" id="tag" name="tag" onchange="completarTag()">
-                                    <option value="sel" selected>Seleccionar</option>                                    
-                                    @foreach ($Tags as $tag)
-                                        <option value="{{$tag->id_tag}}|{{$tag->descripcion}}">{{$tag->descripcion}}</option>
-                                    @endforeach       
-                                </select>  
-                                <button class="btn btn-success" id='btn-tag' onclick="agregarTag()">Agregar</button>
-                                </div>  
-                                <div id="tag-agregar" class="row">
-                                </div>
-                                <button class="btn btn-success" id='btn-conf' onclick="confirmar()" hidden>Confirmar</button>
+                                <div class="row" id="agregar" hidden>
+                                    <div class="col-lg-10">
+                                    {!! Form::label('Agregar una clave:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                    <select class="form-select" id="tag" name="tag" onchange="completarTag()">
+                                        <option value="sel" selected>Seleccionar</option>                                    
+                                        @foreach ($Tags as $tag)
+                                            <option value="{{$tag->id_tag}}|{{$tag->descripcion}}">{{$tag->descripcion}}</option>
+                                        @endforeach       
+                                    </select>  
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <br>
+                                        <button class="btn btn-success" id='btn-tag' onclick="agregarTag()" disabled>+</button>
+                                    </div>                 
+                                        <div id="tag-agregar" class="row" hidden>
+                                    </div>
                                 </div> 
                             </div>
                             </div>                          

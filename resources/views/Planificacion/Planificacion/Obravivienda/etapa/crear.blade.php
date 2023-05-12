@@ -23,13 +23,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('N° Etapa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('num_eta', $obra->getEtapas->sortBy('nro_eta')->last()->nro_eta + 1, ['class' => 'form-control']) !!}
+                                        {!! Form::label('N° Etapa:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
+                                        {!! Form::number('num_eta', $obra->getEtapas->sortBy('nro_eta')->last()->nro_eta + 1, ['class' => 'form-control', 'required']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
                                     <div class="form-group">
-                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
                                         {!! Form::text('descrip', null, [
                                             'class' => 'form-control',
                                             'required' => 'required',
@@ -40,38 +40,37 @@
                                 </div>  
                             </div>
                             <div class="row">
-                                {!! Form::label('Cantidad de dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                {!! Form::label('Cantidad de dormitorios:', null, ['class' => 'control-label fs-7', 'style' => 'white-space: nowrap; ']) !!}
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
-                                        {!! Form::label('0 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control']) !!}
+                                        {!! Form::label('0 Dormitorios:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::number('can_viv_0', 0, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
-                                        {!! Form::label('2 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('2 Dormitorios:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::number('can_viv_2', 0, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
-                                        {!! Form::label('3 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('3 Dormitorios:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::number('can_viv_3', 0, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
-                                        {!! Form::label('4 Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('4 Dormitorios:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::number('can_viv_4', 0, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                             </div>
-                            
                     
                             <div class="row pt-3">
                                 <div class="d-flex">
                                     <div class="me-auto">
-                                        {{-- (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong> --}}
+                                         (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
                                         @can('CREAR-OBRAS')
