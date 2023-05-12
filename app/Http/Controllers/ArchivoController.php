@@ -169,7 +169,7 @@ public function check(Request $request){
     }
     
 
-    return response()->json(['response' => $archivo]);
+    return response()->json($archivo);
 }
 
 

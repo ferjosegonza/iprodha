@@ -16,87 +16,93 @@ class complejo{
 var elementos = []
 var complejos = []
 
-
-function tipos(){
+function tipos(){ //Esta funcion maneja la selección de un tipo de archivo y sus subtipos
     if(document.getElementById('tipo').value == 'sel'){
-        document.getElementById('subtipo').hidden = true;
-        document.getElementById('placeholder').hidden = false;        
+        //Si no se selecciona un tipo se ocultan los subtipos y se pone un placeholder
+        document.getElementById('subtipo').hidden = true
+        document.getElementById('placeholder').hidden = false       
         document.getElementById('subtipo').value = "sel"
-
     }  
-    else{
-        let tipo = document.getElementById('tipo').value;
-        let tipoId = document.getElementById('tipo').value[0];     
-        document.getElementById('subtipo').value = "sel"
-        let bandera= 0;       
-        for(i = 1; i < tipo.length; i++){ 
-            if(isNaN(document.getElementById('tipo').value[i]))                
-            {                    
-                i=tipo.length+1;    
-            }
-            else{
-                tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
-            }
-        }    
-        document.getElementById('subtipo').hidden = false;
-        document.getElementById('placeholder').hidden = true;
-        let subtipo = document.getElementById('subtipo')
-        let subtid
-        for(i=1; i<subtipo.options.length; i++){
-            if(subtipo.options[i].value != null){
-                bandera=0;
-                for(j=0; j<subtipo.options[i].value.length; j++){              
-                    if (bandera==0){
-                        if(j==0){         
-                            subtid = subtipo.options[i].value[j].toString();
-                        }
-                        else{
-                            if(isNaN(subtipo.options[i].value[j])){                                
-                                bandera=1;
-                                if(subtid == tipoId)
-                                {
-                                    subtipo.options[i].hidden = false
-                                }
-                                else{
-                                    subtipo.options[i].hidden = true                                    
-                                }
-                                subtid=""
-                            }
-                            else{
-                                subtid = subtid + subtipo.options[i].value[j].toString();
-                            }
-                        }
-                    }
-                    else{
-                        j=subtipo.options[i].value.length
-                    }
-                }
-            }
-        }
-        
+    else{   
+        //Si se selecciona un tipo se filtran los subtipos correspondientes y se oculta el placeholder
+        let tipoId =  document.getElementById('tipo').value   
+        document.getElementById('subtipo').hidden = false
+        document.getElementById('placeholder').hidden = true
+        filtrarSubtipos(tipoId)        
     }
 }    
 
-function existeCheck(){
-    const tipoId = document.getElementById('tipo').value;
-    const subtipo = document.getElementById('subtipo');
-    const fecha = document.getElementById('fecha').value;
-    const doc = document.getElementById('doc').value;  
-    bandera=0;
-    let subtid = '';
+function filtrarSubtipos(tipoId){ //filtra los subtipos según el id del tipo de archivo
+    //los value de cada subtipo están conformados por el idtipo y el idsubtipo 
+    //cumplen con la forma value = 17|25, siendo el primer valor el idtipo
+    let subtipo = document.getElementById('subtipo')   
+    subtipo.value = "sel"
+    let bandera= 0; 
+    let subtid
+    for(let i=1; i<subtipo.options.length; i++){
+        //Por cada subtipo que existe
+        if(subtipo.options[i].value != null){
+            //La bandera nos indica si ya terminamos de procesar el idtipo
+            bandera=0;
+            for(j=0; j<subtipo.options[i].value.length; j++){ //Por cada caracter del subtipo.value
+                if (bandera==0){  //Si se sigue procesando el id                   
+                    if(j==0){ //Si es el primer caracter (siempre numérico)    
+                        subtid = subtipo.options[i].value[j].toString();
+                    }
+                    else{ //Si es el caracter != 0
+                        if(isNaN(subtipo.options[i].value[j])){ //Si no es un numero, es decir |                        
+                            bandera=1; //terminamos de procesar el id
+                            if(subtid == tipoId) //si coincide con el idtipo se muestra
+                            {
+                                subtipo.options[i].hidden = false
+                            }
+                            else{ //si no coincide se oculta
+                                subtipo.options[i].hidden = true                                    
+                            } 
+                            subtid="" //reinciamos el idsubtipo para la siguiente iteración
+                        }
+                        else{ //Es un número, seguimos procesando el id
+                            subtid = subtid + subtipo.options[i].value[j].toString();
+                        }
+                    }
+                } 
+                else{ //Si terminamos de procesar cerramos el bucle y vamos al siguiente.
+                    j=subtipo.options[i].value.length
+                }
+            }
+        }
+    }        
+}
+
+function getSubtipoId(){
+    //Recumeramos el subtipoId del subtipo seleccionado
+    //Es decir el segundo valor en subtipo.value = 17|25 
+    let bandera=0
+    let subtid = ''
     for(i=0; i<subtipo.value.length; i++){
-        if (bandera==1){
-            subtid= subtid + subtipo.value[i];
+        //Por cada caracter
+        if (bandera==1){ //Una vez que encontramos el | podemos empezar a guardar el id
+            subtid= subtid + subtipo.value[i]
         }
         else{
             if(subtipo.value[i]=='|')
             {
-                bandera=1;
+                bandera=1 //Encontramos el |
             }
         }
     }
+    return subtid;
+}
 
-
+function existeCheck(){
+    //Al presionar algún botón de guardar/modificar/borrar verificamos si existe un archivo 
+    //que coincida con los parámetros mencionados.
+    //PARÁMETROS
+    let tipoId = document.getElementById('tipo').value
+    let fecha = document.getElementById('fecha').value
+    let doc = document.getElementById('doc').value
+    let subtid = getSubtipoId()
+    //CONSULTA AJAX
     let route = '/archivo/check';
     $.ajaxSetup({
         headers: {
@@ -118,59 +124,10 @@ function existeCheck(){
         success: function(res) 
         {     
             //La operación es válida
-            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
-            || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+            if(res != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
+            || res == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 
-                claves = document.getElementById('claves');
-                claves.value = '';
-                if(document.getElementById('guardar').checked){
-                    document.getElementById('pdfguar').removeAttribute("hidden"); //habilitar subir un pdf
-                    document.getElementById('pdfver').hidden=true;  //no existe algo a mostrar
-                }
-                else{                    
-                    document.getElementById('pdfguar').hidden = true;   //hay que mostrar un pdf
-                    let path = res.response.path_archivo + res.response.nombre_archivo;
-                    document.getElementById('linkpdf').setAttribute('href', path);
-                    document.getElementById('pdfver').removeAttribute("hidden");
-                    console.log(path)
-                    document.getElementById('pdfverpdf').setAttribute('data', path);
-                }
-                let tags=[];
-                let info=[];
-                let cont=0;
-                let band=0;
-                if(res.response!=null){ //Si estamos modificando o borrando
-                    for(i=0; i<res.response.claves_archivo.length; i++){    
-                        //obtenemos los tags ya cargados
-                        //i es cada caracter                                                
-                        if(band==2){
-                            if(res.response.claves_archivo[i] == '>'){
-                                band=0;
-                            }   
-                            else{
-                                info[cont]=info[cont] + res.response.claves_archivo[i]
-                            }
-                        }if(band==1){
-                            if(res.response.claves_archivo[i] == ':'){
-                                band=2;
-                                info[cont]=''
-                            }   
-                            else{
-                                tags[cont]=tags[cont] + res.response.claves_archivo[i]
-                            }          
-                        }
-                        if(res.response.claves_archivo[i] == '<'){
-                            band=1; 
-                            cont+=1;
-                            tags[cont]=''
-                        }                        
-                    }
-                }                 
-                //le damos formato de tag:
-                for(i=1; i<tags.length; i++){
-                    claves.value = claves.value + '<'+tags[i]+':'+info[i]+'>';
-                }
-                contadorchar("characla", "claves", 1040); //muestra cuantos caracteres quedan
+                mostrarPagina(res);             
 
                 //recuperamos los tags a mostrar segun tipo de documento
                 let route = '/archivo/tags';
@@ -598,16 +555,6 @@ function existeCheck(){
                         alert("No se pudieron recuperar los tags");
                         console.log(res)
                     }});
-                    //ESTO PUEDE SER UNA FUNCION
-                if(document.getElementById('borrar').checked){ //Si seleccionamos borrar
-                    mostrarPagina(3)      
-                }
-                else if(document.getElementById('guardar').checked){ //Si seleccionamos guardar
-                    mostrarPagina(1)
-                }
-                else{
-                    mostrarPagina(2)
-                }   
             }
             else{
                 document.getElementById('sectags').hidden=true;
@@ -842,10 +789,70 @@ function derivado(id, idtag){
 
 }
 
-function mostrarPagina(tipo){
+function cargarPDF(path, nombre){
+    let ruta = path + nombre
+    document.getElementById('linkpdf').setAttribute('href', ruta)
+    document.getElementById('pdfverpdf').setAttribute('data', ruta)    
+}
+
+function cargarClaves(claves_archivo){
+    let tags=[];
+    let info=[];
+    let cont=0;
+    let band=0;
+    for(i=0; i<claves_archivo.length; i++){    
+        //obtenemos los tags ya cargados
+        //i es cada caracter                                                
+        if(band==2){
+            if(claves_archivo[i] == '>'){
+                band=0;
+            }   
+            else{
+                info[cont]=info[cont] + claves_archivo[i]
+            }
+        }if(band==1){
+            if(claves_archivo[i] == ':'){
+                band=2;
+                info[cont]=''
+            }   
+            else{
+                tags[cont]=tags[cont] + claves_archivo[i]
+            }          
+        }
+        if(claves_archivo[i] == '<'){
+            band=1; 
+            cont+=1;
+            tags[cont]=''
+        }                        
+    }
+     //le damos formato de tag:
+     for(i=1; i<tags.length; i++){
+        claves.value = claves.value + '<'+tags[i]+':'+info[i]+'>';
+    }
+}
+
+function mostrarPagina(archivo){
     //TIPO 1: AGREGAR
     //TIPO 2: MODIFICAR
     //TIPO 3: BORRAR
+    let tipo 
+    if(document.getElementById('guardar').checked){tipo = 1}
+    else if(document.getElementById('modificar').checked){tipo = 2}
+    else{tipo = 3}
+    //
+    claves = document.getElementById('claves');
+    claves.value = '';
+    if(tipo==1){
+        document.getElementById('pdfguar').removeAttribute("hidden") //habilitar subir un pdf
+        document.getElementById('pdfver').hidden=true  //no existe algo a mostrar
+    }
+    else{
+        cargarClaves(archivo.claves_archivo)
+        document.getElementById('pdfguar').hidden = true   //hay que mostrar un pdf
+        document.getElementById('pdfver').removeAttribute("hidden")
+        cargarPDF();
+    }
+    contadorchar("characla", "claves", 1040); //muestra cuantos caracteres quedan
 
     document.getElementById('sectags').removeAttribute("hidden");
     if(tipo == 3){ //Se selecciono borrar
