@@ -119,22 +119,17 @@
                         <hr>
                         <div id="showtags">
                             <div id="sec-obligatorio">
-                                <h6>Claves Obligatorias</h6>
-                                <div id="comp-obligatorio" class="container-fluid">
-                                </div>
-                                
+                                <h6>Claves Obligatorios</h6>
+                                <div id="comp-obligatorio" class="container-fluid"></div>
                                 <hr>
                             </div>
                             <div id="sec-recomendado">
                                 <h6>Claves Recomendadas</h6>
-                                <div id="comp-recomendado" class="container-fluid">           
-
-                                </div>
+                                <div id="comp-recomendado" class="container-fluid"></div>
                                 <hr>
                             </div>
                             <div id="sec-opcional">
                                 <h6>Otras Claves</h6>
-                                
                                 <div id="comp-opcional" class="container-fluid"></div>
                                 <br>
                                 <div class="row" id="agregar" hidden>

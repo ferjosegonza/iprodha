@@ -183,7 +183,7 @@ public function tags(Request $request){
     and id_tipocabecera = 1";
     $tags = DB::select( DB::raw($query));
 
-    return response()->json(['response' => $tags]);
+    return response()->json($tags);
 }
 
 public function getCampos(Request $request){
@@ -229,7 +229,7 @@ public function complejos(Request $request){
         $tags=null;
     }    
 
-    return response()->json(['response' => $tags]);
+    return response()->json($tags);
 }
 
 
