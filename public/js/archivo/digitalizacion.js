@@ -102,6 +102,9 @@ function existeCheck(){
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
+
+    console.log(tipoId, fecha, doc, subtid)
+
     //CONSULTA AJAX
     let route = '/archivo/check';
     $.ajaxSetup({
@@ -123,9 +126,10 @@ function existeCheck(){
         dataType: 'json',
         success: function(res) 
         {     
+            console.log(res)
             //La operación es válida
-            if(res != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
-            || res == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+            if(res != 'null' && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
+            || res == 'null' && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);  
             }
             else{
@@ -147,6 +151,81 @@ function existeCheck(){
         }   
     });
 
+}
+
+function checkArchivos(){
+    let padre = document.getElementById('padre')
+    let archivos = document.createElement('aside')
+    archivos.classList.add('col-lg-3')
+    archivos.classList.add('card')
+    archivos.id = 'archivos'
+    let taggeo = document.getElementById('taggeo')
+    taggeo.classList.add('col-lg-8')
+    padre.appendChild(archivos)
+    //
+    let tipo=document.getElementById('tipo').value
+    let sub = getSubtipoId()
+    let fecha = document.getElementById('fecha').value
+    let doc = document.getElementById('doc').value
+    //
+    let route = '/archivo/getArchivos';
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        async: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: tipo,
+            subtipo: sub,
+            fecha: fecha,
+            doc: doc
+        }),
+        dataType: 'json',
+        success: function(res){
+            console.log(res)
+            let titulo = document.createElement('h5')
+            titulo.innerHTML = 'Archivos:'
+            let cardhead = document.createElement('div')
+            cardhead.className = 'card-head'
+            cardhead.appendChild(titulo)
+            archivos.appendChild(cardhead)
+            let cardbody = document.createElement('div')
+            cardbody.className = 'card-body'
+            archivos.appendChild(cardbody)
+            let table = document.createElement('table')
+            table.id = 'archivotabla'
+            let tablebody = document.createElement('tbody')
+            cardbody.appendChild(table)
+            table.appendChild(tablebody)
+            for(let i = 0; i < res.length; i++){
+                let tr = document.createElement('tr')
+                tr.setAttribute('onclick', 'archivoSelected(' + i + ')')
+                let td1 = document.createElement('td')
+                td1.innerHTML = i
+                tr.appendChild(td1)
+                let td2 = document.createElement('td')
+                td2.innerHTML = res[i].nombre_archivo                
+                tr.appendChild(td2)        
+                /* let td3 = document.createElement('td')
+                td3.innerHTML = res[i]         
+                td3.hidden = true
+                tr.appendChild(td3)    */     
+                tr.onclick = function (){
+                    document.getElementById('archivos').remove()
+                    let taggeo = document.getElementById('taggeo')
+                    taggeo.classList.add('col-lg-12')
+                    mostrarPagina(res[i])
+                }
+                tablebody.appendChild(tr)
+            }            
+        },
+        error: function(res){console.log(res)}});
 }
 
 function contadorSimple(nombre){
@@ -837,11 +916,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
     const guardarBtn = document.getElementById('guardar');
 
     const checkEnableButton = () => {    
-        if(tipo.value!='sel' && subtipo.value!='sel' && fecha.value != '' && doc.value!= ''){
+        if(tipo.value!='sel' && subtipo.value!='sel' && doc.value!= ''){
             borrarBtn.removeAttribute('disabled');
-            modificarBtn.removeAttribute('disabled');
-            guardarBtn.removeAttribute('disabled');            
-        }
+            modificarBtn.removeAttribute('disabled');            
+            if(fecha.value != ''){
+                guardarBtn.removeAttribute('disabled');            
+            }
+        }        
         else{
             borrarBtn.setAttribute('disabled', 'disabled');
             modificarBtn.setAttribute('disabled', 'disabled');
@@ -956,7 +1037,7 @@ function agregarTag(){
             let btn = document.createElement('button')
             btn.type = 'button'
             btn.innerHTML = 'Agregar'               
-            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ',' + 0 + ')');
+            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ',' + 0 + ',' + 0 +')');
             btn.className = 'btn btn-success';               
             btn.id= 'btnTagAgregar' 
             div3.className = 'col-lg-2';

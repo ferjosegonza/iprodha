@@ -51,3 +51,14 @@ body{
 .pdfrow{
     height: 250px;
 }
+#archivos{
+    padding: 15px 5px 5px 15px;
+}
+td{
+    border: 1px solid gray;
+    border-radius: 2px;
+    padding: 5px;
+}
+tr:hover{
+    background-color: rgb(216, 216, 216);
+}

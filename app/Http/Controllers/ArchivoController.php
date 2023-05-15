@@ -167,11 +167,39 @@ public function check(Request $request){
     if($archivo != null){
         $archivo->path_archivo = substr($archivo->path_archivo, 14);
     }
-    
-
+    if($archivo == null){
+        $archivo = 'null';
+    }
     return response()->json($archivo);
 }
 
+public function getArchivos(Request $request){  
+    if($request->fecha != null){
+        $fecha = explode("-", $request->fecha);
+        $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
+                ->where('id_subtipoarchivo','=', $request->subtipo)
+                ->where('nro_archivo','=', $request->doc)
+                ->where('ano_archivo','=',$fecha[0])
+                ->where('mes_archivo','=',$fecha[1])
+                ->where('dia_archivo','=',$fecha[2])
+                ->orderBy('nombre_archivo')        
+                ->get();
+    }
+    else{
+        $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
+                ->where('id_subtipoarchivo','=', $request->subtipo)
+                ->where('nro_archivo','=', $request->doc)
+                ->orderBy('nombre_archivo')                
+                ->get();
+    }
+    if($archivo != null){
+        foreach($archivo as $a)
+        $a->path_archivo = substr($a->path_archivo, 14);
+    }else{
+        $archivo = 'null';
+    }
+    return response()->json($archivo);
+}
 
 public function tags(Request $request){
     $fecha = explode("-", $request->fecha);
