@@ -47,6 +47,7 @@
                                                             {!!Form::close()!!}
                                                         @endcan
                                                         <a class="btn btn-info" href="{{route('barrio.terrenoSup',$unbarrio->barrio)}}">Superficies</a>
+                                                        <a class="btn btn-info" href="{{route('barrio.dormXTerr',$unbarrio->barrio)}}">Dormitorio x Terrenos</a>
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <section class="section">
-        <div class="section-header"><h3 class="page__heading">Superficies x Barrio</h3></div>
+        <div class="section-header"><h3 class="page__heading">Dormitorios x Superficies</h3></div>
         <div class="section-body">
             <div class="">
                 <div class="row">
@@ -12,7 +12,7 @@
                             <div class="card-body  ">
                                 <div class="text-nowrap table-responsive">                                    
                                     <div style="width:99%;float:left;margin-top:2%;">
-                                        <form method="post" action="{{route('terrenoSup.store')}}">                                            
+                                        <form method="post" action="{{route('dormXTerr.store')}}">                                            
                                             @csrf
                                             @method('POST')
                                             <div style="width:10%;float:left;margin-left:1%;">
@@ -45,7 +45,7 @@
                                                         @method('DELETE')                                                        
                                                         {!!Form::open([
                                                             'method'=>'DELETE',
-                                                            'route'=>['terrenoSup.eliminar',$unTerreno->barrio,$unTerreno->idtipoterre],
+                                                            'route'=>['dormXTerr.eliminar',$unTerreno->barrio,$unTerreno->idtipoterre],
                                                             'style'=>'display:inline'
                                                         ])!!}
                                                         {!!Form::submit('Borrar',[

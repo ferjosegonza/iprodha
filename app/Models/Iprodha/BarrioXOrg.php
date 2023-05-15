@@ -6,13 +6,14 @@
         use HasFactory;
         public$timestamps=false;        
         protected$table='iprodha.barrioxorg';
-        protected$primaryKey=['barrio','idorganismo'];
+        protected$primaryKey=['barrio','candor','idtipoterre'];
         public$incrementing=false;
         protected$fillable=['BARRIO','IDORGANISMO','IDTIPOFAC','CANDOR','IDTIPOTERRE','PLAZO'];
         protected function setKeysForSaveQuery($query){
             $query
             ->where('barrio','=',$this->getAttribute('barrio'))
-            ->where('idorganismo','=',$this->getAttribute('idorganismo'));
+            ->where('candor','=',$this->getAttribute('candor'))
+            ->where('idtipoterre','=',$this->getAttribute('idtipoterre'));
             return$query;
         }     
     }

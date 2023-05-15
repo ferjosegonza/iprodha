@@ -140,9 +140,13 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],func
 Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],function(){
     Route::get('/barrio/{barrio}/vercostos',[Fc_concosxbarrioController::class,'edit'])->name('barrio.verCostos');        
 });
+
 Route::delete('/terrenoSup/eliminar/{barrio}/{id}',[barrio_terrenoController::class,'destroy'])->name('terrenoSup.eliminar');    
 Route::get('/barrio/{barrio}/terrenoSup',[barrio_terrenoController::class,'index'])->name('barrio.terrenoSup');
 Route::post('/terrenoSup',[barrio_terrenoController::class,'store']);
+Route::resource('terrenoSup',barrio_terrenoController::class);
+
+Route::get('/barrio/{barrio}/dormXTerr',[barrioXOrgController::class,'index'])->name('barrio.dormXTerr');
 
 Route::get('/obras84',function()
         {//return view('welcome');
