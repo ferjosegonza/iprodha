@@ -85,25 +85,24 @@
                             <div class="table-responsive">
                                 <table id="items" class="table table-hover mt-2" class="display">
                                     <thead>
-                                        <th class="text-center" scope="col" style="color:#fff; background-color: #f4f6f9" colspan="2"></th>                                       
-                                    </thead>
-                                    <thead>
                                         <th class="text-center" scope="col" style="color:#fff;width:15%;">Etapa</th>                                    
                                         <th class="text-center" scope="col" style="color:#fff;width:55%;">Descripcion</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">0 Dormitorios</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:20%;">Cant. Viviendas</th>
+                                        {{-- <th class="text-center" scope="col" style="color:#fff;width:10%;">0 Dormitorios</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">2 Dormitorios</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">3 Dormitorios</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">4 Dormitorios</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">4 Dormitorios</th> --}}
                                     </thead>
                                     <tbody>
                                         @foreach ($obra->getEtapas as $etapa)
                                             <tr>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{$etapa->nro_eta}}</td>                                            
                                                 <td class= 'text-center align-middle'>{{$etapa->descripcion}}</td>
-                                                <td class= 'text-center'>0</td>                                            
+                                                <td class= 'text-center'>{{$etapa->cant_viv}}</td>
+                                                {{-- <td class= 'text-center'>0</td>                                            
                                                 <td class= 'text-center'>{{$etapa->can_viv_2}}</td>
                                                 <td class= 'text-center'>{{$etapa->can_viv_3}}</td>
-                                                <td class= 'text-center'>{{$etapa->can_viv_4}}</td>
+                                                <td class= 'text-center'>{{$etapa->can_viv_4}}</td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -178,16 +177,23 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Viv. Adaptada</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Partida</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>                                                            
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Parcela</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Finca</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Edif.</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Piso</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Dpto</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Sup. Finca</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Sup. Lote</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">N° Calle</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">Calle</th>
+                                        <th class="text-center" scope="col" style="color:#fff; width:15%">Longitud</th>
+                                        <th class="text-center" scope="col" style="color:#fff; width:15%">Latitud</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">Edif.</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">Piso</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">Dpto</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">Escalera</th>
                                     <tbody>
                                         @foreach ($viviendas as $vivienda)
                                             <tr>    
@@ -199,12 +205,19 @@
                                                 @else
                                                     <td class= 'text-center' >NO</td>
                                                 @endif
+                                                <td class= 'text-center' >{{$vivienda->partida}}</td>
                                                 <td class= 'text-center' >{{$vivienda->plano}}</td>
                                                 <td class= 'text-center' >{{$vivienda->seccion}}</td>
                                                 <td class= 'text-center' >{{$vivienda->chacra}}</td>
                                                 <td class= 'text-center' >{{$vivienda->manzana}}</td>
                                                 <td class= 'text-center' >{{$vivienda->parcela}}</td>
                                                 <td class= 'text-center' >{{$vivienda->finca}}</td>
+                                                <td class= 'text-center' >{{$vivienda->sup_fin}}</td>
+                                                <td class= 'text-center' >{{$vivienda->sup_lot}}</td>
+                                                <td class= 'text-center' >{{$vivienda->num_cal}}</td>
+                                                <td class= 'text-center' >{{$vivienda->nom_cal}}</td>
+                                                <td class= 'text-center' >{{$vivienda->latitud}}</td>
+                                                <td class= 'text-center' >{{$vivienda->longitud}}</td>
                                                 <td class= 'text-center' >{{$vivienda->edificio}}</td>
                                                 <td class= 'text-center' >{{$vivienda->piso}}</td>
                                                 <td class= 'text-center' >{{$vivienda->departamento}}</td>

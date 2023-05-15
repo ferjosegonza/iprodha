@@ -292,6 +292,11 @@
                                         @foreach ($entre->getViviendas as $vivienda)
                                         <tr>                                          
                                             <td class= 'text-center' >{{$vivienda->orden}}</td>
+                                            @if ($vivienda->discap == 1)
+                                                <td class= 'text-center' >SI</td>
+                                            @else
+                                                <td class= 'text-center' >NO</td>
+                                            @endif
                                             <td class= 'text-center' >{{$vivienda->plano}}</td>                                          
                                             <td class= 'text-center' >{{$vivienda->seccion}}</td>
                                             <td class= 'text-center' >{{$vivienda->chacra}}</td>
