@@ -10,7 +10,7 @@
        position: sticky; /* make the table heads sticky */
        top: 0px; /* table head will be placed from the top of the table and sticks to it */
      }
-     #viv table {
+     #tablaviv table {
        border-collapse: collapse; /* make the table borders collapse to each other */
        width: 100%;
      }
@@ -19,7 +19,7 @@
        padding: 8px 16px;
        border: 1px solid #ccc;
      }*/
-     #viv th {
+     #tablaviv th {
        background: #ee9b27;
      } 
 </style>
@@ -207,7 +207,7 @@
                             </div>
                             <div class="row">
                                 <div class="d-flex flex-row align-items-start justify-content-around mb-3">
-                                    <div class="card-body ms-2 d-flex flex-column" style="height: 250px;width:50%">
+                                    <div class="card-body ms-2 d-flex flex-column" style="height: 250px;width:100%">
                                         <div class="">
                                             <label>Viviendas:</label>
                                         </div>
@@ -226,9 +226,9 @@
                                                     } 
                                                 @endphp
                                                 @if ($bandera)
-                                                    <label id='{{$viv->id_viv}}'><input checked onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
+                                                    <label id='{{$viv->id_viv}}'><input checked onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->id_viv}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
                                                 @else
-                                                    <label id='{{$viv->id_viv}}'><input onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->orden}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
+                                                    <label id='{{$viv->id_viv}}'><input onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->id_viv}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
                                                 @endif
 
                                                 
@@ -248,7 +248,7 @@
                                             <div class="card-body d-flex flex-column pt-0 overflow-auto" id="viviendasAsignadas">
                                                 @foreach($entre->getViviendas as $viv)
                                                 {{-- onclick="eliminarRubro('{{$rubroAsignado->id}}')" class="ru{{$rubroAsignado->id}}" --}}
-                                                    <label id="viv{{$viv->orden}}"><input checked onclick="eliminarVivienda('{{$viv->orden}}')" name="vivs[]" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}}</label> 
+                                                    <label id="viv{{$viv->id_viv}}"><input checked onclick="eliminarVivienda('{{$viv->orden}}','{{$viv->id_viv}}')" name="vivs[]" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}}</label> 
                                                 @endforeach
                                             </div>
                                         </div>
@@ -272,9 +272,10 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div class="tableFixHead">
-                                <table id="viv" class="table table-hover mt-2" class="display">
+                                <table id="tablaviv" class="table table-hover mt-2" class="display">
                                     <thead style="">
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Viv. adaptada</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
@@ -287,7 +288,7 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
                                         {{-- <th class="text-center" scope="col" style="color:#fff;width:5%;">Superficie</th> --}}
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tablavivbody">
                                         @foreach ($entre->getViviendas as $vivienda)
                                         <tr>                                          
                                             <td class= 'text-center' >{{$vivienda->orden}}</td>
