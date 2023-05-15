@@ -1,4 +1,4 @@
-class elemento{
+class elemento{crearin
     constructor(tag){
         this.tag = tag;
         this.cont = 0;
@@ -16,87 +16,93 @@ class complejo{
 var elementos = []
 var complejos = []
 
-
-function tipos(){
+function tipos(){ //Esta funcion maneja la selección de un tipo de archivo y sus subtipos
     if(document.getElementById('tipo').value == 'sel'){
-        document.getElementById('subtipo').hidden = true;
-        document.getElementById('placeholder').hidden = false;        
+        //Si no se selecciona un tipo se ocultan los subtipos y se pone un placeholder
+        document.getElementById('subtipo').hidden = true
+        document.getElementById('placeholder').hidden = false       
         document.getElementById('subtipo').value = "sel"
-
     }  
-    else{
-        let tipo = document.getElementById('tipo').value;
-        let tipoId = document.getElementById('tipo').value[0];     
-        document.getElementById('subtipo').value = "sel"
-        let bandera= 0;       
-        for(i = 1; i < tipo.length; i++){ 
-            if(isNaN(document.getElementById('tipo').value[i]))                
-            {                    
-                i=tipo.length+1;    
-            }
-            else{
-                tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
-            }
-        }    
-        document.getElementById('subtipo').hidden = false;
-        document.getElementById('placeholder').hidden = true;
-        let subtipo = document.getElementById('subtipo')
-        let subtid
-        for(i=1; i<subtipo.options.length; i++){
-            if(subtipo.options[i].value != null){
-                bandera=0;
-                for(j=0; j<subtipo.options[i].value.length; j++){              
-                    if (bandera==0){
-                        if(j==0){         
-                            subtid = subtipo.options[i].value[j].toString();
-                        }
-                        else{
-                            if(isNaN(subtipo.options[i].value[j])){                                
-                                bandera=1;
-                                if(subtid == tipoId)
-                                {
-                                    subtipo.options[i].hidden = false
-                                }
-                                else{
-                                    subtipo.options[i].hidden = true                                    
-                                }
-                                subtid=""
-                            }
-                            else{
-                                subtid = subtid + subtipo.options[i].value[j].toString();
-                            }
-                        }
-                    }
-                    else{
-                        j=subtipo.options[i].value.length
-                    }
-                }
-            }
-        }
-        
+    else{   
+        //Si se selecciona un tipo se filtran los subtipos correspondientes y se oculta el placeholder
+        let tipoId =  document.getElementById('tipo').value   
+        document.getElementById('subtipo').hidden = false
+        document.getElementById('placeholder').hidden = true
+        filtrarSubtipos(tipoId)        
     }
 }    
 
-function existeCheck(){
-    const tipoId = document.getElementById('tipo').value;
-    const subtipo = document.getElementById('subtipo');
-    const fecha = document.getElementById('fecha').value;
-    const doc = document.getElementById('doc').value;  
-    bandera=0;
-    let subtid = '';
+function filtrarSubtipos(tipoId){ //filtra los subtipos según el id del tipo de archivo
+    //los value de cada subtipo están conformados por el idtipo y el idsubtipo 
+    //cumplen con la forma value = 17|25, siendo el primer valor el idtipo
+    let subtipo = document.getElementById('subtipo')   
+    subtipo.value = "sel"
+    let bandera= 0; 
+    let subtid
+    for(let i=1; i<subtipo.options.length; i++){
+        //Por cada subtipo que existe
+        if(subtipo.options[i].value != null){
+            //La bandera nos indica si ya terminamos de procesar el idtipo
+            bandera=0;
+            for(j=0; j<subtipo.options[i].value.length; j++){ //Por cada caracter del subtipo.value
+                if (bandera==0){  //Si se sigue procesando el id                   
+                    if(j==0){ //Si es el primer caracter (siempre numérico)    
+                        subtid = subtipo.options[i].value[j].toString();
+                    }
+                    else{ //Si es el caracter != 0
+                        if(isNaN(subtipo.options[i].value[j])){ //Si no es un numero, es decir |                        
+                            bandera=1; //terminamos de procesar el id
+                            if(subtid == tipoId) //si coincide con el idtipo se muestra
+                            {
+                                subtipo.options[i].hidden = false
+                            }
+                            else{ //si no coincide se oculta
+                                subtipo.options[i].hidden = true                                    
+                            } 
+                            subtid="" //reinciamos el idsubtipo para la siguiente iteración
+                        }
+                        else{ //Es un número, seguimos procesando el id
+                            subtid = subtid + subtipo.options[i].value[j].toString();
+                        }
+                    }
+                } 
+                else{ //Si terminamos de procesar cerramos el bucle y vamos al siguiente.
+                    j=subtipo.options[i].value.length
+                }
+            }
+        }
+    }        
+}
+
+function getSubtipoId(){
+    //Recumeramos el subtipoId del subtipo seleccionado
+    //Es decir el segundo valor en subtipo.value = 17|25 
+    let bandera=0
+    let subtid = ''
     for(i=0; i<subtipo.value.length; i++){
-        if (bandera==1){
-            subtid= subtid + subtipo.value[i];
+        //Por cada caracter
+        if (bandera==1){ //Una vez que encontramos el | podemos empezar a guardar el id
+            subtid= subtid + subtipo.value[i]
         }
         else{
             if(subtipo.value[i]=='|')
             {
-                bandera=1;
+                bandera=1 //Encontramos el |
             }
         }
     }
+    return subtid;
+}
 
-
+function existeCheck(){
+    //Al presionar algún botón de guardar/modificar/borrar verificamos si existe un archivo 
+    //que coincida con los parámetros mencionados.
+    //PARÁMETROS
+    let tipoId = document.getElementById('tipo').value
+    let fecha = document.getElementById('fecha').value
+    let doc = document.getElementById('doc').value
+    let subtid = getSubtipoId()
+    //CONSULTA AJAX
     let route = '/archivo/check';
     $.ajaxSetup({
         headers: {
@@ -118,496 +124,9 @@ function existeCheck(){
         success: function(res) 
         {     
             //La operación es válida
-            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
-            || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
-                
-                claves = document.getElementById('claves');
-                claves.value = '';
-                if(document.getElementById('guardar').checked){
-                    document.getElementById('pdfguar').removeAttribute("hidden"); //habilitar subir un pdf
-                    document.getElementById('pdfver').hidden=true;  //no existe algo a mostrar
-                }
-                else{                    
-                    document.getElementById('pdfguar').hidden = true;   //hay que mostrar un pdf
-                    let path = res.response.path_archivo + res.response.nombre_archivo;
-                    document.getElementById('linkpdf').setAttribute('href', path);
-                    document.getElementById('pdfver').removeAttribute("hidden");
-                    console.log(path)
-                    document.getElementById('pdfverpdf').setAttribute('data', path);
-                }
-                let tags=[];
-                let info=[];
-                let cont=0;
-                let band=0;
-                if(res.response!=null){ //Si estamos modificando o borrando
-                    for(i=0; i<res.response.claves_archivo.length; i++){    
-                        //obtenemos los tags ya cargados
-                        //i es cada caracter                                                
-                        if(band==2){
-                            if(res.response.claves_archivo[i] == '>'){
-                                band=0;
-                            }   
-                            else{
-                                info[cont]=info[cont] + res.response.claves_archivo[i]
-                            }
-                        }if(band==1){
-                            if(res.response.claves_archivo[i] == ':'){
-                                band=2;
-                                info[cont]=''
-                            }   
-                            else{
-                                tags[cont]=tags[cont] + res.response.claves_archivo[i]
-                            }          
-                        }
-                        if(res.response.claves_archivo[i] == '<'){
-                            band=1; 
-                            cont+=1;
-                            tags[cont]=''
-                        }                        
-                    }
-                }                 
-                //le damos formato de tag:
-                for(i=1; i<tags.length; i++){
-                    claves.value = claves.value + '<'+tags[i]+':'+info[i]+'>';
-                }
-                contadorchar("characla", "claves", 1040); //muestra cuantos caracteres quedan
-
-                //recuperamos los tags a mostrar segun tipo de documento
-                let route = '/archivo/tags';
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url: route,
-                    type: 'GET',
-                    cache: false,
-                    data: ({
-                        _token: $('#signup-token').val(),
-                        tipo: tipoId,
-                        subtipo: subtid,
-                        fecha: fecha,
-                        doc: doc
-                    }),
-                    dataType: 'json',
-                    success: function(res) {    
-                        //obligatorio:   
-                        let containerOb =  document.getElementById('comp-obligatorio'); //aca van los tags obligatorios
-                        let containerRe =  document.getElementById('comp-recomendado'); //aca van los tags recomendados
-                        let containerOp =  document.getElementById('comp-opcional'); //aca van los tags opcionales
-                        //en caso de recargar el archivo: removemos los hijos anteriores (TODAVIA POR PROBAR)
-                        while (containerOb.hasChildNodes()) {
-                            containerOb.removeChild(containerOb.lastChild);
-                        }
-                        while (containerRe.hasChildNodes()) {
-                            containerRe.removeChild(containerRe.lastChild);
-                        }
-                        while (containerOp.hasChildNodes()) {
-                            containerOp.removeChild(containerOp.lastChild);
-                        }
-                        //Variables donde guardar los tags complejos que tendremos que consultar despues
-                        let tagcomplejoOb=[]    //Obligatorio
-                        let tagcomplejoRe=[]    //Recomendado
-                        let tagcomplejoOp=[]    //Opcional
-                        //Bandera para comprobar que existen tags en cada categoría
-                        let bandOb=0;   //Obligatorio
-                        let bandRe=0;   //Recomendado
-                        let bandOp=0;   //Opcional
-                        //Indices para el array de complejos                        
-                        contOb=0;   //Obligatorio
-                        contRe=0;   //Recomendado
-                        contOp=0;   //Opcional
-                        //Acumuladores que nos indican cuándo pasar a la fila siguiente 
-                        //para permitir que la web sea responsive
-                        rowOb=0;
-                        rowRe=0;
-                        rowOp=0;       
-                        //
-                        for(let i=0;i<res.response.length;i++){      //Por cada tag recuperado      
-                            if(res.response[i].id_tipo == 1){                                
-                                   //Si el tag es obligatorio...            
-                                if (bandOb==0){ 
-                                    //Existen tags obligatorios, podemos mostrar la sección
-                                    bandOb=1;
-                                    document.getElementById('sec-obligatorio').hidden=false;
-                                }
-                                if(res.response[i].estructura == 1){ //Si el tag es un tag simple (no complejo)
-                                    if(rowOb==0){ //Si es la primera fila/Si se reincició
-                                        //creamos divmayor con clase row
-                                        var divmayorOb=document.createElement("div");                                        
-                                        divmayorOb.className = "row";
-                                        containerOb.appendChild(divmayorOb)
-                                    }                                 
-                                    if(res.response[i].dato == 1){//Si el dato es tipeado      
-                                        let cont = contadorSimple(res.response[i].descripcion);                                                                        
-                                        let idinput = crearInputSimple(divmayorOb, res.response[i].dato_tipo, res.response[i].descripcion, 1, i, cont) 
-                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion);                                                             
-                                    }
-                                    else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                        let cont = contadorSimple(res.response[i].descripcion); 
-                                        let idinput = crearSelect(divmayorOb, res.response[i].id_tag, res.response[i].descripcion, 1,i, cont) 
-                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
-                                    }
-                                    else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo.
-                                        let cont = contadorSimple(res.response[i].descripcion); 
-                                        let idinput = crearSemiSelect(divmayorOb, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1, i, cont) 
-                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion);  
-                                    }  
-                                    rowOb+=3
-                                    if(rowOb==12){                
-                                        //Si ya llegamos al máximo de elementos en una row
-                                        //en la proxima iteración creaeremos otra                 
-                                        rowOb=0
-                                    }    
-                                }
-                                else{
-                                    //Si es un tag complejo se añade a la lista de complejos
-                                    tagcomplejoOb[contOb] = res.response[i].id_tag;
-                                    contOb+=1;
-                                }
-                            }
-                            else if(res.response[i].id_tipo == 2) //Si el tag es recomendado
-                                {
-                                    //recomendada:
-                                    if(bandRe==0){
-                                        //Existen tags recomendados, se puede mostrar la sección
-                                        bandRe=1;
-                                        document.getElementById('sec-recomendado').hidden=false;
-                                    }
-                                    if(res.response[i].estructura == 1){       
-                                        //El tag es simple (no complejo)              
-                                        if(rowRe==0){
-                                            //Si ya llegamos al máximo de elementos en una row
-                                            //en la proxima iteración creaeremos otra        
-                                            var divmayorRe=document.createElement("div");                                        
-                                            divmayorRe.className = "row";
-                                            containerRe.appendChild(divmayorRe)
-                                        } 
-                                        if(res.response[i].dato == 1){//Si el dato es tipeado      
-                                            let cont = contadorSimple(res.response[i].descripcion);                                  
-                                            let idinput = crearInputSimple(divmayorRe, res.response[i].dato_tipo, res.response[i].descripcion, 1, i, cont)                                      
-                                            cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
-                                        }
-                                        else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                            let cont = contadorSimple(res.response[i].descripcion); 
-                                            let idinput = crearSelect(divmayorRe, res.response[i].id_tag, res.response[i].descripcion, 1, i, cont)
-                                            cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
-                                        }  
-                                        else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                            let cont = contadorSimple(res.response[i].descripcion); 
-                                            let idinput = crearSemiSelect(divmayorRe, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1,i, cont) 
-                                            cargarDatosSimples(cont, idinput, res.response[i].descripcion);  
-                                        }
-                                        rowRe+=3
-                                        if(rowRe==12){                    
-                                            //Ultimo elemento e iniciamos una nueva fila               
-                                            rowRe=0
-                                        }                                        
-                                    }
-                                    else{
-                                        //Si es un tag complejo se añade a la lista de complejos
-                                        tagcomplejoRe[contRe] = res.response[i].id_tag;
-                                        contRe+=1;
-                                    }
-                                }
-                            else{
-                                //El tag es opcional:
-                                if(bandOp==0){
-                                    //Hay tags opcionales, podemos mostrar la sección
-                                    bandOp=1;
-                                    document.getElementById('sec-opcional').hidden=false;
-                                }
-                                if(res.response[i].estructura == 1){  
-                                    //Si el tag es simple (No complejo)                                  
-                                    if(rowOp==0){
-                                        //Si ya llegamos al máximo de elementos en una row
-                                        //en la proxima iteración creaeremos otra        
-                                        var divmayorOp=document.createElement("div");                                        
-                                        divmayorOp.className = "row";
-                                        containerOp.appendChild(divmayorOp)
-                                    }                              
-                                    if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                        let cont = contadorSimple(res.response[i].descripcion); 
-                                        let idinput = crearInputSimple(divmayorOp, res.response[i].dato_tipo, res.response[i].descripcion, 1, i, cont)                                       
-                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion);   
-                                    }
-                                    else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                        let cont = contadorSimple(res.response[i].descripcion); 
-                                        let idinput = crearSelect(divmayorOp, res.response[i].id_tag, res.response[i].descripcion, 1,i, cont) 
-                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
-                                    }
-                                    else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                        let cont = contadorSimple(res.response[i].descripcion); 
-                                        let idinput = crearSemiSelect(divmayorOp, res.response[i].dato_tipo,res.response[i].id_tag, res.response[i].descripcion, 1, i, cont)
-                                        cargarDatosSimples(cont, idinput, res.response[i].descripcion); 
-                                    } 
-                                    rowOp+=3
-                                    if(rowOp==12){                         
-                                        //Es el último elemento de esta row y se inicia otra        
-                                        rowOp=0
-                                    }
-                                }
-                                else{
-                                    //El tag es complejo y se añade a la lista de complejos
-                                    tagcomplejoOp[contOp] = res.response[i].id_tag;
-                                    contOp+=1;
-                                }
-                            }                            
-                        }
-                        //Ahora debemos consultar los complejos:
-                        let route = '/archivo/complejos';
-                        let concat = tagcomplejoOb.concat(tagcomplejoRe,tagcomplejoOp);
-                        //
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        //
-                        $.ajax({
-                            url: route,
-                            type: 'GET',
-                            cache: false,
-                            data: ({
-                                _token: $('#signup-token').val(),
-                                tags: concat
-                            }),
-                            dataType: 'json',
-                            success: function(res) {
-                                //Empezamos a recorrer los COMPLEJOS
-                                //Rows para las interfaces
-                                let rowCoOb = 0; //Obligatorio
-                                let rowCoRe = 0; //Recomendado
-                                let rowCoOp = 0; //Opcional
-                                //Usamos una bandera para saber si es el primer hijo o no
-                                let bandera;
-                                //
-                                //Recorremos los tags obligatorios
-                                for(let j=0;j<tagcomplejoOb.length;j++){               
-                                    bandera=0 //Por cada tag complejo inicializamos la bandera en 0
-                                    for(let i=0;i<res.response.length;i++){ 
-                                        //Recorremos todos los tags que nos devolvio el servidor                                                                        
-                                        if(tagcomplejoOb[j]==res.response[i].id_tag){ //Si el id_tag coincide                                  
-                                            if(rowCoOb==0){ 
-                                                //Si es una nueva linea o si es la primera
-                                                //creamos una nueva row
-                                                if (bandera==0){
-                                                    //Es el primer hijo
-                                                    //Al ser el primer hijo también creamos el nombre del padre
-                                                    let texto = document.createElement("p");
-                                                    texto.innerHTML=res.response[i].descripcion
-                                                    texto.className = 'complejos';
-                                                    containerOb.appendChild(texto);     
-                                                    }
-                                                var divmayorOb=document.createElement("div");                                        
-                                                divmayorOb.className = "row";                                                
-                                                containerOb.appendChild(divmayorOb)           
-                                            }
-                                            if (bandera==0){                 
-                                                var contaComplejo = contadorComplejo(res.response[i].deschijo, res.response[i+1].deschijo);                                
-                                                //Como hay 2 inputs por complejo, creamos otro div que los contenga
-                                                var divmedioOb = document.createElement("div")
-                                                divmedioOb.className = "col-lg-12 col-md-12 row"   
-                                                //
-                                                if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                     var idinput1 = crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                     var idinput1 = crearSelect(divmedioOb, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                     var idinput1 = crearSemiSelect(divmedioOb, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
-                                                     
-                                                }                          
-                                                divmayorOb.appendChild(divmedioOb); 
-                                                bandera=1; //Ya no es el primer hijo
-                                            }
-                                            else{       
-                                                //let divmedioOb = document.createElement("div")
-                                                //divmedioOb.className = "col-lg-6 col-md-12 row"                                          
-                                                if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    var idinput2 = crearInputSimple(divmedioOb, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    var idinput2 = crearSelect(divmedioOb, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    var idinput2 = crearSemiSelect(divmedioOb, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
-                                                     
-                                                }      
-                                                divmayorOb.appendChild(divmedioOb); 
-                                                cargarDatosComplejos(contaComplejo, idinput1, idinput2, res.response[i-1].deschijo, res.response[i].deschijo)
-                                            }
-                                           
-                                            rowCoOb+=6;  
-                                            if(rowCoOb==12){   
-                                                //Es el ultimo elemento permitido y se reinicializa la fila                                    
-                                                rowCoOb=0
-                                            }                                              
-                                        }
-                                    }
-                                }
-                                //Recorremos los tags recomendados   
-                                for(let j=0;j<tagcomplejoRe.length;j++){
-                                    bandera=0   //bandera de primer hijo
-                                    for(let i=0;i<res.response.length;i++){   //recorremos todos los tags que nos devolvió la bd                                                                            
-                                        if(tagcomplejoRe[j]==res.response[i].id_tag){ //Si el id_tag coincide
-                                            if(rowCoRe==0){ 
-                                                //Si es una nueva linea o si es la primera
-                                                //creamos una nueva row
-                                                if (bandera==0){
-                                                    //Es el primer hijo
-                                                    //Al ser el primer hijo también creamos el nombre del padre
-                                                    let texto = document.createElement("h6");
-                                                    texto.innerHTML=res.response[i].descripcion
-                                                    texto.className = 'complejos';
-                                                    containerRe.appendChild(texto);                                                 
-                                                    }
-                                                var divmayorRe=document.createElement("div");                                        
-                                                divmayorRe.className = "row";                                                
-                                                containerRe.appendChild(divmayorRe)
-                                            }
-                                            if (bandera==0){          
-                                                var contaComplejo = contadorComplejo(res.response[i].deschijo, res.response[i+1].deschijo);
-                                                //Como hay 2 inputs por complejo, creamos otro div que los contenga
-                                                var divmedioRe = document.createElement("div")
-                                                divmedioRe.className = "col-lg-12 col-md-12 row"   
-                                                //
-                                                if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    var idinput1 = crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    var idinput1 = crearSelect(divmedioRe, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
-                                                     
-                                                }  
-                                                else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    var idinput1 = crearSemiSelect(divmedioRe, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
-                                                     
-                                                } 
-                                                divmayorRe.appendChild(divmedioRe); 
-                                                rowCoRe+=6;  
-                                                bandera=1; //Ya no es el primer hijo
-                                            }
-                                            else{        
-                                                //let divmedioRe = document.createElement("div")
-                                                //divmedioRe.className = "col-lg-6 col-md-12 row"                                           
-                                                if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    var idinput2 = crearInputSimple(divmedioRe, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    var idinput2 = crearSelect(divmedioRe, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
-                                                     
-                                                }  
-                                                else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    var idinput2 = crearSemiSelect(divmedioRe, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
-                                                     
-                                                } 
-                                                divmayorRe.appendChild(divmedioRe); 
-                                                rowCoRe+=6;     
-                                                cargarDatosComplejos(contaComplejo, idinput1, idinput2, res.response[i-1].deschijo, res.response[i].deschijo)
-                                            }
-                                           
-                                            if(rowCoRe==12){   
-                                                //Es el ultimo elemento permitido y se reinicializa la fila                                    
-                                                rowCoRe=0
-                                            }                                                       
-                                        }
-                                    }
-                                }  
-                                //Recorremos los tags opcionales
-                                for(let j=0;j<tagcomplejoOp.length;j++){
-                                    bandera=0 //bandera de primer hijo
-                                    for(let i=0;i<res.response.length;i++){  //recorremos todos los tags que nos devolvió la bd                                       
-                                        if(tagcomplejoOp[j]==res.response[i].id_tag){ //si los id_tag coinciden                                  
-                                            if(rowCoOp==0){ 
-                                                //Si es una nueva linea o si es la primera
-                                                //creamos una nueva row
-                                                if (bandera==0){
-                                                //Es el primer hijo
-                                                //Al ser el primer hijo también creamos el nombre del padre
-                                                                                        
-                                                }
-                                                var divmayorOp=document.createElement("div");                                        
-                                                divmayorOp.className = "row";                                                
-                                                containerOp.appendChild(divmayorOp)
-                                            }
-                                            if (bandera==0){
-                                                var contaComplejo = contadorComplejo(res.response[i].deschijo, res.response[i+1].deschijo);
-                                                //Como hay 2 inputs por complejo, creamos otro div que los contenga
-                                                var divmedioOp = document.createElement("div")
-                                                divmedioOp.className = "col-lg-12 col-md-12 row"   
-                                                //
-                                                if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    var idinput1 = crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    var idinput1 = crearSelect(divmedioOp, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
-                                                     
-                                                }  
-                                                else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    var idinput1 = crearSemiSelect(divmedioOp, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
-                                                    
-                                                } 
-                                                divmayorOp.appendChild(divmedioOp); 
-                                                bandera=1; //Ya no es el primer hijo
-                                            }
-                                            else{       
-                                                //let divmedioOp = document.createElement("div")
-                                                //divmedioOp.className = "col-lg-6 col-md-12 row"                                           
-                                                if(res.response[i].dato == 1){//Si el dato es tipeado                                        
-                                                    var idinput2 = crearInputSimple(divmedioOp, res.response[i].dato_tipo, res.response[i].deschijo, 2, i, contaComplejo)                                       
-                                                     
-                                                }
-                                                else if(res.response[i].dato == 2){//Si el dato se busca en la BD
-                                                    var idinput2 = crearSelect(divmedioOp, res.response[i].id_tag_hijo, res.response[i].deschijo,2,i, contaComplejo) 
-                                                     
-                                                }  
-                                                else if(res.response[i].dato == 3){//Si el dato se busca en la BD despues de tipearlo
-                                                    var idinput2 = crearSemiSelect(divmedioOp, res.response[i].dato_tipo, res.response[i].id_tag_hijo, res.response[i].deschijo, 2, i, contaComplejo) 
-                                                     
-                                                }    
-                                                divmayorOp.appendChild(divmedioOp); 
-                                                cargarDatosComplejos(contaComplejo, idinput1, idinput2, res.response[i-1].deschijo, res.response[i].deschijo)
-                                            }                                           
-                                            rowCoOp+=6;  
-                                            if(rowCoOp==12){   
-                                                //Es el ultimo elemento permitido y se reinicializa la fila     
-                                                rowCoOp=0
-                                            }                                                                                                    
-                                        }      
-                                    } 
-                                }   
-                                
-                                
-                            },
-                            error: function (res) {
-                                alert("No se pudieron recuperar los tags complejos");
-                                console.log(res)
-                            }});  
-                            
-                        },
-                    error: function(res){
-                        alert("No se pudieron recuperar los tags");
-                        console.log(res)
-                    }});
-                    //ESTO PUEDE SER UNA FUNCION
-                if(document.getElementById('borrar').checked){ //Si seleccionamos borrar
-                    mostrarPagina(3)      
-                }
-                else if(document.getElementById('guardar').checked){ //Si seleccionamos guardar
-                    mostrarPagina(1)
-                }
-                else{
-                    mostrarPagina(2)
-                }   
+            if(res != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
+            || res == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+                mostrarPagina(res);  
             }
             else{
                 document.getElementById('sectags').hidden=true;
@@ -619,10 +138,8 @@ function existeCheck(){
                     alert("ERROR: No se encontró el archivo")
                     document.getElementById('modificar').checked=false;
                     document.getElementById('borrar').checked=false;
-                }
-                
+                }                
             }
-            //alert(res);
         },
         error: function(response){
             console.log('ERROR')
@@ -633,7 +150,7 @@ function existeCheck(){
 }
 
 function contadorSimple(nombre){
-    console.log(nombre)
+    //console.log(nombre)
     let contador=0;
     let band=0;
     elementos.forEach(elemento => {
@@ -647,25 +164,25 @@ function contadorSimple(nombre){
         let el = new elemento(nombre);
         elementos.push(el);
     }
-    console.log(contador)
+    //console.log(contador)
     return contador;
 }
 
 function contadorComplejo(tag1, tag2){
-    let contador=0;
+    let cont=0;
     let band=0;
     complejos.forEach(complejo => {
         if(complejo.tag1 == tag1 && complejo.tag2 == tag2){
             band=1;
-            complejo.cont+=1;
-            contador = complejo.cont;
+            complejo.cont+= 1 
+            cont = complejo.cont;
         }
     });
     if(band == 0){
         let co = new complejo(tag1, tag2);
-        complejos.push(co);
+        complejos.push(co);        
     }
-    return contador;
+    return [cont];
 }
 
 function crearInputSimple(padre, dato, nombre, medida, i, contador){  
@@ -706,7 +223,7 @@ function crearInputSimple(padre, dato, nombre, medida, i, contador){
     }    
     input.addEventListener("keyup", function(event) {
         if (event.key === "Enter") {
-            guardarTag(input.id, nombre, 1, contador);
+            guardarTag(i, nombre, 1, contador, medida);
         }    
     });
     divmenor.appendChild(input);
@@ -742,7 +259,7 @@ function crearSelect(padre, id, nombre, medida, i, contador){
         input.name = 'hijo' + i;
         input.id = 'hijo' + i;
     }   
-    input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
+    input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -790,7 +307,7 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i, contador){
         }
     });   
     //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
-    input.setAttribute('oninput', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\',' + 1 + ',' + contador + ')')
+    input.setAttribute('oninput', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida + ')')
     
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
@@ -827,14 +344,14 @@ function derivado(id, idtag){
         success: function(res) {
             hijo.value=res[0].dato
             let lab = "label-o-" + number
-            tagname = document.getElementById(lab).innerHTML  
+            let tagname = document.getElementById(lab).innerHTML  
             let contador=0;
-            elementos.forEach(elemento => {
-                if(elemento.tag==tagname){
-                    contador = elemento.cont;
+            complejos.forEach(complejo => {
+                if(complejo.tag2==tagname){
+                    contador = complejo.cont;
                 }
             });      
-            guardarTag(hijo.id, tagname, 1, contador)
+            guardarTag(number, tagname, 1, contador, 4)
         },
         error: function(res){
             console.log(res)
@@ -842,11 +359,289 @@ function derivado(id, idtag){
 
 }
 
-function mostrarPagina(tipo){
+function cargarPDF(path, nombre){
+    let ruta = path + nombre
+    document.getElementById('linkpdf').setAttribute('href', ruta)
+    document.getElementById('pdfverpdf').setAttribute('data', ruta)    
+}
+
+function cargarClaves(claves_archivo){
+    let tags=[];
+    let info=[];
+    let cont=0;
+    let band=0;
+    for(i=0; i<claves_archivo.length; i++){    
+        //obtenemos los tags ya cargados
+        //i es cada caracter                                                
+        if(band==2){
+            if(claves_archivo[i] == '>'){
+                band=0;
+            }   
+            else{
+                info[cont]=info[cont] + claves_archivo[i]
+            }
+        }if(band==1){
+            if(claves_archivo[i] == ':'){
+                band=2;
+                info[cont]=''
+            }   
+            else{
+                tags[cont]=tags[cont] + claves_archivo[i]
+            }          
+        }
+        if(claves_archivo[i] == '<'){
+            band=1; 
+            cont+=1;
+            tags[cont]=''
+        }                        
+    }
+     //le damos formato de tag:
+     for(i=1; i<tags.length; i++){
+        claves.value = claves.value + '<'+tags[i]+':'+info[i]+'>';
+    }
+}
+
+function recuperarTags(tipo, sub, dia, mes, ano, doc){
+    let fecha= dia + '-' + mes + '-' + ano
+    //recuperamos los tags a mostrar segun tipo de documento
+    let route = '/archivo/tags';
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        async: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: tipo,
+            subtipo: sub,
+            fecha: fecha,
+            doc: doc
+        }),
+        dataType: 'json',
+        success: function(res){
+            cargarTagsSimples(res)        
+        },
+        error: function(res){console.log(res)}});
+}
+
+function recuperarTagsComplejos(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp){
+    //console.log(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp)
+    let route = '/archivo/complejos';
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    //
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        async: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tags: concat
+        }),
+        dataType: 'json',
+        success: function(res){cargarTagsComplejos(res, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp)},
+        error: function(res){console.log(res)}});
+}
+
+function cargarTagsSimples(tags){
+//CARGAMOS LOS TAGS DEL ARCHIVO
+    //Variables donde guardar los tags complejos que tendremos que consultar despues
+    let tagcomplejoOb=[]    //Obligatorio
+    let tagcomplejoRe=[]    //Recomendado
+    let tagcomplejoOp=[]    //Opcional
+    //Bandera para comprobar que existen tags en cada categoría
+    //Indices para el array de complejos                        
+    let contOb=0;   //Obligatorio
+    let contRe=0;   //Recomendado
+    let contOp=0;   //Opcional
+    //Acumuladores que nos indican cuándo pasar a la fila siguiente 
+    //para permitir que la web sea responsive
+    let rowOb=0;
+    let rowRe=0;
+    let rowOp=0;       
+    //
+    let containerOb = document.getElementById('comp-obligatorio') //aca van los tags obligatorios
+    let containerRe =  document.getElementById('comp-recomendado') //aca van los tags recomendados
+    let containerOp =  document.getElementById('comp-opcional') //aca van los tags opcionales
+    //
+    console.log(containerOb, containerRe, containerOp) 
+    //
+    for(let i=0; i<tags.length; i++){
+        if(tags[i].estructura == 1){
+            if(tags[i].id_tipo == 1){
+                if(rowOb==0){ //Si es la primera fila/Si se reincició
+                    //creamos divmayor con clase row
+                    var divmayorOb=document.createElement("div")                                        
+                    divmayorOb.className = "row"
+                    containerOb.appendChild(divmayorOb)
+                }   
+                insertarInputSimple(divmayorOb, tags[i], i)
+                rowOb+=3
+                if(rowOb == 12){rowOb = 0}
+            }
+            else if(tags[i].id_tipo == 2){
+                if(rowRe==0){ //Si es la primera fila/Si se reincició
+                    //creamos divmayor con clase row
+                    var divmayorRe=document.createElement("div");                                        
+                    divmayorRe.className = "row";
+                    containerRe.appendChild(divmayorRe)
+                }  
+                insertarInputSimple(divmayorRe, tags[i], i)
+                rowRe+=3
+                if(rowRe == 12){rowRe = 0}
+            }
+            else if(tags[i].id_tipo == 3){
+                if(rowOp==0){ //Si es la primera fila/Si se reincició
+                    //creamos divmayor con clase row
+                    var divmayorOp=document.createElement("div");                                        
+                    divmayorOp.className = "row";
+                    containerOp.appendChild(divmayorOp)
+                }   
+                insertarInputSimple(divmayorOp, tags[i], i)
+                rowOp+=3
+                if(rowOp == 12){rowOp = 0}
+            }
+        }
+        else{
+            if(tags[i].id_tipo == 1){
+                tagcomplejoOb[contOb] = tags[i].id_tag
+                contOb+=1
+            }
+            else if(tags[i].id_tipo == 2){
+                tagcomplejoRe[contRe] = tags[i].id_tag
+                contRe+=1
+            }
+            else if(tags[i].id_tipo == 3){
+                tagcomplejoOp[contOp] = tags[i].id_tag
+                contOp+=1
+            }
+        }        
+    }
+
+    //AHORA DEBEMOS RECUPERAR LOS TAGS COMPLEJOS            
+    let concat = tagcomplejoOb.concat(tagcomplejoRe,tagcomplejoOp)
+    //console.log(concat)
+    recuperarTagsComplejos(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp)
+}
+
+function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp){
+    //CARGAMOS LOS TAGS COMPLEJOS
+    //Usamos una bandera para saber si es el primer hijo o no
+    let containerOb =  document.getElementById('comp-obligatorio'); //aca van los tags obligatorios
+    let containerRe =  document.getElementById('comp-recomendado'); //aca van los tags recomendados
+    let containerOp =  document.getElementById('comp-opcional'); //aca van los tags opcionales
+    //
+    let x = 0;
+    let bandera = 0;
+    let tag1
+    let tag2
+    //
+    for(let i=0; i<tagcomplejoOb.length; i++){
+        x++;
+        for(let j=0; j<complejos.length; j++){
+            if(tagcomplejoOb[i]==complejos[j].id_tag){
+                if(bandera == 0){
+                    bandera = 1
+                    tag1 = complejos[j]
+                }
+                else{
+                    bandera = 0
+                    tag2 = complejos[j] 
+                    x++;
+                    insertarInputComplejo(tag1, tag2, x, containerOb)
+                }                
+            }
+        }
+    }
+    for(let i=0; i<tagcomplejoRe.length; i++){
+        x++;
+        for(let j=0; j<complejos.length; j++){
+            if(tagcomplejoRe[i]==complejos[j].id_tag){
+                if(bandera == 0){
+                    bandera = 1
+                    tag1 = complejos[j]
+                }
+                else{
+                    bandera = 0
+                    tag2 = complejos[j]
+                    x++;
+                    insertarInputComplejo(tag1, tag2, x, containerRe)
+                }                
+            }
+        }
+    }
+    for(let i=0; i<tagcomplejoOp.length; i++){
+        x++;
+        for(let j=0; j<complejos.length; j++){
+            if(tagcomplejoOp[i]==complejos[j].id_tag){
+                if(bandera == 0){
+                    bandera = 1
+                    tag1 = complejos[j]
+                }
+                else{
+                    bandera = 0
+                    tag2 = complejos[j]
+                    x++;
+                    insertarInputComplejo(tag1, tag2, x, containerOp)
+                }                
+            }
+        }
+    }
+}
+
+function mostrarPagina(archivo){
     //TIPO 1: AGREGAR
     //TIPO 2: MODIFICAR
     //TIPO 3: BORRAR
-
+    let tipo 
+    if(document.getElementById('guardar').checked){tipo = 1}
+    else if(document.getElementById('modificar').checked){tipo = 2}
+    else{tipo = 3}
+    //
+    claves = document.getElementById('claves');
+    claves.value = '';
+    if(tipo==1){
+        document.getElementById('pdfguar').removeAttribute("hidden") //habilitar subir un pdf
+        document.getElementById('pdfver').hidden=true  //no existe algo a mostrar
+    }
+    else{
+        cargarClaves(archivo.claves_archivo)
+        document.getElementById('pdfguar').hidden = true   //hay que mostrar un pdf
+        document.getElementById('pdfver').removeAttribute("hidden")
+        cargarPDF();
+    }    
+    contadorchar("characla", "claves", 1040); //muestra cuantos caracteres quedan
+    //
+    //VACIAMOS EN CASO DE QUE YA HAYA TAGS DE OTRO ARCHIVO
+    let containerOb =  document.getElementById('comp-obligatorio'); //aca van los tags obligatorios
+    let containerRe =  document.getElementById('comp-recomendado'); //aca van los tags recomendados
+    let containerOp =  document.getElementById('comp-opcional'); //aca van los tags opcionales
+    //
+    while (containerOb.hasChildNodes()) {
+        containerOb.removeChild(containerOb.lastChild);
+    }
+    while (containerRe.hasChildNodes()) {
+        containerRe.removeChild(containerRe.lastChild);
+    }
+    while (containerOp.hasChildNodes()) {
+        containerOp.removeChild(containerOp.lastChild);
+    }  
+    //RECUPERAMOS LOS TAGS PARA CREAR LA PÁGINA    
+    recuperarTags(archivo.id_tipoarchivo, archivo.id_subtipoarchivo, archivo.dia_archivo, archivo.mes_archivo, archivo.ano_archivo, archivo.nro_archivo)
+    //
+    document.getElementById('sec-obligatorio').removeAttribute('hidden')
+    document.getElementById('sec-recomendado').removeAttribute('hidden')
+    document.getElementById('sec-opcional').removeAttribute('hidden')
+    //
     document.getElementById('sectags').removeAttribute("hidden");
     if(tipo == 3){ //Se selecciono borrar
         document.getElementById('claves').disabled=true; //No se deben poder modificar las claves
@@ -869,6 +664,68 @@ function mostrarPagina(tipo){
             document.getElementById('div-btnguardar').hidden=true;
         }
     }
+}
+
+function insertarInputSimple(divmayor, tag, i){
+    //
+                                  
+    if(tag.dato == 1){//Si el dato es tipeado      
+        let cont = contadorSimple(tag.descripcion);                                                                        
+        let idinput = crearInputSimple(divmayor, tag.dato_tipo, tag.descripcion, 1, i, cont) 
+        cargarDatosSimples(cont, idinput, tag.descripcion);                                                             
+    }
+    else if(tag.dato == 2){//Si el dato se busca en la BD
+        let cont = contadorSimple(tag.descripcion); 
+        let idinput = crearSelect(divmayor, tag.id_tag, tag.descripcion, 1,i, cont) 
+        cargarDatosSimples(cont, idinput, tag.descripcion); 
+    }
+    else if(tag.dato == 3){//Si el dato se busca en la BD despues de tipearlo.
+        let cont = contadorSimple(tag.descripcion); 
+        let idinput = crearSemiSelect(divmayor, tag.dato_tipo,tag.id_tag, tag.descripcion, 1, i, cont) 
+        cargarDatosSimples(cont, idinput, tag.descripcion);  
+    }  
+}
+
+function insertarInputComplejo(tag1, tag2, i, container){
+    //Titulo del padre
+    let texto = document.createElement("p");
+    texto.innerHTML=tag1.descripcion
+    texto.className = 'complejos';
+    container.appendChild(texto);     
+    //Creamos una row
+    let divmayor=document.createElement("div")                                       
+    divmayor.className = "row";                                                
+    container.appendChild(divmayor)
+    //
+    let contaComplejo = contadorComplejo(tag1.deschijo, tag2.deschijo)
+    //
+    let divmedio = document.createElement("div")
+    divmedio.className = "col-lg-6 col-md-12 row"   
+    //
+    let idinput1
+    let idinput2
+    if(tag1.dato == 1){
+        idinput1 = crearInputSimple(divmedio, tag1.dato_tipo, tag1.deschijo, 2, i, contaComplejo)
+    }
+    else if(tag1.dato == 2){
+        idinput1 = crearSelect(divmedio, tag1.id_tag_hijo, tag1.deschijo,2,i, contaComplejo) 
+    }
+    else if(tag1.dato == 3){
+        idinput1 = crearSemiSelect(divmedio, tag1.dato_tipo, tag1.id_tag_hijo, tag1.deschijo, 2, i, contaComplejo) 
+    }
+    
+    if(tag2.dato == 1){
+        idinput2 = crearInputSimple(divmedio, tag2.dato_tipo, tag2.deschijo, 2, i+1, contaComplejo)
+    }
+    else if(tag2.dato == 2){
+        idinput2 = crearSelect(divmedio, tag2.id_tag_hijo, tag2.deschijo,2,i+1, contaComplejo) 
+    }
+    else if(tag2.dato == 3){
+        idinput2 = crearSemiSelect(divmedio, tag2.dato_tipo, tag2.id_tag_hijo, tag2.deschijo, 2, i+1, contaComplejo) 
+    }                                    
+    divmayor.appendChild(divmedio); 
+    cargarDatosComplejos(contaComplejo, idinput1, idinput2, tag1.deschijo, tag2.deschijo)
+    
 }
 
 function cargarDatosSimples(conta, idinput, tag){   
@@ -897,7 +754,7 @@ function cargarDatosSimples(conta, idinput, tag){
         }
     } 
     let aux=0;
-    console.log(conta)
+    //console.log(conta)
     let val=0;
     for(let i=0; i<tags.length; i++){
         if(tags[i] == tag)
@@ -943,12 +800,13 @@ function cargarDatosComplejos(conta, idinput1, idinput2, tag1, tag2){
             info[cont] = info[cont] + claves[i];
         }
     } 
-    let aux=0;
-    console.log(conta + ' ' + tag1 + ' ' + tag2)
+    let aux=0;  
+    //console.log(conta + ' ' + tag1 + ' ' + tag2)
     let val=0;
-    for(let i=0; i<tags.length; i++){
+    for(let i=0; i<tags.length; i++){ 
         if(tags[i] == tag1 && tags[i+1] == tag2)
         {
+            //console.log(tags[i] + ' y ' + tags[i+1])
             if(conta == aux){
                 document.getElementById(idinput1).value = info[i];
                 document.getElementById(idinput1).placeholder = info[i];
@@ -1098,7 +956,7 @@ function agregarTag(){
             let btn = document.createElement('button')
             btn.type = 'button'
             btn.innerHTML = 'Agregar'               
-            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ')');
+            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ',' + 0 + ')');
             btn.className = 'btn btn-success';               
             btn.id= 'btnTagAgregar' 
             div3.className = 'col-lg-2';
@@ -1125,95 +983,173 @@ function checkGuardarTag(){
     }
 }
 
-function guardarTag(idinput, tagname, tipo, cont){
+function guardarTag(idinput, tagname, tipo, cont, medida){
 
-    let input = document.getElementById(idinput).value;
-    let claves = document.getElementById('claves');
-    let ac=-1;
-
-    if(tipo == 1){
-        if(claves.value.indexOf('<'+tagname+':')!= -1){
-            let first = -1;
-            let last = -1;
-            let comienza = 0;
-            let band=0;
-            let guardado =0;
-            for(let i = 0; i<claves.value.length; i++){  
-                if(claves.value[i] == '<'){
-                    //empieza un tag
-                    comienza=0;
-                    i++;
-                }            
-                if(comienza == 0){
-                    for(let j=0; j<tagname.length; j++){
-                        if(claves.value[i+j] != tagname[j]){
-                            band=1;
-                        }
-                    } 
-                    comienza = 1;
-                    if(band == 0){
-                        ac++;
-                        if(ac == cont){
-                            first = i-1; 
-                            guardado = 1;
-                        }              
-                    }
-                }
-                if(claves.value[i] == '>'){
-                    if(comienza == 1 && band == 0 && ac==cont){
-                        last = i;
-                    }
-                    else{
-                        comienza = 0;                        
-                        band=0;                        
-                    }
-                }
+    let input
+    let taghijo = null
+    let claves = document.getElementById('claves')
+    let ac=0
+    //console.log(cont)
+    if (medida == 2){
+        input = document.getElementById('hijo' + idinput).value
+        let num = idinput+1
+        //console.log(num)
+        taghijo = document.getElementById('label-o-' + num).innerHTML
+        //console.log(taghijo)
+    }
+    else{
+        if(medida == 0){
+            input = document.getElementById(idinput).value
+            //console.log(input)
+        }
+        else{
+            if(medida== 4){
+                input = document.getElementById('hijo' + idinput).value
             }
-            if(guardado == 1){
-                let stringNew = ''
-                for(let i=0; i<first; i++){
-                    stringNew = stringNew + claves.value[i];
+            else{
+                input = document.getElementById('input' + idinput).value
+            }            
+            //console.log(input)
+        }
+        
+    }
+
+    if(tipo == 1){                
+        if(medida != 2){
+            console.log(tagname)
+            if(claves.value.indexOf('<'+tagname+':')!= -1){     
+                let first = -1;
+                let last = -1;
+                let comienza = 0;
+                let band=0;
+                let guardado =0;
+                for(let i = 0; i<claves.value.length; i++){  
+                    if(claves.value[i] == '<'){
+                        //empieza un tag
+                        comienza=0;
+                        i++;
+                    }            
+                    if(comienza == 0){
+                        for(let j=0; j<tagname.length; j++){
+                            if(claves.value[i+j] != tagname[j]){
+                                band=1;
+                                break
+                            }
+                        } 
+                        comienza = 1;
+                        if(band == 0){               
+                            if(ac == cont){                                
+                                first = i-1; 
+                                guardado = 1;
+                            }    
+                            ac++;          
+                        }
+                    }
+                    if(claves.value[i] == '>'){
+                        if(comienza == 1 && band == 0 && ac-1==cont){
+                            last = i;
+                        }
+                        else{
+                            comienza = 0;                        
+                            band=0;                        
+                        }
+                    }
                 }
-                stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
-                for(let i=last+1; i<claves.value.length; i++){
-                    stringNew = stringNew + claves.value[i];
+                if(guardado == 1){
+                    let stringNew = ''
+                    for(let i=0; i<first; i++){
+                        stringNew = stringNew + claves.value[i];
+                    }
+                    stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
+                    for(let i=last+1; i<claves.value.length; i++){
+                        stringNew = stringNew + claves.value[i];
+                    }
+                    claves.value = stringNew
                 }
-                claves.value = stringNew
+                else{
+                    claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
+                }
+                
             }
             else{
                 claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
             }
-            
         }
         else{
-            claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
-        }
-        
-        /* if(claves.value.indexOf('<'+tagname+':')!= -1){
-            let first = claves.value.indexOf('<'+tagname+':');
-            let last = -1;
-            let band = 0;
-            for(let i=first; i<claves.value.length; i++){
-                if(band == 0){
-                    if(claves.value[i] == '>'){
-                        last=i;
-                        band= 1;
+            if(claves.value.indexOf('<'+tagname+':')!= -1 && claves.value.indexOf('<'+taghijo+':')!= -1){ 
+                console.log('Modificando un complejo')
+                let firstP = -1, lastP = -1, comienza = 0, band= 0, guardado = 0
+                for (let i = 0; i<claves.value.length; i++){
+                    if(claves.value[i] == '<'){
+                        //comienza un tag
+                        comienza = 0;
+                        i++;
                     }
+                    if(comienza == 0){                        
+                        for(let j=0; j<tagname.length; j++){
+                            console.log(claves.value[i+j] + ' = ' + tagname[j] + '?')
+                            if(claves.value[i+j] != tagname[j]){
+                                band=1;
+                            }
+                        } 
+                        comienza = 1
+                        if(band == 0){                            
+                            firstP = i-1; 
+                            console.log('Se encontro el tag padre, posición: ' + firstP)
+                        }              
+                    }
+                    if(claves.value[i] == '>'){
+                        if(comienza == 1 && band == 0){
+                            lastP = i;
+                            comienza = 2
+                            console.log('Tag padre termina en la posición: ' + lastP)
+                            console.log('Evaluando tag siguiente:')
+                            let j = 0
+                            for(let k=lastP+2; k<(lastP+2+taghijo.length); k++){                            
+                                console.log(claves.value[k] + ' = ' + taghijo[j] + '?aaa')
+                                if(claves.value[k] != taghijo[j]){
+                                    band=1;
+                                    console.log('No')
+                                    break
+                                }
+                                j++;
+                            }                            
+                        }
+                        if(comienza == 2 && band == 0){
+                            console.log('Si' + ac + ' = ' + cont + '?')
+                            if(ac == cont){
+                                guardado = 1  
+                                break
+                            }
+                            else{
+                                ac++
+                            }                            
+                        }
+                        else{
+                            comienza = 0;                        
+                            band=0;                        
+                        }
+                    }                    
+                }
+                if(guardado == 1){
+                    let stringNew = ''
+                    for(let i=0; i<firstP; i++){
+                        stringNew = stringNew + claves.value[i];
+                    }
+                    stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
+                    for(let i=lastP+1; i<claves.value.length; i++){
+                        stringNew = stringNew + claves.value[i];
+                    }
+                    claves.value = stringNew
+                }
+                else{
+                    claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>' 
                 }
             }
-            let stringNew = ''
-            for(let i=0; i<first; i++){
-                stringNew = stringNew + claves.value[i];
+            else{
+                claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
             }
-            stringNew = stringNew + '<' + tagname + ':' + input.trim() + '>';
-            for(let i=last+1; i<claves.value.length; i++){
-                stringNew = stringNew + claves.value[i];
-            }
-            claves.value = stringNew
-        }
-        else{ 
-            claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
-        }     */
+        }        
     }
     else{
         claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
