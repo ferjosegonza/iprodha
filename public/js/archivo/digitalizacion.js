@@ -102,6 +102,9 @@ function existeCheck(){
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
+
+    console.log(tipoId, fecha, doc, subtid)
+
     //CONSULTA AJAX
     let route = '/archivo/check';
     $.ajaxSetup({
@@ -123,9 +126,10 @@ function existeCheck(){
         dataType: 'json',
         success: function(res) 
         {     
+            console.log(res)
             //La operación es válida
-            if(res != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
-            || res == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+            if(res != 'null' && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
+            || res == 'null' && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);  
             }
             else{
@@ -956,7 +960,7 @@ function agregarTag(){
             let btn = document.createElement('button')
             btn.type = 'button'
             btn.innerHTML = 'Agregar'               
-            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ',' + 0 + ')');
+            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ',' + 0 + ',' + 0 +')');
             btn.className = 'btn btn-success';               
             btn.id= 'btnTagAgregar' 
             div3.className = 'col-lg-2';

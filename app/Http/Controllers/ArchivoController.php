@@ -167,8 +167,9 @@ public function check(Request $request){
     if($archivo != null){
         $archivo->path_archivo = substr($archivo->path_archivo, 14);
     }
-    
-
+    if($archivo == null){
+        $archivo = 'null';
+    }
     return response()->json($archivo);
 }
 
