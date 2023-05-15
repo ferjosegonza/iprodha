@@ -12,7 +12,7 @@
     </div>
     <div class="section-body">            
          @include('layouts.modal.mensajes')
-         <div class="row">
+         <div id="padre" class="row">
             <section class="card" id="taggeo">
                 <div class="card-head">
                     <h4>Sistema de Taggeo</h4>
@@ -86,11 +86,11 @@
                             <label class="btn btn-outline-success btn-block" for="guardar">Agregar</label>
                         </div>                    
                         <div class="col-lg-3 btnes flex">
-                            <input type="radio" class="btn-check" name="opcion" id="modificar" autocomplete="off" onclick="existeCheck()" disabled>
+                            <input type="radio" class="btn-check" name="opcion" id="modificar" autocomplete="off" onclick="checkArchivos()" disabled>
                             <label class="btn btn-outline-primary btn-block" for="modificar">Modificar</label>
                         </div>                            
                         <div class="col-lg-3 btnes flex">
-                            <input type="radio" class="btn-check" name="opcion" id="borrar" autocomplete="off" onclick="existeCheck()" disabled>
+                            <input type="radio" class="btn-check" name="opcion" id="borrar" autocomplete="off" onclick="checkArchivos()" disabled>
                             <label class="btn btn-outline-danger btn-block" for="borrar">Borrar</label>    
                         </div>                        
                     </div>
@@ -169,7 +169,7 @@
                         </div>
                     </div>                    
                 </div>
-            </section>            
+            </section>        
          </div>
     </div>    
 </section>
