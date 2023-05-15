@@ -106,6 +106,7 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Viv. Adaptada</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Partida</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>                                                            
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
@@ -128,6 +129,7 @@
                                                 @else
                                                     <td class= 'text-center' >NO</td>
                                                 @endif
+                                                <td class= 'text-center' >{{$vivienda->partida}}</td>
                                                 <td class= 'text-center' >{{$vivienda->plano}}</td>
                                                 <td class= 'text-center' >{{$vivienda->seccion}}</td>
                                                 <td class= 'text-center' >{{$vivienda->chacra}}</td>
