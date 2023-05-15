@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Planificacion\Planificacion\ObraviviendaController;
 
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAVIVIENDA']], function () {
     //AJAX
     Route::post('/obravivienda/buscarviv/{orden}/{idobra}', [ObraviviendaController::class, 'buscarViviendaOrden']);
     Route::post('/obravivienda/todaslasviviendas/{id}', [ObraviviendaController::class, 'todasLasViviendas']);

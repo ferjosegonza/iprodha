@@ -24,7 +24,7 @@ class ObraviviendaController extends Controller
     function __construct()
     {
         $this->middleware('auth');
-        //  $this->middleware('permission:VER-CATEGORIALABORAL|CREAR-CATEGORIALABORAL|EDITAR-CATEGORIALABORAL|BORRAR-CATEGORIALABORAL', ['only' => ['index']]);
+        $this->middleware('permission:VER-OBRAVIVIENDA|CREAR-OBRAVIVIENDA|EDITAR-OBRAVIVIENDA|BORRAR-OBRAVIVIENDA', ['only' => ['index']]);
         //  $this->middleware('permission:CREAR-CATEGORIALABORAL', ['only' => ['create','store']]);
         //  $this->middleware('permission:EDITAR-CATEGORIALABORAL', ['only' => ['edit','update']]);
         //  $this->middleware('permission:BORRAR-CATEGORIALABORAL', ['only' => ['destroy']]);
@@ -1074,12 +1074,19 @@ class ObraviviendaController extends Controller
                         'etapa' => $etapa->nro_eta,
                         'entrega' => $entrega->num_ent,
                         'discap' => $vivienda->discap,
+                        'partida' => $vivienda->partida,
                         'plano' => $vivienda->plano,
                         'seccion' => $vivienda->seccion,
                         'chacra' => $vivienda->chacra,
                         'manzana' => $vivienda->manzana,
                         'parcela' => $vivienda->parcela,
                         'finca' => $vivienda->finca,
+                        'sup_fin' => $vivienda->sup_fin,
+                        'sup_lot' => $vivienda->sup_lot,
+                        'num_cal' => $vivienda->num_cal,
+                        'nom_cal' => $vivienda->nom_cal,
+                        'latitud' => $vivienda->latitud,
+                        'longitud' => $vivienda->longitud,
                         'edificio' => $vivienda->edificio,
                         'piso' => $vivienda->piso,
                         'departamento' => $vivienda->departamento,

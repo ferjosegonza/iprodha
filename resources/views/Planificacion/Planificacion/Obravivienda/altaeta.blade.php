@@ -154,11 +154,12 @@
                                     <table id="viv" class="table table-hover mt-2" class="display">
                                         <thead style="">
                                             <th class="text-center" scope="col" style="color:#fff;width:5%;">N° Etapa</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:40%;">Descripcion</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">0 Dormitorios</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:50%;">Descripcion</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:20%;">Cant. Vivienda</th>
+                                            {{-- <th class="text-center" scope="col" style="color:#fff;width:10%;">0 Dormitorios</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">2 Dormitorios</th>
                                             <th class="text-center" scope="col" style="color:#fff;width:10%;">3 Dormitorios</th>
-                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">4 Dormitorios</th>
+                                            <th class="text-center" scope="col" style="color:#fff;width:10%;">4 Dormitorios</th> --}}
                                             <th class="text-center" scope="col" style="color:#fff;width:15%;">Acciones</th>
                                         </thead>
                                         <tbody>
@@ -166,10 +167,11 @@
                                                 <tr>                                          
                                                     <td class= 'text-center' >{{$etapa->nro_eta}}</td>
                                                     <td class= 'text-center' >{{$etapa->descripcion}}</td>
-                                                    <td class= 'text-center' >{{$etapa->can_viv_0 ?? 0}}</td>   
+                                                    <td class= 'text-center' >{{$etapa->cant_viv}}</td>
+                                                    {{-- <td class= 'text-center' >{{$etapa->can_viv_0 ?? 0}}</td>   
                                                     <td class= 'text-center' >{{$etapa->can_viv_2}}</td>                                           
                                                     <td class= 'text-center' >{{$etapa->can_viv_3}}</td>
-                                                    <td class= 'text-center' >{{$etapa->can_viv_4}}</td>
+                                                    <td class= 'text-center' >{{$etapa->can_viv_4}}</td> --}}
                                                     <td class= 'text-center' >
                                                         <div class="row">
                                                             <div class="col-lg-6">
