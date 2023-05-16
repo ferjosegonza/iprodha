@@ -11,7 +11,7 @@
         @include('layouts.favorito.fav', ['modo' => 'Agregar'])
     </div>
     <div class="section-body">            
-         @include('layouts.modal.mensajes')
+         @include('layouts.modal.mensajes')        
          <div id="padre" class="row">
             <section class="card" id="taggeo">
                 <div class="card-head">
@@ -156,16 +156,16 @@
                             <hr>
                         </div>
                        
-                        <div class="row rowbot">
-                            <div class="col-lg-4 btnes flex" id="div-btnborrar" hidden> 
-                                <button id="btnborrar" class="btn btn-danger btn-block">Borrar</button>
-                            </div>
+                        <div class="row rowbot">                          
+                            <div class="col-lg-4 btnes flex" id="div-btnguardar" hidden>                                
+                                <button id="btnguardar" class="btn btn-success btn-block" type="submit" onclick="guardar()">Guardar</button>                                
+                            </div> 
                             <div class="col-lg-4 btnes flex" id="div-btnmodificar" hidden> 
-                                <button id="btnmodificar" class="btn btn-primary btn-block">Modificar</button>
-                            </div>
-                            <div class="col-lg-4 btnes flex" id="div-btnguardar" hidden> 
-                                <button id="btnguardar" class="btn btn-success btn-block">Guardar</button>
-                            </div>                        
+                                <button id="btnmodificar" class="btn btn-primary btn-block" type="button" onclick="modificar()">Modificar</button>
+                            </div> 
+                            <div class="col-lg-4 btnes flex" id="div-btnborrar" hidden> 
+                                <button id="btnborrar" class="btn btn-danger btn-block" type="submit" onclick="borrar()">Borrar</button>
+                            </div>                 
                         </div>
                     </div>                    
                 </div>

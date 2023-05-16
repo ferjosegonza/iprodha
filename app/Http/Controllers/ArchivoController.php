@@ -11,6 +11,7 @@ use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\Dig_tags;
 use App\Models\Iprodha\Localidad;
 use App\Models\Iprodha\Dig_tag_busqueda;
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 
@@ -202,7 +203,6 @@ public function getArchivos(Request $request){
 }
 
 public function tags(Request $request){
-    $fecha = explode("-", $request->fecha);
     $query = "SELECT * FROM IPRODHA.dig_tagsxtipodoc dxt 
     inner join IPRODHA.dig_tags dt
     on dxt.id_tag = dt.id_tag
@@ -260,7 +260,6 @@ public function complejos(Request $request){
     return response()->json($tags);
 }
 
-
 public function busquedaDirigida(Request $request){
 
    $busqueda = Dig_tag_busqueda::where('id_tag','=', $request->id)->first();
@@ -271,74 +270,85 @@ public function busquedaDirigida(Request $request){
     return response()->json($datos);
 }
 
-public function borrar(Request $request){
-    $fecha = explode("-", $request->fecha);
-    $tipo = explode('|', $request->tipo);
+public function borrar(Request $request)
+{
+    $fecha = is_string($request->fecha) ? explode("-", $request->fecha) : null;
+    $subtipo = explode("|", $request->subtipo);
 
-    $res = Dig_archivos::where('id_tipoarchivo','=', $tipo[0])
-                ->where('id_subtipoarchivo','=', $tipo[1])
-                ->where('nro_archivo','=', $request->doc)
-                ->where('ano_archivo','=',$fecha[0])
-                ->where('mes_archivo','=',$fecha[1])
-                ->where('dia_archivo','=',$fecha[2])
-                ->first()
-                ->destroy();
-
-    return response()->json($res);    
+    if ($fecha) {
+        $query = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
+            ->where('id_subtipoarchivo', '=', $subtipo[1])
+            ->where('nro_archivo', '=', $request->doc)
+            ->where('ano_archivo', '=', $fecha[0])
+            ->where('mes_archivo', '=', $fecha[1])
+            ->where('dia_archivo', '=', $fecha[2])
+            ->where('orden', '=', $request->orden)
+            ->where('id_tipocabecera', '=', 1)
+            ->first();
+        $id = $query->id_archivo;
+        $res = Dig_archivos::find($id)->delete();      
+        return response()->json($res);        
+    } else {
+        return response()->json(['error' => 'Fecha inválida']);
+    }
 }
+
 
 public function crear(Request $request){
     $fecha = explode("-", $request->fecha);
-    $tipo = explode('|', $request->tipo);
-
+    $subtipo = explode("|", $request->subtipo);
+    //
     $archivo = new Dig_archivos;
-    $archivo->id_tipoarchivo = $tipo[0];
-    $archivo->id_subtipoarchivo = $tipo[1];
+    $archivo->id_tipoarchivo = $request->tipo;
+    $archivo->id_subtipoarchivo = $subtipo[1];
     $archivo->nro_archivo = $request->doc;
     $archivo->ano_archivo = $fecha[0];
     $archivo->mes_archivo = $fecha[1];
     $archivo->dia_archivo = $fecha[2];
     $archivo->claves_archivo = $request->claves;
     $archivo->orden = $request->orden;
-    $archivo->id_tipocabecera = 1;  //preguntar el tipo de cabecera
-    $archivo->fecha_carga = date("Y-m-d h:i:sa");
-
+    $archivo->id_tipocabecera = 1;  
+    //$archivo->fecha_carga = date("Y-m-d h:i:sa");    
     //ver cuestion de guardar los archivos
-
+    //$file = $request->pdf;
+    //$fileName = $file->getClientOriginalName();    
+    //
+    $path = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)
+    ->where('id_tipoarchivo', '=', $archivo->id_tipoarchivo)
+    ->where('id_subtipoarchivo', '=', $archivo->id_subtipoarchivo)
+    ->first();
+    $ruta = $path->path_archivo;
+    $archivo->path_archivo = $ruta;
+    /* $ruta = substr($path->path_archivo, 14);
+    //
+    $ruta = 'localhost\public\\' . $ruta;
+    //return $ruta;
+    $file->storeAs($ruta, $fileName);
+    // */
+    $archivo->nombre_archivo = 'prueba';   
     $res = $archivo->save();
-    
-
+    //
     return response()->json($res);    
 }
 
 public function modificar(Request $request){
-    $fecha = explode("-", $request->fecha);
-    $tipo = explode('|', $request->tipo);
+    $fecha = is_string($request->fecha) ? explode("-", $request->fecha) : null;
+    $subtipo = explode("|", $request->subtipo);
 
-    $archivo = Dig_archivos::where('id_tipoarchivo','=', $tipo[0])
-                ->where('id_subtipoarchivo','=', $tipo[1])
+    $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
+                ->where('id_subtipoarchivo','=', $subtipo[1])
                 ->where('nro_archivo','=', $request->doc)
                 ->where('ano_archivo','=',$fecha[0])
                 ->where('mes_archivo','=',$fecha[1])
                 ->where('dia_archivo','=',$fecha[2])
                 ->first();
 
-    $archivo->id_tipoarchivo = $tipo[0];
-    $archivo->id_subtipoarchivo = $tipo[1];
-    $archivo->nro_archivo = $request->doc;
-    $archivo->ano_archivo = $fecha[0];
-    $archivo->mes_archivo = $fecha[1];
-    $archivo->dia_archivo = $fecha[2];
     $archivo->claves_archivo = $request->claves;
     $archivo->orden = $request->orden;
-
-    //ver cuestion de guardar los archivos
-
     $res = $archivo->save();
 
     return response()->json($res);    
 }
-
 
 public function derivados(Request $request){
     $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
