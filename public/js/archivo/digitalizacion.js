@@ -383,10 +383,11 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i, contador){
     input.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
           findTexto(input.value, id, input, "opciones"+i);
+          guardarTag(i , nombre , 1, contador, medida)
         }
     });   
     //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
-    input.setAttribute('oninput', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida + ')')
+    input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida + ')')
     
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
@@ -431,6 +432,8 @@ function derivado(id, idtag){
                 }
             });      
             guardarTag(number, tagname, 1, contador, 4)
+            let labpadre = document.getElementById("label-o-" + id).innerHTML
+            guardarTag(id, labpadre, 1, contador, 2)
         },
         error: function(res){
             console.log(res)
@@ -480,8 +483,7 @@ function cargarClaves(claves_archivo){
     }
 }
 
-function recuperarTags(tipo, sub, dia, mes, ano, doc){
-    let fecha= dia + '-' + mes + '-' + ano
+function recuperarTags(tipo, sub){    
     //recuperamos los tags a mostrar segun tipo de documento
     let route = '/archivo/tags';
     $.ajaxSetup({
@@ -497,9 +499,7 @@ function recuperarTags(tipo, sub, dia, mes, ano, doc){
         data: ({
             _token: $('#signup-token').val(),
             tipo: tipo,
-            subtipo: sub,
-            fecha: fecha,
-            doc: doc
+            subtipo: sub
         }),
         dataType: 'json',
         success: function(res){
@@ -682,9 +682,16 @@ function mostrarPagina(archivo){
     //TIPO 2: MODIFICAR
     //TIPO 3: BORRAR
     let tipo 
-    if(document.getElementById('guardar').checked){tipo = 1}
-    else if(document.getElementById('modificar').checked){tipo = 2}
-    else{tipo = 3}
+    let form = document.getElementById('forma')
+    if(document.getElementById('guardar').checked){
+        tipo = 1
+    }
+    else if(document.getElementById('modificar').checked){
+        tipo = 2
+    }
+    else{
+        tipo = 3
+    }
     //
     claves = document.getElementById('claves');
     claves.value = '';
@@ -715,7 +722,9 @@ function mostrarPagina(archivo){
         containerOp.removeChild(containerOp.lastChild);
     }  
     //RECUPERAMOS LOS TAGS PARA CREAR LA PÁGINA    
-    recuperarTags(archivo.id_tipoarchivo, archivo.id_subtipoarchivo, archivo.dia_archivo, archivo.mes_archivo, archivo.ano_archivo, archivo.nro_archivo)
+    let tip= document.getElementById('tipo').value
+    let subt = getSubtipoId()
+    recuperarTags(tip, subt)
     //
     document.getElementById('sec-obligatorio').removeAttribute('hidden')
     document.getElementById('sec-recomendado').removeAttribute('hidden')
@@ -1065,7 +1074,7 @@ function checkGuardarTag(){
 }
 
 function guardarTag(idinput, tagname, tipo, cont, medida){
-
+    console.log('TAG: ' + tagname + ' TIPO: ' + tipo + ' CONT: ' + cont + ' MEDIDA: ' + medida)
     let input
     let taghijo = null
     let claves = document.getElementById('claves')
@@ -1325,6 +1334,7 @@ function getSelects(padre, id){
 }
 
 function borrar(){ 
+    let tipo = document.getElementById('tipo').value;
     let subtipo = document.getElementById('subtipo').value;
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
@@ -1338,11 +1348,12 @@ function borrar(){
     });
     $.ajax({
         url: route,
-        type: 'GET',
+        type: 'DELETE',
         cache: false,
         data: ({
             _token: $('#signup-token').val(),
-            tipo: subtipo,
+            tipo: tipo,
+            subtipo: subtipo,
             doc: doc,
             fecha: fecha,
             orden: orden
@@ -1357,6 +1368,7 @@ function borrar(){
 }
 
 function modificar() { 
+    let tipo = document.getElementById('tipo').value;
     let subtipo = document.getElementById('subtipo').value;
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
@@ -1372,11 +1384,12 @@ function modificar() {
     });
     $.ajax({
         url: route,
-        type: 'GET',
+        type: 'PUT',
         cache: false,
         data: ({
             _token: $('#signup-token').val(),
-            tipo: subtipo,
+            tipo: tipo,
+            subtipo: subtipo,
             doc: doc,
             fecha: fecha,
             claves: claves,
@@ -1392,13 +1405,17 @@ function modificar() {
 }
 
 function guardar(){
-    let subtipo = document.getElementById('subtipo').value;
-    let doc = document.getElementById('doc').value;
-    let fecha = document.getElementById('fecha').value;
-    let claves = document.getElementById('claves').value;
-    let orden = document.getElementById('orden').value;
-
-    let route = '/archivo/crear';    
+    let tipo = document.getElementById('tipo').value
+    let subtipo =  document.getElementById('subtipo').value
+    let doc = document.getElementById('doc').value
+    let fecha = document.getElementById('fecha').value
+    let claves = document.getElementById('claves').value
+    let orden = document.getElementById('orden').value
+    let file = document.getElementById('pdf').value
+    //
+    console.log(tipo, subtipo, doc, fecha, claves, orden)
+    //
+    let route = '/archivo/crear'  
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1406,15 +1423,17 @@ function guardar(){
     });
     $.ajax({
         url: route,
-        type: 'GET',
+        type: 'POST',
         cache: false,
         data: ({
             _token: $('#signup-token').val(),
-            tipo: subtipo,
+            tipo: tipo,
+            subtipo: subtipo,
             doc: doc,
             fecha: fecha,
             claves: claves,
             orden: orden
+            //pdf: file
         }),
         dataType: 'json',
         success: function(res) {
@@ -1423,4 +1442,4 @@ function guardar(){
         error: function(res){
             console.log(res)
     }});
-}
+} 

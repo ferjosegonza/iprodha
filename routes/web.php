@@ -190,3 +190,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');
     Route::put('archivo/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
 });
+    
