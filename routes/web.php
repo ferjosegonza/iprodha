@@ -146,7 +146,9 @@ Route::get('/barrio/{barrio}/terrenoSup',[barrio_terrenoController::class,'index
 Route::post('/terrenoSup',[barrio_terrenoController::class,'store']);
 Route::resource('terrenoSup',barrio_terrenoController::class);
 
-Route::get('/barrio/{barrio}/dormXTerr',[barrioXOrgController::class,'index'])->name('barrio.dormXTerr');
+Route::delete('/dormXTerr/eliminar/{barrio}/{dor}/{terr}',[BarrioXOrgController::class,'destroy'])->name('dormXTerr.eliminar');
+Route::get('/barrio/{barrio}/dormXTerr',[BarrioXOrgController::class,'index'])->name('barrio.dormXTerr');
+Route::resource('dormXTerr',BarrioXOrgController::class);
 
 Route::get('/obras84',function()
         {//return view('welcome');
