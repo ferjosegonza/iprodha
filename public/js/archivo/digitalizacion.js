@@ -1473,6 +1473,7 @@ function popup(tipo, estado){
 }
 
 function borrar(){ 
+    let pdf = $("input[name=pdf]").val();
     let tipo = document.getElementById('tipo').value;
     let subtipo = document.getElementById('subtipo').value;
     let doc = document.getElementById('doc').value;
@@ -1495,9 +1496,10 @@ function borrar(){
             subtipo: subtipo,
             doc: doc,
             fecha: fecha,
-            orden: orden
+            orden: orden,
+            pdf: pdf
         }),
-        dataType: 'json',
+        //dataType: 'json',
         success: function(res) {
             console.log(res)
             popup(3, res)
@@ -1507,7 +1509,8 @@ function borrar(){
     }});
 }
 
-function modificar() { 
+function modificar() {
+    let pdf = $("input[name=pdf]").val(); 
     let tipo = document.getElementById('tipo').value;
     let subtipo = document.getElementById('subtipo').value;
     let doc = document.getElementById('doc').value;
@@ -1533,7 +1536,8 @@ function modificar() {
             doc: doc,
             fecha: fecha,
             claves: claves,
-            orden: orden
+            orden: orden, 
+            pdf: pdf
         }),
         dataType: 'json',
         success: function(res) {
@@ -1546,15 +1550,26 @@ function modificar() {
 }
 
 function guardar(){
+    let pdfFile = document.getElementById('pdf')
+    let pdf = pdfFile.files[0]
     let tipo = document.getElementById('tipo').value
     let subtipo =  document.getElementById('subtipo').value
     let doc = document.getElementById('doc').value
     let fecha = document.getElementById('fecha').value
     let claves = document.getElementById('claves').value
     let orden = document.getElementById('orden').value
-    let file = document.getElementById('pdf').value
+
+    let dataForm = new FormData();
+    dataForm.append('pdf', pdf);
+    dataForm.append('tipo', tipo);
+    dataForm.append('subtipo', subtipo);
+    dataForm.append('doc', doc);
+    dataForm.append('fecha', fecha);
+    dataForm.append('claves', claves);
+    dataForm.append('orden', orden);
+
     //
-    console.log(tipo, subtipo, doc, fecha, claves, orden)
+    console.log(dataForm.get("pdf"))
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
@@ -1566,17 +1581,10 @@ function guardar(){
         url: route,
         type: 'POST',
         cache: false,
-        data: ({
-            _token: $('#signup-token').val(),
-            tipo: tipo,
-            subtipo: subtipo,
-            doc: doc,
-            fecha: fecha,
-            claves: claves,
-            orden: orden
-            //pdf: file
-        }),
-        dataType: 'json',
+        data: dataForm,
+        processData: false,
+        contentType: false,
+        //dataType: 'json',
         success: function(res) {
             console.log(res)
             popup(1, res)
