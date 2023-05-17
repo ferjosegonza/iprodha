@@ -5,11 +5,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Planificacion\Planificacion\ObraviviendaController;
 
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAVIVIENDA']], function () {
     //AJAX
     Route::post('/obravivienda/buscarviv/{orden}/{idobra}', [ObraviviendaController::class, 'buscarViviendaOrden']);
     Route::post('/obravivienda/todaslasviviendas/{id}', [ObraviviendaController::class, 'todasLasViviendas']);
+    Route::post('/obravivienda/viviendasdelaetapa/{id}', [ObraviviendaController::class, 'todasLasViviendasDeUnaEtapa']);
     //-----
+    Route::get('/obravivienda/nueva-viv/{id}', [ObraviviendaController::class, 'verNuevaViv'])->name('obravivienda.nuevaviv');
+    Route::post('/obravivienda/guardar-nueva-viv/{id}', [ObraviviendaController::class, 'guardarNuevaViv'])->name('obravivienda.guardarnuevaviv');
     Route::post('/obravivienda/asignarviviendas/{id}/{ideta}', [ObraviviendaController::class, 'asignarViviendas'])->name('obravivienda.asignarviviendas');
     Route::post('/obra/vivienda/{id}', [ObraviviendaController::class, 'viviendaDeObra']);
     Route::get('/obravivienda/viv/{id}', [ObraviviendaController::class, 'verViv'])->name('obravivienda.viviendas');

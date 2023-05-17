@@ -1,50 +1,14 @@
 <?php
-
-namespace App\Models\Iprodha;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-
-
-class Fc_concosxbarrio extends Model
-{
-    use HasFactory;
-    
-    public $timestamps = false;
-    
-    protected $table = 'IPRODHA.fc_concosxbarrio';
-    protected $primaryKey = 'BARRIO';//, IDORGANISMO, ID_CONCOSTO, CANTDORM, IDTIPOFAC, IDTIPOTERRE';
-    public $incrementing = true;
-
-    protected $fillable = [ 
-        'BARRIO',
-        'IDORGANISMO',
-        'CONCOSTO',
-        'SUMAORESTA',
-        'IMPORTE',
-        'ID_CONCOSTO',
-        'CANTDORM',
-        'IDTIPOFAC',
-        'IDTIPOTERRE'
-
-
-    ];
-    protected $attributes = [
-        'barrio' => false,
-    ];
-    /*public function obraBarrio()
-    {
-        return $this->belongsTo(Obras::class,'id_obr','id_obr');
-    }*/
-    /*public function barrioLocalidad()
-    {
-        return $this->belongsTo(Localidad::class,'id_loc','id_loc');
-    }*/
-    public function Fc_concosxbarrio_costosxbarrio()
-    {
-        return $this->hasMany(Barrio::class,'barrio','barrio');
+    namespace App\Models\Iprodha;
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+    class Fc_concosxbarrio extends Model{
+        use HasFactory;
+        public$timestamps=false;
+        protected$table='IPRODHA.fc_concosxbarrio';
+        protected$primaryKey='BARRIO';
+        public$incrementing=true;
+        protected$fillable=['BARRIO','IDORGANISMO','CONCOSTO','SUMAORESTA','IMPORTE','ID_CONCOSTO','CANTDORM','IDTIPOFAC','IDTIPOTERRE'];
+        protected $attributes=['barrio'=>false,];    
+        public function Fc_concosxbarrio_costosxbarrio(){return $this->hasMany(Barrio::class,'barrio','barrio');}
     }
-
-
-}
