@@ -12,8 +12,9 @@
     </div>
     <div class="section-body">            
          @include('layouts.modal.mensajes')        
-         <div id="padre" class="row">
+         <div id="padre" class="row">            
             <section class="card" id="taggeo">
+                <form id="formArchivo" method="POST" enctype="multipart/form-data">
                 <div class="card-head">
                     <h4>Sistema de Taggeo</h4>
                 </div>
@@ -144,7 +145,7 @@
                                     </div>
                                     <div class="col-lg-1">
                                         <br>
-                                        <button class="btn btn-success" id='btn-tag' onclick="agregarTag()" disabled>+</button>
+                                        <button class="btn btn-success" id='btn-tag' onclick="agregarTag()" type="button" disabled>+</button>
                                     </div>                 
                                         <div id="tag-agregar" class="row" hidden>
                                     </div>
@@ -156,19 +157,20 @@
                             <hr>
                             <div class="row rowbot">                          
                                 <div class="col-lg-4 btnes flex" id="div-btnguardar" hidden>                                
-                                    <button id="btnguardar" class="btn btn-success btn-block" type="submit" onclick="modal(1)">Guardar</button>                                
+                                    <button id="btnguardar" class="btn btn-success btn-block" type="button" onclick="modal(1)">Guardar</button>                                
                                 </div> 
                                 <div class="col-lg-4 btnes flex" id="div-btnmodificar" hidden> 
                                     <button id="btnmodificar" class="btn btn-primary btn-block" type="button" onclick="modal(2)">Modificar</button>
                                 </div> 
                                 <div class="col-lg-4 btnes flex" id="div-btnborrar" hidden> 
-                                    <button id="btnborrar" class="btn btn-danger btn-block" type="submit" onclick="modal(3)">Borrar</button>
+                                    <button id="btnborrar" class="btn btn-danger btn-block" type="button" onclick="modal(3)">Borrar</button>
                                 </div>                 
                             </div>
                         </div>    
                     </div>                    
-                </div>
-            </section>        
+                </div>            
+            </form> 
+            </section>                   
          </div>
     </div>    
 </section>
