@@ -47,7 +47,7 @@
                                         {!! Form::select('idetapa', $etapas, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
@@ -63,13 +63,13 @@
                                             ]) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Cantidad de viviendas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::number('cant_viv', 0, ['class' => 'form-control']) !!}
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             
                     
@@ -79,7 +79,7 @@
                                         (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAS')
+                                        @can('CREAR-OBRAVIVIENDA')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
                                         @endcan
                                         {!! Form::close() !!}
