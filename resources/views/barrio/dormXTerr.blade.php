@@ -17,7 +17,7 @@
                                             @method('POST')
                                             <div style="width:10%;float:left;margin-left:1%;">
                                                 {!!Form::label('Dormitorios:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
-                                                <select id="candor">
+                                                <select name="candor">
                                                     @foreach($Barrio as $unBarrio)@endforeach
                                                     @if($unBarrio->mts1>0)<option>1</option>@endif
                                                     @if($unBarrio->mts2>0)<option>2</option>@endif
@@ -27,7 +27,7 @@
                                             </div>                                            
                                             <div style="width:10%;float:left;margin-left:1%;">    
                                                 {!!Form::label('Terrenos:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
-                                                <select id="idtipoterre">
+                                                <select name="idtipoterre">
                                                     @foreach($terrenos as $unTerrenos)                                                        
                                                         <option value="{{$unTerrenos->idtipoterre}}">{{$unTerrenos->superficie}}</option>
                                                     @endforeach                                                                                                    

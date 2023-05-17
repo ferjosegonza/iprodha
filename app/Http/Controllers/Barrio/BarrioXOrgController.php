@@ -20,8 +20,11 @@
             $unBarrioXOrg->barrio=$request->input('barrio');
             $unBarrioXOrg->candor=$request->input('candor');
             $unBarrioXOrg->idtipoterre=$request->input('idtipoterre');
+            $unBarrioXOrg->idorganismo=0;
+            $unBarrioXOrg->plazo=360;
+            $unBarrioXOrg->idtipofac=0;
             $unBarrioXOrg->save();
-            return redirect()->route('barrio.dormXTerr',$unBarrio->barrio)->with('mensaje','creado con exito.');
+            return redirect()->route('barrio.dormXTerr',$request->input('barrio'))->with('mensaje','creado con exito.');
         }
         public function destroy($barrio,$dor,$terr){            
             $barrioXOrg=BarrioXOrg::where('barrio',$barrio)->where('idtipoterre',$terr)->where('candor',$dor);            

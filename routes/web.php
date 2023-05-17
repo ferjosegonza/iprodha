@@ -15,6 +15,7 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\Barrio\BarrioController;
 use App\Http\Controllers\Barrio\Fc_concosxbarrioController;
 use App\Http\Controllers\Barrio\barrio_terrenoController;
+use App\Http\Controllers\Barrio\BarrioXOrgController;
 
 
 use App\Http\Controllers\CategorialaboralController;
