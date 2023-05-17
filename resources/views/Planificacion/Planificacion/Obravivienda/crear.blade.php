@@ -12,7 +12,7 @@
         </div>
         <div class="section-body">
             <div class="row">
-                {!! Form::open(['route' => 'obravivienda.store', 'method' => 'POST']) !!}
+                {!! Form::open(['route' => 'obravivienda.store', 'method' => 'POST', 'class' => 'formulario']) !!}
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-12">
                     <div class="card">
@@ -23,7 +23,7 @@
                                         <label for="Numero:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Numero: <span class="obligatorio">*</span></label>
                                         {{-- {!! Form::label('Numero:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!} --}}
                                         
-                                        {!! Form::number('num_obr', null, ['class' => 'form-control', 'required']) !!}
+                                        {!! Form::number('num_obr', null, ['class' => 'form-control', 'required', 'id'=>'num_obr']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
@@ -31,6 +31,7 @@
                                         <label for="Obra:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Obra: <span class="obligatorio">*</span></label>
                                         {{-- {!! Form::label('Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!} --}}
                                         {!! Form::text('nom_obra', null, [
+                                            'id'=>'nom_obr',
                                             'class' => 'form-control',
                                             'required' => 'required',
                                             'style' => 'text-transform:uppercase',
@@ -68,12 +69,12 @@
                                         {!! Form::text('expediente', null, ['class' => 'form-control']) !!} 
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         <label for="Cantidad de viviendas:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Cant. Viviendas: <span class="obligatorio">*</span></label>
                                         {!! Form::number('can_viv', null, ['class' => 'form-control', 'required']) !!} 
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Fecha inicio:', null, [
@@ -127,8 +128,18 @@
                                                 <span class="obligatorio">*</span>
                                                 {!! Form::text('descrip', null, ['class' => 'form-control', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'required']) !!}
                                             </div>
-                                        </div>
-                                        
+                                        </div>   
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+                                    {!! Form::label('Viviendas:', null, ['class' => 'control-label fs-7', 'style' => 'white-space: nowrap; ']) !!}
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                                            <div class="form-group">
+                                                <label for="Cantidad de viviendas:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Cantidad de Viviendas: <span class="obligatorio">*</span></label>
+                                                {!! Form::number('can_viv', null, ['class' => 'form-control', 'required', 'id'=>'can_viv']) !!} 
+                                            </div>
+                                        </div>  
                                     </div>
                                 </div>
                                 {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
@@ -171,7 +182,7 @@
                                         (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAS')
+                                        @can('CREAR-OBRAVIVIENDA')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
                                         @endcan
                                         {!! Form::close() !!}
@@ -189,4 +200,6 @@
             </div>
         </div>
     </section>
+    @include('Planificacion.Planificacion.Obravivienda.mConfirmStore')
+    <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/crear_obravivienda.js') }}"></script>
 @endsection

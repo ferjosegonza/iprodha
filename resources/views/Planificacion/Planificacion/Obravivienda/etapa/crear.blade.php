@@ -39,7 +39,7 @@
                                     </div>
                                 </div>  
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 {!! Form::label('Cantidad de dormitorios:', null, ['class' => 'control-label fs-7', 'style' => 'white-space: nowrap; ']) !!}
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
@@ -65,7 +65,7 @@
                                         {!! Form::number('can_viv_4', 0, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                     
                             <div class="row pt-3">
                                 <div class="d-flex">
@@ -73,7 +73,7 @@
                                          (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAS')
+                                        @can('CREAR-OBRAVIVIENDA')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
                                         @endcan
                                         {!! Form::close() !!}

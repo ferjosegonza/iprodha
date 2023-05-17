@@ -261,7 +261,7 @@
                                                                 <div class="row">
                                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                                         {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.entrega', $obra->id_obr, $entrega->id_ent], 'style' => 'display:inline']) !!}
-                                                                        {!! Form::submit('Viviendas', ['class' => 'btn btn-info mb-2 w-100']) !!}
+                                                                        {!! Form::submit('Agregar Viviendas', ['class' => 'btn btn-info mb-2 w-100']) !!}
                                                                         {!! Form::close() !!}
                                                                     </div>
                                                                 </div>

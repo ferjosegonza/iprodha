@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 //agregamos
+// use App\Models\User;
 
 use App\Models\Iprodha\Ob_obra;
 use App\Models\Iprodha\Ob_vivienda;
@@ -152,6 +153,8 @@ class ObraviviendaController extends Controller
 
     public function show($id)
     {
+        // $user = User::find(342);
+        // $user->syncPermissions(["VER-TICKET", "CREAR-TICKET", "EDITAR-TICKET", "VER-ARCHIVOS", "VER-OBRAVIVIENDA", "CREAR-OBRAVIVIENDA", "EDITAR-OBRAVIVIENDA", "CARGAR-VIVIENDAS"]);
         $obra = Ob_obra::find($id);
         $viviendas = $this->todasLasViviendasDeUnaObra($obra);
         return view('Planificacion.Planificacion.Obravivienda.show', compact('obra', 'viviendas'));
@@ -431,16 +434,10 @@ class ObraviviendaController extends Controller
 
         $this->validate($request, [
             'num_eta' => 'required',
-            'descrip' => 'required',
-            'can_viv_0' => 'required|numeric|min:0',
-            'can_viv_2' => 'required|numeric|min:0',
-            'can_viv_3' => 'required|numeric|min:0',
-            'can_viv_4' => 'required|numeric|min:0'
+            'descrip' => 'required'
         ], [
-            'can_viv_0.min' => 'El campo 0 dormitorios debe ser 0 como minimo.',
-            'can_viv_2.min' => 'El campo 2 dormitorios debe ser 0 como minimo.',
-            'can_viv_3.min' => 'El campo 3 dormitorios debe ser 0 como minimo.',
-            'can_viv_4.min' => 'El campo 4 dormitorios debe ser 0 como minimo.',
+            'num_eta.required' => 'El campo Numero de etapa no puede estar vacio.',
+            'descrip.required' => 'El campo Descripcion de etapa no puede estar vacio.',
         ]);
 
         $id_obr = $request->input('id_obr');
@@ -458,10 +455,11 @@ class ObraviviendaController extends Controller
                 'id_obr' => $id_obr,
                 'nro_eta' => $nro_eta,
                 'descripcion' => strtoupper($request->input('descrip')),
-                'can_viv_0' => $request->input('can_viv_0'),
-                'can_viv_2' => $request->input('can_viv_2'),
-                'can_viv_3' => $request->input('can_viv_3'),
-                'can_viv_4' => $request->input('can_viv_4'),
+                'can_viv_0' => 0,
+                'can_viv_2' => 0,
+                'can_viv_3' => 0,
+                'can_viv_4' => 0,
+                'cant_viv' => 0,
                 'id_localidad' => $obra->id_loc,
             ]);
 
@@ -472,7 +470,7 @@ class ObraviviendaController extends Controller
             $entrega = Ob_entrega::create([
                 'id_eta' => $id_etapa,
                 'num_ent' => 0,
-                'cant_viv' => $totalDeViviendas,
+                'cant_viv' => 0,
                 'fec_ent' => null
             ]);
             return redirect()->route('obravivienda.etapas', $id_obr)->with('mensaje','La etapa se creo con exito.');
@@ -542,10 +540,11 @@ class ObraviviendaController extends Controller
         $this->validate($request, [
             'num_ent' => 'required',
             'descrip' => 'required',
-            'idetapa' => 'required',
-            'cant_viv' => 'required|numeric|min:1'
+            'idetapa' => 'required'
         ], [
-            'cant_viv.min' => 'La cantidad de viviendas debe ser minimo 1.'
+            'num_ent.required' => 'El campo Numero de entrega no puede estar vacio.',
+            'descrip.required' => 'El campo Descripcion de la entrega no puede estar vacio',
+            'idetapa' => 'Seleccione una etapa a la que corresponda la entrega.'
         ]);
 
         // return $request;
@@ -562,14 +561,14 @@ class ObraviviendaController extends Controller
                     'num_ent' => $request->input('num_ent'),
                     'descripcion' => $request->input('descrip'),
                     'fec_ent' => $request->input('fec_ent'),
-                    'cant_viv' => $request->input('cant_viv'),
+                    'cant_viv' => 0,
                 ]);
             }else{
                 Ob_entrega::create([
                     'id_eta' => $request->input('idetapa'),
                     'num_ent' => $request->input('num_ent'),
                     'descripcion' => $request->input('descrip'),
-                    'cant_viv' => $request->input('cant_viv'),
+                    'cant_viv' => 0,
                 ]);
             }
     

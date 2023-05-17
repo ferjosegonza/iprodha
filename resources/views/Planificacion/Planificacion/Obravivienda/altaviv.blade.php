@@ -380,7 +380,7 @@
                                 <div class="d-flex">
                                     <div class="me-auto"></div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAS')
+                                        @can('CARGAR-VIVIENDA')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                         @endcan
                                         {!! Form::close() !!}
