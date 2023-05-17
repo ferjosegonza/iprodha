@@ -94,10 +94,53 @@ function getSubtipoId(){
     return subtid;
 }
 
+function modal(tipo){
+    let modalEl = document.getElementById('modal')
+    console.log(modalEl)
+    if(tipo == 1){
+        document.getElementById('modalTitulo').innerHTML = 'Guardar Archivo'
+        document.getElementById('modalBody').innerHTML = '<p>¿Está seguro de que desea guardar el archivo</p> <p>No olvide revisar los campos.</p>'
+        document.getElementById('btnConfirmarAccion').innerHTML = 'Guardar archivo'      
+        document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'confirmarAccion(1)')  
+    }
+    else if(tipo ==2){
+        document.getElementById('modalTitulo').innerHTML = 'Modificar Archivo'
+        document.getElementById('modalBody').innerHTML = '<p>¿Está seguro de que desea modificar el archivo</p> <p>No olvide revisar los campos.</p>'
+        document.getElementById('btnConfirmarAccion').innerHTML = 'Modificar archivo'      
+        document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'confirmarAccion(2)')  
+    }
+    else{
+        document.getElementById('modalTitulo').innerHTML = 'Borrar Archivo'
+        document.getElementById('modalBody').innerHTML = '<p>¿Está seguro de que desea borrar el archivo</p> <p>Esta acción no podrá deshacerse.</p>'
+        document.getElementById('btnConfirmarAccion').innerHTML = 'Borrar archivo'      
+        document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'confirmarAccion(3)')  
+    }
+    let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
+    modal.show()
+
+}
+
+function confirmarAccion(tipo){        
+    let modal= document.getElementById('modal')
+    if(tipo == 1){        
+        bootstrap.Modal.getInstance(modal).hide()
+        guardar()
+    }
+    else if(tipo == 2){       
+        bootstrap.Modal.getInstance(modal).hide()
+        modificar()
+    }
+    else{
+        bootstrap.Modal.getInstance(modal).hide() 
+        borrar()
+    }
+}
+
 function existeCheck(){
     //Al presionar algún botón de guardar/modificar/borrar verificamos si existe un archivo 
     //que coincida con los parámetros mencionados.
     //PARÁMETROS
+    ocultarPagina()
     let tipoId = document.getElementById('tipo').value
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
@@ -154,12 +197,23 @@ function existeCheck(){
 }
 
 function checkArchivos(){
+    ocultarPagina()
     let padre = document.getElementById('padre')
-    let archivos = document.createElement('aside')
-    archivos.classList.add('col-lg-3')
-    archivos.classList.add('card')
-    archivos.id = 'archivos'
+    let archivos
+    if(document.getElementById('archivos') == undefined){
+        archivos = document.createElement('aside')
+        archivos.classList.add('col-lg-3')
+        archivos.classList.add('card')
+        archivos.id = 'archivos'
+    }
+    else{
+        archivos = document.getElementById('archivos')
+        while(archivos.hasChildNodes()){
+            archivos.removeChild(archivos.lastChild)
+        }
+    }
     let taggeo = document.getElementById('taggeo')
+    taggeo.classList.remove('col-lg-12')
     taggeo.classList.add('col-lg-8')
     padre.appendChild(archivos)
     //
@@ -197,33 +251,44 @@ function checkArchivos(){
             archivos.appendChild(cardhead)
             let cardbody = document.createElement('div')
             cardbody.className = 'card-body'
-            archivos.appendChild(cardbody)
-            let table = document.createElement('table')
-            table.id = 'archivotabla'
-            let tablebody = document.createElement('tbody')
-            cardbody.appendChild(table)
-            table.appendChild(tablebody)
-            for(let i = 0; i < res.length; i++){
-                let tr = document.createElement('tr')
-                tr.setAttribute('onclick', 'archivoSelected(' + i + ')')
-                let td1 = document.createElement('td')
-                td1.innerHTML = i
-                tr.appendChild(td1)
-                let td2 = document.createElement('td')
-                td2.innerHTML = res[i].nombre_archivo                
-                tr.appendChild(td2)        
-                /* let td3 = document.createElement('td')
-                td3.innerHTML = res[i]         
-                td3.hidden = true
-                tr.appendChild(td3)    */     
-                tr.onclick = function (){
-                    document.getElementById('archivos').remove()
-                    let taggeo = document.getElementById('taggeo')
-                    taggeo.classList.add('col-lg-12')
-                    mostrarPagina(res[i])
-                }
-                tablebody.appendChild(tr)
-            }            
+            archivos.appendChild(cardbody)  
+            console.log(res.length)          
+            if(res.length == 0){
+                let p = document.createElement('p')
+                p.innerHTML = 'No se han encontrado archivos que coincidan con los parámetros'
+                cardbody.appendChild(p)
+            }
+            else{
+                let table = document.createElement('table')
+                table.id = 'archivotabla'
+                let tablebody = document.createElement('tbody')
+                cardbody.appendChild(table)
+                table.appendChild(tablebody)
+                for(let i = 0; i < res.length; i++){
+                    let tr = document.createElement('tr')
+                    let j = i+1
+                    tr.setAttribute('onclick', 'archivoSelected(' + i + ')')
+                    let td1 = document.createElement('td')
+                    td1.innerHTML = j
+                    tr.appendChild(td1)
+                    let td2 = document.createElement('td')
+                    td2.innerHTML = res[i].nombre_archivo                
+                    tr.appendChild(td2)        
+                    /* let td3 = document.createElement('td')
+                    td3.innerHTML = res[i]         
+                    td3.hidden = true
+                    tr.appendChild(td3)    */     
+                    tr.onclick = function (){
+                        document.getElementById('archivos').remove()
+                        let taggeo = document.getElementById('taggeo')
+                        taggeo.classList.remove('col-lg-8')
+                        taggeo.classList.add('col-lg-12')
+                        mostrarPagina(res[i])
+                    }
+                    tablebody.appendChild(tr)
+                }  
+            }
+                        
         },
         error: function(res){console.log(res)}});
 }
@@ -305,6 +370,11 @@ function crearInputSimple(padre, dato, nombre, medida, i, contador){
             guardarTag(i, nombre, 1, contador, medida);
         }    
     });
+
+    if(document.getElementById('borrar').checked){
+        input.setAttribute('disabled', 'disabled')
+    }
+
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -339,6 +409,11 @@ function crearSelect(padre, id, nombre, medida, i, contador){
         input.id = 'hijo' + i;
     }   
     input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
+    
+    if(document.getElementById('borrar').checked){
+        input.setAttribute('disabled', 'disabled')
+    }
+   
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -392,6 +467,12 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i, contador){
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
     }      
+
+    if(document.getElementById('borrar').checked){
+        input.setAttribute('disabled', 'disabled')
+    }
+
+
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
     return input.id;
@@ -452,7 +533,8 @@ function cargarClaves(claves_archivo){
     let info=[];
     let cont=0;
     let band=0;
-    for(i=0; i<claves_archivo.length; i++){    
+    if(claves_archivo != null){
+        for(i=0; i<claves_archivo.length; i++){    
         //obtenemos los tags ya cargados
         //i es cada caracter                                                
         if(band==2){
@@ -481,6 +563,8 @@ function cargarClaves(claves_archivo){
      for(i=1; i<tags.length; i++){
         claves.value = claves.value + '<'+tags[i]+':'+info[i]+'>';
     }
+    }
+    
 }
 
 function recuperarTags(tipo, sub){    
@@ -682,7 +766,6 @@ function mostrarPagina(archivo){
     //TIPO 2: MODIFICAR
     //TIPO 3: BORRAR
     let tipo 
-    let form = document.getElementById('forma')
     if(document.getElementById('guardar').checked){
         tipo = 1
     }
@@ -752,6 +835,29 @@ function mostrarPagina(archivo){
             document.getElementById('div-btnguardar').hidden=true;
         }
     }
+}
+
+function ocultarPagina(){
+    let padre = document.getElementById('comp-obligatorio')
+    while(padre.hasChildNodes()){
+        padre.removeChild(padre.lastChild)
+    }
+    padre = document.getElementById('comp-recomendado')
+    while(padre.hasChildNodes()){
+        padre.removeChild(padre.lastChild)
+    }
+    padre = document.getElementById('comp-opcional')
+    while(padre.hasChildNodes()){
+        padre.removeChild(padre.lastChild)
+    }
+    padre = document.getElementById('sectags').hidden = true;
+    if(document.getElementById('archivos') != undefined){
+        document.getElementById('archivos').remove()
+        let taggeo = document.getElementById('taggeo')
+        taggeo.classList.remove('col-lg-8')
+        taggeo.classList.add('col-lg-12')      
+    }
+
 }
 
 function insertarInputSimple(divmayor, tag, i){
@@ -1333,6 +1439,36 @@ function getSelects(padre, id){
         }});
 }
 
+function popup(tipo, estado){  
+    let popEl = document.getElementById('popup')
+    if(estado){
+        document.getElementById('popTitulo').innerHTML = 'Éxito'
+        if(tipo == 1){
+            document.getElementById('popBody').innerHTML = '<p>El archivo se ha guardado correctamente.</p>'            
+        }
+        else if(tipo ==2){           
+            document.getElementById('popBody').innerHTML = '<p>El archivo se ha modificado con éxito.</p>'
+        }
+        else{
+            document.getElementById('popBody').innerHTML = '<p>Se ha borrado el archivo.</p>'
+        }
+    }
+    else{
+        document.getElementById('popTitulo').innerHTML = 'Error'
+        if(tipo == 1){
+            document.getElementById('popBody').innerHTML = '<p>No se ha podido guardar el archivo.</p>'            
+        }
+        else if(tipo ==2){           
+            document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar el archivo.</p>'
+        }
+        else{
+            document.getElementById('popBody').innerHTML = '<p>No se ha podido borrar el archivo.</p>'
+        }
+    }    
+    let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+    pop.show()
+}
+
 function borrar(){ 
     let tipo = document.getElementById('tipo').value;
     let subtipo = document.getElementById('subtipo').value;
@@ -1361,6 +1497,7 @@ function borrar(){
         dataType: 'json',
         success: function(res) {
             console.log(res)
+            popup(3, res)
         },
         error: function(res){
             console.log(res)
@@ -1398,6 +1535,7 @@ function modificar() {
         dataType: 'json',
         success: function(res) {
             console.log(res)
+            popup(2, res)
         },
         error: function(res){
             console.log(res)
@@ -1438,6 +1576,7 @@ function guardar(){
         dataType: 'json',
         success: function(res) {
             console.log(res)
+            popup(1, res)
         },
         error: function(res){
             console.log(res)
