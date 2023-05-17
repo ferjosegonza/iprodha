@@ -154,26 +154,56 @@
                              <hr>{!! Form::textarea('claves', null, ['id'=>'claves','maxlenght'=>'1040', 'style' => 'text-transform:uppercase', 'class' => 'form-control', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("characla", "claves", 1040)'])!!}
                             <label for="claves" id="characla">Quedan 1040 caracteres.</label>
                             <hr>
-                        </div>
-                       
-                        <div class="row rowbot">                          
-                            <div class="col-lg-4 btnes flex" id="div-btnguardar" hidden>                                
-                                <button id="btnguardar" class="btn btn-success btn-block" type="submit" onclick="guardar()">Guardar</button>                                
-                            </div> 
-                            <div class="col-lg-4 btnes flex" id="div-btnmodificar" hidden> 
-                                <button id="btnmodificar" class="btn btn-primary btn-block" type="button" onclick="modificar()">Modificar</button>
-                            </div> 
-                            <div class="col-lg-4 btnes flex" id="div-btnborrar" hidden> 
-                                <button id="btnborrar" class="btn btn-danger btn-block" type="submit" onclick="borrar()">Borrar</button>
-                            </div>                 
-                        </div>
+                            <div class="row rowbot">                          
+                                <div class="col-lg-4 btnes flex" id="div-btnguardar" hidden>                                
+                                    <button id="btnguardar" class="btn btn-success btn-block" type="submit" onclick="modal(1)">Guardar</button>                                
+                                </div> 
+                                <div class="col-lg-4 btnes flex" id="div-btnmodificar" hidden> 
+                                    <button id="btnmodificar" class="btn btn-primary btn-block" type="button" onclick="modal(2)">Modificar</button>
+                                </div> 
+                                <div class="col-lg-4 btnes flex" id="div-btnborrar" hidden> 
+                                    <button id="btnborrar" class="btn btn-danger btn-block" type="submit" onclick="modal(3)">Borrar</button>
+                                </div>                 
+                            </div>
+                        </div>    
                     </div>                    
                 </div>
             </section>        
          </div>
     </div>    
 </section>
-
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitulo"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnConfirmarAccion"></button>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade modal-sm" id="popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="popTitulo"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="popBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="ocultarPagina()">Ok</button>
+        </div>
+      </div>
+    </div>
+</div>
 @include('layouts.modal.confirmation') 
 
 @endsection
