@@ -126,35 +126,50 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                    <div class="row">
-                                        {!! Form::label('Cantidad de Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                            <div class="form-group">
-                                                {!! Form::label('0 (CERO):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                                {!! Form::number('can_viv_0', 0, ['class' => 'form-control', 'readonly']) !!}
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                            <div class="form-group">
-                                                {!! Form::label('2 (DOS):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                                {!! Form::text('can_viv_2', $etapa->can_viv_2, ['class' => 'form-control', 'readonly']) !!}
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                            <div class="form-group">
-                                                {!! Form::label('3 (TRES):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                                {!! Form::text('can_viv_3', $etapa->can_viv_3, ['class' => 'form-control', 'readonly']) !!}
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                            <div class="form-group">
-                                                {!! Form::label('4 (CUATRO):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                                {!! Form::text('can_viv_4', $etapa->can_viv_4, ['class' => 'form-control', 'readonly']) !!}
+                                
+                                @if (1)
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                        <div class="row">
+                                            {!! Form::label('Viviendas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                <div class="form-group">
+                                                    {!! Form::label('Cantidad de viviendas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                                    {!! Form::number('cant_viv', $etapa->cant_viv, ['class' => 'form-control', 'readonly']) !!}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                        <div class="row">
+                                            {!! Form::label('Cantidad de Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                <div class="form-group">
+                                                    {!! Form::label('0 (CERO):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                                    {!! Form::number('can_viv_0', 0, ['class' => 'form-control', 'readonly']) !!}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                <div class="form-group">
+                                                    {!! Form::label('2 (DOS):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                                    {!! Form::text('can_viv_2', $etapa->can_viv_2, ['class' => 'form-control', 'readonly']) !!}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                <div class="form-group">
+                                                    {!! Form::label('3 (TRES):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                                    {!! Form::text('can_viv_3', $etapa->can_viv_3, ['class' => 'form-control', 'readonly']) !!}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                                <div class="form-group">
+                                                    {!! Form::label('4 (CUATRO):', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                                    {!! Form::text('can_viv_4', $etapa->can_viv_4, ['class' => 'form-control', 'readonly']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                             <div class="row border border-top-0">
                                 {!! Form::label('Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
