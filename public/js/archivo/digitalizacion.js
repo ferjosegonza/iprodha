@@ -125,14 +125,17 @@ function confirmarAccion(tipo){
     if(tipo == 1){        
         bootstrap.Modal.getInstance(modal).hide()
         guardar()
+        document.getElementById('guardar').checked = false
     }
     else if(tipo == 2){       
         bootstrap.Modal.getInstance(modal).hide()
         modificar()
+        document.getElementById('modificar').checked = false
     }
     else{
         bootstrap.Modal.getInstance(modal).hide() 
         borrar()
+        document.getElementById('borrar').checked = false
     }
 }
 
