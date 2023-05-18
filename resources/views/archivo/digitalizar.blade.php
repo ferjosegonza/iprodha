@@ -98,7 +98,7 @@
                     <hr>
                     <div id="sectags" hidden>
                         <div class="row rowtag">
-                            <div id="pdfver" hidden>  
+                            <div id="pdfver" hidden class="row">  
                                 <div class="row pdfrow">
                                     <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
                                     <br>                                                   

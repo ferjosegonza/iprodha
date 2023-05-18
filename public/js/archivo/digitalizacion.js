@@ -790,6 +790,9 @@ function mostrarPagina(archivo){
         document.getElementById('pdfguar').hidden = true   //hay que mostrar un pdf
         document.getElementById('pdfver').removeAttribute("hidden")
         cargarPDF();
+        if(tipo == 3){
+            askEliminarPdf()
+        }
     }    
     contadorchar("characla", "claves", 1040); //muestra cuantos caracteres quedan
     //
@@ -859,6 +862,14 @@ function ocultarPagina(){
         let taggeo = document.getElementById('taggeo')
         taggeo.classList.remove('col-lg-8')
         taggeo.classList.add('col-lg-12')      
+    }
+    let span = document.getElementById('spanPdf')
+    while(span.hasChildNodes()){
+        span.removeChild(span.lastChild)
+    }
+    span.hidden = true
+    if(document.getElementById('removePDF') != undefined){
+        document.getElementById('removePDF').remove()
     }
 
 }
@@ -1479,6 +1490,13 @@ function borrar(){
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
     let orden = document.getElementById('orden').value;
+    let askpdf
+    if(document.getElementById('askBorrar').checked){
+        askpdf  = 'on'
+    }
+    else{
+        askpdf = 'off'
+    }
 
     let route = '/archivo/borrar';    
     $.ajaxSetup({
@@ -1497,7 +1515,8 @@ function borrar(){
             doc: doc,
             fecha: fecha,
             orden: orden,
-            pdf: pdf
+            pdf: pdf,
+            askpdf : askpdf
         }),
         //dataType: 'json',
         success: function(res) {
@@ -1639,4 +1658,19 @@ function subirPDF(){
     //
     let modal= document.getElementById('modal')
     bootstrap.Modal.getInstance(modal).hide() 
+}
+
+function askEliminarPdf(){
+    let padre = document.getElementById('pdfver')
+    let checkbox = document.createElement('input')
+    checkbox.type = "checkbox"
+    checkbox.id = 'askBorrar'
+    let lab = document.createElement('label')
+    lab.setAttribute("for", "askBorrar")
+    lab.innerHTML = "Eliminar PDF de los archivos subidos"
+    let div = document.createElement('div')
+    div.id = "removePDF"
+    div.appendChild(checkbox)
+    div.appendChild(lab)
+    padre.appendChild(div)
 }

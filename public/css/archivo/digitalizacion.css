@@ -20,6 +20,7 @@ body{
 .rowtag{
     padding: 8px;
     justify-content: center;
+    align-content: center;
 }
 .rowbot{
     justify-content: center;
@@ -65,4 +66,7 @@ tr:hover{
 .modal.modal-sm { max-width: unset !important; right: 0; }
 #pdfname{
     padding: 15px;
+}
+#removePDF{
+    justify-content: center;
 }

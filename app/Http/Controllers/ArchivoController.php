@@ -288,11 +288,13 @@ public function borrar(Request $request){
     $id = $query->id_archivo;
     $res = Dig_archivos::find($id)->delete();      
 
-    $ruta = substr($query->path_archivo, 14);
-    $name = $query->nombre_archivo;
-    $file_path = public_path().$ruta.$name;
-    unlink($file_path);
-
+    if($request->askpdf == 'on'){
+        $ruta = substr($query->path_archivo, 14);
+        $name = $query->nombre_archivo;
+        $file_path = public_path().$ruta.$name;
+        unlink($file_path);
+    }
+    
     return response()->json($res);        
     
 }
