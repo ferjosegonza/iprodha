@@ -1552,6 +1552,7 @@ function modificar() {
 function guardar(){
     let pdfFile = document.getElementById('pdf')
     let pdf = pdfFile.files[0]
+    let pdfName = document.getElementById('pdfname').innerHTML
     let tipo = document.getElementById('tipo').value
     let subtipo =  document.getElementById('subtipo').value
     let doc = document.getElementById('doc').value
@@ -1561,6 +1562,7 @@ function guardar(){
 
     let dataForm = new FormData();
     dataForm.append('pdf', pdf);
+    dataForm.append('pdfname', pdfName);
     dataForm.append('tipo', tipo);
     dataForm.append('subtipo', subtipo);
     dataForm.append('doc', doc);
@@ -1593,3 +1595,48 @@ function guardar(){
             console.log(res)
     }});
 } 
+
+function modalPdf(){
+    let modalEl = document.getElementById('modal')
+    document.getElementById('modalTitulo').innerHTML = 'Subir PDF'
+    document.getElementById('modalBody').innerHTML = '<label for="pdf">Subir archivo</label>'
+    + '<input type="file" id="pdfModal" accept = "application/pdf" name="pdf">'
+    + '<br> <label for="pdfName">Guardar como: </label> <input type="text" id="pdfName" name="pdfName">'
+    document.getElementById('btnConfirmarAccion').innerHTML = 'Subir PDF'      
+    document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'subirPDF()')  
+    let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
+    modal.show()
+}
+
+function subirPDF(){
+    let pdf = document.getElementById('pdfModal')
+    let clonedpdf = pdf.cloneNode(true);
+    clonedpdf.id = "pdf"
+    clonedpdf.setAttribute('hidden', 'hidden')
+    //
+    let name = document.getElementById('pdfName').value   
+    let lab = document.createElement('label')
+    if(name == '') {
+        lab.innerHTML = pdf.files[0].name
+    }
+    else{        
+        lab.innerHTML = name + '.pdf'        
+    }
+    lab.id = 'pdfname'
+    let placeholder = document.createElement('div')
+    let icon = document.createElement('i')
+    icon.className = 'fas fa-file-alt'
+    placeholder.appendChild(icon)
+    placeholder.appendChild(lab)
+    //
+    let span = document.getElementById('spanPdf')
+    while(span.hasChildNodes()){
+        span.removeChild(span.lastChild)
+    }
+    span.appendChild(clonedpdf)
+    span.appendChild(placeholder)
+    span.removeAttribute('hidden')
+    //
+    let modal= document.getElementById('modal')
+    bootstrap.Modal.getInstance(modal).hide() 
+}

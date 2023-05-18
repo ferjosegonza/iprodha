@@ -111,8 +111,13 @@
                                 </div> 
                             </div>
                             <div id="pdfguar" hidden>
-                                {!! Form::label('Subir archivo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                                {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!}
+                                <h6>Archivo PDF</h6>
+                                <button type='button' class="btn btn-warning" onclick="modalPdf()">Subir PDF</button>
+                                <span hidden id="spanPdf">
+                                </span>
+                                
+                               {{--  {!! Form::label('Subir archivo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                                {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!} --}}
                             </div>                                                
                         </div> 
                         <hr>

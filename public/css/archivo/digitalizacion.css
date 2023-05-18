@@ -63,3 +63,6 @@ tr:hover{
     background-color: rgb(216, 216, 216);
 }
 .modal.modal-sm { max-width: unset !important; right: 0; }
+#pdfname{
+    padding: 15px;
+}

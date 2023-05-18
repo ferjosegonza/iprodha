@@ -324,7 +324,7 @@ public function crear(Request $request){
     //guardar los archivos
     if($request->hasFile('pdf')){
         $file = $request->file('pdf');
-        $fileName = $file->getClientOriginalName(); 
+        $fileName = $request->pdfname;
         $ruta = substr($path->path_archivo, 14);
         //$ruta = 'localhost\public\\' . $ruta;
         //$file->move($ruta, $fileName);
