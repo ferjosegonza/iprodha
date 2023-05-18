@@ -32,7 +32,7 @@
                                 @endforeach                        
                             </select>   
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             {!! Form::label('*Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             <select class="form-select" id="subtipo" name="subtipo" hidden>
                                 <option value="sel" selected>Seleccionar</option>
@@ -48,13 +48,14 @@
                             </select>                 
                             <P id="placeholder">---</P>    
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             {!! Form::label('*Fecha:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             {!! Form::date('fecha', null, [
                                 'min' => '1990-01-01',
                                 'max' => \Carbon\Carbon::now()->year . '-12',
                                 'id' => 'fecha',
                                 'class' => 'form-control']) !!}
+                            <span id="avisofecha" hidden>¡Cuidado! Se excede la fecha de hoy</span>
                         </div>                
                         <div class="col-lg-1 ">
                             {!! Form::label('*Orden:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
@@ -68,7 +69,7 @@
                         </div>
                         <div class="col-lg-8">
                             {!! Form::label('Asunto:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                            {!! Form::textarea('asunto', null, [
+                            {!! Form::text('asunto', null, [
                             'rows' => '10',
                             'class' => 'form-control',
                             'id'    =>  'asunto',

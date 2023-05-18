@@ -96,7 +96,6 @@ function getSubtipoId(){
 
 function modal(tipo){
     let modalEl = document.getElementById('modal')
-    console.log(modalEl)
     if(tipo == 1){
         document.getElementById('modalTitulo').innerHTML = 'Guardar Archivo'
         document.getElementById('modalBody').innerHTML = '<p>¿Está seguro de que desea guardar el archivo</p> <p>No olvide revisar los campos.</p>'
@@ -148,9 +147,6 @@ function existeCheck(){
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
-
-    console.log(tipoId, fecha, doc, subtid)
-
     //CONSULTA AJAX
     let route = '/archivo/check';
     $.ajaxSetup({
@@ -172,7 +168,6 @@ function existeCheck(){
         dataType: 'json',
         success: function(res) 
         {     
-            console.log(res)
             //La operación es válida
             if(res != 'null' && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
             || res == 'null' && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
@@ -245,7 +240,6 @@ function checkArchivos(){
         }),
         dataType: 'json',
         success: function(res){
-            console.log(res)
             let titulo = document.createElement('h5')
             titulo.innerHTML = 'Archivos:'
             let cardhead = document.createElement('div')
@@ -254,8 +248,7 @@ function checkArchivos(){
             archivos.appendChild(cardhead)
             let cardbody = document.createElement('div')
             cardbody.className = 'card-body'
-            archivos.appendChild(cardbody)  
-            console.log(res.length)          
+            archivos.appendChild(cardbody)   
             if(res.length == 0){
                 let p = document.createElement('p')
                 p.innerHTML = 'No se han encontrado archivos que coincidan con los parámetros'
@@ -297,7 +290,6 @@ function checkArchivos(){
 }
 
 function contadorSimple(nombre){
-    //console.log(nombre)
     let contador=0;
     let band=0;
     elementos.forEach(elemento => {
@@ -311,7 +303,6 @@ function contadorSimple(nombre){
         let el = new elemento(nombre);
         elementos.push(el);
     }
-    //console.log(contador)
     return contador;
 }
 
@@ -596,7 +587,6 @@ function recuperarTags(tipo, sub){
 }
 
 function recuperarTagsComplejos(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp){
-    //console.log(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp)
     let route = '/archivo/complejos';
     $.ajaxSetup({
         headers: {
@@ -692,10 +682,8 @@ function cargarTagsSimples(tags){
             }
         }        
     }
-
     //AHORA DEBEMOS RECUPERAR LOS TAGS COMPLEJOS            
     let concat = tagcomplejoOb.concat(tagcomplejoRe,tagcomplejoOp)
-    //console.log(concat)
     recuperarTagsComplejos(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp)
 }
 
@@ -843,7 +831,9 @@ function mostrarPagina(archivo){
     }
 }
 
-function ocultarPagina(){
+function ocultarPagina(){    
+    elementos=[]
+    complejos=[]
     let padre = document.getElementById('comp-obligatorio')
     while(padre.hasChildNodes()){
         padre.removeChild(padre.lastChild)
@@ -875,8 +865,7 @@ function ocultarPagina(){
 }
 
 function insertarInputSimple(divmayor, tag, i){
-    //
-                                  
+    //                                  
     if(tag.dato == 1){//Si el dato es tipeado      
         let cont = contadorSimple(tag.descripcion);                                                                        
         let idinput = crearInputSimple(divmayor, tag.dato_tipo, tag.descripcion, 1, i, cont) 
@@ -962,14 +951,18 @@ function cargarDatosSimples(conta, idinput, tag){
         }
     } 
     let aux=0;
-    //console.log(conta)
     let val=0;
     for(let i=0; i<tags.length; i++){
         if(tags[i] == tag)
         {
             if(conta == aux){
-                document.getElementById(idinput).value = info[i];
-                document.getElementById(idinput).placeholder = info[i];
+                if(document.getElementById(idinput).tagName  == 'SELECT'){
+                //document.getElementById(idinput).value = info[i];
+                   // $('#' + idinput + ' option[value="' + info[i] + '"]').attr('selected','selected');
+                }
+                else{
+                    document.getElementById(idinput).value = info[i];
+                }           
                 val=1;
             }
             else{
@@ -1009,12 +1002,10 @@ function cargarDatosComplejos(conta, idinput1, idinput2, tag1, tag2){
         }
     } 
     let aux=0;  
-    //console.log(conta + ' ' + tag1 + ' ' + tag2)
     let val=0;
     for(let i=0; i<tags.length; i++){ 
         if(tags[i] == tag1 && tags[i+1] == tag2)
         {
-            //console.log(tags[i] + ' y ' + tags[i+1])
             if(conta == aux){
                 document.getElementById(idinput1).value = info[i];
                 document.getElementById(idinput1).placeholder = info[i];
@@ -1059,9 +1050,24 @@ window.addEventListener("DOMContentLoaded", (event) => {
         }   
     }
 
+    const checkFecha = () => {    
+        let today = new Date();
+        let chosen = new Date(fecha.value)
+        let aviso= document.getElementById('avisofecha')
+        if(chosen > today){
+           console.log('error')
+           aviso.removeAttribute('hidden')
+        }    
+        else{
+            console.log('bien')
+            aviso.hidden=true
+        }
+    }
+
     subtipo.addEventListener('change', checkEnableButton);
     tipo.addEventListener('change', checkEnableButton);
     fecha.addEventListener('change', checkEnableButton);
+    fecha.addEventListener('change', checkFecha);
     doc.addEventListener('keyup', checkEnableButton);   
     doc.addEventListener('change', checkEnableButton);   
 
@@ -1193,24 +1199,19 @@ function checkGuardarTag(){
     }
 }
 
-function guardarTag(idinput, tagname, tipo, cont, medida){
-    console.log('TAG: ' + tagname + ' TIPO: ' + tipo + ' CONT: ' + cont + ' MEDIDA: ' + medida)
+function guardarTag(idinput, tagname, tipo, cont, medida){    
     let input
     let taghijo = null
     let claves = document.getElementById('claves')
     let ac=0
-    //console.log(cont)
     if (medida == 2){
         input = document.getElementById('hijo' + idinput).value
         let num = idinput+1
-        //console.log(num)
         taghijo = document.getElementById('label-o-' + num).innerHTML
-        //console.log(taghijo)
     }
     else{
         if(medida == 0){
             input = document.getElementById(idinput).value
-            //console.log(input)
         }
         else{
             if(medida== 4){
@@ -1219,14 +1220,12 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
             else{
                 input = document.getElementById('input' + idinput).value
             }            
-            //console.log(input)
         }
         
     }
 
     if(tipo == 1){                
         if(medida != 2){
-            console.log(tagname)
             if(claves.value.indexOf('<'+tagname+':')!= -1){     
                 let first = -1;
                 let last = -1;
@@ -1287,7 +1286,6 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
         }
         else{
             if(claves.value.indexOf('<'+tagname+':')!= -1 && claves.value.indexOf('<'+taghijo+':')!= -1){ 
-                console.log('Modificando un complejo')
                 let firstP = -1, lastP = -1, comienza = 0, band= 0, guardado = 0
                 for (let i = 0; i<claves.value.length; i++){
                     if(claves.value[i] == '<'){
@@ -1297,7 +1295,6 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
                     }
                     if(comienza == 0){                        
                         for(let j=0; j<tagname.length; j++){
-                            console.log(claves.value[i+j] + ' = ' + tagname[j] + '?')
                             if(claves.value[i+j] != tagname[j]){
                                 band=1;
                             }
@@ -1305,28 +1302,22 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
                         comienza = 1
                         if(band == 0){                            
                             firstP = i-1; 
-                            console.log('Se encontro el tag padre, posición: ' + firstP)
                         }              
                     }
                     if(claves.value[i] == '>'){
                         if(comienza == 1 && band == 0){
                             lastP = i;
                             comienza = 2
-                            console.log('Tag padre termina en la posición: ' + lastP)
-                            console.log('Evaluando tag siguiente:')
                             let j = 0
-                            for(let k=lastP+2; k<(lastP+2+taghijo.length); k++){                            
-                                console.log(claves.value[k] + ' = ' + taghijo[j] + '?aaa')
+                            for(let k=lastP+2; k<(lastP+2+taghijo.length); k++){                   
                                 if(claves.value[k] != taghijo[j]){
                                     band=1;
-                                    console.log('No')
                                     break
                                 }
                                 j++;
                             }                            
                         }
                         if(comienza == 2 && band == 0){
-                            console.log('Si' + ac + ' = ' + cont + '?')
                             if(ac == cont){
                                 guardado = 1  
                                 break
@@ -1370,11 +1361,12 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
 }
 
 function contadorchar(label, input, max){
-    let lab = document.getElementById(label);
+    let lab = document.getElementById(label)
     let inp = document.getElementById(input)
     if (inp.value.length > max){
-        lab.innerHTML = "No quedan caracteres"
-        return false;
+        lab.innerHTML = "No quedan caracteres"            
+        inp.value = inp.value.slice(0, max)
+        return false;    
     }    
     else{
         lab.innerHTML = "Quedan " + (max - inp.value.length) + " caracteres"
@@ -1520,7 +1512,6 @@ function borrar(){
         }),
         //dataType: 'json',
         success: function(res) {
-            console.log(res)
             popup(3, res)
         },
         error: function(res){
@@ -1560,7 +1551,6 @@ function modificar() {
         }),
         dataType: 'json',
         success: function(res) {
-            console.log(res)
             popup(2, res)
         },
         error: function(res){
@@ -1588,9 +1578,6 @@ function guardar(){
     dataForm.append('fecha', fecha);
     dataForm.append('claves', claves);
     dataForm.append('orden', orden);
-
-    //
-    console.log(dataForm.get("pdf"))
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
@@ -1607,7 +1594,6 @@ function guardar(){
         contentType: false,
         //dataType: 'json',
         success: function(res) {
-            console.log(res)
             popup(1, res)
         },
         error: function(res){
