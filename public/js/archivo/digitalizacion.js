@@ -1446,6 +1446,7 @@ function getSelects(padre, id){
 }
 
 function popup(tipo, estado){  
+    console.log(tipo, estado)
     let popEl = document.getElementById('popup')
     if(estado){
         document.getElementById('popTitulo').innerHTML = 'Éxito'
@@ -1515,7 +1516,7 @@ function borrar(){
             popup(3, res)
         },
         error: function(res){
-            popup(3, 2)
+            popup(3, false)
     }});
 }
 
@@ -1554,7 +1555,7 @@ function modificar() {
             popup(2, res)
         },
         error: function(res){
-            popup(2, 2)
+            popup(2, false)
     }});
 }
 
@@ -1597,7 +1598,7 @@ function guardar(){
             popup(1, res)
         },
         error: function(res){
-            popup(1, 2)
+            popup(1, false)
     }});
 } 
 
