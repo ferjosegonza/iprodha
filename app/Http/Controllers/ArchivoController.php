@@ -288,11 +288,13 @@ public function borrar(Request $request){
     $id = $query->id_archivo;
     $res = Dig_archivos::find($id)->delete();      
 
-    $ruta = substr($query->path_archivo, 14);
-    $name = $query->nombre_archivo;
-    $file_path = public_path().$ruta.$name;
-    unlink($file_path);
-
+    if($request->askpdf == 'on'){
+        $ruta = substr($query->path_archivo, 14);
+        $name = $query->nombre_archivo;
+        $file_path = public_path().$ruta.$name;
+        unlink($file_path);
+    }
+    
     return response()->json($res);        
     
 }
@@ -324,7 +326,7 @@ public function crear(Request $request){
     //guardar los archivos
     if($request->hasFile('pdf')){
         $file = $request->file('pdf');
-        $fileName = $file->getClientOriginalName(); 
+        $fileName = $request->pdfname;
         $ruta = substr($path->path_archivo, 14);
         //$ruta = 'localhost\public\\' . $ruta;
         //$file->move($ruta, $fileName);

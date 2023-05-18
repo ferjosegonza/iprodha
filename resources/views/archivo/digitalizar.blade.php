@@ -32,7 +32,7 @@
                                 @endforeach                        
                             </select>   
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             {!! Form::label('*Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             <select class="form-select" id="subtipo" name="subtipo" hidden>
                                 <option value="sel" selected>Seleccionar</option>
@@ -48,13 +48,14 @@
                             </select>                 
                             <P id="placeholder">---</P>    
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             {!! Form::label('*Fecha:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             {!! Form::date('fecha', null, [
                                 'min' => '1990-01-01',
                                 'max' => \Carbon\Carbon::now()->year . '-12',
                                 'id' => 'fecha',
                                 'class' => 'form-control']) !!}
+                            <span id="avisofecha" hidden>¡Cuidado! Se excede la fecha de hoy</span>
                         </div>                
                         <div class="col-lg-1 ">
                             {!! Form::label('*Orden:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
@@ -68,7 +69,7 @@
                         </div>
                         <div class="col-lg-8">
                             {!! Form::label('Asunto:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                            {!! Form::textarea('asunto', null, [
+                            {!! Form::text('asunto', null, [
                             'rows' => '10',
                             'class' => 'form-control',
                             'id'    =>  'asunto',
@@ -98,7 +99,7 @@
                     <hr>
                     <div id="sectags" hidden>
                         <div class="row rowtag">
-                            <div id="pdfver" hidden>  
+                            <div id="pdfver" hidden class="row">  
                                 <div class="row pdfrow">
                                     <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
                                     <br>                                                   
@@ -111,8 +112,13 @@
                                 </div> 
                             </div>
                             <div id="pdfguar" hidden>
-                                {!! Form::label('Subir archivo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                                {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!}
+                                <h6>Archivo PDF</h6>
+                                <button type='button' class="btn btn-warning" onclick="modalPdf()">Subir PDF</button>
+                                <span hidden id="spanPdf">
+                                </span>
+                                
+                               {{--  {!! Form::label('Subir archivo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                                {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!} --}}
                             </div>                                                
                         </div> 
                         <hr>

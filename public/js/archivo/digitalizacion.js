@@ -96,7 +96,6 @@ function getSubtipoId(){
 
 function modal(tipo){
     let modalEl = document.getElementById('modal')
-    console.log(modalEl)
     if(tipo == 1){
         document.getElementById('modalTitulo').innerHTML = 'Guardar Archivo'
         document.getElementById('modalBody').innerHTML = '<p>¿Está seguro de que desea guardar el archivo</p> <p>No olvide revisar los campos.</p>'
@@ -148,9 +147,6 @@ function existeCheck(){
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
-
-    console.log(tipoId, fecha, doc, subtid)
-
     //CONSULTA AJAX
     let route = '/archivo/check';
     $.ajaxSetup({
@@ -172,7 +168,6 @@ function existeCheck(){
         dataType: 'json',
         success: function(res) 
         {     
-            console.log(res)
             //La operación es válida
             if(res != 'null' && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
             || res == 'null' && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
@@ -245,7 +240,6 @@ function checkArchivos(){
         }),
         dataType: 'json',
         success: function(res){
-            console.log(res)
             let titulo = document.createElement('h5')
             titulo.innerHTML = 'Archivos:'
             let cardhead = document.createElement('div')
@@ -254,8 +248,7 @@ function checkArchivos(){
             archivos.appendChild(cardhead)
             let cardbody = document.createElement('div')
             cardbody.className = 'card-body'
-            archivos.appendChild(cardbody)  
-            console.log(res.length)          
+            archivos.appendChild(cardbody)   
             if(res.length == 0){
                 let p = document.createElement('p')
                 p.innerHTML = 'No se han encontrado archivos que coincidan con los parámetros'
@@ -297,7 +290,6 @@ function checkArchivos(){
 }
 
 function contadorSimple(nombre){
-    //console.log(nombre)
     let contador=0;
     let band=0;
     elementos.forEach(elemento => {
@@ -311,7 +303,6 @@ function contadorSimple(nombre){
         let el = new elemento(nombre);
         elementos.push(el);
     }
-    //console.log(contador)
     return contador;
 }
 
@@ -596,7 +587,6 @@ function recuperarTags(tipo, sub){
 }
 
 function recuperarTagsComplejos(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp){
-    //console.log(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp)
     let route = '/archivo/complejos';
     $.ajaxSetup({
         headers: {
@@ -692,10 +682,8 @@ function cargarTagsSimples(tags){
             }
         }        
     }
-
     //AHORA DEBEMOS RECUPERAR LOS TAGS COMPLEJOS            
     let concat = tagcomplejoOb.concat(tagcomplejoRe,tagcomplejoOp)
-    //console.log(concat)
     recuperarTagsComplejos(concat, tagcomplejoOb, tagcomplejoRe, tagcomplejoOp)
 }
 
@@ -790,6 +778,9 @@ function mostrarPagina(archivo){
         document.getElementById('pdfguar').hidden = true   //hay que mostrar un pdf
         document.getElementById('pdfver').removeAttribute("hidden")
         cargarPDF();
+        if(tipo == 3){
+            askEliminarPdf()
+        }
     }    
     contadorchar("characla", "claves", 1040); //muestra cuantos caracteres quedan
     //
@@ -840,7 +831,9 @@ function mostrarPagina(archivo){
     }
 }
 
-function ocultarPagina(){
+function ocultarPagina(){    
+    elementos=[]
+    complejos=[]
     let padre = document.getElementById('comp-obligatorio')
     while(padre.hasChildNodes()){
         padre.removeChild(padre.lastChild)
@@ -860,12 +853,19 @@ function ocultarPagina(){
         taggeo.classList.remove('col-lg-8')
         taggeo.classList.add('col-lg-12')      
     }
+    let span = document.getElementById('spanPdf')
+    while(span.hasChildNodes()){
+        span.removeChild(span.lastChild)
+    }
+    span.hidden = true
+    if(document.getElementById('removePDF') != undefined){
+        document.getElementById('removePDF').remove()
+    }
 
 }
 
 function insertarInputSimple(divmayor, tag, i){
-    //
-                                  
+    //                                  
     if(tag.dato == 1){//Si el dato es tipeado      
         let cont = contadorSimple(tag.descripcion);                                                                        
         let idinput = crearInputSimple(divmayor, tag.dato_tipo, tag.descripcion, 1, i, cont) 
@@ -951,14 +951,18 @@ function cargarDatosSimples(conta, idinput, tag){
         }
     } 
     let aux=0;
-    //console.log(conta)
     let val=0;
     for(let i=0; i<tags.length; i++){
         if(tags[i] == tag)
         {
             if(conta == aux){
-                document.getElementById(idinput).value = info[i];
-                document.getElementById(idinput).placeholder = info[i];
+                if(document.getElementById(idinput).tagName  == 'SELECT'){
+                //document.getElementById(idinput).value = info[i];
+                   // $('#' + idinput + ' option[value="' + info[i] + '"]').attr('selected','selected');
+                }
+                else{
+                    document.getElementById(idinput).value = info[i];
+                }           
                 val=1;
             }
             else{
@@ -998,12 +1002,10 @@ function cargarDatosComplejos(conta, idinput1, idinput2, tag1, tag2){
         }
     } 
     let aux=0;  
-    //console.log(conta + ' ' + tag1 + ' ' + tag2)
     let val=0;
     for(let i=0; i<tags.length; i++){ 
         if(tags[i] == tag1 && tags[i+1] == tag2)
         {
-            //console.log(tags[i] + ' y ' + tags[i+1])
             if(conta == aux){
                 document.getElementById(idinput1).value = info[i];
                 document.getElementById(idinput1).placeholder = info[i];
@@ -1048,9 +1050,24 @@ window.addEventListener("DOMContentLoaded", (event) => {
         }   
     }
 
+    const checkFecha = () => {    
+        let today = new Date();
+        let chosen = new Date(fecha.value)
+        let aviso= document.getElementById('avisofecha')
+        if(chosen > today){
+           console.log('error')
+           aviso.removeAttribute('hidden')
+        }    
+        else{
+            console.log('bien')
+            aviso.hidden=true
+        }
+    }
+
     subtipo.addEventListener('change', checkEnableButton);
     tipo.addEventListener('change', checkEnableButton);
     fecha.addEventListener('change', checkEnableButton);
+    fecha.addEventListener('change', checkFecha);
     doc.addEventListener('keyup', checkEnableButton);   
     doc.addEventListener('change', checkEnableButton);   
 
@@ -1182,24 +1199,19 @@ function checkGuardarTag(){
     }
 }
 
-function guardarTag(idinput, tagname, tipo, cont, medida){
-    console.log('TAG: ' + tagname + ' TIPO: ' + tipo + ' CONT: ' + cont + ' MEDIDA: ' + medida)
+function guardarTag(idinput, tagname, tipo, cont, medida){    
     let input
     let taghijo = null
     let claves = document.getElementById('claves')
     let ac=0
-    //console.log(cont)
     if (medida == 2){
         input = document.getElementById('hijo' + idinput).value
         let num = idinput+1
-        //console.log(num)
         taghijo = document.getElementById('label-o-' + num).innerHTML
-        //console.log(taghijo)
     }
     else{
         if(medida == 0){
             input = document.getElementById(idinput).value
-            //console.log(input)
         }
         else{
             if(medida== 4){
@@ -1208,14 +1220,12 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
             else{
                 input = document.getElementById('input' + idinput).value
             }            
-            //console.log(input)
         }
         
     }
 
     if(tipo == 1){                
         if(medida != 2){
-            console.log(tagname)
             if(claves.value.indexOf('<'+tagname+':')!= -1){     
                 let first = -1;
                 let last = -1;
@@ -1276,7 +1286,6 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
         }
         else{
             if(claves.value.indexOf('<'+tagname+':')!= -1 && claves.value.indexOf('<'+taghijo+':')!= -1){ 
-                console.log('Modificando un complejo')
                 let firstP = -1, lastP = -1, comienza = 0, band= 0, guardado = 0
                 for (let i = 0; i<claves.value.length; i++){
                     if(claves.value[i] == '<'){
@@ -1286,7 +1295,6 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
                     }
                     if(comienza == 0){                        
                         for(let j=0; j<tagname.length; j++){
-                            console.log(claves.value[i+j] + ' = ' + tagname[j] + '?')
                             if(claves.value[i+j] != tagname[j]){
                                 band=1;
                             }
@@ -1294,28 +1302,22 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
                         comienza = 1
                         if(band == 0){                            
                             firstP = i-1; 
-                            console.log('Se encontro el tag padre, posición: ' + firstP)
                         }              
                     }
                     if(claves.value[i] == '>'){
                         if(comienza == 1 && band == 0){
                             lastP = i;
                             comienza = 2
-                            console.log('Tag padre termina en la posición: ' + lastP)
-                            console.log('Evaluando tag siguiente:')
                             let j = 0
-                            for(let k=lastP+2; k<(lastP+2+taghijo.length); k++){                            
-                                console.log(claves.value[k] + ' = ' + taghijo[j] + '?aaa')
+                            for(let k=lastP+2; k<(lastP+2+taghijo.length); k++){                   
                                 if(claves.value[k] != taghijo[j]){
                                     band=1;
-                                    console.log('No')
                                     break
                                 }
                                 j++;
                             }                            
                         }
                         if(comienza == 2 && band == 0){
-                            console.log('Si' + ac + ' = ' + cont + '?')
                             if(ac == cont){
                                 guardado = 1  
                                 break
@@ -1359,11 +1361,12 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
 }
 
 function contadorchar(label, input, max){
-    let lab = document.getElementById(label);
+    let lab = document.getElementById(label)
     let inp = document.getElementById(input)
     if (inp.value.length > max){
-        lab.innerHTML = "No quedan caracteres"
-        return false;
+        lab.innerHTML = "No quedan caracteres"            
+        inp.value = inp.value.slice(0, max)
+        return false;    
     }    
     else{
         lab.innerHTML = "Quedan " + (max - inp.value.length) + " caracteres"
@@ -1479,6 +1482,13 @@ function borrar(){
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
     let orden = document.getElementById('orden').value;
+    let askpdf
+    if(document.getElementById('askBorrar').checked){
+        askpdf  = 'on'
+    }
+    else{
+        askpdf = 'off'
+    }
 
     let route = '/archivo/borrar';    
     $.ajaxSetup({
@@ -1497,11 +1507,11 @@ function borrar(){
             doc: doc,
             fecha: fecha,
             orden: orden,
-            pdf: pdf
+            pdf: pdf,
+            askpdf : askpdf
         }),
         //dataType: 'json',
         success: function(res) {
-            console.log(res)
             popup(3, res)
         },
         error: function(res){
@@ -1541,7 +1551,6 @@ function modificar() {
         }),
         dataType: 'json',
         success: function(res) {
-            console.log(res)
             popup(2, res)
         },
         error: function(res){
@@ -1552,6 +1561,7 @@ function modificar() {
 function guardar(){
     let pdfFile = document.getElementById('pdf')
     let pdf = pdfFile.files[0]
+    let pdfName = document.getElementById('pdfname').innerHTML
     let tipo = document.getElementById('tipo').value
     let subtipo =  document.getElementById('subtipo').value
     let doc = document.getElementById('doc').value
@@ -1561,15 +1571,13 @@ function guardar(){
 
     let dataForm = new FormData();
     dataForm.append('pdf', pdf);
+    dataForm.append('pdfname', pdfName);
     dataForm.append('tipo', tipo);
     dataForm.append('subtipo', subtipo);
     dataForm.append('doc', doc);
     dataForm.append('fecha', fecha);
     dataForm.append('claves', claves);
     dataForm.append('orden', orden);
-
-    //
-    console.log(dataForm.get("pdf"))
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
@@ -1586,10 +1594,69 @@ function guardar(){
         contentType: false,
         //dataType: 'json',
         success: function(res) {
-            console.log(res)
             popup(1, res)
         },
         error: function(res){
             console.log(res)
     }});
 } 
+
+function modalPdf(){
+    let modalEl = document.getElementById('modal')
+    document.getElementById('modalTitulo').innerHTML = 'Subir PDF'
+    document.getElementById('modalBody').innerHTML = '<label for="pdf">Subir archivo</label>'
+    + '<input type="file" id="pdfModal" accept = "application/pdf" name="pdf">'
+    + '<br> <label for="pdfName">Guardar como: </label> <input type="text" id="pdfName" name="pdfName">'
+    document.getElementById('btnConfirmarAccion').innerHTML = 'Subir PDF'      
+    document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'subirPDF()')  
+    let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
+    modal.show()
+}
+
+function subirPDF(){
+    let pdf = document.getElementById('pdfModal')
+    let clonedpdf = pdf.cloneNode(true);
+    clonedpdf.id = "pdf"
+    clonedpdf.setAttribute('hidden', 'hidden')
+    //
+    let name = document.getElementById('pdfName').value   
+    let lab = document.createElement('label')
+    if(name == '') {
+        lab.innerHTML = pdf.files[0].name
+    }
+    else{        
+        lab.innerHTML = name + '.pdf'        
+    }
+    lab.id = 'pdfname'
+    let placeholder = document.createElement('div')
+    let icon = document.createElement('i')
+    icon.className = 'fas fa-file-alt'
+    placeholder.appendChild(icon)
+    placeholder.appendChild(lab)
+    //
+    let span = document.getElementById('spanPdf')
+    while(span.hasChildNodes()){
+        span.removeChild(span.lastChild)
+    }
+    span.appendChild(clonedpdf)
+    span.appendChild(placeholder)
+    span.removeAttribute('hidden')
+    //
+    let modal= document.getElementById('modal')
+    bootstrap.Modal.getInstance(modal).hide() 
+}
+
+function askEliminarPdf(){
+    let padre = document.getElementById('pdfver')
+    let checkbox = document.createElement('input')
+    checkbox.type = "checkbox"
+    checkbox.id = 'askBorrar'
+    let lab = document.createElement('label')
+    lab.setAttribute("for", "askBorrar")
+    lab.innerHTML = "Eliminar PDF de los archivos subidos"
+    let div = document.createElement('div')
+    div.id = "removePDF"
+    div.appendChild(checkbox)
+    div.appendChild(lab)
+    padre.appendChild(div)
+}
