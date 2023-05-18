@@ -1515,7 +1515,7 @@ function borrar(){
             popup(3, res)
         },
         error: function(res){
-            console.log(res)
+            popup(3, 2)
     }});
 }
 
@@ -1554,7 +1554,7 @@ function modificar() {
             popup(2, res)
         },
         error: function(res){
-            console.log(res)
+            popup(2, 2)
     }});
 }
 
@@ -1597,7 +1597,7 @@ function guardar(){
             popup(1, res)
         },
         error: function(res){
-            console.log(res)
+            popup(1, 2)
     }});
 } 
 
