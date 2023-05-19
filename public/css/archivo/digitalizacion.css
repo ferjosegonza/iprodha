@@ -1,9 +1,10 @@
 body{
     align-content: center;
 }
-#taggeo{
+#taggeo {
     padding: 15px;
-    margin-right: 3%;
+    margin-left: -2px;
+    margin-right: 7px;
 }
 #preview{
     padding: 15px;
@@ -52,9 +53,6 @@ body{
 .pdfrow{
     height: 250px;
 }
-#archivos{
-    padding: 15px 5px 5px 15px;
-}
 td{
     border: 1px solid gray;
     border-radius: 2px;
@@ -72,4 +70,47 @@ tr:hover{
 }
 #avisofecha{
     color: rgb(202, 136, 37);
+}
+#btnsubirpdf{
+    width: 100px;
+    height: 40px;
+}
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index:100;
+}
+.asideP{
+    padding-top: 15px !important;
+    padding-right: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 15px !important;
+    margin-right: -15px;
+}
+.main-content{
+    padding-right: 0px !important;
+}
+#padre {
+    width: 100%;
+}
+.padre-pdf-sticky-v{
+    height: 33%;   
+}
+.padre-pdf-sticky-h{
+    height: 100%;   
+}
+.pdf-sticky-h{
+    height: 100%;  
+}
+.pdf-sticky-v{
+    height: 95%;
+    padding-top: 10px;
+    width: 100%;
+}
+td:hover{
+    background-color: darkgray;
+}
+.asideH{
+    height: 250px;
 }

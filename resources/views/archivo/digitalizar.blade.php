@@ -112,13 +112,20 @@
                                 </div> 
                             </div>
                             <div id="pdfguar" hidden>
-                                <h6>Archivo PDF</h6>
-                                <button type='button' class="btn btn-warning" onclick="modalPdf()">Subir PDF</button>
-                                <span hidden id="spanPdf">
-                                </span>
-                                
-                               {{--  {!! Form::label('Subir archivo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                                {!! Form::file('pdf', ['accept' => 'application/pdf', 'id'=>'pdf'])!!} --}}
+                                <h6 >Archivo PDF</h6>
+                                <button type='button' class="btn btn-warning" onclick="modalPdf()" id="btnsubirpdf">Subir PDF</button>
+                                <span hidden id="spanPdf"></span>
+                                <div id="previewpdf" hidden>                                      
+                                    <table id="radio-pdf">
+                                        <td><a onclick="cambiarDireccionPDF('N')"><i class="fas fa-ban"></i></a></td>
+                                        <td><a onclick="cambiarDireccionPDF('V')"><i class="fas fa-file-alt"></i></a></td>
+                                        <td><a onclick="cambiarDireccionPDF('H')"><i class="fas fa-pager"></i></a></td>
+                                    </table>
+                                    <embed id="embedpdf" 
+                                    src=""
+                                    width="100%"
+                                    height="400">
+                                </div>
                             </div>                                                
                         </div> 
                         <hr>

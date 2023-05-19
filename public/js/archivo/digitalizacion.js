@@ -202,6 +202,7 @@ function checkArchivos(){
         archivos = document.createElement('aside')
         archivos.classList.add('col-lg-3')
         archivos.classList.add('card')
+        archivos.classList.add('.asideP')
         archivos.id = 'archivos'
     }
     else{
@@ -1026,14 +1027,14 @@ function cargarDatosComplejos(conta, idinput1, idinput2, tag1, tag2){
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
-    const tipo = document.getElementById('tipo');
-    const subtipo = document.getElementById('subtipo');
-    const fecha = document.getElementById('fecha');
-    const doc = document.getElementById('doc');
+    const tipo = document.getElementById('tipo')
+    const subtipo = document.getElementById('subtipo')
+    const fecha = document.getElementById('fecha')
+    const doc = document.getElementById('doc')
 
-    const borrarBtn = document.getElementById('borrar');
-    const modificarBtn = document.getElementById('modificar');
-    const guardarBtn = document.getElementById('guardar');
+    const borrarBtn = document.getElementById('borrar')
+    const modificarBtn = document.getElementById('modificar')
+    const guardarBtn = document.getElementById('guardar')
 
     const checkEnableButton = () => {    
         if(tipo.value!='sel' && subtipo.value!='sel' && doc.value!= ''){
@@ -1064,13 +1065,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
         }
     }
 
-    subtipo.addEventListener('change', checkEnableButton);
-    tipo.addEventListener('change', checkEnableButton);
-    fecha.addEventListener('change', checkEnableButton);
-    fecha.addEventListener('change', checkFecha);
-    doc.addEventListener('keyup', checkEnableButton);   
-    doc.addEventListener('change', checkEnableButton);   
-
+    subtipo.addEventListener('change', checkEnableButton)
+    tipo.addEventListener('change', checkEnableButton)
+    fecha.addEventListener('change', checkEnableButton)
+    fecha.addEventListener('change', checkFecha)
+    doc.addEventListener('keyup', checkEnableButton)  
+    doc.addEventListener('change', checkEnableButton)   
     
 
     
@@ -1605,7 +1605,7 @@ function guardar(){
 function modalPdf(){
     let modalEl = document.getElementById('modal')
     document.getElementById('modalTitulo').innerHTML = 'Subir PDF'
-    document.getElementById('modalBody').innerHTML = '<label for="pdf">Subir archivo</label>'
+    document.getElementById('modalBody').innerHTML = '<label for="pdf">Subir archivo: </label>'
     + '<input type="file" id="pdfModal" accept = "application/pdf" name="pdf">'
     + '<br> <label for="pdfName">Guardar como: </label> <input type="text" id="pdfName" name="pdfName">'
     document.getElementById('btnConfirmarAccion').innerHTML = 'Subir PDF'      
@@ -1645,6 +1645,10 @@ function subirPDF(){
     //
     let modal= document.getElementById('modal')
     bootstrap.Modal.getInstance(modal).hide() 
+    //
+    src= URL.createObjectURL(pdf.files[0])
+    document.getElementById('embedpdf').setAttribute('src', src)
+    document.getElementById('previewpdf').removeAttribute('hidden')
 }
 
 function askEliminarPdf(){
@@ -1660,4 +1664,72 @@ function askEliminarPdf(){
     div.appendChild(checkbox)
     div.appendChild(lab)
     padre.appendChild(div)
+}
+
+function cambiarDireccionPDF(modo){
+    let padre = document.getElementById('padre')
+    let taggeo = document.getElementById('taggeo')       
+    let stick = document.getElementById('previewpdf')
+    let btn = document.getElementById('radio-pdf')
+    
+    let aside = document.getElementById('aside-pdf')
+        if(aside != undefined){
+            while(aside.hasChildNodes()){
+                aside.removeChild(aside.lastChild)
+            }
+            aside.remove() 
+        }
+
+    if(modo == 'N'){
+        taggeo.classList.remove('col-lg-7')
+        taggeo.classList.add('col-lg-12')
+        stick.removeAttribute('hidden')           
+        stick.prepend(btn)    
+    }
+    else if(modo == 'V'){        
+        taggeo.classList.remove('col-lg-12')
+        taggeo.classList.add('col-lg-7')
+        aside = document.createElement('aside')
+        aside.classList.add('col-lg-5')
+        aside.classList.add('card')
+        aside.classList.add('asideP')
+        aside.id = 'aside-pdf'
+        div = document.createElement('div')
+        div.append(btn)            
+        stick.hidden = true
+        let pdf = document.createElement('embed')
+        let pdfM = document.getElementById('pdfModal')
+        pdf.src = URL.createObjectURL(pdfM.files[0])
+        div.classList.add('sticky')
+        div.classList.add('padre-pdf-sticky-v')
+        pdf.classList.add('pdf-sticky-v')
+        div.appendChild(pdf)
+        aside.appendChild(div)
+        padre.appendChild(aside)
+    }
+    else if(modo == 'H'){
+        taggeo.classList.add('col-lg-12')
+        taggeo.classList.remove('col-lg-7')
+        aside = document.createElement('aside')
+        aside.classList.add('col-lg-12')
+        aside.classList.add('card')
+        aside.id = 'aside-pdf'        
+        div = document.createElement('div')
+        aside.append(btn)            
+        stick.hidden = true
+        let pdf = document.createElement('embed')
+        let pdfM = document.getElementById('pdfModal')
+        pdf.src = URL.createObjectURL(pdfM.files[0])
+        aside.classList.add('sticky')
+        div.classList.add('sticky')
+        div.classList.add('row')
+        //div.classList.add('padre-pdf-sticky-v')
+        div.classList.add('padre-pdf-sticky-h')
+        div.appendChild(pdf)
+        aside.appendChild(div)  
+        pdf.classList.add('pdf-sticky-h')
+        aside.classList.add('asideH')
+        padre.prepend(aside)
+        //appendChild(aside)
+    }
 }
