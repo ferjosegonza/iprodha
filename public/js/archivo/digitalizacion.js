@@ -1625,7 +1625,7 @@ function guardar(){
             popup(1, res)
         },
         error: function(res){
-            console.log(res)
+            console.log(res.responseText)
             popup(1, false)
     }});
 } 
