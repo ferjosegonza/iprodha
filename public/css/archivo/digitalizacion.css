@@ -85,7 +85,7 @@ tr:hover{
     padding-top: 15px !important;
     padding-right: 5px !important;
     padding-bottom: 5px !important;
-    padding-left: 15px !important;
+    padding-left: 5px !important;
     margin-right: -15px;
 }
 .main-content{
@@ -95,7 +95,7 @@ tr:hover{
     width: 100%;
 }
 .padre-pdf-sticky-v{
-    height: 33%;   
+    height: 30%;   
 }
 .padre-pdf-sticky-h{
     height: 100%;   
@@ -104,7 +104,7 @@ tr:hover{
     height: 100%;  
 }
 .pdf-sticky-v{
-    height: 95%;
+    height: 550px;
     padding-top: 10px;
     width: 100%;
 }
@@ -113,4 +113,15 @@ td:hover{
 }
 .asideH{
     height: 250px;
+}
+.asideV{
+    padding-top: 15px !important;
+    padding-right: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 5px !important;
+    margin-right: -15px;
+    height: 605px;
+}
+.card .card-header, .card .card-body, .card .card-footer{
+    padding: 5px 5px;
 }

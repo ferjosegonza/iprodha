@@ -96,26 +96,17 @@
                             <label class="btn btn-outline-danger btn-block" for="borrar">Borrar</label>    
                         </div>                        
                     </div>
-                    <hr>
+                    
                     <div id="sectags" hidden>
                         <div class="row rowtag">
-                            <div id="pdfver" hidden class="row">  
-                                <div class="row pdfrow">
-                                    <label for="pdfver" id='labelpdf'>PDF Actual:</label>             
-                                    <br>                                                   
-                                    <object id="pdfverpdf" data=" " type="application/pdf" height="100%" width="100%"></object>
-                                </div>       
-                                <div class="row" style="margin-top: 40px">
-                                    <br>
-                                    <a href="" id="linkpdf">Ver más</a>     
-                                    <br>                                    
-                                </div> 
-                            </div>
-                            <div id="pdfguar" hidden>
+                            <div id="sec-pdf" hidden>
+                                <hr>
                                 <h6 >Archivo PDF</h6>
-                                <button type='button' class="btn btn-warning" onclick="modalPdf()" id="btnsubirpdf">Subir PDF</button>
-                                <span hidden id="spanPdf"></span>
-                                <div id="previewpdf" hidden>                                      
+                                <div id="pdfguar" > 
+                                    <button type='button' class="btn btn-warning" onclick="modalPdf()" id="btnsubirpdf">Subir PDF</button>
+                                </div>                                
+                                <div id="previewpdf" hidden>    
+                                    <span hidden id="spanPdf"></span>                                  
                                     <table id="radio-pdf">
                                         <td><a onclick="cambiarDireccionPDF('N')"><i class="fas fa-ban"></i></a></td>
                                         <td><a onclick="cambiarDireccionPDF('V')"><i class="fas fa-file-alt"></i></a></td>
@@ -128,7 +119,7 @@
                                 </div>
                             </div>                                                
                         </div> 
-                        <hr>
+                        <hr>                        
                         <h5>Claves</h5>
                         <hr>
                         <div id="showtags">
