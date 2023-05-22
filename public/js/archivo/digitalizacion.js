@@ -1542,6 +1542,7 @@ function borrar(){
             popup(3, res)
         },
         error: function(res){
+            console.log(res)
             popup(3, false)
     }});
 }
@@ -1624,6 +1625,7 @@ function guardar(){
             popup(1, res)
         },
         error: function(res){
+            console.log(res)
             popup(1, false)
     }});
 } 
