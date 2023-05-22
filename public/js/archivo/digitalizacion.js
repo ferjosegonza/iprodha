@@ -202,7 +202,7 @@ function checkArchivos(){
         archivos = document.createElement('aside')
         archivos.classList.add('col-lg-3')
         archivos.classList.add('card')
-        archivos.classList.add('.asideP')
+        archivos.classList.add('asideP')
         archivos.id = 'archivos'
     }
     else{
@@ -213,7 +213,7 @@ function checkArchivos(){
     }
     let taggeo = document.getElementById('taggeo')
     taggeo.classList.remove('col-lg-12')
-    taggeo.classList.add('col-lg-8')
+    taggeo.classList.add('col-lg-9')
     padre.appendChild(archivos)
     //
     let tipo=document.getElementById('tipo').value
@@ -270,15 +270,11 @@ function checkArchivos(){
                     tr.appendChild(td1)
                     let td2 = document.createElement('td')
                     td2.innerHTML = res[i].nombre_archivo                
-                    tr.appendChild(td2)        
-                    /* let td3 = document.createElement('td')
-                    td3.innerHTML = res[i]         
-                    td3.hidden = true
-                    tr.appendChild(td3)    */     
+                    tr.appendChild(td2)            
                     tr.onclick = function (){
                         document.getElementById('archivos').remove()
                         let taggeo = document.getElementById('taggeo')
-                        taggeo.classList.remove('col-lg-8')
+                        taggeo.classList.remove('col-lg-9')
                         taggeo.classList.add('col-lg-12')
                         mostrarPagina(res[i])
                     }
@@ -519,8 +515,27 @@ function derivado(id, idtag){
 
 function cargarPDF(path, nombre){
     let ruta = path + nombre
-    document.getElementById('linkpdf').setAttribute('href', ruta)
-    document.getElementById('pdfverpdf').setAttribute('data', ruta)    
+    document.getElementById('embedpdf').setAttribute('src', ruta)
+    let lab = document.createElement('label')
+    lab.id = 'pdfname'
+    lab.innerHTML = nombre
+    let labpath = document.createElement('label')
+    labpath.innerHTML = path
+    labpath.id = 'pdfpath'
+    labpath.hidden = true
+    let placeholder = document.createElement('div')
+    let icon = document.createElement('i')
+    icon.className = 'fas fa-file-alt'
+    placeholder.appendChild(icon)
+    placeholder.appendChild(lab)
+    placeholder.appendChild(labpath)
+    //
+    let span = document.getElementById('spanPdf')
+    while(span.hasChildNodes()){
+        span.removeChild(span.lastChild)
+    }
+    span.appendChild(placeholder)
+    span.removeAttribute('hidden')
 }
 
 function cargarClaves(claves_archivo){
@@ -771,14 +786,16 @@ function mostrarPagina(archivo){
     claves = document.getElementById('claves');
     claves.value = '';
     if(tipo==1){
-        document.getElementById('pdfguar').removeAttribute("hidden") //habilitar subir un pdf
-        document.getElementById('pdfver').hidden=true  //no existe algo a mostrar
+        document.getElementById('sec-pdf').removeAttribute("hidden")
+        document.getElementById('pdfguar').removeAttribute("hidden") 
+        document.getElementById('previewpdf').hidden=true 
     }
     else{
         cargarClaves(archivo.claves_archivo)
+        document.getElementById('sec-pdf').removeAttribute("hidden")
         document.getElementById('pdfguar').hidden = true   //hay que mostrar un pdf
-        document.getElementById('pdfver').removeAttribute("hidden")
-        cargarPDF();
+        document.getElementById('previewpdf').removeAttribute("hidden")
+        cargarPDF(archivo.path_archivo, archivo.nombre_archivo);
         if(tipo == 3){
             askEliminarPdf()
         }
@@ -862,7 +879,16 @@ function ocultarPagina(){
     if(document.getElementById('removePDF') != undefined){
         document.getElementById('removePDF').remove()
     }
-
+    document.getElementById('sec-pdf').hidden = true
+    document.getElementById('pdfguar').hidden = true
+    document.getElementById('previewpdf').hidden = true 
+    let aside = document.getElementById('aside-pdf')
+    if(aside != undefined){
+        while(aside.hasChildNodes()){
+            aside.removeChild(aside.lastChild)
+        }
+        aside.remove() 
+    }
 }
 
 function insertarInputSimple(divmayor, tag, i){
@@ -1629,11 +1655,13 @@ function subirPDF(){
         lab.innerHTML = name + '.pdf'        
     }
     lab.id = 'pdfname'
+    let labpath = document.createElement('label')    
     let placeholder = document.createElement('div')
     let icon = document.createElement('i')
     icon.className = 'fas fa-file-alt'
     placeholder.appendChild(icon)
     placeholder.appendChild(lab)
+    placeholder.appendChild(labpath)
     //
     let span = document.getElementById('spanPdf')
     while(span.hasChildNodes()){
@@ -1652,7 +1680,7 @@ function subirPDF(){
 }
 
 function askEliminarPdf(){
-    let padre = document.getElementById('pdfver')
+    let padre = document.getElementById('previewpdf')
     let checkbox = document.createElement('input')
     checkbox.type = "checkbox"
     checkbox.id = 'askBorrar'
@@ -1666,41 +1694,64 @@ function askEliminarPdf(){
     padre.appendChild(div)
 }
 
+function insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
 function cambiarDireccionPDF(modo){
     let padre = document.getElementById('padre')
     let taggeo = document.getElementById('taggeo')       
-    let stick = document.getElementById('previewpdf')
-    let btn = document.getElementById('radio-pdf')
-    
+    let stick = document.getElementById('sec-pdf')
+    let btn = document.getElementById('radio-pdf')    
+
     let aside = document.getElementById('aside-pdf')
-        if(aside != undefined){
-            while(aside.hasChildNodes()){
-                aside.removeChild(aside.lastChild)
-            }
-            aside.remove() 
+    if(aside != undefined){
+        while(aside.hasChildNodes()){
+            aside.removeChild(aside.lastChild)
         }
+        aside.remove() 
+    }
 
     if(modo == 'N'){
         taggeo.classList.remove('col-lg-7')
         taggeo.classList.add('col-lg-12')
         stick.removeAttribute('hidden')           
-        stick.prepend(btn)    
+        insertAfter(document.getElementById('spanPdf'), btn)    
     }
     else if(modo == 'V'){        
         taggeo.classList.remove('col-lg-12')
         taggeo.classList.add('col-lg-7')
-        aside = document.createElement('aside')
+        let aside = document.createElement('aside')
         aside.classList.add('col-lg-5')
         aside.classList.add('card')
-        aside.classList.add('asideP')
+        aside.classList.add('asideV')
         aside.id = 'aside-pdf'
-        div = document.createElement('div')
-        div.append(btn)            
+        let div = document.createElement('div')
+        div.className = 'row'
+        let div1 = document.createElement('div')
+        div1.className = 'col-lg-3'
+        div1.append(btn)                   
+        let div2 = document.createElement('div')
+        div2.className = 'col-lg-8'
+        let lab = document.createElement('label')
+        lab = '    ' + document.getElementById('pdfname').innerHTML
+        let icon = document.createElement('i')
+        icon.className = 'fas fa-file-alt'
+        div2.append(icon)
+        div2.append(lab)
+        div.append(div1)
+        div.append(div2)
         stick.hidden = true
         let pdf = document.createElement('embed')
-        let pdfM = document.getElementById('pdfModal')
-        pdf.src = URL.createObjectURL(pdfM.files[0])
-        div.classList.add('sticky')
+        if(document.getElementById('guardar').checked){
+            let pdfM = document.getElementById('pdfModal')
+            pdf.src = URL.createObjectURL(pdfM.files[0])
+        }
+        else{
+            let path = document.getElementById('pdfpath').innerHTML + document.getElementById('pdfname').innerHTML
+            pdf.src = path
+        }        
+        aside.classList.add('sticky')
         div.classList.add('padre-pdf-sticky-v')
         pdf.classList.add('pdf-sticky-v')
         div.appendChild(pdf)
@@ -1710,18 +1761,23 @@ function cambiarDireccionPDF(modo){
     else if(modo == 'H'){
         taggeo.classList.add('col-lg-12')
         taggeo.classList.remove('col-lg-7')
-        aside = document.createElement('aside')
+        let aside = document.createElement('aside')
         aside.classList.add('col-lg-12')
         aside.classList.add('card')
         aside.id = 'aside-pdf'        
-        div = document.createElement('div')
+        let div = document.createElement('div')
         aside.append(btn)            
         stick.hidden = true
         let pdf = document.createElement('embed')
-        let pdfM = document.getElementById('pdfModal')
-        pdf.src = URL.createObjectURL(pdfM.files[0])
+        if(document.getElementById('guardar').checked){
+            let pdfM = document.getElementById('pdfModal')
+            pdf.src = URL.createObjectURL(pdfM.files[0])
+        }
+        else{
+            let path = document.getElementById('pdfpath').innerHTML + document.getElementById('pdfname').innerHTML
+            pdf.src = path
+        }  
         aside.classList.add('sticky')
-        div.classList.add('sticky')
         div.classList.add('row')
         //div.classList.add('padre-pdf-sticky-v')
         div.classList.add('padre-pdf-sticky-h')
