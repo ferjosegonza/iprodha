@@ -117,21 +117,18 @@ class ofe_obraController extends Controller
 
             $laOferta->idobra= 1;
         }
-        // return $laOferta->idobra;
-        // Ofe_estadoxobra::create(['idobra' => $laOferta->idobra, 'idestado' => 1, 'fechacambio' => 0]);
-        // $estado = new Ofe_estadoxobra;
-        // return $estado;
-        // $estado->idobra = $laOferta->idobra;
-        // $estado->idestado = '1';
         
         $laOferta->save();
         Ofe_estadoxobra::create(['idobra' => $laOferta->idobra, 'idestado' => 1]);
-        $for = "lisandrosilvero@gmail.com";
+        $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;;
         $datOfe = Ofe_obra::where('idobra', $laOferta->idobra)->first();
-        Mail::to($for)->send(new CrearOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
-        
-        // $estado->save();
-        return redirect()->route('ofeobra.index')->with('mensaje','Oferta '.$laOferta->nomobra.' fue creada.');
+
+        try {
+            Mail::to($email)->send(new CrearOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
+            return redirect()->route('ofeobra.index')->with('mensaje','Oferta '.$laOferta->nomobra.' fue creada.');
+        } catch (Throwable $e) {
+            return redirect()->route('ofeobra.index')->with('mensaje','Oferta '.$laOferta->nomobra.' fue creada.')->with('error', 'No se puedo enviar el email');
+        }    
     }
     
     public function edit( $idobra)
@@ -241,8 +238,9 @@ class ofe_obraController extends Controller
     public function validarOferta($idobra)
     {
         // return 'Cuidado al ingresar aca';
-        Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 3]);
+        //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 3]);
         $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $email = strval(Empresa::where('id_emp', $datOfe->idempresa)->first()->email);
         $result = null;
         $procedureName = 'iprodha.SP_OFE_MIGRAOBRA';
         $bindings = [
@@ -256,13 +254,14 @@ class ofe_obraController extends Controller
         $succeeded = DB::executeProcedure($procedureName, $bindings);
 
         if($succeeded) {
-            // return ($result);
-            $for = "lisandrosilvero@gmail.com";
-            Mail::to($for)->send(new AceptarOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
-            return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
+            try {
+                Mail::to($email)->send(new AceptarOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
+                return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
+            } catch (Throwable $e) {
+                return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result)->with('error', 'No se puedo enviar el email');
+            } 
         }
         else {
-            // return ("Failed");
             return redirect()->route('ofeobra.vervalidar', $idobra)->with('error','Problemas con el procedimiento.');
         }
     }
@@ -273,17 +272,21 @@ class ofe_obraController extends Controller
         $name = $request->input('nom_emp');
         $oferta = $request->input('nombobra');
         $subject = "Asunto del correo";
-        $for = "lisandrosilvero@gmail.com";
-        Mail::to($for)->send(new RechazarOfeObra($name, $oferta, $comentario));
-        // Mail::send('Obrasyfinan.Ofertas.mail.rechazar',$request->all(), function($msj) use($subject,$for){
-        //     $msj->from("tucorreo@gmail.com","NombreQueApareceráComoEmisor");
-        //     $msj->subject($subject);
-        //     $msj->to($for);
-        // });
-        // return $request;
-        Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
-        Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
-        return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.');
+        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $email = Empresa::where('id_emp', $datOfe->idempresa)->first()->email;
+
+        
+
+        try {
+            Mail::to($email)->send(new RechazarOfeObra($name, $oferta, $comentario));
+            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
+            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
+            return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.');
+        } catch (Throwable $e) {
+            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
+            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
+            return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.')->with('error', 'No se pudo mandar el email');
+        }
     }
 
     public function indexEstado(Request $request)
