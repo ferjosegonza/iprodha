@@ -331,7 +331,9 @@ public function crear(Request $request){
         //$ruta = 'localhost\public\\' . $ruta;
         //$file->move($ruta, $fileName);
         //$file->storeAs($ruta, $fileName);
-        $file->move(public_path().$ruta, $fileName);
+        //return(public_path($ruta));
+        //$path = $file->storeAs(public_path($ruta), $fileName);
+        $file->move(public_path($ruta), $fileName);
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
@@ -346,7 +348,7 @@ public function crear(Request $request){
     // 
     $res = $archivo->save();
     //
-    return response()->json($res);    
+    return response()->json($path);    
 }
 
 public function modificar(Request $request){
