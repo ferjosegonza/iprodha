@@ -330,10 +330,10 @@ public function crear(Request $request){
         $ruta = substr($path->path_archivo, 14);
         //$ruta = 'localhost\public\\' . $ruta;
         //$file->move($ruta, $fileName);
-        //$file->storeAs($ruta, $fileName);
+        $file->storeAs($ruta, $fileName, 'Documentos');
         //return(public_path($ruta));
         //$path = $file->storeAs(public_path($ruta), $fileName);
-        $file->move(public_path($ruta), $fileName);
+        //$file->move(public_path($ruta), $fileName);
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
