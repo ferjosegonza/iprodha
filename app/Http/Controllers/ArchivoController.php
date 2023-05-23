@@ -24,9 +24,6 @@ class ArchivoController extends Controller
 public function consultar(){
     $boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
     $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('nombre_corto', 'asc')->orderBy('ano_archivo', 'desc')->orderBy('mes_archivo', 'desc')->orderBy('dia_archivo', 'desc')->get();
-    foreach($archivos as $a){
-        $a->path_archivo = substr($a->path_archivo, 14);
-    } 
     $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
@@ -101,10 +98,6 @@ public function buscar(Request $request){
 
     $archivos = DB::select( DB::raw($query));
 
-    foreach($archivos as $a){
-        $a->path_archivo = substr($a->path_archivo, 14);
-        
-    } 
     $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
@@ -118,7 +111,6 @@ public function buscar(Request $request){
 } 
 
 public function getpdf($path){
-    $pathsinip = substr($path, 14);
     $file = Storage::get($pathsinip);
     return $file;
 }
@@ -164,10 +156,6 @@ public function check(Request $request){
                 ->where('mes_archivo','=',$fecha[1])
                 ->where('dia_archivo','=',$fecha[2])
                 ->first();
-    if($archivo != null){
-        $archivo->path_archivo = substr($archivo->path_archivo, 14);
-    }
-    
 
     return response()->json(['response' => $archivo]);
 }
