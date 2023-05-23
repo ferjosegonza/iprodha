@@ -23,13 +23,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('N° Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('N° Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
                                         {!! Form::number('num_ent', max($todasLasEntregas) + 1, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
                                     <div class="form-group">
-                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
                                         {!! Form::text('descrip', null, [
                                             'class' => 'form-control',
                                             'required' => 'required',
@@ -43,10 +43,11 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                     <div class="form-group">
                                         {!! Form::label('N° Etapa', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::select('idetapa', $etapas, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
@@ -62,22 +63,23 @@
                                             ]) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Cantidad de viviendas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::number('cant_viv', 0, ['class' => 'form-control']) !!}
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             
                     
                             <div class="row pt-3">
                                 <div class="d-flex">
                                     <div class="me-auto">
-                                        {{-- (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong> --}}
+                                        (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAS')
+                                        @can('CREAR-OBRAVIVIENDA')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
                                         @endcan
                                         {!! Form::close() !!}

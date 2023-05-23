@@ -84,7 +84,7 @@ function seleccionarpermisos() {
 
     $.when($.ajax({
         type: "post",
-        url: "http://192.168.10.84/usuarios/rolesconpermisos",
+        url: "/usuarios/rolesconpermisos",
         data: {
             name2: name2
         },
@@ -139,7 +139,7 @@ function buscarvista(id) {
 
     $.ajax({
         type: "post",
-        url: "http://192.168.10.84/roles/buscarrol",
+        url: "/roles/buscarrol",
         data: {
             id: id
         },
@@ -164,7 +164,7 @@ function buscargrupos () {
 
     $.when($.ajax({
         type: "post",
-        url: "http://192.168.10.84/usuarioskk/rolessinpermisos",
+        url: "/usuarioskk/rolessinpermisos",
         data: {
             name4: name4
         },
@@ -203,7 +203,7 @@ function buscarpermisosname () {
     var name3 = $("#name3").val();
     $.when($.ajax({
         type: "post",
-        url: "http://192.168.10.84/usuarios/buscarpermisos",
+        url: "/usuarios/buscarpermisos",
         data: {
             name3: name3
         },
@@ -238,7 +238,7 @@ function handleRadioClick(myRadio) {
 function buscarpermisos (id) {
     $.when($.ajax({
         type: "post",
-        url: "http://192.168.10.84/usuarios/buscarpermisosdelrol",
+        url: "/usuarios/buscarpermisosdelrol",
         data: {
             id: id
         },

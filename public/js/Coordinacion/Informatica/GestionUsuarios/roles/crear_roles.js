@@ -14,7 +14,7 @@ function seleccionarpermisos() {
     var name3 = $("#name3").val();
     $.when($.ajax({
         type: "post",
-        url: "http://192.168.10.84/roles/buscarpermisos",
+        url: "/roles/buscarpermisos",
         data: {
             name3: name3
         },
