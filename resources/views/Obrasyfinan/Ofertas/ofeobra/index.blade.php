@@ -10,7 +10,7 @@
                     @include('layouts.favorito.fav', ['modo' => 'Agregar'])
                 </div>
                 <div class="ms-auto">
-                    @can('CREAR-OBRA')
+                    @can('CREAR-OFEOBRA')
                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.create']]) !!}
                         {!! Form::submit('Crear Oferta', ['class' => 'float-right btn  btn-success mt-2 ']) !!}
                         {!! Form::close() !!}
