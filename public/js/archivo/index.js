@@ -440,6 +440,15 @@ $(document).ready(function () {
         table.columns( '.tipo' ).search(data[1]).draw();
         table.columns( '.nro' ).search(data[4]).draw();
         table.columns( '.fecha' ).search(data[3]).draw();
+        table.columns( '.fecha' ).search(data[3]).draw();
+        table.columns( '.orden' ).search(data[7]).draw();
+        console.log(data[5])
+        let str = data[5].replaceAll('&lt;', '<')
+        str = str.replaceAll('&gt;', '>')
+        console.log(str)
+
+        table.columns( '.asun' ).search(str).draw();
+
         document.getElementById('preview').hidden = false
         document.getElementById('pdfver').setAttribute('data', data[6])
         document.getElementById('linkpdf').setAttribute('href', data[6])
@@ -543,7 +552,14 @@ function cancelarbusqueda(){
         let year = document.getElementById('año').value; 
         console.log(year)
         table.columns( '.fecha' ).search(year).draw();
-    }    
+    }  
+    if(document.getElementById('busq').value == ""){
+        table.columns( '.asun' ).search("").draw();
+    }
+    else{
+        let asun = document.getElementById('busq').value; 
+        table.columns( '.asun' ).search(asun).draw();
+    }   
     document.getElementById('preview').hidden = true
 }
 
