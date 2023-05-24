@@ -1636,7 +1636,7 @@ function modalPdf(){
     document.getElementById('modalTitulo').innerHTML = 'Subir PDF'
     document.getElementById('modalBody').innerHTML = '<label for="pdf">Subir archivo: </label>'
     + '<input type="file" id="pdfModal" accept = "application/pdf" name="pdf">'
-    + '<br> <label for="pdfName">Guardar como: </label> <input type="text" id="pdfName" name="pdfName">'
+    + '<br> <label for="pdfName">Guardar como: </label> <input type="text" id="pdfName" name="pdfName" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9_-]/g, \'\')">'
     document.getElementById('btnConfirmarAccion').innerHTML = 'Subir PDF'      
     document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'subirPDF()')  
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
