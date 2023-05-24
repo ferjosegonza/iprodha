@@ -78,7 +78,7 @@
                     },
                 ajax: {
                     dataType: 'json',
-                    url: 'http://192.168.10.84/roles/vistas',
+                    url: '/roles/vistas',
                     delay: 250,
                     data: function(params) {
                         return {
@@ -108,7 +108,7 @@
             }
             $.ajax({
                 type: "get",
-                url: "http://192.168.10.84/roles/buscarvista",
+                url: "/roles/buscarvista",
                 data: {
                     nombre: nombre
                 },
@@ -138,7 +138,7 @@
         function buscarpermisos(id) {
             $.when($.ajax({
                 type: "post",
-                url: "http://192.168.10.84/usuarios/buscarpermisosdelrol",
+                url: "/usuarios/buscarpermisosdelrol",
                 data: {
                     id: id
                 },
@@ -168,7 +168,7 @@
             var nameroles = $("#nameroles").val();
             $.when($.ajax({
                 type: "post",
-                url: "http://192.168.10.84/usuarios/rolesconpermisos",
+                url: "/usuarios/rolesconpermisos",
                 data: {
                     name2: nameroles
                 },
@@ -216,7 +216,7 @@
             $("#rooles").css("display", "none");
             $.ajax({
                 type: "post",
-                url: "http://192.168.10.84/roles/buscarmenu",
+                url: "/roles/buscarmenu",
                 data: {
                     id: e
                 },
@@ -275,7 +275,7 @@
                 //obtengo el nombre
                 let nombre = nom;
                 //cambio los valores del modal -- ruta -- mensaje
-                $('#eliminar').attr('action','http://192.168.10.84/roles/eliminarmenu/'+id);
+                $('#eliminar').attr('action','/roles/eliminarmenu/'+id);
                 $('#contenidoModal').text('Seguro que desea Eliminar el Menu \"'+nombre+'\"');
                 $('#exampleModal').modal('show');
         }
@@ -283,7 +283,7 @@
         function buscarmenus() {
             $.ajax({
                 type: "post",
-                url: "http://192.168.10.84/roles/buscarmenus",
+                url: "/roles/buscarmenus",
                 data: {},
                 success: function(response) {
                     console.log(response);
@@ -323,7 +323,7 @@
             $('#id').val(id);
             $.ajax({
                 type: "post",
-                url: "http://192.168.10.84/roles/editarmenu",
+                url: "/roles/editarmenu",
                 data: {
                     id: id
                 },
@@ -334,7 +334,7 @@
                     $("#idmenupadre").val(MenuM.idmenupadre);
                     $.when($.ajax({
                         type: "post",
-                        url: "http://192.168.10.84/roles/buscarordengrupo",
+                        url: "/roles/buscarordengrupo",
                         data: {
                             id: $('#idmenupadre').val()
                         },
@@ -421,7 +421,7 @@
             var namepermiso = $("#namepermiso").val();
             $.when($.ajax({
                 type: "post",
-                url: "http://192.168.10.84/usuarios/buscarpermisos",
+                url: "/usuarios/buscarpermisos",
                 data: {
                     name3: namepermiso
                 },
@@ -446,7 +446,7 @@
         $('#idmenupadre').on('change', function() {
             $.ajax({
                 type: "post",
-                url: "http://192.168.10.84/roles/buscarordengrupo",
+                url: "/roles/buscarordengrupo",
                 data: {
                     id: $('#idmenupadre').val()
                 },
