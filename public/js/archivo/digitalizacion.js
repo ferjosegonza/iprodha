@@ -148,6 +148,7 @@ function existeCheck(){
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
     //CONSULTA AJAX
+
     let route = '/archivo/check';
     $.ajaxSetup({
         headers: {
@@ -169,8 +170,8 @@ function existeCheck(){
         success: function(res) 
         {     
             //La operación es válida
-            if(res != 'null' && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
-            || res == 'null' && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
+            || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);  
             }
             else{

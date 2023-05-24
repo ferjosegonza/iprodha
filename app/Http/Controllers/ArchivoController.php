@@ -166,6 +166,7 @@ public function check(Request $request){
 }
 
 public function getArchivos(Request $request){  
+    return $request;
     if($request->fecha != null){
         $fecha = explode("-", $request->fecha);
         $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
@@ -183,12 +184,6 @@ public function getArchivos(Request $request){
                 ->where('nro_archivo','=', $request->doc)
                 ->orderBy('nombre_archivo')                
                 ->get();
-    }
-    if($archivo != null){
-        foreach($archivo as $a)
-        $a->path_archivo = substr($a->path_archivo, 14);
-    }else{
-        $archivo = 'null';
     }
     return response()->json($archivo);
 }
@@ -280,7 +275,7 @@ public function borrar(Request $request){
     $res = Dig_archivos::find($id)->delete();      
 
     if($request->askpdf == 'on'){
-        $ruta = substr($query->path_archivo, 14);
+        $ruta = $query->path_archivo;
         $name = $query->nombre_archivo;
         $file_path = public_path().$ruta.$name;
         unlink($file_path);
@@ -318,7 +313,7 @@ public function crear(Request $request){
     if($request->hasFile('pdf')){
         //$file = $request->file('pdf');
         $fileName = $request->pdfname;
-        $ruta = substr($path->path_archivo, 14);
+        $ruta = $path->path_archivo;
         //$ruta = 'localhost\public\\' . $ruta;
         //$file->move($ruta, $fileName);
         $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
