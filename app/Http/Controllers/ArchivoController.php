@@ -98,7 +98,6 @@ public function buscar(Request $request){
 
 
     $archivos = DB::select( DB::raw($query));
-
     $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
@@ -157,6 +156,7 @@ public function check(Request $request){
                 ->where('mes_archivo','=',$fecha[1])
                 ->where('dia_archivo','=',$fecha[2])
                 ->first();
+  
     return response()->json(['response' => $archivo]);
 
     if($archivo == null){
