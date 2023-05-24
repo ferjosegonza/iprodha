@@ -34,7 +34,7 @@
                                 </div>
                                 
                                 <div class="col-lg-2">
-                                    @can('CREAR-OBRAS')
+                                    @can('CREAR-OBRAVIVIENDA')
                                         {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.create'], 'class' => 'd-flex justify-content-end']) !!}
                                             {!! Form::submit('Nueva Obra', ['class' => 'btn btn-success my-1']) !!}
                                         {!! Form::close() !!}
@@ -83,14 +83,12 @@
                                                     <div>
                                                         <div class="row mb-2 ">
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                                                @can('VER-OBRAS')
-                                                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.show',$obra->id_obr], 'style' => 'display:inline']) !!}
-                                                                    {!! Form::submit('Ver', ['class' => 'btn btn-primary w-100']) !!}
-                                                                    {!! Form::close() !!}
-                                                                @endcan
+                                                                {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.show',$obra->id_obr], 'style' => 'display:inline']) !!}
+                                                                {!! Form::submit('Ver', ['class' => 'btn btn-warning w-100']) !!}
+                                                                {!! Form::close() !!}
                                                             </div>
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                                                @can('VER-OBRAS')
+                                                                @can('EDITAR-OBRAVIVIENDA')
                                                                     {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.edit',$obra->id_obr], 'style' => 'display:inline']) !!}
                                                                     {!! Form::submit('Editar', ['class' => 'btn btn-primary w-100']) !!}
                                                                     {!! Form::close() !!}
@@ -99,18 +97,18 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                                @can('VER-OBRAS')
-                                                                {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
-                                                                {!! Form::submit('Viviendas', ['class' => 'btn btn-success mb-2 w-100']) !!}
-                                                                {!! Form::close() !!}
-                                                            @endcan
+                                                                @can('EDITAR-OBRAVIVIENDA')
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
+                                                                    {!! Form::submit('Viviendas', ['class' => 'btn btn-primary mb-2 w-100']) !!}
+                                                                    {!! Form::close() !!}
+                                                                @endcan
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                            @can('VER-OBRAS')
+                                                            @can('VER-OBRAVIVIENDA')
                                                                 {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.etapas', $obra->id_obr], 'style' => 'display:inline']) !!}
-                                                                {!! Form::submit('Etapas/Entregas', ['class' => 'btn btn-success mr-2 w-100']) !!}
+                                                                {!! Form::submit('Etapas/Entregas', ['class' => 'btn btn-primary mr-2 w-100']) !!}
                                                                 {!! Form::close() !!}
                                                             @endcan
                                                             </div>

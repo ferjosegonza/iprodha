@@ -23,7 +23,9 @@
             'can_viv_2',
             'can_viv_3',
             'can_viv_4',
-            'id_localidad'
+            'id_localidad',
+            'can_viv_0',
+            'cant_viv'
         ];
 
         public function getLocalidad()
