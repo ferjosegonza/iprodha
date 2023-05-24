@@ -313,7 +313,7 @@ public function crear(Request $request){
     if($request->hasFile('pdf')){
         //$file = $request->file('pdf');
         $fileName = $request->pdfname;
-        $ruta = $path->path_archivo;
+        $ruta = substr($path->path_archivo, 14);
         //$ruta = 'localhost\public\\' . $ruta;
         //$file->move($ruta, $fileName);
         $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
