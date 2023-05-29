@@ -366,5 +366,10 @@ public function derivados(Request $request){
     return response()->json($datos);
 }
 
+public function getUser(){
+    $user = auth()->user();
+    return response()->json($user);
+}
+
 }
 
