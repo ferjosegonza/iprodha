@@ -1802,7 +1802,7 @@ function getUser(){
     });
     $.ajax({
         url: route,
-        type: 'POST',
+        type: 'GET',
         cache: false,
         processData: false,
         contentType: false,
