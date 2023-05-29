@@ -166,7 +166,6 @@ public function check(Request $request){
 }
 
 public function getArchivos(Request $request){  
-    return $request;
     if($request->fecha != null){
         $fecha = explode("-", $request->fecha);
         $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
