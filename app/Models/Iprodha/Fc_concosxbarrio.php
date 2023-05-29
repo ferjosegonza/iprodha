@@ -11,4 +11,5 @@
         protected$fillable=['BARRIO','IDORGANISMO','CONCOSTO','SUMAORESTA','IMPORTE','ID_CONCOSTO','CANTDORM','IDTIPOFAC','IDTIPOTERRE'];
         protected $attributes=['barrio'=>false,];    
         public function Fc_concosxbarrio_costosxbarrio(){return $this->hasMany(Barrio::class,'barrio','barrio');}
+        public function barrio_terreno(){return$this->belongsTo(barrio_terreno::class,'barrio_terreno.barrio','barrio_terreno.idtipoterre');}
     }
