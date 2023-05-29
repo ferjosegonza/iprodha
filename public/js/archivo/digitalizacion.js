@@ -1792,3 +1792,26 @@ function cambiarDireccionPDF(modo){
         //appendChild(aside)
     }
 }
+
+function getUser(){
+    let route = '/archivo/getuser'  
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'POST',
+        cache: false,
+        processData: false,
+        contentType: false,
+        //dataType: 'json',
+        success: function(res) {
+            console.log(res)
+        },
+        error: function(res){
+            console.log(res.responseText)
+    }});
+
+}
