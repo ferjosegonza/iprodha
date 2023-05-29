@@ -34,11 +34,11 @@ class ofe_obraController extends Controller
 
     function __construct()
     {
-        /*$this->middleware('auth');
-        $this->middleware('permission:VER-OBRAS|CREAR-OBRAS|EDITAR-OBRAS|BORRAR-OBRAS', ['only' => ['index']]);
-        $this->middleware('permission:CREAR-OBRAS', ['only' => ['create','store']]);
-        $this->middleware('permission:EDITAR-OBRAS', ['only' => ['edit','update']]);
-        $this->middleware('permission:BORRAR-OBRAS', ['only' => ['destroy']]);*/
+        $this->middleware('auth');
+        $this->middleware('permission:VER-OFEOBRA|CREAR-OFEOBRA|EDITAR-OFEOBRA|BORRAR-OFEOBRA', ['only' => ['index']]);
+        $this->middleware('permission:CREAR-OFEOBRA', ['only' => ['create','store']]);
+        $this->middleware('permission:EDITAR-OFEOBRA', ['only' => ['edit','update']]);
+        $this->middleware('permission:BORRAR-OFEOBRA', ['only' => ['destroy']]);
     }
     
     public function index(Request $request)
