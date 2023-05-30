@@ -269,7 +269,9 @@ public function borrar(Request $request){
         ->where('dia_archivo', '=', $fecha[2])
         ->where('orden', '=', $request->orden)
         ->where('id_tipocabecera', '=', 1)
-        ->first()->delete();      
+        ->first();      
+    $id = $query->id_archivo;
+    $res = Dig_archivos::find($id)->delete();      
 
     /* if($request->askpdf == 'on'){
         $ruta = substr($query->path_archivo, 14);
