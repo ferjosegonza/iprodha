@@ -273,12 +273,12 @@ public function borrar(Request $request){
     $id = $query->id_archivo;
     $res = Dig_archivos::find($id)->delete();      
 
-    if($request->askpdf == 'on'){
+    /* if($request->askpdf == 'on'){
         $ruta = substr($query->path_archivo, 14);
         $name = $query->nombre_archivo;
         $file_path = public_path().$ruta.$name;
         unlink($file_path);
-    }
+    } */
     
     return response()->json($res);        
     
@@ -310,15 +310,9 @@ public function crear(Request $request){
 
     //guardar los archivos
     if($request->hasFile('pdf')){
-        //$file = $request->file('pdf');
         $fileName = $request->pdfname;
-        $ruta = substr($path->path_archivo, 14);
-        //$ruta = 'localhost\public\\' . $ruta;
-        //$file->move($ruta, $fileName);
-        $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
-        //return(public_path($ruta));
-        //$path = $file->storeAs(public_path($ruta), $fileName);
-        //$file->move(public_path($ruta), $fileName);
+        /* $ruta = substr($path->path_archivo, 14);
+        $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos'); */
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
@@ -326,11 +320,6 @@ public function crear(Request $request){
     //
     $archivo->nombre_archivo = $fileName;   
     //
-    
-    //return $ruta;
-    
-    //$file->storeAs($ruta, $fileName);
-    // 
     $res = $archivo->save();
     //
     return response()->json($path);    
