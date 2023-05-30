@@ -1684,15 +1684,15 @@ function subirPDF(){
 
 function askEliminarPdf(){
     let padre = document.getElementById('previewpdf')
-    let checkbox = document.createElement('input')
+    /* let checkbox = document.createElement('input')
     checkbox.type = "checkbox"
-    checkbox.id = 'askBorrar'
+    checkbox.id = 'askBorrar' */
     let lab = document.createElement('label')
     lab.setAttribute("for", "askBorrar")
     lab.innerHTML = "Eliminar PDF de los archivos subidos"
     let div = document.createElement('div')
     div.id = "removePDF"
-    div.appendChild(checkbox)
+    //div.appendChild(checkbox)
     div.appendChild(lab)
     padre.appendChild(div)
 }
