@@ -180,14 +180,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('archivo/check', [ArchivoController::class, 'check'])->name('archivos.check');
     Route::get('archivo/selects', [ArchivoController::class, 'getSelects'])->name('archivos.selects');
     Route::get('archivo/campos', [ArchivoController::class, 'getCampos'])->name('archivos.campos');
+    Route::get('archivo/derivados', [ArchivoController::class, 'derivados'])->name('archivos.derivados');
     Route::get('archivo/tags', [ArchivoController::class, 'tags'])->name('archivos.tags');
     Route::get('archivo/tag', [ArchivoController::class, 'obtenerTagFormato'])->name('archivos.tag');
     Route::get('archivo/complejos', [ArchivoController::class, 'complejos'])->name('archivos.complejos');
     Route::get('archivo/busquedadirigida', [ArchivoController::class, 'busquedaDirigida'])->name('archivos.busquedaDirigida');
+    Route::get('archivo/getArchivos', [ArchivoController::class, 'getArchivos'])->name('archivos.getArchivos');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
     Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
     Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivos.digitalizar');
-    Route::delete('archivo/{archivo}/borrar', [ArchivoController::class, 'borrar'])->name('archivos.borrar');
+    Route::get('/archivo/getuser', [ArchivoController::class, 'getUser'])->name('archivos.getuser');
+    Route::delete('archivo/borrar', [ArchivoController::class, 'borrar'])->name('archivos.borrar');
     Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');
-    Route::put('archivo/{archivo}/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
+    Route::put('archivo/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
 });
+        
