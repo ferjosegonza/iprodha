@@ -1510,13 +1510,6 @@ function borrar(){
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
     let orden = document.getElementById('orden').value;
-    let askpdf
-    if(document.getElementById('askBorrar').checked){
-        askpdf  = 'on'
-    }
-    else{
-        askpdf = 'off'
-    }
 
     let route = '/archivo/borrar';    
     $.ajaxSetup({
@@ -1535,8 +1528,7 @@ function borrar(){
             doc: doc,
             fecha: fecha,
             orden: orden,
-            pdf: pdf,
-            askpdf : askpdf
+            pdf: pdf
         }),
         //dataType: 'json',
         success: function(res) {
