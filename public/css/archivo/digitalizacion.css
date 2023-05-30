@@ -1,9 +1,10 @@
 body{
     align-content: center;
 }
-#taggeo{
+#taggeo {
     padding: 15px;
-    margin-right: 3%;
+    margin-left: -2px;
+    margin-right: 7px;
 }
 #preview{
     padding: 15px;
@@ -20,6 +21,7 @@ body{
 .rowtag{
     padding: 8px;
     justify-content: center;
+    align-content: center;
 }
 .rowbot{
     justify-content: center;
@@ -31,4 +33,95 @@ body{
     font-size: 15px;
     font-weight: bold !important;
     margin-top: 10px;  
+}
+#btn-tag{
+    margin-top: 8.5px;
+}
+#btnTagAgregar{
+    margin-top: 8.5px;
+}
+.botoncito{
+    display: inline-grid;
+    align-content: center;
+    justify-content: center;
+    height: 15px;
+    width: 15px;
+}
+#labelpdf{
+    font-size: 20px;
+}
+.pdfrow{
+    height: 250px;
+}
+td{
+    border: 1px solid gray;
+    border-radius: 2px;
+    padding: 5px;
+}
+tr:hover{
+    background-color: rgb(216, 216, 216);
+}
+.modal.modal-sm { max-width: unset !important; right: 0; }
+#pdfname{
+    padding: 15px;
+}
+#removePDF{
+    justify-content: center;
+}
+#avisofecha{
+    color: rgb(202, 136, 37);
+}
+#btnsubirpdf{
+    width: 100px;
+    height: 40px;
+}
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index:100;
+}
+.asideP{
+    padding-top: 15px !important;
+    padding-right: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 5px !important;
+    margin-right: -15px;
+}
+.main-content{
+    padding-right: 0px !important;
+}
+#padre {
+    width: 100%;
+}
+.padre-pdf-sticky-v{
+    height: 30%;   
+}
+.padre-pdf-sticky-h{
+    height: 100%;   
+}
+.pdf-sticky-h{
+    height: 100%;  
+}
+.pdf-sticky-v{
+    height: 550px;
+    padding-top: 10px;
+    width: 100%;
+}
+td:hover{
+    background-color: darkgray;
+}
+.asideH{
+    height: 250px;
+}
+.asideV{
+    padding-top: 15px !important;
+    padding-right: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 5px !important;
+    margin-right: -15px;
+    height: 605px;
+}
+.card .card-header, .card .card-body, .card .card-footer{
+    padding: 5px 5px;
 }
