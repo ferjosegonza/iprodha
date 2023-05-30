@@ -274,7 +274,7 @@ public function borrar(Request $request){
     $res = Dig_archivos::find($id)->delete();      
 
     if($request->askpdf == 'on'){
-        $ruta = $query->path_archivo;
+        $ruta = substr($query->path_archivo, 14);
         $name = $query->nombre_archivo;
         $file_path = public_path().$ruta.$name;
         unlink($file_path);
