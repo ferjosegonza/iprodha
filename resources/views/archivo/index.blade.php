@@ -134,8 +134,8 @@
                                 <td>{{$archivo->dia_archivo}}-{{$archivo->mes_archivo}}-{{$archivo->ano_archivo}}</td>
                                 <td>{{$archivo->nro_archivo}}</td>
                                 <td>{{$archivo->claves_archivo}}</td>      
-                                <td hidden>{{$archivo->path_archivo . $archivo->nombre_archivo}} </td>    
-                                <td hidden>{{$archivo->orden}} </td>              
+                                <td hidden>{{$archivo->path_archivo . $archivo->nombre_archivo}} </td>
+                                <td hidden>{{$archivo->orden}} </td>        
                             </tr>
                             @endforeach
                         </tbody>

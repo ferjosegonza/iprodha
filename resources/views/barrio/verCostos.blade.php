@@ -1,21 +1,13 @@
-
 @extends('layouts.app')
-
 @section('content')
     <section class="section">
-        <div class="section-header">
-            <h3 class="page__heading">Costos de Barrio  {{$unBarrio->nombarrio }}</h3>
-        </div>
+        <div class="section-header"><h3 class="page__heading">Costos de Barrio  {{$unBarrio->nombarrio }}</h3></div>
         <div class="section-body">
-            <div class="card-body">
-                @include('layouts.modal.mensajes')
-            </div>
+            <div class="card-body">@include('layouts.modal.mensajes')</div>
             <div style="width:99%;float:left;">
                 <div style="width:22%;float:left;margin-left:1%;">
-                    {!! Form::label('Plan:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                    {!! Form::select('plazoCosxBarrio',['Anual','Mensual'],['Anual','Mensual']
-                        ,['placeholder' => 'Seleccionar', 'class' => 'form-select','onClick' => 'show1();']
-                        ) !!}
+                    {!!Form::label('Plan:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
+                    {!!Form::select('plazoCosxBarrio',['Anual','Mensual'],['Anual','Mensual'],['placeholder'=>'Seleccionar','class'=>'form-select','onClick'=>'show1();'])!!}
                 </div>
                 <div style="width:22%;float:left;margin-left:1%;">
                     {!! Form::label('Dormitorios:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
@@ -61,7 +53,7 @@
 
                         </thead>
                         <tbody>
-                            @foreach ($Costos as $costo)
+                            @foreach($Costos as$costo)
                                 <tr>
                                     <td>{{ $costo->id_concosto }}</td>
                                     <td>{{ $costo->cantdorm }}</td>
@@ -76,7 +68,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection

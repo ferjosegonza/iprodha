@@ -317,7 +317,7 @@ public function crear(Request $request){
     if($request->hasFile('pdf')){
         $fileName = $request->pdfname;
         //$ruta = substr($path->path_archivo, 14);
-        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');4
+        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
@@ -387,6 +387,16 @@ public function modificar(Request $request){
     }   
     //
     return response()->json($res);    
+}
+
+public function derivados(Request $request){
+    $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
+
+    $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
+
+
+    $datos = DB::select( DB::raw($query));
+    return response()->json($datos);
 }
 
 public function derivados(Request $request){

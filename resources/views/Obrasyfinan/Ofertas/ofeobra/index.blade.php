@@ -10,7 +10,7 @@
                     @include('layouts.favorito.fav', ['modo' => 'Agregar'])
                 </div>
                 <div class="ms-auto">
-                    @can('CREAR-OBRA')
+                    @can('CREAR-OFEOBRA')
                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.create']]) !!}
                         {!! Form::submit('Crear Oferta', ['class' => 'float-right btn  btn-success mt-2 ']) !!}
                         {!! Form::close() !!}
@@ -97,7 +97,7 @@
                                                                 <div class="col">
                                                                     @if (auth()->user()->hasRole('EMPRESA') and $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                                                         {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.presentar',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
-                                                                        {!! Form::submit('Presentar Oferta', ['class' => 'btn btn-success', 'style' => 'width: 60%']) !!}
+                                                                        {!! Form::submit('Presentar Oferta', ['class' => 'btn btn-success', 'style' => 'width: 86%']) !!}
                                                                         {!! Form::close() !!}
                                                                     @endif
                                                                 </div>
