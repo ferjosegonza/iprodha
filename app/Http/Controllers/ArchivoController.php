@@ -311,15 +311,9 @@ public function crear(Request $request){
 
     //guardar los archivos
     if($request->hasFile('pdf')){
-        //$file = $request->file('pdf');
         $fileName = $request->pdfname;
-        $ruta = substr($path->path_archivo, 14);
-        //$ruta = 'localhost\public\\' . $ruta;
-        //$file->move($ruta, $fileName);
-        $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
-        //return(public_path($ruta));
-        //$path = $file->storeAs(public_path($ruta), $fileName);
-        //$file->move(public_path($ruta), $fileName);
+        //$ruta = substr($path->path_archivo, 14);
+        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');4
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
