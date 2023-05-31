@@ -11,6 +11,7 @@ use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\Dig_tags;
 use App\Models\Iprodha\Localidad;
 use App\Models\Iprodha\Dig_tag_busqueda;
+use App\Models\Iprodha\Dig_asunto;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
@@ -269,16 +270,20 @@ public function borrar(Request $request){
         ->where('dia_archivo', '=', $fecha[2])
         ->where('orden', '=', $request->orden)
         ->where('id_tipocabecera', '=', 1)
-        ->first();
+        ->first();      
+
     $id = $query->id_archivo;
     $res = Dig_archivos::find($id)->delete();      
-
-    if($request->askpdf == 'on'){
+    $asunto = Dig_asunto::find($id);     
+    if($asunto){
+        $asunto->delete();
+    }
+    /* if($request->askpdf == 'on'){
         $ruta = substr($query->path_archivo, 14);
         $name = $query->nombre_archivo;
         $file_path = public_path().$ruta.$name;
         unlink($file_path);
-    }
+    } */
     
     return response()->json($res);        
     
@@ -310,15 +315,9 @@ public function crear(Request $request){
 
     //guardar los archivos
     if($request->hasFile('pdf')){
-        //$file = $request->file('pdf');
         $fileName = $request->pdfname;
-        $ruta = substr($path->path_archivo, 14);
-        //$ruta = 'localhost\public\\' . $ruta;
-        //$file->move($ruta, $fileName);
-        $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
-        //return(public_path($ruta));
-        //$path = $file->storeAs(public_path($ruta), $fileName);
-        //$file->move(public_path($ruta), $fileName);
+        //$ruta = substr($path->path_archivo, 14);
+        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
@@ -326,12 +325,26 @@ public function crear(Request $request){
     //
     $archivo->nombre_archivo = $fileName;   
     //
-    
-    //return $ruta;
-    
     //$file->storeAs($ruta, $fileName);
     // 
     $res = $archivo->save();
+    //
+    $query = Dig_archivos::where('id_tipocabecera', '=', 1)
+    ->where('id_tipoarchivo', '=', $archivo->id_tipoarchivo)
+    ->where('id_subtipoarchivo', '=', $archivo->id_subtipoarchivo)
+    ->where('nro_archivo', '=', $archivo->nro_archivo)
+    ->where('ano_archivo', '=', $archivo->ano_archivo)
+    ->where('mes_archivo', '=', $archivo->mes_archivo)
+    ->where('dia_archivo', '=', $archivo->dia_archivo)
+    ->where('orden', '=', $archivo->orden)
+    ->first();
+    //
+    if($request->asunto != ''){
+        $asunto = new Dig_asunto;
+        $asunto->id_archivo = $query->id_archivo;
+        $asunto->asunto = $request->asunto;
+        $asunto->save();
+    }    
     //
     return response()->json($path);    
 }
@@ -341,7 +354,7 @@ public function modificar(Request $request){
     //
     $fecha = is_string($request->fecha) ? explode("-", $request->fecha) : null;
     $subtipo = explode("|", $request->subtipo);
-
+    //
     $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
                 ->where('id_subtipoarchivo','=', $subtipo[1])
                 ->where('nro_archivo','=', $request->doc)
@@ -349,12 +362,41 @@ public function modificar(Request $request){
                 ->where('mes_archivo','=',$fecha[1])
                 ->where('dia_archivo','=',$fecha[2])
                 ->first();
-
+    //
     $archivo->claves_archivo = $request->claves;
     $archivo->orden = $request->orden;
     $res = $archivo->save();
-
+    //
+    $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
+    if($asunto != null or $request->asunto != ''){
+        if($request->asunto == ''){
+            $asunto->delete();
+        }
+        else{
+            if($asunto == null){
+                $asunto = new Dig_asunto;
+                $asunto->id_archivo = $archivo->id_archivo;
+                $asunto->asunto = $request->asunto;
+                $asunto->save();
+            }
+            else{
+                $asunto->asunto = $request->asunto;
+                $asunto->save();
+            }
+        }       
+    }   
+    //
     return response()->json($res);    
+}
+
+public function derivados(Request $request){
+    $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
+
+    $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
+
+
+    $datos = DB::select( DB::raw($query));
+    return response()->json($datos);
 }
 
 public function derivados(Request $request){

@@ -797,9 +797,9 @@ function mostrarPagina(archivo){
         document.getElementById('pdfguar').hidden = true   //hay que mostrar un pdf
         document.getElementById('previewpdf').removeAttribute("hidden")
         cargarPDF(archivo.path_archivo, archivo.nombre_archivo);
-        if(tipo == 3){
+       /*  if(tipo == 3){
             askEliminarPdf()
-        }
+        } */
     }    
     contadorchar("characla", "claves", 1040); //muestra cuantos caracteres quedan
     //
@@ -1510,14 +1510,6 @@ function borrar(){
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
     let orden = document.getElementById('orden').value;
-    let askpdf
-    if(document.getElementById('askBorrar').checked){
-        askpdf  = 'on'
-    }
-    else{
-        askpdf = 'off'
-    }
-
     let route = '/archivo/borrar';    
     $.ajaxSetup({
         headers: {
@@ -1535,8 +1527,7 @@ function borrar(){
             doc: doc,
             fecha: fecha,
             orden: orden,
-            pdf: pdf,
-            askpdf : askpdf
+            pdf: pdf
         }),
         //dataType: 'json',
         success: function(res) {
@@ -1556,6 +1547,7 @@ function modificar() {
     let fecha = document.getElementById('fecha').value;
     let claves = document.getElementById('claves').value;
     let orden = document.getElementById('orden').value;
+    let asunto = document.getElementById('asunto').value
 
 
     let route = '/archivo/modificar';    
@@ -1576,7 +1568,9 @@ function modificar() {
             fecha: fecha,
             claves: claves,
             orden: orden, 
-            pdf: pdf
+            pdf: pdf,
+            asunto: asunto
+
         }),
         dataType: 'json',
         success: function(res) {
@@ -1597,6 +1591,8 @@ function guardar(){
     let fecha = document.getElementById('fecha').value
     let claves = document.getElementById('claves').value
     let orden = document.getElementById('orden').value
+    let asunto = document.getElementById('asunto').value
+
 
     let dataForm = new FormData();
     dataForm.append('pdf', pdf);
@@ -1607,6 +1603,8 @@ function guardar(){
     dataForm.append('fecha', fecha);
     dataForm.append('claves', claves);
     dataForm.append('orden', orden);
+    dataForm.append('asunto', asunto);
+
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
@@ -1682,20 +1680,21 @@ function subirPDF(){
     document.getElementById('previewpdf').removeAttribute('hidden')
 }
 
-function askEliminarPdf(){
+/* function askEliminarPdf(){
     let padre = document.getElementById('previewpdf')
-    let checkbox = document.createElement('input')
+    /* let checkbox = document.createElement('input')
     checkbox.type = "checkbox"
-    checkbox.id = 'askBorrar'
+    checkbox.id = 'askBorrar' 
     let lab = document.createElement('label')
     lab.setAttribute("for", "askBorrar")
     lab.innerHTML = "Eliminar PDF de los archivos subidos"
     let div = document.createElement('div')
     div.id = "removePDF"
-    div.appendChild(checkbox)
+    //div.appendChild(checkbox)
     div.appendChild(lab)
     padre.appendChild(div)
 }
+ */
 
 function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
