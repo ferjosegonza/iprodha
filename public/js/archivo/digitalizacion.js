@@ -1510,7 +1510,6 @@ function borrar(){
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
     let orden = document.getElementById('orden').value;
-
     let route = '/archivo/borrar';    
     $.ajaxSetup({
         headers: {
@@ -1548,6 +1547,7 @@ function modificar() {
     let fecha = document.getElementById('fecha').value;
     let claves = document.getElementById('claves').value;
     let orden = document.getElementById('orden').value;
+    let asunto = document.getElementById('asunto').value
 
 
     let route = '/archivo/modificar';    
@@ -1568,7 +1568,9 @@ function modificar() {
             fecha: fecha,
             claves: claves,
             orden: orden, 
-            pdf: pdf
+            pdf: pdf,
+            asunto: asunto
+
         }),
         dataType: 'json',
         success: function(res) {
@@ -1589,6 +1591,8 @@ function guardar(){
     let fecha = document.getElementById('fecha').value
     let claves = document.getElementById('claves').value
     let orden = document.getElementById('orden').value
+    let asunto = document.getElementById('asunto').value
+
 
     let dataForm = new FormData();
     dataForm.append('pdf', pdf);
@@ -1599,6 +1603,8 @@ function guardar(){
     dataForm.append('fecha', fecha);
     dataForm.append('claves', claves);
     dataForm.append('orden', orden);
+    dataForm.append('asunto', asunto);
+
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
@@ -1689,6 +1695,7 @@ function subirPDF(){
     padre.appendChild(div)
 }
  */
+
 function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
