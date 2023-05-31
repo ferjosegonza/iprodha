@@ -394,16 +394,6 @@ public function derivados(Request $request){
 
     $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
 
-
-    $datos = DB::select( DB::raw($query));
-    return response()->json($datos);
-}
-
-public function derivados(Request $request){
-    $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
-
-    $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
-
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
 }
