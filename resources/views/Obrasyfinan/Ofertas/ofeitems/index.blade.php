@@ -39,7 +39,7 @@
                                         <tr> <th></th> <th></th> <th></th> <th></th> <th class='text-center'></th> <th class='text-center'></th> <th></th></tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($itemsxobra as $unItem)
+                                        @foreach ($itemsxobra->sortBy('orden') as $unItem)
                                             <tr>
                                                 <td class= 'text-center'>{{ $unItem->orden }}</td>
                                                 <td class= 'text-center'>{{ $unItem->codigo }}</td>
@@ -62,7 +62,7 @@
                                                 <td class= 'text-center'>{{ $unItem->por_inc }}</td>
                                                 <td class= 'text-center'>
                                                     @if ($laObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
-                                                        {!! Form::open(['method' => 'GET','route' => ['ofeobraitems.edit', $unItem->iditem],'style' => 'display:inline',]) !!}
+                                                        {!! Form::open(['method' => 'GET','route' => ['ofeobraitems.edit', base64url_encode($unItem->iditem)],'style' => 'display:inline',]) !!}
                                                         {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
                                                         {!! Form::close() !!}   
                 
@@ -72,7 +72,7 @@
                                                         {!! Form::close() !!}
                                                     @endif
                 
-                                                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobraitemdet.detalleitem',$unItem],'style' => 'display:inline']) !!}
+                                                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobraitemdet.detalleitem', base64url_encode($unItem->iditem)],'style' => 'display:inline']) !!}
                                                         {!! Form::submit('Sub Items', ['class' => 'btn btn-primary']) !!}
                                                     {!! Form::close() !!}
                                                 </td>

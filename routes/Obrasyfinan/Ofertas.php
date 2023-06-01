@@ -9,6 +9,7 @@ use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_itemController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_itemdetController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_sombreroController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_cronogramaController;
+use App\Http\Controllers\EmpresaController;
 //use App\Http\Controllers\Obrasyfinan\Ofertas\vw_ofe_obrasController;
 
 
@@ -37,11 +38,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMOBRA'
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOBRA']], function () {
     Route::get('/ofeobraitemdet/detalleitem/{iditem}', [Ofe_itemdetController::class, 'detalleItem'])->name('ofeobraitemdet.detalleitem');
-    Route::get('/ofeobraitemdet/create/{iditem}', [Ofe_itemdetController::class, 'create'])->name('ofeobraitemdet.crear');
-    Route::get('/ofeobraitemdet/{unsubItem}/{unItem}/editar', [Ofe_itemdetController::class, 'edit'])->name('ofeobraitemdet.editar');
-    Route::patch('/ofeobraitemdet/{iditem}/{idsubitem}/update', [Ofe_itemdetController::class, 'update'])->name('ofeobraitemdet.actualizar');
-    Route::delete('/ofeobraitemdet/{idItem}/{idsubitem}/eliminar', [Ofe_itemdetController::class, 'destroy'])->name('ofeobraitemdet.eliminar');
-    /////////    
+    Route::get('/ofeobraitemdet/create/{iditem}', [Ofe_itemdetController::class, 'create'])->name('ofeobraitemdet.crear');  
     Route::resource('ofeobraitemdet', Ofe_itemdetController::class);
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOBRA']], function () {
@@ -74,3 +71,5 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA']], func
     Route::get('/ofeobra/{idobra}/pdf2', [ofe_obraController::class, 'pdf2'])->name('ofeobra.pdf2'); 
     Route::get('/ofeobra/{idobra}/pdf', [ofe_obraController::class, 'pdf'])->name('ofeobra.pdf');   
 });
+
+// Route::get('ajax-autocomplete-search', [EmpresaController::class,'buscarEmpresa']);
