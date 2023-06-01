@@ -96,6 +96,7 @@
                                                             </div>
                                                             <div class="row pt-2">
                                                                 <div class="col">
+
                                                                     @if ((auth()->user()->hasRole('EMPRESA') or auth()->user()->hasRole('OFEOBRA')) and $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                                                         {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.presentar',base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                                                         {!! Form::submit('Presentar Oferta', ['class' => 'btn btn-success', 'style' => 'width: 85%']) !!}

@@ -12,7 +12,8 @@ class Dig_subtipoarchivo extends Model{
     protected $primaryKey=['id_tipoarchivo','id_subtipoarchivo'];
     public $incrementing = false;
     protected $fillable=[ 
-        'id_tipocabecera', 'id_tipoarchivo','id_subtipoarchivo', 'dessubtipoarchivo', 'orden_imp', 'nombre_corto'
+        'id_tipocabecera', 'id_tipoarchivo','id_subtipoarchivo', 'dessubtipoarchivo', 'orden_imp', 
+        'nombre_corto', 'path_archivo'
     ];        
 
     protected function setKeysForSaveQuery($query)
