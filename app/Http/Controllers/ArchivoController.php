@@ -256,6 +256,39 @@ public function busquedaDirigida(Request $request){
     return response()->json($datos);
 }
 
+public function borrar(Request $request){
+    //return $request;
+
+    $fecha = is_string($request->fecha) ? explode("-", $request->fecha) : null;
+    $subtipo = explode("|", $request->subtipo);
+    
+    $query = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
+        ->where('id_subtipoarchivo', '=', $subtipo[1])
+        ->where('nro_archivo', '=', $request->doc)
+        ->where('ano_archivo', '=', $fecha[0])
+        ->where('mes_archivo', '=', $fecha[1])
+        ->where('dia_archivo', '=', $fecha[2])
+        ->where('orden', '=', $request->orden)
+        ->where('id_tipocabecera', '=', 1)
+        ->first();      
+
+    $id = $query->id_archivo;
+    $res = Dig_archivos::find($id)->delete();      
+    $asunto = Dig_asunto::find($id);     
+    if($asunto){
+        $asunto->delete();
+    }
+    /* if($request->askpdf == 'on'){
+        $ruta = substr($query->path_archivo, 14);
+        $name = $query->nombre_archivo;
+        $file_path = public_path().$ruta.$name;
+        unlink($file_path);
+    } */
+    
+    return response()->json($res);        
+    
+}
+
 public function crear(Request $request){
     //return $request;
     //
@@ -283,8 +316,8 @@ public function crear(Request $request){
     //guardar los archivos
     if($request->hasFile('pdf')){
         $fileName = $request->pdfname;
-        //$ruta = substr($path->path_archivo, 14);
-        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
+        $ruta = substr($path->path_archivo, 14);
+        $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
@@ -361,8 +394,15 @@ public function derivados(Request $request){
 
     $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
 
+
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
 }
 
+public function getUser(){
+    $user = auth()->user();
+    return response()->json($user);
 }
+
+}
+
