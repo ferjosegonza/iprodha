@@ -440,7 +440,6 @@ $(document).ready(function () {
         table.columns( '.tipo' ).search(data[1]).draw();
         table.columns( '.nro' ).search(data[4]).draw();
         table.columns( '.fecha' ).search(data[3]).draw();
-        table.columns( '.fecha' ).search(data[3]).draw();
         table.columns( '.orden' ).search(data[7]).draw();
         console.log(data[5])
         let str = data[5].replaceAll('&lt;', '<')
