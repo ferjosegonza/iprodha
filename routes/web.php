@@ -192,9 +192,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('archivo/getArchivos', [ArchivoController::class, 'getArchivos'])->name('archivos.getArchivos');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
     Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
+});
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|CREAR-ARCHIVOS|DIGITALIZADOR']], function () {
     Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivos.digitalizar');
-    Route::get('/archivo/getuser', [ArchivoController::class, 'getUser'])->name('archivos.getuser');
-    Route::delete('archivo/borrar', [ArchivoController::class, 'borrar'])->name('archivos.borrar');
     Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');
     Route::put('archivo/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
 });
