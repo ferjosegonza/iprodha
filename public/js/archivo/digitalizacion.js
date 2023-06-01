@@ -108,6 +108,12 @@ function modal(tipo){
         document.getElementById('btnConfirmarAccion').innerHTML = 'Modificar archivo'      
         document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'confirmarAccion(2)')  
     }
+    else{
+        document.getElementById('modalTitulo').innerHTML = 'Borrar Archivo'
+        document.getElementById('modalBody').innerHTML = '<p>¿Está seguro de que desea borrar el archivo</p> <p>Esta acción no podrá deshacerse.</p>'
+        document.getElementById('btnConfirmarAccion').innerHTML = 'Borrar archivo'      
+        document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'confirmarAccion(3)')  
+    }
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
     modal.show()
 
@@ -125,10 +131,15 @@ function confirmarAccion(tipo){
         modificar()
         document.getElementById('modificar').checked = false
     }
+    else{
+        bootstrap.Modal.getInstance(modal).hide() 
+        borrar()
+        document.getElementById('borrar').checked = false
+    }
 }
 
 function existeCheck(){
-    //Al presionar algún botón de guardar/modificar verificamos si existe un archivo 
+    //Al presionar algún botón de guardar/modificar/borrar verificamos si existe un archivo 
     //que coincida con los parámetros mencionados.
     //PARÁMETROS
     ocultarPagina()
@@ -159,7 +170,7 @@ function existeCheck(){
         success: function(res) 
         {     
             //La operación es válida
-            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
+            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
             || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);  
             }
@@ -172,6 +183,7 @@ function existeCheck(){
                 else{
                     alert("ERROR: No se encontró el archivo")
                     document.getElementById('modificar').checked=false;
+                    document.getElementById('borrar').checked=false;
                 }                
             }
         },
@@ -351,6 +363,10 @@ function crearInputSimple(padre, dato, nombre, medida, i, contador){
         }    
     });
 
+    if(document.getElementById('borrar').checked){
+        input.setAttribute('disabled', 'disabled')
+    }
+
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -385,7 +401,11 @@ function crearSelect(padre, id, nombre, medida, i, contador){
         input.id = 'hijo' + i;
     }   
     input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
-       
+    
+    if(document.getElementById('borrar').checked){
+        input.setAttribute('disabled', 'disabled')
+    }
+   
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -439,6 +459,11 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i, contador){
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
     }      
+
+    if(document.getElementById('borrar').checked){
+        input.setAttribute('disabled', 'disabled')
+    }
+
 
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
@@ -747,6 +772,7 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
 function mostrarPagina(archivo){
     //TIPO 1: AGREGAR
     //TIPO 2: MODIFICAR
+    //TIPO 3: BORRAR
     let tipo 
     if(document.getElementById('guardar').checked){
         tipo = 1
@@ -801,17 +827,27 @@ function mostrarPagina(archivo){
     document.getElementById('sec-opcional').removeAttribute('hidden')
     //
     document.getElementById('sectags').removeAttribute("hidden");
-    document.getElementById('agregar').removeAttribute("hidden"); //Se muestra el añadir tags
-    document.getElementById('claves').removeAttribute("disabled"); //si estaban disabled las claves ya no lo están
-    if(tipo == 1){
-        document.getElementById('div-btnmodificar').hidden=true;
-        document.getElementById('div-btnguardar').removeAttribute("hidden");
+    if(tipo == 3){ //Se selecciono borrar
+        document.getElementById('claves').disabled=true; //No se deben poder modificar las claves
+        document.getElementById('div-btnborrar').removeAttribute("hidden"); //Mostramos el btn borrar
+        document.getElementById('div-btnguardar').hidden=true; //escondemos el btn guardar
+        document.getElementById('div-btnmodificar').hidden=true; //escondemos el btn modificar
+        document.getElementById('agregar').hidden=true; //ocultamos el añadir tags
     }
-    else{
-        document.getElementById('div-btnmodificar').removeAttribute("hidden"); 
-        document.getElementById('div-btnguardar').hidden=true;
+    else{ //No se selecciono borrar
+        document.getElementById('agregar').removeAttribute("hidden"); //Se muestra el añadir tags
+        document.getElementById('claves').removeAttribute("disabled"); //si estaban disabled las claves ya no lo están
+        if(tipo == 1){
+            document.getElementById('div-btnborrar').hidden=true;
+            document.getElementById('div-btnmodificar').hidden=true;
+            document.getElementById('div-btnguardar').removeAttribute("hidden");
+        }
+        else{
+            document.getElementById('div-btnmodificar').removeAttribute("hidden"); 
+            document.getElementById('div-btnborrar').hidden=true;
+            document.getElementById('div-btnguardar').hidden=true;
+        }
     }
-    
 }
 
 function ocultarPagina(){    
@@ -1022,17 +1058,21 @@ window.addEventListener("DOMContentLoaded", (event) => {
     const subtipo = document.getElementById('subtipo')
     const fecha = document.getElementById('fecha')
     const doc = document.getElementById('doc')
+
+    const borrarBtn = document.getElementById('borrar')
     const modificarBtn = document.getElementById('modificar')
     const guardarBtn = document.getElementById('guardar')
 
     const checkEnableButton = () => {    
         if(tipo.value!='sel' && subtipo.value!='sel' && doc.value!= ''){
+            borrarBtn.removeAttribute('disabled');
             modificarBtn.removeAttribute('disabled');            
             if(fecha.value != ''){
                 guardarBtn.removeAttribute('disabled');            
             }
         }        
         else{
+            borrarBtn.setAttribute('disabled', 'disabled');
             modificarBtn.setAttribute('disabled', 'disabled');
             guardarBtn.setAttribute('disabled', 'disabled');
         }   
@@ -1455,9 +1495,48 @@ function popup(tipo, estado){
         else if(tipo ==2){           
             document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar el archivo.</p>'
         }
+        else{
+            document.getElementById('popBody').innerHTML = '<p>No se ha podido borrar el archivo.</p>'
+        }
     }    
     let pop= bootstrap.Modal.getOrCreateInstance(popEl)
     pop.show()
+}
+
+function borrar(){ 
+    let pdf = $("input[name=pdf]").val();
+    let tipo = document.getElementById('tipo').value;
+    let subtipo = document.getElementById('subtipo').value;
+    let doc = document.getElementById('doc').value;
+    let fecha = document.getElementById('fecha').value;
+    let orden = document.getElementById('orden').value;
+    let route = '/archivo/borrar';    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'DELETE',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo: tipo,
+            subtipo: subtipo,
+            doc: doc,
+            fecha: fecha,
+            orden: orden,
+            pdf: pdf
+        }),
+        //dataType: 'json',
+        success: function(res) {
+            popup(3, res)
+        },
+        error: function(res){
+            console.log(res)
+            popup(3, false)
+    }});
 }
 
 function modificar() {
@@ -1600,6 +1679,22 @@ function subirPDF(){
     document.getElementById('embedpdf').setAttribute('src', src)
     document.getElementById('previewpdf').removeAttribute('hidden')
 }
+
+/* function askEliminarPdf(){
+    let padre = document.getElementById('previewpdf')
+    /* let checkbox = document.createElement('input')
+    checkbox.type = "checkbox"
+    checkbox.id = 'askBorrar' 
+    let lab = document.createElement('label')
+    lab.setAttribute("for", "askBorrar")
+    lab.innerHTML = "Eliminar PDF de los archivos subidos"
+    let div = document.createElement('div')
+    div.id = "removePDF"
+    //div.appendChild(checkbox)
+    div.appendChild(lab)
+    padre.appendChild(div)
+}
+ */
 
 function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
