@@ -384,8 +384,15 @@ function crearSelect(padre, id, nombre, medida, i, contador){
         input.name = 'hijo' + i;
         input.id = 'hijo' + i;
     }   
-    input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
-       
+    //input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
+    
+    if(medida != 1){
+        input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
+    } 
+    else{
+        input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
+    }
+    
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -430,15 +437,18 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i, contador){
     input.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
           findTexto(input.value, id, input, "opciones"+i);
-          guardarTag(i , nombre , 1, contador, medida)
+          //guardarTag(i , nombre , 1, contador, medida)
         }
     });   
     //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
-    input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida + ')')
+    //input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida + ')')
     
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
-    }      
+    }   
+    else{
+        input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
+    }   
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
     return input.id;
@@ -449,6 +459,8 @@ function derivado(id, idtag){
     let number = id + 1
     let id2= 'hijo' + number;
     let hijo = document.getElementById(id2)
+
+    console.log(complejos)
 
     let route = '/archivo/derivados';    
 
@@ -478,9 +490,12 @@ function derivado(id, idtag){
                     contador = complejo.cont;
                 }
             });      
-            guardarTag(number, tagname, 1, contador, 4)
             let labpadre = document.getElementById("label-o-" + id).innerHTML
-            guardarTag(id, labpadre, 1, contador, 2)
+            guardarTagComplejo(labpadre, tagname, document.getElementById('hijo'+id).value, document.getElementById('hijo'+number).value, contador)
+
+            //guardarTag(number, tagname, 1, contador, 4)
+            
+           // guardarTag(id, labpadre, 1, contador, 2)
         },
         error: function(res){
             console.log(res)
@@ -1187,10 +1202,13 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
     let taghijo = null
     let claves = document.getElementById('claves')
     let ac=0
+    console.log(medida, tagname)
     if (medida == 2){
         input = document.getElementById('hijo' + idinput).value
         let num = idinput+1
         taghijo = document.getElementById('label-o-' + num).innerHTML
+        
+        console.log('guardando hijo ' + idinput + ' y ' + num)
     }
     else{
         if(medida == 0){
@@ -1267,7 +1285,7 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
                 claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
             }
         }
-        else{
+        else{ 
             if(claves.value.indexOf('<'+tagname+':')!= -1 && claves.value.indexOf('<'+taghijo+':')!= -1){ 
                 let firstP = -1, lastP = -1, comienza = 0, band= 0, guardado = 0
                 for (let i = 0; i<claves.value.length; i++){
@@ -1338,9 +1356,121 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
     else{
         claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
     }
-
-             
     
+    console.log(claves.value)             
+    
+}
+
+function guardarTagComplejo(tagpadre, taghijo, valpadre, valhijo, cont){
+    console.log('A guardar : <'+tagpadre+':'+valpadre+'><'+taghijo+':'+valhijo+'>')
+    let claves = document.getElementById('claves')
+    let ac=0
+    if(claves.value.indexOf('<'+tagpadre+':')!= -1 && claves.value.indexOf('<'+taghijo+':')!= -1){ 
+        console.log('Ya existen los tags')
+        let firstP = -1, lastP = -1, firstH = -1, lastH = -1, comienza = 0, band= 0, guardado = 0
+        for (let i = 0; i<claves.value.length; i++){
+            console.log('Analizando caracter ' + claves.value[i])
+            if(claves.value[i] == '<'){
+                console.log('comienza un tag')
+                //comienza un tag
+                comienza = 0;
+                i++;
+            }
+            if(comienza == 0 && firstP == -1){ 
+                let advance = 0                       
+                for(let j=0; j<tagpadre.length; j++){
+                    console.log(claves.value[i+j] + ' = '+ tagpadre[j] + ' ?')
+                    if(claves.value[i+j] != tagpadre[j]){
+                        band=1;
+                    }
+                    advance = j
+                } 
+                comienza = 1
+                if(band == 0){        
+                    console.log('El padre comienza en la posicion: ' + i + ' - 1')                    
+                    firstP = i-1; 
+                }           
+                else{
+                    firstP = -1
+                }   
+                i = i + advance;
+                console.log('El tag padre termina en la posicion: ' + i)   
+            }
+            if(claves.value[i] == '>'){
+                if(comienza == 1 && band == 0 && firstH == -1){
+                    lastP = i;
+                    comienza = 2
+                    console.log('Analizando si el siguiente es el hijo: ')      
+                    let j = 0
+                    for(let k=lastP+2; k<(lastP+2+taghijo.length); k++){       
+                        console.log(claves.value[k] + ' = ' + taghijo[j] + ' ?' )            
+                        if(claves.value[k] != taghijo[j]){
+                            band=1;
+                            break
+                        }
+                        j++;
+                    }            
+                    if(band == 0){
+                        console.log('El siguiente hijo empieza en ' + lastP + ' + 2')
+                        firstH = lastP+2
+                        console.log('Es decir empieza en el caracter: ' + claves.value[firstH])
+                    }  
+                    else{
+                        firstH = -1
+                    }              
+                }
+                console.log(firstH)
+                if(firstH != -1){
+                    console.log('existe un hijo')
+                    console.log(claves.value.length)
+                    for(let k=firstH; k<claves.value.length; k++){
+                        console.log(claves.value[k])
+                        if(claves.value[k] == '>'){
+                            lastH=k
+                            console.log('El hijo termina en posicion '+ k)
+                            break
+                        }
+                    }
+                }
+                if(comienza == 2 && band == 0){
+                    console.log(ac, cont)
+                    if(ac == cont){
+                        guardado = 1  
+                        break
+                    }
+                    else{
+                        ac++
+                    }                            
+                }
+                else{
+                    firstP = -1
+                    firstH = -1
+                    lastP = -1
+                    lastH = -1
+                    comienza = 0                        
+                    band=0                       
+                }
+            }                    
+        }
+        if(guardado == 1){
+            let stringNew = ''
+            for(let i=0; i<firstP; i++){
+                stringNew = stringNew + claves.value[i];
+            }
+            stringNew = stringNew + '<' + tagpadre + ':' + valpadre.trim() + '><' + taghijo + ':' + valhijo.trim() + '>';
+            for(let i=lastH+1; i<claves.value.length; i++){
+                stringNew = stringNew + claves.value[i];
+            }
+            claves.value = stringNew
+        }
+        else{
+            claves.value = claves.value + '<' + tagpadre + ':' + valpadre.trim() + '><' + taghijo + ':' + valhijo.trim() + '>';
+        }
+    }
+    else{
+        console.log('Aun no existen los tags')
+        claves.value = claves.value + '<' + tagpadre + ':' + valpadre.trim() + '><' + taghijo + ':' + valhijo.trim() + '>';
+    }
 }
 
 function contadorchar(label, input, max){
