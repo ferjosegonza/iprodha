@@ -26,14 +26,14 @@
                                     <div class="row">
                                         <div class="col-6 m-auto">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="{{$i->idconceptosombrero}}" id="flexCheckDefault" name="conceptos[]">
-                                                <label class="form-check-label" for="flexCheckDefault">
+                                                <input class="form-check-input" type="checkbox" value="{{$i->idconceptosombrero}}" id="flexCheckDefault{{$i->idconceptosombrero}}" name="conceptos[]">
+                                                <label class="form-check-label" for="flexCheckDefault{{$i->idconceptosombrero}}">
                                                     {{$i->conceptosombrero}}
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" class="form-control" name="valores[]" step=".01">
+                                            <input type="number" class="form-control" name="valores[]" step=".01" value=0>
                                         </div>
                                     </div> 
                                 </div>
@@ -47,8 +47,8 @@
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofesombreroxobra.indexx',$unaObra->idobra], 'style' => '']) !!}
-                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-outline-primary']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofesombreroxobra.indexx', base64url_encode($unaObra->idobra)], 'style' => '']) !!}
+                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
