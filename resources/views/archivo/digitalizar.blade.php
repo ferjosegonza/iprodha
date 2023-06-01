@@ -90,11 +90,7 @@
                         <div class="col-lg-3 btnes flex">
                             <input type="radio" class="btn-check" name="opcion" id="modificar" autocomplete="off" onclick="checkArchivos()" disabled>
                             <label class="btn btn-outline-primary btn-block" for="modificar">Modificar</label>
-                        </div>                            
-                        <div class="col-lg-3 btnes flex">
-                            <input type="radio" class="btn-check" name="opcion" id="borrar" autocomplete="off" onclick="checkArchivos()" disabled>
-                            <label class="btn btn-outline-danger btn-block" for="borrar">Borrar</label>    
-                        </div>                        
+                        </div>                           
                     </div>
                     
                     <div id="sectags" hidden>
@@ -165,10 +161,7 @@
                                 </div> 
                                 <div class="col-lg-4 btnes flex" id="div-btnmodificar" hidden> 
                                     <button id="btnmodificar" class="btn btn-primary btn-block" type="button" onclick="modal(2)">Modificar</button>
-                                </div> 
-                                <div class="col-lg-4 btnes flex" id="div-btnborrar" hidden> 
-                                    <button id="btnborrar" class="btn btn-danger btn-block" type="button" onclick="modal(3)">Borrar</button>
-                                </div>                 
+                                </div>              
                             </div>
                         </div>    
                     </div>                    
