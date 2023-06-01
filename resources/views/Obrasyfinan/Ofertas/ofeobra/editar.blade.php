@@ -17,7 +17,9 @@
                 @endif
             </div>
             <div class="row">
+                @can('EDITAR-OFEOBRA')
                 {!! Form::model($unaOferta, ['method' => 'PUT', 'route' => ['ofeobra.update', base64url_encode($unaOferta->idobra)]]) !!}
+                @endcan
                 @csrf
                 @method('PUT')
                 @include('layouts.modal.mensajes')
@@ -173,8 +175,11 @@
                                 <div class="d-flex">
                                     <div class="me-auto"></div>
                                     <div class="p-1">
-                                        {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
-                                        {!! Form::close() !!}
+                                        @can('EDITAR-OFEOBRA')
+                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                            {!! Form::close() !!}
+                                        @endcan
+                                        
                                     </div>
                                     <div class="p-1">
                                         {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}

@@ -210,11 +210,11 @@ class ofe_obraController extends Controller
 
         // return $sombreros->where('idconceptosombrero', 10)->first()->valor;
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
-        ->with('data',$data)
-        ->with('items',$items)
-        ->with('cronograma',$cronograma)
-        ->with('obra', $obra)
-        ->with('sombreros',$sombreros);
+            ->with('data',$data)
+            ->with('items',$items)
+            ->with('cronograma',$cronograma)
+            ->with('obra', $obra)
+            ->with('sombreros',$sombreros);
     }
 
     public function presentarSave($idobra){

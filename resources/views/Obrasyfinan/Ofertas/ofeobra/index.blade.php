@@ -10,9 +10,7 @@
                     @include('layouts.favorito.fav', ['modo' => 'Agregar'])
                 </div>
                 <div class="ms-auto">
-
-                    @can('CREAR-OBRAS')
-
+                    @can('CREAR-OFEOBRA')
                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.create']]) !!}
                         {!! Form::submit('Crear Oferta', ['class' => 'float-right btn  btn-success mt-2 ']) !!}
                         {!! Form::close() !!}
@@ -61,15 +59,16 @@
                                                 </td>
                                                 <td class='text-center' style="overflow: hidden;">
                                                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.edit', base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
+                                                        @can('EDITAR-OFEOBRA')
+                                                            {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.edit', base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                                             {!! Form::submit('Editar', ['class' => 'btn btn-warning m-1']) !!}
-                                                        {!! Form::close() !!}
-
+                                                            {!! Form::close() !!}
+                                                        @endcan
                                                         @can('BORRAR-OFEOBRA')
-                                                        {!! Form::open([
+                                                            {!! Form::open([
                                                             'method' => 'DELETE','route' => ['ofeobra.destroy', $unaOferta->idobra],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Borrar', ['class' => 'btn btn-danger m-1','onclick' => "return confirm('Estas seguro que desea ELIMINAR la oferta??')",]) !!}
-                                                        {!! Form::close() !!}
+                                                            {!! Form::close() !!}
                                                         @endcan
                                                         
                                                         <button type="button" class="btn btn-info m-1 rounded" data-toggle="collapse" data-target="#demo{{$cont}}">Detalle <i class="fas fa-caret-down"></i></button> 
