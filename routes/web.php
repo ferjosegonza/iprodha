@@ -14,6 +14,8 @@ use App\Http\Controllers\Obras\ObrasCertifController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\Barrio\BarrioController;
 use App\Http\Controllers\Barrio\Fc_concosxbarrioController;
+use App\Http\Controllers\Barrio\barrio_terrenoController;
+use App\Http\Controllers\Barrio\BarrioXOrgController;
 
 
 use App\Http\Controllers\CategorialaboralController;
@@ -124,28 +126,30 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAS']], fu
     //->middleware('auth');  //solo para asegurar el login. Aleternativo
 
 });
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-BARRIO']], function () {
-    Route::get('/barrio', [BarrioController::class, 'index'])->name('index');
-    Route::get('/barrio/{barrio}/editar', [BarrioController::class, 'edit'])->name('barrio.editar');
-    Route::put('/barrio/{barrio}', [BarrioController::class, 'update']);
-    Route::delete('/barrio/eliminar/{barrio}', [BarrioController::class, 'destroy'])->name('barrio.eliminar');
-    //Route::get('/obras', [ObrasCertifController::class, 'index'])->name('index');
-    //Route::get('/barrio/{barrio}/detalle', [BarrioCertifController::class, 'detalle'])->name('barrioCertif.detalle');
-    Route::get('/barrio/buscar', [BarrioController::class, 'buscar'])->name('barrio.buscar');
-    Route::get('/barrio/crear', [BarrioController::class, 'create'])->name('barrio.crear');
-    Route::post('/barrio', [BarrioController::class, 'store']);
-    Route::get('/barrio/costos/editar', [BarrioController::class, 'edit'])->name('barrio.costos.editar');
-    Route::resource('barrio', BarrioController::class);
+Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],function(){
+    Route::get('/barrio',[BarrioController::class,'index'])->name('index');
+    Route::get('/barrio/{barrio}/editar',[BarrioController::class,'edit'])->name('barrio.editar');
+    Route::post('/barrio/{barrio}',[BarrioController::class,'update']);
+    Route::delete('/barrio/eliminar/{barrio}',[BarrioController::class,'destroy'])->name('barrio.eliminar');    
+    Route::get('/barrio/buscar',[BarrioController::class,'buscar'])->name('barrio.buscar');
+    Route::get('/barrio/crear',[BarrioController::class,'create'])->name('barrio.crear');
+    Route::post('/barrio',[BarrioController::class,'store']);
+    Route::get('/barrio/costos/editar',[BarrioController::class,'edit'])->name('barrio.costos.editar');
+    Route::resource('barrio',BarrioController::class);
 });
 
-
-
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-BARRIO']], function () {
-    //Route::resource('barriocostos', BarrioCostosController::class);
-    Route::get('/barrio/{barrio}/vercostos', [Fc_concosxbarrioController::class, 'edit'])->name('barrio.verCostos');
-    //Route::get('/obras/{id_obr?}', [ObrasController::class, 'update'])->name('update');;
-    //->middleware('auth');  //solo para asegurar el login. Aleternativo
+Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],function(){
+    Route::get('/barrio/{barrio}/vercostos',[Fc_concosxbarrioController::class,'edit'])->name('barrio.verCostos');        
 });
+
+Route::delete('/terrenoSup/eliminar/{barrio}/{id}',[barrio_terrenoController::class,'destroy'])->name('terrenoSup.eliminar');    
+Route::get('/barrio/{barrio}/terrenoSup',[barrio_terrenoController::class,'index'])->name('barrio.terrenoSup');
+Route::post('/terrenoSup',[barrio_terrenoController::class,'store']);
+Route::resource('terrenoSup',barrio_terrenoController::class);
+
+Route::delete('/dormXTerr/eliminar/{barrio}/{dor}/{terr}',[BarrioXOrgController::class,'destroy'])->name('dormXTerr.eliminar');
+Route::get('/barrio/{barrio}/dormXTerr',[BarrioXOrgController::class,'index'])->name('barrio.dormXTerr');
+Route::resource('dormXTerr',BarrioXOrgController::class);
 
 Route::get('/obras84',function()
         {//return view('welcome');
@@ -180,14 +184,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('archivo/check', [ArchivoController::class, 'check'])->name('archivos.check');
     Route::get('archivo/selects', [ArchivoController::class, 'getSelects'])->name('archivos.selects');
     Route::get('archivo/campos', [ArchivoController::class, 'getCampos'])->name('archivos.campos');
+    Route::get('archivo/derivados', [ArchivoController::class, 'derivados'])->name('archivos.derivados');
     Route::get('archivo/tags', [ArchivoController::class, 'tags'])->name('archivos.tags');
     Route::get('archivo/tag', [ArchivoController::class, 'obtenerTagFormato'])->name('archivos.tag');
     Route::get('archivo/complejos', [ArchivoController::class, 'complejos'])->name('archivos.complejos');
     Route::get('archivo/busquedadirigida', [ArchivoController::class, 'busquedaDirigida'])->name('archivos.busquedaDirigida');
+    Route::get('archivo/getArchivos', [ArchivoController::class, 'getArchivos'])->name('archivos.getArchivos');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
     Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
-    Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivos.digitalizar');
-    Route::delete('archivo/{archivo}/borrar', [ArchivoController::class, 'borrar'])->name('archivos.borrar');
+    Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivo.digitalizar');
+    Route::get('/archivo/getuser', [ArchivoController::class, 'getUser'])->name('archivos.getuser');
+    Route::delete('archivo/borrar', [ArchivoController::class, 'borrar'])->name('archivos.borrar');
     Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');
-    Route::put('archivo/{archivo}/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
+    Route::put('archivo/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
 });

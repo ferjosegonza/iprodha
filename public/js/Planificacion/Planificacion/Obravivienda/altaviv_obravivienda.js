@@ -30,7 +30,7 @@ function onBuscarVivienda(){
     let supLote = document.getElementById('idsuplote');
     let supCubi = document.getElementById('idplano');
     let deslinde = document.getElementById('iddeslinde');
-    
+    activarCargaIndividual();
     $.when($.ajax({
         type: "post",
         url: '/obra/vivienda/'+idviv,
@@ -67,3 +67,30 @@ function onBuscarVivienda(){
          }
     }));
 }
+
+function activarCargaIndividual(){
+    let plano = document.getElementById('idplano').disabled = false;
+    let partida = document.getElementById('idpartida').disabled = false;
+    let partidaucac = document.getElementById('idpartidaucac').disabled = false;
+    let vivdiscap = document.getElementById('idvivdisc').disabled = false;
+    let seccion = document.getElementById('idseccion').disabled = false;
+    let chacra  = document.getElementById('idchacra').disabled = false;
+    let manzana = document.getElementById('idmanzana').disabled = false;
+    let parcela = document.getElementById('idparcela').disabled = false;
+    let finca = document.getElementById('idfinca').disabled = false;
+    let edif = document.getElementById('idedif').disabled = false;
+    let piso = document.getElementById('idpiso').disabled = false;
+    let dpto = document.getElementById('iddepto').disabled = false;
+    let esca = document.getElementById('idesca').disabled = false;
+    let unfun = document.getElementById('idunfun').disabled = false;
+    let empmanza = document.getElementById('idempmanza').disabled = false;
+    let lote = document.getElementById('idlote').disabled = false;
+    let nucalle = document.getElementById('idnumcalle').disabled = false;
+    let nomcalle = document.getElementById('idnomcalle').disabled = false;
+    let entrecalle = document.getElementById('identcalle').disabled = false;
+    let numFinca = document.getElementById('idnumfinca').disabled = false;
+    let supLote = document.getElementById('idsuplote').disabled = false;
+    let supCubi = document.getElementById('idplano').disabled = false;
+    let deslinde = document.getElementById('iddeslinde').disabled = false;
+}
+
