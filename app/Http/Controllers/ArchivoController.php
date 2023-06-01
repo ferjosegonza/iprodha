@@ -237,6 +237,7 @@ public function complejos(Request $request){
                 $query = $query . " OR dt.id_tag =" . strval($request->tags[$i]);
             } 
         }  
+        $query = $query . " order by id_tag, orden";
         $tags = DB::select( DB::raw($query));
     }
     else{
@@ -358,9 +359,13 @@ public function modificar(Request $request){
 
 public function derivados(Request $request){
     $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
-
-    $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
-
+    
+    if( is_string($request->value)){
+        $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 like '%$request->value%'";
+    }
+    else{
+        $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
+    }
 
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
