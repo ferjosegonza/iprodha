@@ -34,7 +34,7 @@
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" class="form-control" name="valores[]" value={{$i->valor}}>
+                                            <input step='.01' type="number" class="form-control" name="valores[]" value={{$i->valor}}>
                                         </div>
                                     </div> 
                                 </div>
@@ -48,7 +48,7 @@
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofesombreroxobra.indexx',$unaObra->idobra], 'style' => '']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofesombreroxobra.indexx', base64url_encode($unaObra->idobra)], 'style' => '']) !!}
                                         {!! Form::submit('Cancelar', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
