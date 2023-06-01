@@ -18,7 +18,7 @@ class Empresa extends Model
     public $incrementing = false;
 
     protected $fillable = [ 
-        'id_emp','nom_emp'
+        'id_emp','nom_emp', 'email', 'iduserweb'
      ];
 
      public function getOfertas()

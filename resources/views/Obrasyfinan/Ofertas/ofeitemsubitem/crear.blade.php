@@ -1,9 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .obligatorio {
+        color: red;
+    }
+</style>
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1">Alta Sub-Item - Item: {{$unItem->nom_item}}</div>
+            <div class="titulo py-1">Alta Sub-Item - Item: <strong>{{$unItem->nom_item}}</strong></div>
         </div>        
         <div class="section-body">
             <div class="row">
@@ -16,6 +21,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         {!! Form::label('Denominacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::text('denominacion', null, [
                                             'class' => 'form-control',
                                             'required' => 'required',
@@ -29,23 +35,27 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         {!! Form::label('Unidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::select('unidad', $lasUnidades, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('unidad', $lasUnidades, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         {!! Form::label('Cantidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('cantidad',null, ['class' => 'form-control', 'step' => '.01']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::number('cantidad', 0, ['class' => 'form-control', 'step' => '.01']) !!}
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         {!! Form::label('Costo Unitario:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        <span class="obligatorio">*</span>
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">$</span>
-                                            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" name="costounitario" step='.01'>
-                                          </div>
+                                            <input class="form-control" type="text" name="costounitario" value = '0.00' data-type="currency">
                                         </div>
+                                        
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -60,7 +70,26 @@
                                     </div>   
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row pt-3">
+                                <div class="d-flex">
+                                    <div class="me-auto my-auto">
+                                        (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
+                                    </div>
+                                    <div class="p-1">
+                                        @if ($unItem->getObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
+                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                            {!! Form::close() !!}
+                                        @endif
+                                    </div>
+                                    <div class="p-1">
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitemdet.detalleitem', base64url_encode($unItem->iditem)], 'style' => '']) !!}
+                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-primary']) !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- <div class="row">
                                 <div class="d-flex mb-3">
                                     <div class="me-auto"></div>
                                     <div class="p-1">
@@ -75,11 +104,12 @@
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <script src="{{ asset('js/input-format-dinero.js') }}"></script>
 @endsection
