@@ -177,7 +177,8 @@ public function getArchivos(Request $request){
         and nro_archivo = '$request->doc'
         and ano_archivo = $fecha[0] 
         and mes_archivo = $fecha[1] 
-        and dia_archivo = $fecha[2]";
+        and dia_archivo = $fecha[2]
+        order by nombre_archivo";
         $archivo = DB::select( DB::raw($query));
     }
     else{
@@ -186,7 +187,8 @@ public function getArchivos(Request $request){
         on ds.id_archivo = da.id_archivo 
         where id_tipoarchivo = $request->tipo 
         and id_subtipoarchivo = $request->subtipo 
-        and nro_archivo = '$request->doc'";
+        and nro_archivo = '$request->doc'
+        order by nombre_archivo";
         $archivo = DB::select( DB::raw($query));
     }
     return response()->json($archivo);
