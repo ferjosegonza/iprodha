@@ -45,8 +45,9 @@ class Ofe_cronogramaController extends Controller
    
     public function edit(Request $request, $id)
     {
-        $plazo = Ofe_obra::where('idobra', '=', decrypt($id))->first()->plazo;
-        $items = Ofe_item::where('idobra', '=', decrypt($id))->orderBy('iditem')->pluck('nom_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
+        // return base64url_decode($id);
+        $plazo = Ofe_obra::where('idobra', '=', base64url_decode($id))->first()->plazo;
+        $items = Ofe_item::where('idobra', '=', base64url_decode($id))->orderBy('iditem')->pluck('nom_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
         return view('Obrasyfinan.Ofertas.ofecrono.index', compact('plazo', 'items', 'id'));
     }
     

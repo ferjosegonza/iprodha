@@ -3,21 +3,21 @@
 @section('content')
     <section class="section">
         <div class="section-header d-flex">
-            <div class="me-auto">
+            <div class="me-auto py-2">
                 <div class="titulo">Conceptos Sombrero - Obra: <strong>{{$unaObra->nomobra}}</strong></div>
             </div>
             <div class="px-1">
                 @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
-                {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.editar', $unaObra]]) !!}
-                {!! Form::submit('Edición de Conceptos', ['class' => 'btn  btn-warning mt-2 ']) !!}
-                {!! Form::close() !!}
+                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.editar', base64url_encode($unaObra->idobra)]]) !!}
+                    {!! Form::submit('Edición de Conceptos', ['class' => 'btn  btn-warning mt-2 ']) !!}
+                    {!! Form::close() !!}
                 @endif
             </div>
             <div class="px-1">
                 @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
-                {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.crear', $unaObra]]) !!}
-                {!! Form::submit('Asignar Conceptos', ['class' => 'btn  btn-success mt-2']) !!}
-                {!! Form::close() !!}
+                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.crear', base64url_encode($unaObra->idobra)]]) !!}
+                    {!! Form::submit('Asignar Conceptos', ['class' => 'btn  btn-success mt-2']) !!}
+                    {!! Form::close() !!}
                 @endif
             </div>      
         </div>
@@ -34,15 +34,15 @@
                             <table id="example" class="table table-hover mt-2">
                                 <thead>
                                     <th scope="col" style="color:#fff;width:40%; text-align: center;">Conc. Sombrero</th> 
-                                    <th scope="col" style="color:#fff;width:5%; text-align: center; ">Valor</th> 
-                                    <th scope="col" style="color:#fff;width:20%; text-align: center;">Acciones</th>
+                                    <th scope="col" style="color:#fff;width:10%; text-align: center; ">Valor</th> 
+                                    <th scope="col" style="color:#fff;width:10%; text-align: center;">Acciones</th>
                                 </thead>
                                 <tbody>
                                     @foreach ( $unaObra->getSombrero as $sombrero )
                                     <tr>
-                                        <td>{{ $sombrero->getConceptoSombrero->conceptosombrero}}</td>
-                                        <td style="text-align: right;">{{ $sombrero->formattedvalor }}</td>
-                                        <td >
+                                        <td style="text-align: center;">{{ $sombrero->getConceptoSombrero->conceptosombrero}}</td>
+                                        <td style="text-align: center;">{{ $sombrero->formattedvalor }}</td>
+                                        <td style="text-align: center;">
                                             
                                         {{--!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombrero.edit',$unaObra->idobra],'style' => 'padding-left:10%; display:inline']) !!}
                                                 {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
