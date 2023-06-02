@@ -280,6 +280,7 @@ function checkArchivos(){
                         }
                         let str= res[i].ano_archivo.toString() + '-' + mes + '-' + dia
                         document.getElementById('fecha').value = str
+                        document.getElementById('asunto').value = res[i].asunto
                         mostrarPagina(res[i])
                     }
                     tablebody.appendChild(tr)
