@@ -385,7 +385,7 @@
                                 <div class="" style="padding-left: 30%">
                                     {!! Form::open([
                                         'method' => 'POST',
-                                        'route' => ['ofeobra.presentarSave', encrypt($data->idobra)],
+                                        'route' => ['ofeobra.presentarSave', base64url_encode($data->idobra)],
                                         'class' => 'formulario',
                                         'style' => 'display:inline',
                                         'files'=>'true']) !!}

@@ -31,3 +31,7 @@ body {
 /* .color-content .table-responsive th{
     color: #fff;
 } */
+
+.obligatorio {
+    color: red;
+}
