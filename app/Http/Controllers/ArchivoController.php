@@ -169,21 +169,25 @@ public function check(Request $request){
 public function getArchivos(Request $request){  
     if($request->fecha != null){
         $fecha = explode("-", $request->fecha);
-        $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
-                ->where('id_subtipoarchivo','=', $request->subtipo)
-                ->where('nro_archivo','=', $request->doc)
-                ->where('ano_archivo','=',$fecha[0])
-                ->where('mes_archivo','=',$fecha[1])
-                ->where('dia_archivo','=',$fecha[2])
-                ->orderBy('nombre_archivo')        
-                ->get();
+        $query = "select * from iprodha.dig_archivos da 
+        inner join iprodha.dig_asunto ds 
+        on ds.id_archivo = da.id_archivo 
+        where id_tipoarchivo = $request->tipo 
+        and id_subtipoarchivo = $request->subtipo 
+        and nro_archivo = '$request->doc'
+        and ano_archivo = $fecha[0] 
+        and mes_archivo = $fecha[1] 
+        and dia_archivo = $fecha[2]";
+        $archivo = DB::select( DB::raw($query));
     }
     else{
-        $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
-                ->where('id_subtipoarchivo','=', $request->subtipo)
-                ->where('nro_archivo','=', $request->doc)
-                ->orderBy('nombre_archivo')                
-                ->get();
+        $query = "select * from iprodha.dig_archivos da 
+        inner join iprodha.dig_asunto ds 
+        on ds.id_archivo = da.id_archivo 
+        where id_tipoarchivo = $request->tipo 
+        and id_subtipoarchivo = $request->subtipo 
+        and nro_archivo = '$request->doc'";
+        $archivo = DB::select( DB::raw($query));
     }
     return response()->json($archivo);
 }
@@ -335,23 +339,19 @@ public function modificar(Request $request){
     $archivo->orden = $request->orden;
     $res = $archivo->save();
     //
-    $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
-    if($asunto != null or $request->asunto != ''){
-        if($request->asunto == ''){
-            $asunto->delete();
+     $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
+    if($asunto != null or $request->asunto != ''){        
+        if($asunto == null){
+            $asunto = new Dig_asunto;
+            $asunto->id_archivo = $archivo->id_archivo;
+            $asunto->asunto = $request->asunto;
+            $asunto->save();
         }
         else{
-            if($asunto == null){
-                $asunto = new Dig_asunto;
-                $asunto->id_archivo = $archivo->id_archivo;
-                $asunto->asunto = $request->asunto;
-                $asunto->save();
-            }
-            else{
-                $asunto->asunto = $request->asunto;
-                $asunto->save();
-            }
-        }       
+            $asunto->asunto = $request->asunto;
+            $asunto->save();
+        }
+            
     }   
     //
     return response()->json($res);    
