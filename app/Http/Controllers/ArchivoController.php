@@ -170,7 +170,7 @@ public function getArchivos(Request $request){
     if($request->fecha != null){
         $fecha = explode("-", $request->fecha);
         $query = "select * from iprodha.dig_archivos da 
-        inner join iprodha.dig_asunto ds 
+        left join iprodha.dig_asunto ds 
         on ds.id_archivo = da.id_archivo 
         where id_tipoarchivo = $request->tipo 
         and id_subtipoarchivo = $request->subtipo 
@@ -182,7 +182,7 @@ public function getArchivos(Request $request){
     }
     else{
         $query = "select * from iprodha.dig_archivos da 
-        inner join iprodha.dig_asunto ds 
+        left join iprodha.dig_asunto ds 
         on ds.id_archivo = da.id_archivo 
         where id_tipoarchivo = $request->tipo 
         and id_subtipoarchivo = $request->subtipo 
