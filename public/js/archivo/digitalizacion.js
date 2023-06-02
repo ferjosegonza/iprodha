@@ -362,7 +362,7 @@ function crearSelect(padre, id, nombre, medida, i, contador){
         divmenor.className = "col-lg-3 col-md-4"
     }                              
     if(medida ==2){
-        divmenor.className = "col-lg-12"
+        divmenor.className = "col-lg-6"
     }
     let lab = document.createElement("label")           
     lab.innerHTML=nombre
@@ -701,9 +701,11 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
     let containerOp =  document.getElementById('comp-opcional'); //aca van los tags opcionales
     //
     let x = 0;
+    let k = 0;
     let bandera = 0;
     let tag1
     let tag2
+    let row
     //
     for(let i=0; i<tagcomplejoOb.length; i++){
         x++;
@@ -717,7 +719,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j] 
                     x++;
-                    insertarInputComplejo(tag1, tag2, x, containerOb)
+                    if(k % 2  == 0){
+                        row = document.createElement('div')
+                        row.className = 'row'
+                    }                    
+                    insertarInputComplejo(tag1, tag2, x, containerOb, row)                     
+                    k++
                 }                
             }
         }
@@ -734,7 +741,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    insertarInputComplejo(tag1, tag2, x, containerRe)
+                    if(k % 2  == 0){
+                        row = document.createElement('div')
+                        row.className = 'row'
+                    }                    
+                    insertarInputComplejo(tag1, tag2, x, containerRe, row)                     
+                    k++
                 }                
             }
         }
@@ -751,7 +763,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    insertarInputComplejo(tag1, tag2, x, containerOp)
+                    if(k % 2  == 0){
+                        row = document.createElement('div')
+                        row.className = 'row'
+                    }                    
+                    insertarInputComplejo(tag1, tag2, x, containerOp, row)                     
+                    k++
                 }                
             }
         }
@@ -886,21 +903,18 @@ function insertarInputSimple(divmayor, tag, i){
     }  
 }
 
-function insertarInputComplejo(tag1, tag2, i, container){
+function insertarInputComplejo(tag1, tag2, i, container, divmayor){
     //Titulo del padre
     let texto = document.createElement("p");
     texto.innerHTML=tag1.descripcion
-    texto.className = 'complejos';
-    container.appendChild(texto);     
-    //Creamos una row
-    let divmayor=document.createElement("div")                                       
-    divmayor.className = "row";                                                
+    texto.className = 'complejos';                            
     container.appendChild(divmayor)
     //
     let contaComplejo = contadorComplejo(tag1.deschijo, tag2.deschijo)
     //
     let divmedio = document.createElement("div")
-    divmedio.className = "col-lg-6 col-md-12 row"   
+    divmedio.appendChild(texto);    
+    divmedio.className = "col-lg-6 col-md-12 row divmedio"   
     //
     let idinput1
     let idinput2
