@@ -34,7 +34,7 @@ class ofe_obraController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('permission:VER-OFEOBRA|CREAR-OFEOBRA|EDITAR-OFEOBRA|BORRAR-OFEOBRA', ['only' => ['index']]);
-        // $this->middleware('permission:CREAR-OFEOBRA', ['only' => ['create','store']]);
+        $this->middleware('permission:CREAR-OFEOBRA', ['only' => ['create','store']]);
         $this->middleware('permission:EDITAR-OFEOBRA', ['only' => ['edit','update']]);
         $this->middleware('permission:BORRAR-OFEOBRA', ['only' => ['destroy']]);
     }
@@ -197,62 +197,62 @@ class ofe_obraController extends Controller
     public function presentarOferta($idobra)
     {
         //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 2]);  
-        //return $idobra;
-        $data = Vw_ofe_obra_valida::where('idobra', '=', decrypt($idobra))->first();
-        $items = Vw_ofe_items::where('idobra', '=', decrypt($idobra))->get();
-        $cronograma = Vw_ofe_cronograma::where('idobra', '=', decrypt($idobra))->orderBy('mes')->get();
-        $sombreros = Ofe_sombrero::where('idobra', '=', decrypt($idobra))->get();
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
         // return $cronograma->where('iditem', 4)->all();
         // return is_null($cronograma->where('iditem', 6)->where('mes', 1)->first());
-        $obra=Ofe_obra::where('idobra','=',decrypt($idobra))->first();
+        $obra=Ofe_obra::where('idobra','=', $idobra)->first();
               
         //return $tipoContrato;
 
         // return $sombreros->where('idconceptosombrero', 10)->first()->valor;
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
-            ->with('data',$data)
-            ->with('items',$items)
-            ->with('cronograma',$cronograma)
+            ->with('data', $data)
+            ->with('items', $items)
+            ->with('cronograma', $cronograma)
             ->with('obra', $obra)
-            ->with('sombreros',$sombreros);
+            ->with('sombreros', $sombreros);
     }
 
     public function presentarSave($idobra){
-        //  return decrypt($idobra);
-        Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 2]);
+        $idobra = base64url_decode($idobra);
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 2]);
         return redirect()->route('ofeobra.index')->with('mensaje','Se presentó la oferta de obra con exito.');
     }
 
     public function verValidarOferta($idobra){
-        $data = Vw_ofe_obra_valida::where('idobra', '=', decrypt($idobra))->first();
-        $obra = Ofe_obra::where('idobra','=',decrypt($idobra))->first();
-        $cronograma = Vw_ofe_cronograma::where('idobra', '=', decrypt($idobra))->orderBy('mes')->get();
-        $sombreros = Ofe_sombrero::where('idobra', '=', decrypt($idobra))->get();
-        $items = Vw_ofe_items::where('idobra', '=', decrypt($idobra))->get();
-        // return $obra->getItems;
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $obra = Ofe_obra::where('idobra', $idobra)->first();
+        $cronograma = Vw_ofe_cronograma::where('idobra', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', $idobra)->get();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
         return view('Obrasyfinan.Ofertas.ofeobra.validar',compact('obra','data', 'cronograma', 'sombreros', 'items'));
-        // return "Entro en verValidarOferta con id en ".decrypt($idobra);
     }
 
     public function validarOferta($idobra)
     {
-        // return 'Cuidado al ingresar aca';
-        //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 3]);
-        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $idobra = base64url_decode($idobra);
+
+        $datOfe = Ofe_obra::where('idobra', $idobra)->first();
         $email = strval(Empresa::where('id_emp', $datOfe->idempresa)->first()->email);
         $result = null;
         $procedureName = 'iprodha.SP_OFE_MIGRAOBRA';
         $bindings = [
-            'idobra'  => decrypt($idobra),
+            'idobra'  => $idobra,
             'result' => [
                 'value' => &$result,
                 'length' => 1000,
             ],
         ];
-        // return $idobra;
+        
         $succeeded = DB::executeProcedure($procedureName, $bindings);
 
         if($succeeded) {
+            Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 3]);
             try {
                 Mail::to($email)->send(new AceptarOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
                 return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
@@ -267,23 +267,22 @@ class ofe_obraController extends Controller
 
     public function rechazarOferta(Request $request, $idobra)
     {
+        $idobra = base64url_decode($idobra);
         $comentario = $request->input('comentario');
         $name = $request->input('nom_emp');
         $oferta = $request->input('nombobra');
         $subject = "Asunto del correo";
-        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $datOfe = Ofe_obra::where('idobra', $idobra)->first();
         $email = Empresa::where('id_emp', $datOfe->idempresa)->first()->email;
 
         
-
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 4]);
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 1]);
+        
         try {
             Mail::to($email)->send(new RechazarOfeObra($name, $oferta, $comentario));
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
             return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.');
         } catch (Throwable $e) {
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
             return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.')->with('error', 'No se pudo mandar el email');
         }
     }

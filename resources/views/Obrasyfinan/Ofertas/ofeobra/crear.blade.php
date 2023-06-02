@@ -16,6 +16,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9">
                                     <div class="form-group">
                                         {!! Form::label('Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::text('nomobra', null, [
                                             'class' => 'form-control',
                                             'required' => 'required',
@@ -26,7 +27,8 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
-                                        {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!}
+                                        {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
                                     </div>
                                 </div>
@@ -35,6 +37,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
                                         <select name="idempresa" class="selectpicker w-100 form-select"  placeholder="Seleccionar" required>
                                             @foreach ($Empresa as $unaEmpresa)
                                                 <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
@@ -46,15 +49,18 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Tipo Contrato:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::select('idtipocontrato', $TipoContrato, null, [
                                             'placeholder' => 'Seleccionar',
                                             'class' => 'form-select',
+                                            'required',
                                         ]) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::date('publica', \Carbon\Carbon::now(), [
                                             'min' => '2022-01-01',
                                             'max' => \Carbon\Carbon::now()->year . '-12',
@@ -67,6 +73,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
                                         {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!} 
                                     </div>
                                 </div>
@@ -107,6 +114,7 @@
                                     <div class="p-2" style="background-color: rgb(223, 188, 144)">
                                         <div class="form-group">
                                             {!! Form::label('Plazo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                            <span class="obligatorio">*</span>
                                             {!! Form::number('plazo', null, ['class' => 'form-control']) !!}
                                         </div>
                                     </div>
@@ -116,6 +124,7 @@
                                                 'class' => 'control-label',
                                                 'style' => 'white-space: nowrap;',
                                             ]) !!}
+                                            <span class="obligatorio">*</span>
                                             {!! Form::month('anioymes', \Carbon\Carbon::now(), [
                                                 'min' => '2022-01-01',
                                                 'max' => \Carbon\Carbon::now()->year . '-12',
@@ -128,7 +137,9 @@
                             </div>
                             <div class="row pt-3">
                                 <div class="d-flex">
-                                    <div class="me-auto"></div>
+                                    <div class="me-auto my-auto">
+                                        (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
+                                    </div>
                                     <div class="p-1">
                                         @can('CREAR-OBRAS')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
@@ -137,7 +148,7 @@
                                     </div>
                                     <div class="p-1">
                                         {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.index'], 'style' => '']) !!}
-                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-outline-primary']) !!}
+                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
