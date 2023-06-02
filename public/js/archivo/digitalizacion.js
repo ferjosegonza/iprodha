@@ -1813,7 +1813,7 @@ function cambiarDireccionPDF(modo){
         }
         else{
             let path = document.getElementById('pdfpath').innerHTML + document.getElementById('pdfname').innerHTML
-            pdf.src = path
+            pdf.src = path.substring(14)
         }        
         aside.classList.add('sticky')
         div.classList.add('padre-pdf-sticky-v')
@@ -1839,7 +1839,7 @@ function cambiarDireccionPDF(modo){
         }
         else{
             let path = document.getElementById('pdfpath').innerHTML + document.getElementById('pdfname').innerHTML
-            pdf.src = path
+            pdf.src = path.substring(14)
         }  
         aside.classList.add('sticky')
         div.classList.add('row')
