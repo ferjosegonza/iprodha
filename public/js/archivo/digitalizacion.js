@@ -108,12 +108,6 @@ function modal(tipo){
         document.getElementById('btnConfirmarAccion').innerHTML = 'Modificar archivo'      
         document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'confirmarAccion(2)')  
     }
-    else{
-        document.getElementById('modalTitulo').innerHTML = 'Borrar Archivo'
-        document.getElementById('modalBody').innerHTML = '<p>¿Está seguro de que desea borrar el archivo</p> <p>Esta acción no podrá deshacerse.</p>'
-        document.getElementById('btnConfirmarAccion').innerHTML = 'Borrar archivo'      
-        document.getElementById('btnConfirmarAccion').setAttribute('onclick', 'confirmarAccion(3)')  
-    }
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
     modal.show()
 
@@ -131,15 +125,10 @@ function confirmarAccion(tipo){
         modificar()
         document.getElementById('modificar').checked = false
     }
-    else{
-        bootstrap.Modal.getInstance(modal).hide() 
-        borrar()
-        document.getElementById('borrar').checked = false
-    }
 }
 
 function existeCheck(){
-    //Al presionar algún botón de guardar/modificar/borrar verificamos si existe un archivo 
+    //Al presionar algún botón de guardar/modificar verificamos si existe un archivo 
     //que coincida con los parámetros mencionados.
     //PARÁMETROS
     ocultarPagina()
@@ -170,7 +159,7 @@ function existeCheck(){
         success: function(res) 
         {     
             //La operación es válida
-            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar o borrar algo que existe
+            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
             || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);  
             }
@@ -183,7 +172,6 @@ function existeCheck(){
                 else{
                     alert("ERROR: No se encontró el archivo")
                     document.getElementById('modificar').checked=false;
-                    document.getElementById('borrar').checked=false;
                 }                
             }
         },
@@ -363,10 +351,6 @@ function crearInputSimple(padre, dato, nombre, medida, i, contador){
         }    
     });
 
-    if(document.getElementById('borrar').checked){
-        input.setAttribute('disabled', 'disabled')
-    }
-
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -378,7 +362,7 @@ function crearSelect(padre, id, nombre, medida, i, contador){
         divmenor.className = "col-lg-3 col-md-4"
     }                              
     if(medida ==2){
-        divmenor.className = "col-lg-12"
+        divmenor.className = "col-lg-6"
     }
     let lab = document.createElement("label")           
     lab.innerHTML=nombre
@@ -400,12 +384,15 @@ function crearSelect(padre, id, nombre, medida, i, contador){
         input.name = 'hijo' + i;
         input.id = 'hijo' + i;
     }   
-    input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
+    //input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
     
-    if(document.getElementById('borrar').checked){
-        input.setAttribute('disabled', 'disabled')
+    if(medida != 1){
+        input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
+    } 
+    else{
+        input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
     }
-   
+    
     divmenor.appendChild(input);
     padre.appendChild(divmenor);
     return input.id;
@@ -450,21 +437,18 @@ function crearSemiSelect(padre, dato, id, nombre, medida, i, contador){
     input.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
           findTexto(input.value, id, input, "opciones"+i);
-          guardarTag(i , nombre , 1, contador, medida)
+          //guardarTag(i , nombre , 1, contador, medida)
         }
     });   
     //input.setAttribute('onchange', 'guardarTag(\''+ input.id + '\',\'' + nombre + '\')')
-    input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida + ')')
+    //input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida + ')')
     
     if(medida != 1){
         input.setAttribute('onchange', 'derivado('+ i + ',' + id + ')');
-    }      
-
-    if(document.getElementById('borrar').checked){
-        input.setAttribute('disabled', 'disabled')
-    }
-
-
+    }   
+    else{
+        input.setAttribute('onchange', 'guardarTag('+ i + ',\'' + nombre + '\',' + 1 + ',' + contador + ',' + medida +  ')')
+    }   
     divmenor.appendChild(input);
     padre.appendChild(divmenor)
     return input.id;
@@ -475,6 +459,8 @@ function derivado(id, idtag){
     let number = id + 1
     let id2= 'hijo' + number;
     let hijo = document.getElementById(id2)
+
+    console.log(complejos)
 
     let route = '/archivo/derivados';    
 
@@ -504,9 +490,12 @@ function derivado(id, idtag){
                     contador = complejo.cont;
                 }
             });      
-            guardarTag(number, tagname, 1, contador, 4)
             let labpadre = document.getElementById("label-o-" + id).innerHTML
-            guardarTag(id, labpadre, 1, contador, 2)
+            guardarTagComplejo(labpadre, tagname, document.getElementById('hijo'+id).value, document.getElementById('hijo'+number).value, contador)
+
+            //guardarTag(number, tagname, 1, contador, 4)
+            
+           // guardarTag(id, labpadre, 1, contador, 2)
         },
         error: function(res){
             console.log(res)
@@ -712,9 +701,11 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
     let containerOp =  document.getElementById('comp-opcional'); //aca van los tags opcionales
     //
     let x = 0;
+    let k = 0;
     let bandera = 0;
     let tag1
     let tag2
+    let row
     //
     for(let i=0; i<tagcomplejoOb.length; i++){
         x++;
@@ -728,7 +719,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j] 
                     x++;
-                    insertarInputComplejo(tag1, tag2, x, containerOb)
+                    if(k % 2  == 0){
+                        row = document.createElement('div')
+                        row.className = 'row'
+                    }                    
+                    insertarInputComplejo(tag1, tag2, x, containerOb, row)                     
+                    k++
                 }                
             }
         }
@@ -745,7 +741,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    insertarInputComplejo(tag1, tag2, x, containerRe)
+                    if(k % 2  == 0){
+                        row = document.createElement('div')
+                        row.className = 'row'
+                    }                    
+                    insertarInputComplejo(tag1, tag2, x, containerRe, row)                     
+                    k++
                 }                
             }
         }
@@ -762,7 +763,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    insertarInputComplejo(tag1, tag2, x, containerOp)
+                    if(k % 2  == 0){
+                        row = document.createElement('div')
+                        row.className = 'row'
+                    }                    
+                    insertarInputComplejo(tag1, tag2, x, containerOp, row)                     
+                    k++
                 }                
             }
         }
@@ -772,16 +778,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
 function mostrarPagina(archivo){
     //TIPO 1: AGREGAR
     //TIPO 2: MODIFICAR
-    //TIPO 3: BORRAR
     let tipo 
     if(document.getElementById('guardar').checked){
         tipo = 1
     }
     else if(document.getElementById('modificar').checked){
         tipo = 2
-    }
-    else{
-        tipo = 3
     }
     //
     claves = document.getElementById('claves');
@@ -826,28 +828,18 @@ function mostrarPagina(archivo){
     document.getElementById('sec-recomendado').removeAttribute('hidden')
     document.getElementById('sec-opcional').removeAttribute('hidden')
     //
-    document.getElementById('sectags').removeAttribute("hidden");
-    if(tipo == 3){ //Se selecciono borrar
-        document.getElementById('claves').disabled=true; //No se deben poder modificar las claves
-        document.getElementById('div-btnborrar').removeAttribute("hidden"); //Mostramos el btn borrar
-        document.getElementById('div-btnguardar').hidden=true; //escondemos el btn guardar
-        document.getElementById('div-btnmodificar').hidden=true; //escondemos el btn modificar
-        document.getElementById('agregar').hidden=true; //ocultamos el añadir tags
+    document.getElementById('sectags').removeAttribute("hidden");    
+    document.getElementById('agregar').removeAttribute("hidden"); //Se muestra el añadir tags
+    document.getElementById('claves').removeAttribute("disabled"); //si estaban disabled las claves ya no lo están
+    if(tipo == 1){
+        document.getElementById('div-btnmodificar').hidden=true;
+        document.getElementById('div-btnguardar').removeAttribute("hidden");
     }
-    else{ //No se selecciono borrar
-        document.getElementById('agregar').removeAttribute("hidden"); //Se muestra el añadir tags
-        document.getElementById('claves').removeAttribute("disabled"); //si estaban disabled las claves ya no lo están
-        if(tipo == 1){
-            document.getElementById('div-btnborrar').hidden=true;
-            document.getElementById('div-btnmodificar').hidden=true;
-            document.getElementById('div-btnguardar').removeAttribute("hidden");
-        }
-        else{
-            document.getElementById('div-btnmodificar').removeAttribute("hidden"); 
-            document.getElementById('div-btnborrar').hidden=true;
-            document.getElementById('div-btnguardar').hidden=true;
-        }
+    else{
+        document.getElementById('div-btnmodificar').removeAttribute("hidden"); 
+        document.getElementById('div-btnguardar').hidden=true;
     }
+    
 }
 
 function ocultarPagina(){    
@@ -911,21 +903,18 @@ function insertarInputSimple(divmayor, tag, i){
     }  
 }
 
-function insertarInputComplejo(tag1, tag2, i, container){
+function insertarInputComplejo(tag1, tag2, i, container, divmayor){
     //Titulo del padre
     let texto = document.createElement("p");
     texto.innerHTML=tag1.descripcion
-    texto.className = 'complejos';
-    container.appendChild(texto);     
-    //Creamos una row
-    let divmayor=document.createElement("div")                                       
-    divmayor.className = "row";                                                
+    texto.className = 'complejos';                            
     container.appendChild(divmayor)
     //
     let contaComplejo = contadorComplejo(tag1.deschijo, tag2.deschijo)
     //
     let divmedio = document.createElement("div")
-    divmedio.className = "col-lg-6 col-md-12 row"   
+    divmedio.appendChild(texto);    
+    divmedio.className = "col-lg-6 col-md-12 row divmedio"   
     //
     let idinput1
     let idinput2
@@ -1058,21 +1047,17 @@ window.addEventListener("DOMContentLoaded", (event) => {
     const subtipo = document.getElementById('subtipo')
     const fecha = document.getElementById('fecha')
     const doc = document.getElementById('doc')
-
-    const borrarBtn = document.getElementById('borrar')
     const modificarBtn = document.getElementById('modificar')
     const guardarBtn = document.getElementById('guardar')
 
     const checkEnableButton = () => {    
         if(tipo.value!='sel' && subtipo.value!='sel' && doc.value!= ''){
-            borrarBtn.removeAttribute('disabled');
             modificarBtn.removeAttribute('disabled');            
             if(fecha.value != ''){
                 guardarBtn.removeAttribute('disabled');            
             }
         }        
         else{
-            borrarBtn.setAttribute('disabled', 'disabled');
             modificarBtn.setAttribute('disabled', 'disabled');
             guardarBtn.setAttribute('disabled', 'disabled');
         }   
@@ -1231,10 +1216,13 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
     let taghijo = null
     let claves = document.getElementById('claves')
     let ac=0
+    console.log(medida, tagname)
     if (medida == 2){
         input = document.getElementById('hijo' + idinput).value
         let num = idinput+1
         taghijo = document.getElementById('label-o-' + num).innerHTML
+        
+        console.log('guardando hijo ' + idinput + ' y ' + num)
     }
     else{
         if(medida == 0){
@@ -1311,7 +1299,7 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
                 claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
             }
         }
-        else{
+        else{ 
             if(claves.value.indexOf('<'+tagname+':')!= -1 && claves.value.indexOf('<'+taghijo+':')!= -1){ 
                 let firstP = -1, lastP = -1, comienza = 0, band= 0, guardado = 0
                 for (let i = 0; i<claves.value.length; i++){
@@ -1382,9 +1370,121 @@ function guardarTag(idinput, tagname, tipo, cont, medida){
     else{
         claves.value = claves.value + '<' + tagname + ':' + input.trim() + '>'
     }
-
-             
     
+    console.log(claves.value)             
+    
+}
+
+function guardarTagComplejo(tagpadre, taghijo, valpadre, valhijo, cont){
+    console.log('A guardar : <'+tagpadre+':'+valpadre+'><'+taghijo+':'+valhijo+'>')
+    let claves = document.getElementById('claves')
+    let ac=0
+    if(claves.value.indexOf('<'+tagpadre+':')!= -1 && claves.value.indexOf('<'+taghijo+':')!= -1){ 
+        console.log('Ya existen los tags')
+        let firstP = -1, lastP = -1, firstH = -1, lastH = -1, comienza = 0, band= 0, guardado = 0
+        for (let i = 0; i<claves.value.length; i++){
+            console.log('Analizando caracter ' + claves.value[i])
+            if(claves.value[i] == '<'){
+                console.log('comienza un tag')
+                //comienza un tag
+                comienza = 0;
+                i++;
+            }
+            if(comienza == 0 && firstP == -1){ 
+                let advance = 0                       
+                for(let j=0; j<tagpadre.length; j++){
+                    console.log(claves.value[i+j] + ' = '+ tagpadre[j] + ' ?')
+                    if(claves.value[i+j] != tagpadre[j]){
+                        band=1;
+                    }
+                    advance = j
+                } 
+                comienza = 1
+                if(band == 0){        
+                    console.log('El padre comienza en la posicion: ' + i + ' - 1')                    
+                    firstP = i-1; 
+                }           
+                else{
+                    firstP = -1
+                }   
+                i = i + advance;
+                console.log('El tag padre termina en la posicion: ' + i)   
+            }
+            if(claves.value[i] == '>'){
+                if(comienza == 1 && band == 0 && firstH == -1){
+                    lastP = i;
+                    comienza = 2
+                    console.log('Analizando si el siguiente es el hijo: ')      
+                    let j = 0
+                    for(let k=lastP+2; k<(lastP+2+taghijo.length); k++){       
+                        console.log(claves.value[k] + ' = ' + taghijo[j] + ' ?' )            
+                        if(claves.value[k] != taghijo[j]){
+                            band=1;
+                            break
+                        }
+                        j++;
+                    }            
+                    if(band == 0){
+                        console.log('El siguiente hijo empieza en ' + lastP + ' + 2')
+                        firstH = lastP+2
+                        console.log('Es decir empieza en el caracter: ' + claves.value[firstH])
+                    }  
+                    else{
+                        firstH = -1
+                    }              
+                }
+                console.log(firstH)
+                if(firstH != -1){
+                    console.log('existe un hijo')
+                    console.log(claves.value.length)
+                    for(let k=firstH; k<claves.value.length; k++){
+                        console.log(claves.value[k])
+                        if(claves.value[k] == '>'){
+                            lastH=k
+                            console.log('El hijo termina en posicion '+ k)
+                            break
+                        }
+                    }
+                }
+                if(comienza == 2 && band == 0){
+                    console.log(ac, cont)
+                    if(ac == cont){
+                        guardado = 1  
+                        break
+                    }
+                    else{
+                        ac++
+                    }                            
+                }
+                else{
+                    firstP = -1
+                    firstH = -1
+                    lastP = -1
+                    lastH = -1
+                    comienza = 0                        
+                    band=0                       
+                }
+            }                    
+        }
+        if(guardado == 1){
+            let stringNew = ''
+            for(let i=0; i<firstP; i++){
+                stringNew = stringNew + claves.value[i];
+            }
+            stringNew = stringNew + '<' + tagpadre + ':' + valpadre.trim() + '><' + taghijo + ':' + valhijo.trim() + '>';
+            for(let i=lastH+1; i<claves.value.length; i++){
+                stringNew = stringNew + claves.value[i];
+            }
+            claves.value = stringNew
+        }
+        else{
+            claves.value = claves.value + '<' + tagpadre + ':' + valpadre.trim() + '><' + taghijo + ':' + valhijo.trim() + '>';
+        }
+    }
+    else{
+        console.log('Aun no existen los tags')
+        claves.value = claves.value + '<' + tagpadre + ':' + valpadre.trim() + '><' + taghijo + ':' + valhijo.trim() + '>';
+    }
 }
 
 function contadorchar(label, input, max){
@@ -1495,48 +1595,9 @@ function popup(tipo, estado){
         else if(tipo ==2){           
             document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar el archivo.</p>'
         }
-        else{
-            document.getElementById('popBody').innerHTML = '<p>No se ha podido borrar el archivo.</p>'
-        }
     }    
     let pop= bootstrap.Modal.getOrCreateInstance(popEl)
     pop.show()
-}
-
-function borrar(){ 
-    let pdf = $("input[name=pdf]").val();
-    let tipo = document.getElementById('tipo').value;
-    let subtipo = document.getElementById('subtipo').value;
-    let doc = document.getElementById('doc').value;
-    let fecha = document.getElementById('fecha').value;
-    let orden = document.getElementById('orden').value;
-    let route = '/archivo/borrar';    
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $.ajax({
-        url: route,
-        type: 'DELETE',
-        cache: false,
-        data: ({
-            _token: $('#signup-token').val(),
-            tipo: tipo,
-            subtipo: subtipo,
-            doc: doc,
-            fecha: fecha,
-            orden: orden,
-            pdf: pdf
-        }),
-        //dataType: 'json',
-        success: function(res) {
-            popup(3, res)
-        },
-        error: function(res){
-            console.log(res)
-            popup(3, false)
-    }});
 }
 
 function modificar() {
@@ -1679,22 +1740,6 @@ function subirPDF(){
     document.getElementById('embedpdf').setAttribute('src', src)
     document.getElementById('previewpdf').removeAttribute('hidden')
 }
-
-/* function askEliminarPdf(){
-    let padre = document.getElementById('previewpdf')
-    /* let checkbox = document.createElement('input')
-    checkbox.type = "checkbox"
-    checkbox.id = 'askBorrar' 
-    let lab = document.createElement('label')
-    lab.setAttribute("for", "askBorrar")
-    lab.innerHTML = "Eliminar PDF de los archivos subidos"
-    let div = document.createElement('div')
-    div.id = "removePDF"
-    //div.appendChild(checkbox)
-    div.appendChild(lab)
-    padre.appendChild(div)
-}
- */
 
 function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);

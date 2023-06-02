@@ -32,7 +32,10 @@ body{
 .complejos{
     font-size: 15px;
     font-weight: bold !important;
-    margin-top: 10px;  
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
 }
 #btn-tag{
     margin-top: 8.5px;
@@ -124,4 +127,8 @@ td:hover{
 }
 .card .card-header, .card .card-body, .card .card-footer{
     padding: 5px 5px;
+}
+.divmedio{
+    padding: 7px;
+    justify-content: center;
 }

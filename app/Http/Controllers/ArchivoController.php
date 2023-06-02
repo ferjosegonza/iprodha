@@ -237,6 +237,7 @@ public function complejos(Request $request){
                 $query = $query . " OR dt.id_tag =" . strval($request->tags[$i]);
             } 
         }  
+        $query = $query . " order by id_tag, orden";
         $tags = DB::select( DB::raw($query));
     }
     else{
@@ -254,39 +255,6 @@ public function busquedaDirigida(Request $request){
             WHERE $busqueda->campo1 LIKE '%$request->texto%'";
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
-}
-
-public function borrar(Request $request){
-    //return $request;
-
-    $fecha = is_string($request->fecha) ? explode("-", $request->fecha) : null;
-    $subtipo = explode("|", $request->subtipo);
-    
-    $query = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
-        ->where('id_subtipoarchivo', '=', $subtipo[1])
-        ->where('nro_archivo', '=', $request->doc)
-        ->where('ano_archivo', '=', $fecha[0])
-        ->where('mes_archivo', '=', $fecha[1])
-        ->where('dia_archivo', '=', $fecha[2])
-        ->where('orden', '=', $request->orden)
-        ->where('id_tipocabecera', '=', 1)
-        ->first();      
-
-    $id = $query->id_archivo;
-    $res = Dig_archivos::find($id)->delete();      
-    $asunto = Dig_asunto::find($id);     
-    if($asunto){
-        $asunto->delete();
-    }
-    /* if($request->askpdf == 'on'){
-        $ruta = substr($query->path_archivo, 14);
-        $name = $query->nombre_archivo;
-        $file_path = public_path().$ruta.$name;
-        unlink($file_path);
-    } */
-    
-    return response()->json($res);        
-    
 }
 
 public function crear(Request $request){
@@ -392,17 +360,17 @@ public function modificar(Request $request){
 public function derivados(Request $request){
     $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
 
-    $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
+    
+    if( is_string($request->value)){
+        $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 like '%$request->value%'";
+    }
+    else{
+        $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
+    }
 
 
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
 }
-
-public function getUser(){
-    $user = auth()->user();
-    return response()->json($user);
-}
-
 }
 
