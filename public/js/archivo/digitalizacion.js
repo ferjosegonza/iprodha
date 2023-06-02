@@ -265,6 +265,21 @@ function checkArchivos(){
                         let taggeo = document.getElementById('taggeo')
                         taggeo.classList.remove('col-lg-9')
                         taggeo.classList.add('col-lg-12')
+                        let mes, dia
+                        if(res[i].mes_archivo.length == 1){
+                            mes = '0'+res[i].mes_archivo
+                        }
+                        else{
+                            mes = res[i].mes_archivo
+                        }
+                        if(res[i].dia_archivo.length == 1){
+                            dia = '0'+res[i].dia_archivo
+                        }
+                        else{
+                            dia = res[i].dia_archivo
+                        }
+                        let str= res[i].ano_archivo.toString() + '-' + mes + '-' + dia
+                        document.getElementById('fecha').value = str
                         mostrarPagina(res[i])
                     }
                     tablebody.appendChild(tr)
@@ -504,7 +519,7 @@ function derivado(id, idtag){
 }
 
 function cargarPDF(path, nombre){
-    let ruta = path + nombre
+    let ruta = path.substring(14) + nombre
     document.getElementById('embedpdf').setAttribute('src', ruta)
     let lab = document.createElement('label')
     lab.id = 'pdfname'
@@ -1638,6 +1653,7 @@ function modificar() {
             popup(2, res)
         },
         error: function(res){
+            console.log(res)
             popup(2, false)
     }});
 }
