@@ -339,24 +339,20 @@ public function modificar(Request $request){
     $archivo->orden = $request->orden;
     $res = $archivo->save();
     //
-    /* $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
-    if($asunto != null or $request->asunto != ''){
-        if($request->asunto == ''){
-            $asunto->delete();
+     $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
+    if($asunto != null or $request->asunto != ''){        
+        if($asunto == null){
+            $asunto = new Dig_asunto;
+            $asunto->id_archivo = $archivo->id_archivo;
+            $asunto->asunto = $request->asunto;
+            $asunto->save();
         }
         else{
-            if($asunto == null){
-                $asunto = new Dig_asunto;
-                $asunto->id_archivo = $archivo->id_archivo;
-                $asunto->asunto = $request->asunto;
-                $asunto->save();
-            }
-            else{
-                $asunto->asunto = $request->asunto;
-                $asunto->save();
-            }
-        }       
-    }    */
+            $asunto->asunto = $request->asunto;
+            $asunto->save();
+        }
+            
+    }   
     //
     return response()->json($res);    
 }
