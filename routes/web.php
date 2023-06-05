@@ -16,6 +16,7 @@ use App\Http\Controllers\Barrio\BarrioController;
 use App\Http\Controllers\Barrio\Fc_concosxbarrioController;
 use App\Http\Controllers\Barrio\barrio_terrenoController;
 use App\Http\Controllers\Barrio\BarrioXOrgController;
+use App\Http\Controllers\Barrio\fc_conxbarrioController;
 
 
 use App\Http\Controllers\CategorialaboralController;
@@ -150,6 +151,7 @@ Route::resource('terrenoSup',barrio_terrenoController::class);
 Route::delete('/dormXTerr/eliminar/{barrio}/{dor}/{terr}/{con}',[BarrioXOrgController::class,'destroy'])->name('dormXTerr.eliminar');
 Route::get('/barrio/{barrio}/dormXTerr',[BarrioXOrgController::class,'index'])->name('barrio.dormXTerr');
 Route::resource('dormXTerr',BarrioXOrgController::class);
+Route::get('/barrio/{barrio}/fc_conxbarrio',[fc_conxbarrioController::class,'index'])->name('barrio.fc_conxbarrio');
 
 Route::get('/obras84',function()
         {//return view('welcome');
