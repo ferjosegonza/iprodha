@@ -31,6 +31,7 @@ use App\Http\Controllers\Terrenos\TerrenosController;
 use App\Http\Controllers\pAlmacenController;
 use App\Http\Controllers\sectorController;
 use App\Http\Controllers\ArchivoController;
+use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
 
 /*
@@ -198,4 +199,9 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|CREAR-ARCHIVOS|D
     Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivos.digitalizar');
     Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');
     Route::put('archivo/modificar', [ArchivoController::class, 'modificar'])->name('archivos.modificar');
+});
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], function () {
+    Route::get('digesto', [DigestoController::class, 'index'])->name('digesto.index');
+    Route::get('digesto/buscar', [DigestoController::class, 'buscarArchivo'])->name('digesto.buscar');
 });
