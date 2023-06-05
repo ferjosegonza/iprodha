@@ -63,12 +63,35 @@
                                             <th scope="col" style="color:#fff">Acciones</th>
                                         </thead>
                                         <tbody>
-                                            @foreach($Fc_concosxbarrio as$unFc_concosxbarrio)
+                                            @php
+                                                $dor=0;
+                                                $ter=0;
+                                                $imp=0;
+                                            @endphp
+                                            @foreach($Fc_concosxbarrio as$unFc_concosxbarrio)                                                
+                                                @if($dor==0)
+                                                    @php
+                                                        $dor=$unFc_concosxbarrio->cantdorm;
+                                                        $ter=$unFc_concosxbarrio->idtipoterre;
+                                                    @endphp
+                                                @endif
+                                                @if($dor!=$unFc_concosxbarrio->cantdorm or $ter!=$unFc_concosxbarrio->idtipoterre)
+                                                    <tr>
+                                                        <td></td><td></td>
+                                                        <td class="p-3 mb-2 bg-warning text-dark">Total</td>
+                                                        <td>$ @php echo number_format($imp,2,',','.');@endphp</td>
+                                                    </tr>
+                                                    @php
+                                                        $dor=$unFc_concosxbarrio->cantdorm;
+                                                        $ter=$unFc_concosxbarrio->idtipoterre;
+                                                        $imp=0;
+                                                    @endphp                                                    
+                                                @endif                                                
                                                 <tr>
                                                     <td>{{$unFc_concosxbarrio->cantdorm}}</td>
                                                     <td>{{$unFc_concosxbarrio->superficie}}</td>                                                                                                        
                                                     <td>{{$unFc_concosxbarrio->concosto}}</td>
-                                                    <td>{{$unFc_concosxbarrio->importe}}</td>
+                                                    <td>$ {{number_format($unFc_concosxbarrio->importe*$unFc_concosxbarrio->sumaoresta,2,',','.')}}</td>
                                                     <td>                                                      
                                                         @method('DELETE')                                                        
                                                         {!!Form::open([
@@ -88,8 +111,14 @@
                                                         !!}                                                            
                                                         {!!Form::close()!!}                                                        
                                                     </td>
-                                                </tr>
+                                                </tr>  
+                                                @php $imp+=$unFc_concosxbarrio->importe*$unFc_concosxbarrio->sumaoresta;@endphp                                              
                                             @endforeach
+                                            <tr>
+                                                <td></td><td></td>
+                                                <td class="p-3 mb-2 bg-warning text-dark">Total</td>
+                                                <td>$ @php echo number_format($imp,2,',','.');@endphp</td>
+                                            </tr> 
                                         </tbody>
                                     </table>
                                 </div>

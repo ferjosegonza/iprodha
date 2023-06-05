@@ -29,10 +29,7 @@
                                                         @csrf                                                        
                                                         @can('EDITAR-BARRIO')
                                                             <a class="btn btn-info" href="{{route('barrio.editar',$unbarrio)}}">Editar</a>
-                                                        @endcan
-                                                        @can('VER-BARRIO')
-                                                            <a class="btn btn-info" href="{{route('barrio.verCostos',$unbarrio)}}">Costos</a>
-                                                        @endcan                                                        
+                                                        @endcan                                                                                                     
                                                         @method('DELETE')
                                                         @can('BORRAR-BARRIO')
                                                             {!!Form::open([
@@ -46,8 +43,9 @@
                                                             !!}                                                            
                                                             {!!Form::close()!!}
                                                         @endcan
-                                                        <a class="btn btn-info" href="{{route('barrio.terrenoSup',$unbarrio->barrio)}}">Superficies</a>
-                                                        <a class="btn btn-info" href="{{route('barrio.dormXTerr',$unbarrio->barrio)}}">Dormitorio x Terrenos</a>
+                                                        <a class="btn btn-info" href="{{route('barrio.terrenoSup',$unbarrio->barrio)}}">Sup.</a>
+                                                        <a class="btn btn-info" href="{{route('barrio.dormXTerr',$unbarrio->barrio)}}">Costos</a>
+                                                        <a class="btn btn-info" href="{{route('barrio.fc_conxbarrio',$unbarrio->barrio)}}">Detalle</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
