@@ -1,3 +1,6 @@
+let idoriginal
+let idmodificador
+
 function tipos(){ //Esta funcion maneja la selección de un tipo de archivo y sus subtipos
     if(document.getElementById('tipo').value == 'sel'){
         //Si no se selecciona un tipo se ocultan los subtipos y se pone un placeholder
@@ -105,15 +108,17 @@ function buscarArchivo(){
         }),
         dataType: 'json',
         success: function(res){  
-            document.getElementById('archivo-on').removeAttribute('hidden')
-            console.log(res)
-            card = document.getElementById('info-original')
-            console.log(res.claves_archivo)
-            card.innerHTML = res.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;') + '<br> <embed src="' + res.path_archivo + res.nombre_archivo +'" width="100%" height="600">'
+            idoriginal = res.id_archivo
+            document.getElementById('archivo-on').removeAttribute('hidden')                        
+            document.getElementById('claves-org').innerHTML = res.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;') 
+            document.getElementById('emb-org').setAttribute('src', res.path_archivo + res.nombre_archivo)
+            document.getElementById('preview-org').removeAttribute('hidden')
+            document.getElementById('buscador-modif').removeAttribute('hidden')
             document.getElementById('buscador-org').setAttribute('hidden', 'hidden')
         },
         error: function(res){
             console.log(res)
+            popup(-2)
         }
     }); 
 }
@@ -140,19 +145,18 @@ function buscarArchivoModificador(){
             doc:doc
         }),
         dataType: 'json',
-        success: function(res){      
+        success: function(res){  
+            idmodificador = res.id_archivo    
             console.log(res)        
-            document.getElementById('buscador-modif').setAttribute('hidden', 'hidden')            
-            card = document.getElementById('archivo-on')
-            let instanciar = document.createElement('div')
-            instanciar.innerHTML = '<div class="col-lg-12"><div class="card-head"><h5>Modificador</h5></div><div class="card-body">'+ res.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;') + '<br> <embed src="' + res.path_archivo + res.nombre_archivo +'" width="100%" height="450">' 
-            instanciar.innerHTML = instanciar.innerHTML + '</div></div><div class="col-lg-12"><h6>Cargar Observaciones</h6><textarea id="observaciones" onkeyup="contadorchar(\'lab-obs\',\'observaciones\',500)"></textarea><label for="observaciones" id="lab-obs">Quedan 500 caracteres</label><button type="button" class="btn btn-success btn-block" onclick="guardar">Guardar Relación</button></div>'
-            instanciar.className= 'col-lg-8 card'
-            instanciar.id = 'preview-modificador'
-            card.appendChild(instanciar)
+            document.getElementById('buscador-modif').setAttribute('hidden', 'hidden')  
+            document.getElementById('preview-modificador').removeAttribute('hidden')
+            document.getElementById('claves-modif').innerHTML = res.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;') 
+            document.getElementById('emb-modif').setAttribute('src', res.path_archivo + res.nombre_archivo)
+            
         },
         error: function(res){
             console.log(res)
+            popup(-2)
         }
     }); 
 }
@@ -171,6 +175,62 @@ function contadorchar(label, input, max){
 
 }
 
+function volveralbuscador(){
+    document.getElementById('archivo-on').setAttribute('hidden', 'hidden')
+    document.getElementById('preview-org').setAttribute('hidden', 'hidden')
+    document.getElementById('preview-modificador').setAttribute('hidden', 'hidden')
+    document.getElementById('buscador-modif').setAttribute('hidden', 'hidden')
+    document.getElementById('buscador-org').removeAttribute('hidden')
+    idoriginal = null
+    idmodificador = null
+    document.getElementById('doc').value = null
+    document.getElementById('doc2').value = null
+}
+
 function guardar(){
-    
+    let obs = document.getElementById('observaciones').value
+    //
+    let route = 'digesto/guardar'
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id0:idoriginal,
+            idn:idmodificador,
+            obs:obs
+        }),
+        dataType: 'json',
+        success: function(res){              
+            popup(1)
+        },
+        error: function(res){
+            console.log(res)
+            popup(-1)
+        }
+    }); 
+}
+
+function popup(estado){  
+    let popEl = document.getElementById('popup')
+    if(estado == 1){
+        document.getElementById('popTitulo').innerHTML = 'Éxito'
+        document.getElementById('popBody').innerHTML = '<p>Se ha guardado el digesto.</p>'             
+    }
+    else if(estado == -1){
+        document.getElementById('popTitulo').innerHTML = 'Error'
+        document.getElementById('popBody').innerHTML = '<p>No se ha podido guardar el digesto.</p>'            
+    }    
+    else if(estado == -2){
+        document.getElementById('popTitulo').innerHTML = 'Error'
+        document.getElementById('popBody').innerHTML = '<p>No se ha podido encontrar el archivo.</p>'            
+    }    
+    let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+    pop.show()
 }
