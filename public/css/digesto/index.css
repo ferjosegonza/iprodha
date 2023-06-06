@@ -40,10 +40,13 @@ tr{
     justify-content: center;
     border: 1px solid rgba(95, 95, 95, 0.418);
     padding: 5px;
-    display: grid;
+    display: block;
 }
 tr:hover{
     background-color: rgba(128, 128, 128, 0.226);
+}
+table{
+    width: 100%;
 }
 .quitar{
     float: right;
@@ -51,6 +54,7 @@ tr:hover{
     display: grid;
     align-content: center;
     margin-left: 5px;
+    width: 20px;
 }
 #btn-agregar-area{
     height: 30px;
