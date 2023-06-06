@@ -40,6 +40,7 @@ tr{
     justify-content: center;
     border: 1px solid rgba(95, 95, 95, 0.418);
     padding: 5px;
+    display: grid;
 }
 tr:hover{
     background-color: rgba(128, 128, 128, 0.226);
