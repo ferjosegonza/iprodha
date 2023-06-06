@@ -325,20 +325,19 @@ public function crear(Request $request){
 
 public function modificar(Request $request){
     //return $request;
-    //
     $fecha = is_string($request->fecha) ? explode("-", $request->fecha) : null;
     $subtipo = explode("|", $request->subtipo);
     //
-    $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
-                ->where('id_subtipoarchivo','=', $subtipo[1])
-                ->where('nro_archivo','=', $request->doc)
-                ->where('ano_archivo','=',$fecha[0])
-                ->where('mes_archivo','=',$fecha[1])
-                ->where('dia_archivo','=',$fecha[2])
+    $archivo = Dig_archivos::where('id_archivo','=', $request->id)
                 ->first();
     //
     $archivo->claves_archivo = $request->claves;
     $archivo->orden = $request->orden;
+    $archivo->ano_archivo = $fecha[0];
+    $archivo->mes_archivo = $fecha[1];
+    $archivo->dia_archivo = $fecha[2];
+    $archivo->id_tipoarchivo = $request->tipo;
+    $archivo->id_subtipoarchivo = $subtipo[1];
     $res = $archivo->save();
     //
      $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
