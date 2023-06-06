@@ -308,7 +308,7 @@ function actualizarTabla(){
             while(table.hasChildNodes()){
                 table.removeChild(table.lastChild)
             }
-            if (res!=null){
+            if (res.length>0){
                 for(let i = 0; i<res.length; i++){
                     let tr = document.createElement('tr')
                     id='tr'+i
@@ -319,8 +319,8 @@ function actualizarTabla(){
             }
             else{
                 let tr = document.createElement('tr')
-                    tr.innerHTML = 'Aun no existen areas asignadas'
-                    table.append(tr)
+                tr.innerHTML = 'Aun no existen areas asignadas'
+                table.append(tr)
             }                    
         },
         error: function(res){
