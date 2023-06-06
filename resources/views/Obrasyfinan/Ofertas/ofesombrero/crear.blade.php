@@ -26,14 +26,14 @@
                                     <div class="row">
                                         <div class="col-6 m-auto">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="{{$i->idconceptosombrero}}" id="flexCheckDefault" name="conceptos[]">
-                                                <label class="form-check-label" for="flexCheckDefault">
+                                                <input class="form-check-input" type="checkbox" value="{{$i->idconceptosombrero}}" id="flexCheckDefault{{$i->idconceptosombrero}}" name="conceptos[]">
+                                                <label class="form-check-label" for="flexCheckDefault{{$i->idconceptosombrero}}">
                                                     {{$i->conceptosombrero}}
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" class="form-control" name="valores[]" step=".01">
+                                            <input type="number" class="form-control" name="valores[]" step=".01" value=0>
                                         </div>
                                     </div> 
                                 </div>
@@ -47,8 +47,8 @@
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofesombreroxobra.indexx',$unaObra->idobra], 'style' => '']) !!}
-                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-outline-primary']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofesombreroxobra.indexx', base64url_encode($unaObra->idobra)], 'style' => '']) !!}
+                                        {!! Form::submit('Cancelar', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
@@ -58,39 +58,5 @@
                 </div>
             </div>
         </div>
-        {{-- {!! Form::open(['route' => 'ofesombreroxobra.store', 'method' => 'POST']) !!}
-        @include('layouts.modal.mensajes')
-        <div style="width:99%;float:left;">
-            <div hidden>
-                {!! Form::label('Id Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                {!! Form::text('idobra', null, ['class' => 'form-control']) !!}
-            </div>
-        </div>
-        <div>
-            <div hidden>
-                {!! Form::label('Id Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                {!! Form::text('idobra',  $unaObra->idobra, ['class' => 'form-control']) !!}
-            </div>
-            <div style="width:95%; float:left;">
-                {!! Form::label('Conceptos :', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-            </div>
-                {!! Form::open(array('method'=>'post')) !!}
-                    @foreach ( $losConceptos as $sombrero => $i ) 
-                        <div style="width:40%; float:left;">
-                            {!! Form::checkbox('conceptos[]', $i->idconceptosombrero) !!}
-                            {!! Form::label($i->conceptosombrero, $i->conceptosombrero,['class' => 'control-label']) !!}
-                            {!! Form::number('valores[]', null, [ 'class' => 'form-control','style' => 'white-space: nowrap;width:20%;']) !!}
-                        </div>
-                    @endforeach
-                {!! Form::close() !!}
-                    @can('CREAR-OBRAS')
-                @endcan
-            
-            {!! Form::submit('Guardar', ['class' => 'btn btn-warning']) !!}
-            {!! Form::close() !!}
-                {!! Form::open(['method' => 'GET', 'route' => ['ofesombreroxobra.indexx',$unaObra->idobra], 'style' => 'display:inline']) !!}
-                {!! Form::submit('Cancelar', ['class' => 'btn btn-primary my-3']) !!}
-                {!! Form::close() !!}
-        </div> --}}
     </section>
 @endsection

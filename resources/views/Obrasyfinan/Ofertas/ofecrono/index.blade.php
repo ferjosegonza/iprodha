@@ -10,7 +10,7 @@
         <div class="section-header" >
             {{-- <h3 class="titulo">Cronograma para Obra n°: {{decrypt($id)}}</h3> --}}
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
-                <h3 class="titulo my-auto">Cronograma para Obra n°: {{decrypt($id)}}</h3>    
+                <h3 class="titulo my-auto">Cronograma para Obra n°: {{base64url_decode($id)}}</h3>    
             </div>
             <div class="col-lg-5 my-auto">
             </div>
@@ -97,7 +97,7 @@
     </section>
 
 <script>
-    let obra = {{ decrypt($id) }};
+    let obra = {{ base64url_decode($id) }};
 </script>
 <script src="{{ asset('js/Obrasyfinan/Ofertas/index_crono.js') }}"></script>
     

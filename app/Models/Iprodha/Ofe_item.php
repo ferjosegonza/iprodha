@@ -4,15 +4,18 @@ namespace App\Models\Iprodha;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Iprodha\Ofe_obra;
-//use App\Models\Iprodha\Ofe_subitem;
 
 class Ofe_item extends Model
 {
-    use HasFactory;    
-    public $timestamps = false;    
+    use HasFactory;   
+
+    public $timestamps = false; 
+
+    public $incrementing = false;
+
     protected $table = 'iprodha.ofe_item';
+
     protected $primaryKey = 'iditem';
-    public $incrementing = true;
   
     protected $fillable = [ 
         'idobra',

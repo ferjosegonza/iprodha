@@ -8,7 +8,7 @@
             </div>
             <div class="ms-auto">
                 @if ($unaObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
-                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear',$unItem->iditem]]) !!}
+                    {!! Form::open(['method' => 'GET', 'class' => '', 'route' =>['ofeobraitemdet.crear', base64url_encode($unItem->iditem)]]) !!}
                     {!! Form::submit('Crear Sub-Item', ['class' => 'btn  btn-success mt-2 ']) !!}
                     {!! Form::close() !!}
                 @endif
@@ -26,8 +26,7 @@
                             </div> --}}
                             <div class="table-responsive">
                                 <table id="example" class="table table-hover mt-2">
-                                    <thead>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Item</th>                        
+                                    <thead>                     
                                         <th class="text-center" scope="col" style="color:#fff;width:25%;">Denominación</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:15%;">Unidad</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Cantidad</th>
@@ -40,7 +39,6 @@
                                     <tbody>                        
                                         @foreach ($subitemxitem as $unSubItem)
                                             <tr>
-                                                <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->iditem }}</td>
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->denominacion }}</td>                                
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->getUnidad->unidad }}</td>
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->cantidad }}</td>
@@ -48,11 +46,12 @@
                                                 <td class="text-center" style="vertical-align: middle;">@money($unSubItem->cantidad * $unSubItem->costounitario)</td>
                                                 @if ($unaObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                                 <td class="text-center" style="vertical-align: middle;">
-                                                        {!! Form::open(['method' => 'GET','route' => ['ofeobraitemdet.editar',$unSubItem->idsubitem,$unItem->iditem ],'style' => 'display:inline',]) !!}
+                                                        {!! Form::open(['method' => 'GET','route' => ['ofeobraitemdet.edit', base64url_encode($unSubItem->idsubitem)],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Editar', ['class' => 'btn btn-warning']) !!}
-                                                        {!! Form::close() !!}                                    
+                                                        {!! Form::close() !!}
+
                                                         {!! Form::open([
-                                                            'method' => 'DELETE','route' => ['ofeobraitemdet.eliminar',$unSubItem->idsubitem,$unItem->iditem],'style' => 'display:inline',]) !!}
+                                                            'method' => 'DELETE','route' => ['ofeobraitemdet.destroy', $unSubItem->idsubitem],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('¿Está seguro que desea ELIMINAR el subitem?')",]) !!}
                                                         {!! Form::close() !!}
                                                 </td>
@@ -67,7 +66,7 @@
                 </div>    
                 
              
-                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta',encrypt($unaObra->idobra)], 'style' => 'display:inline']) !!}
+                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobraitems.itemsoferta', base64url_encode($unaObra->idobra)], 'style' => 'display:inline']) !!}
                         {!! Form::submit('Volver', ['class' => 'btn btn-primary mt-2']) !!}
                     {!! Form::close() !!}                    
             </div>
