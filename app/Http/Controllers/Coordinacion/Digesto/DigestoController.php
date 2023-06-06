@@ -23,7 +23,8 @@ class DigestoController extends Controller
        // $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->get(); se necesita agregar un atributo de modificable
         $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
         $areas = Vw_dig_areas::orderBy('area')->get();
-        return view('digesto.index')
+        return view('Digesto.index')
+
         ->with('tipos', $tipos)
         ->with('subtipos', $subtipos)
         ->with('areas', $areas);

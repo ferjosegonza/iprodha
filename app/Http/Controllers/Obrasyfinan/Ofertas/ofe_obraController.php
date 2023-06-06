@@ -1,8 +1,6 @@
 <?php
 namespace App\Http\Controllers\Obrasyfinan\Ofertas;
 
-//use App\Models\Iprodha\Obras;
-
 use App\Models\Iprodha\Ofe_obra;
 use App\Models\Iprodha\Localidad;
 use App\Models\Me\Expediente;
@@ -34,21 +32,15 @@ class ofe_obraController extends Controller
 
     function __construct()
     {
-        /*$this->middleware('auth');
-        $this->middleware('permission:VER-OBRAS|CREAR-OBRAS|EDITAR-OBRAS|BORRAR-OBRAS', ['only' => ['index']]);
-        $this->middleware('permission:CREAR-OBRAS', ['only' => ['create','store']]);
-        $this->middleware('permission:EDITAR-OBRAS', ['only' => ['edit','update']]);
-        $this->middleware('permission:BORRAR-OBRAS', ['only' => ['destroy']]);*/
+        $this->middleware('auth');
+        $this->middleware('permission:VER-OFEOBRA|CREAR-OFEOBRA|EDITAR-OFEOBRA|BORRAR-OFEOBRA', ['only' => ['index']]);
+        $this->middleware('permission:CREAR-OFEOBRA', ['only' => ['create','store']]);
+        $this->middleware('permission:EDITAR-OFEOBRA', ['only' => ['edit','update']]);
+        $this->middleware('permission:BORRAR-OFEOBRA', ['only' => ['destroy']]);
     }
     
     public function index(Request $request)
     {        
-        /*if(Auth::user()->hasRole('EMPRESA')){
-            $editaTodo=false;
-        }else{
-            $editaTodo=true ;
-        }
-    */
         $LaEmpresa = Empresa::where('iduserweb','=',Auth::user()->id)->first();
         if(empty($LaEmpresa)) {
             $Ofertas = Ofe_obra::all();
@@ -69,8 +61,15 @@ class ofe_obraController extends Controller
     public function create(Request $request)
     {
         $input = $request->all();
-        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
-        $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp'); 
+        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc');
+
+        // if(Auth::user()->hasRole('EMPRESA')){
+        //     $Empresa= Empresa::where('iduserweb' ,Auth::user()->id)->orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        // }else{
+        //     $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        // }
+        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        $Empresa= Empresa::orderBy('nom_emp')->get();
         $TipoContrato= Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 
         return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato'));
     }
@@ -86,41 +85,27 @@ class ofe_obraController extends Controller
             'publica' => 'required',
             'anioymes' => 'required',
             'plazo' => 'required|min:1|max:999|numeric',
-        ]);              
-        
-        $input = $request->all();
-        $laOferta = new Ofe_obra;
-        $laOferta->nomobra = strtoupper($request->input('nomobra'));
-        $laOferta->idexpediente = $request->input('idexpediente');
-        $laOferta->idloc = $request->input('idloc');
-        $laOferta->idempresa = $request->input('idempresa');
-        $laOferta->moninf = $request->input('moninf');
-        $laOferta->monviv = $request->input('monviv');
-        $laOferta->monnex = $request->input('monnex');
-        $laOferta->montotope = $request->input('montotope');
-        $laOferta->plazo = $request->input('plazo');
-        $laOferta->publica = $request->input('publica');
-        $laOferta->idtipocontratofer = $request->input('idtipocontrato');
-        $laOferta->numofer = '1';
+        ], [
+            'publica.required' => 'La fecha de publicacion no puede estar vacio.'
+        ]);
 
-        $laOferta->aniocotizacion = date("Y", strtotime($request->input('anioymes')));
-        $laOferta->mescotizacion = date("m", strtotime($request->input('anioymes')));
+        $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
 
-        $data = Ofe_obra::latest('idobra')->first();
-        if (isset($data)){
-            if(($data['idobra'] )=='') {
-                $laOferta->idobra=    1;
-            }else{
-                $laOferta->idobra= $data['idobra'] +1;
-            }
-        }else{
-
-            $laOferta->idobra= 1;
-        }
-        
-        $laOferta->save();
+        $laOferta = Ofe_obra::create([
+            'nomobra' => strtoupper($request->input('nomobra')),
+            'idloc' => $request->input('idloc'),
+            'idempresa' => $request->input('idempresa'),
+            'idtipocontratofer' =>  $request->input('idtipocontrato'),
+            'publica' => $request->input('publica'),
+            'idexpediente' => $request->input('idexpediente'),
+            'montotope' => $montotope,
+            'plazo' => $request->input('plazo'),
+            'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+            'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+            'numofer' => 1,
+        ]);
         Ofe_estadoxobra::create(['idobra' => $laOferta->idobra, 'idestado' => 1]);
-        $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;;
+        $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;
         $datOfe = Ofe_obra::where('idobra', $laOferta->idobra)->first();
 
         try {
@@ -133,127 +118,141 @@ class ofe_obraController extends Controller
     
     public function edit( $idobra)
     {
-            
-            $unaOferta = Ofe_obra::find(decrypt($idobra));
-            $Localidad= Localidad::pluck('nom_loc','id_loc');
-            // return $unaOferta->getTipoOferta;
-            if(Auth::user()->hasRole('EMPRESA')){
-                $Empresa = Empresa::where('iduserweb','=',Auth::user()->id)->pluck('nom_emp', 'id_emp');
-                $TipoContrato = Ofe_tipocontratoferta::where('idtipocontratofer', '=', $unaOferta->idtipocontratofer)->pluck('tipocontratofer','idtipocontratofer');
-            }else{
-                $Empresa = Empresa::pluck('nom_emp','id_emp'); 
-                $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
-            }
-             
-            return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato'));
-            //return view('ofeObra.editar', ['unaOferta' => $unaOferta]);
+        $unaOferta = Ofe_obra::find(base64url_decode($idobra));
+        $Localidad= Localidad::pluck('nom_loc','id_loc');
 
+        if(Auth::user()->hasRole('EMPRESA')){
+            $Empresa = Empresa::where('iduserweb','=',Auth::user()->id)->get();
+            $TipoContrato = Ofe_tipocontratoferta::where('idtipocontratofer', '=', $unaOferta->idtipocontratofer)->pluck('tipocontratofer','idtipocontratofer');
+        }else{
+            $Empresa = Empresa::get(); 
+            $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
+        }
+            
+        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato'));
     }
-    public function show(){ 
+
+    public function show()
+    { 
         return redirect()->route('ofeobra.crear');
     }   
 
     
-    public function update(Request $request,$idobra)
+    public function update(Request $request, $idobra)
     {   
-        // return $request->input();
-        // return date("m", strtotime($request->input('aymcot')));
-        $this->validate($request, [
-            'nomobra' => 'required|min:10|max:150|string',
-            'idexpediente' => 'required|min:0|max:999999|numeric',
-            'idloc' => 'required',
-            'idempresa' => 'required',
-            'idtipocontrato' => 'required',
-            'anioymes' => 'required',
-            'publica' => 'required',
-            'plazo' => 'required|min:1|max:999|numeric',
-        ]);        
-        $input = $request->all();
-        $laOferta = Ofe_obra::find(decrypt($idobra));
-        
-        $laOferta->nomobra = strtoupper($request->input('nomobra'));
-        $laOferta->idexpediente = $request->input('idexpediente');
-        $laOferta->idloc = $request->input('idloc');
-        $laOferta->idempresa = $request->input('idempresa');
-        $laOferta->plazo = $request->input('plazo');
-        $laOferta->idtipocontratofer = $request->input('idtipocontrato');
-        $laOferta->numofer = '1';
-        $laOferta->publica = $request->input('publica');
-        $laOferta->aniocotizacion = date("Y", strtotime($request->input('anioymes')));
-        $laOferta->mescotizacion = date("m", strtotime($request->input('anioymes')));
-        $laOferta->save();
-        //return $laOferta;
-        return redirect()->route('ofeobra.index')->with('mensaje','Oferta '.$request->input('nomobra').' editado con éxito!.');       
-        
+        if (Auth::user()->hasRole('EMPRESA')){
+            $this->validate($request, [
+                'anioymes' => 'required',
+                'plazo' => 'required|min:1|max:999|numeric',
+            ]);
+
+            $laOferta = Ofe_obra::find(base64url_decode($idobra));
+            $laOferta->update([
+                'plazo' => $request->input('plazo'),
+                'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+                'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+            ]);
+
+        }else{
+            $this->validate($request, [
+                'nomobra' => 'required|min:10|max:150|string',
+                'idexpediente' => 'required|min:0|max:999999|numeric',
+                'idloc' => 'required',
+                'idempresa' => 'required',
+                'idtipocontrato' => 'required',
+                'anioymes' => 'required',
+                'publica' => 'required',
+                'plazo' => 'required|min:1|max:999|numeric',
+            ]);
+            $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
+            $laOferta = Ofe_obra::find(base64url_decode($idobra));
+            $laOferta->update([
+                'nomobra' => strtoupper($request->input('nomobra')),
+                'idexpediente' => $request->input('idexpediente'),
+                'idloc' => $request->input('idloc'),
+                'idempresa' => $request->input('idempresa'),
+                'plazo' => $request->input('plazo'),
+                'idtipocontratofer' => $request->input('idtipocontrato'),
+                'publica' => $request->input('publica'),
+                'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+                'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+                'montotope' => $montotope,
+            ]);
+
+        }
+        return redirect()->route('ofeobra.index')->with('mensaje','La Oferta '.$laOferta->nomobra.' editado con éxito!.');            
     }
         
     public function destroy($idobra)
-    {        
-        Ofe_estadoxobra::where('idobra', '=', $idobra)->delete();
-        $laOferta = Ofe_obra::find($idobra);
-        $laOferta->delete();
-        return redirect()->route('ofeobra.index')->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');//->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');  
+    {     
+        return redirect()->route('ofeobra.index')->with('mensaje','Funcionalidad en desarrollo.');
+        // return Ofe_estadoxobra::where('idobra', '=', $idobra)->get();
+        // Ofe_estadoxobra::where('idobra', '=', $idobra)->delete();
+        // return 1;
+        // $laOferta = Ofe_obra::find($idobra);
+        // $laOferta->delete();
+        // return redirect()->route('ofeobra.index')->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');
     }    
 
     public function presentarOferta($idobra)
     {
         //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 2]);  
-        //return $idobra;
-        $data = Vw_ofe_obra_valida::where('idobra', '=', decrypt($idobra))->first();
-        $items = Vw_ofe_items::where('idobra', '=', decrypt($idobra))->get();
-        $cronograma = Vw_ofe_cronograma::where('idobra', '=', decrypt($idobra))->orderBy('mes')->get();
-        $sombreros = Ofe_sombrero::where('idobra', '=', decrypt($idobra))->get();
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
         // return $cronograma->where('iditem', 4)->all();
         // return is_null($cronograma->where('iditem', 6)->where('mes', 1)->first());
-        $obra=Ofe_obra::where('idobra','=',decrypt($idobra))->first();
+        $obra=Ofe_obra::where('idobra','=', $idobra)->first();
               
         //return $tipoContrato;
 
         // return $sombreros->where('idconceptosombrero', 10)->first()->valor;
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
-        ->with('data',$data)
-        ->with('items',$items)
-        ->with('cronograma',$cronograma)
-        ->with('obra', $obra)
-        ->with('sombreros',$sombreros);
+            ->with('data', $data)
+            ->with('items', $items)
+            ->with('cronograma', $cronograma)
+            ->with('obra', $obra)
+            ->with('sombreros', $sombreros);
     }
 
     public function presentarSave($idobra){
-        //  return decrypt($idobra);
-        Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 2]);
+        $idobra = base64url_decode($idobra);
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 2]);
         return redirect()->route('ofeobra.index')->with('mensaje','Se presentó la oferta de obra con exito.');
     }
 
     public function verValidarOferta($idobra){
-        $data = Vw_ofe_obra_valida::where('idobra', '=', decrypt($idobra))->first();
-        $obra = Ofe_obra::where('idobra','=',decrypt($idobra))->first();
-        $cronograma = Vw_ofe_cronograma::where('idobra', '=', decrypt($idobra))->orderBy('mes')->get();
-        $sombreros = Ofe_sombrero::where('idobra', '=', decrypt($idobra))->get();
-        $items = Vw_ofe_items::where('idobra', '=', decrypt($idobra))->get();
-        // return $obra->getItems;
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $obra = Ofe_obra::where('idobra', $idobra)->first();
+        $cronograma = Vw_ofe_cronograma::where('idobra', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', $idobra)->get();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
         return view('Obrasyfinan.Ofertas.ofeobra.validar',compact('obra','data', 'cronograma', 'sombreros', 'items'));
-        // return "Entro en verValidarOferta con id en ".decrypt($idobra);
     }
 
     public function validarOferta($idobra)
     {
-        // return 'Cuidado al ingresar aca';
-        //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 3]);
-        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $idobra = base64url_decode($idobra);
+
+        $datOfe = Ofe_obra::where('idobra', $idobra)->first();
         $email = strval(Empresa::where('id_emp', $datOfe->idempresa)->first()->email);
         $result = null;
         $procedureName = 'iprodha.SP_OFE_MIGRAOBRA';
         $bindings = [
-            'idobra'  => decrypt($idobra),
+            'idobra'  => $idobra,
             'result' => [
                 'value' => &$result,
                 'length' => 1000,
             ],
         ];
-        // return $idobra;
+        
         $succeeded = DB::executeProcedure($procedureName, $bindings);
 
         if($succeeded) {
+            Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 3]);
             try {
                 Mail::to($email)->send(new AceptarOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
                 return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
@@ -268,23 +267,22 @@ class ofe_obraController extends Controller
 
     public function rechazarOferta(Request $request, $idobra)
     {
+        $idobra = base64url_decode($idobra);
         $comentario = $request->input('comentario');
         $name = $request->input('nom_emp');
         $oferta = $request->input('nombobra');
         $subject = "Asunto del correo";
-        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $datOfe = Ofe_obra::where('idobra', $idobra)->first();
         $email = Empresa::where('id_emp', $datOfe->idempresa)->first()->email;
 
         
-
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 4]);
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 1]);
+        
         try {
             Mail::to($email)->send(new RechazarOfeObra($name, $oferta, $comentario));
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
             return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.');
         } catch (Throwable $e) {
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
             return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.')->with('error', 'No se pudo mandar el email');
         }
     }
