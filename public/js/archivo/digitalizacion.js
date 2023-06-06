@@ -16,6 +16,8 @@ class complejo{
 var elementos = []
 var complejos = []
 
+var archivoid
+
 function tipos(){ //Esta funcion maneja la selección de un tipo de archivo y sus subtipos
     if(document.getElementById('tipo').value == 'sel'){
         //Si no se selecciona un tipo se ocultan los subtipos y se pone un placeholder
@@ -161,7 +163,7 @@ function existeCheck(){
             //La operación es válida
             if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
             || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
-                mostrarPagina(res);  
+                mostrarPagina(res);                  
             }
             else{
                 document.getElementById('sectags').hidden=true;
@@ -793,7 +795,9 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
 
 function mostrarPagina(archivo){
     //TIPO 1: AGREGAR
+    console.log(archivo)
     //TIPO 2: MODIFICAR
+    archivoid = archivo.id_archivo
     let tipo 
     if(document.getElementById('guardar').checked){
         tipo = 1
@@ -1646,8 +1650,8 @@ function modificar() {
             claves: claves,
             orden: orden, 
             pdf: pdf,
-            asunto: asunto
-
+            asunto: asunto,
+            id: archivoid
         }),
         dataType: 'json',
         success: function(res) {
@@ -1655,14 +1659,19 @@ function modificar() {
         },
         error: function(res){
             console.log(res)
+            console.log(res.responseText)
             popup(2, false)
     }});
 }
 
 function guardar(){
+    let pdf
     let pdfFile = document.getElementById('pdf')
-    let pdf = pdfFile.files[0]
-    let pdfName = document.getElementById('pdfname').innerHTML
+    let pdfName
+    if(pdfFile!=undefined){
+       pdf = pdfFile.files[0] 
+       pdfName = document.getElementById('pdfname').innerHTML
+    }        
     let tipo = document.getElementById('tipo').value
     let subtipo =  document.getElementById('subtipo').value
     let doc = document.getElementById('doc').value
@@ -1673,8 +1682,11 @@ function guardar(){
 
 
     let dataForm = new FormData();
-    dataForm.append('pdf', pdf);
-    dataForm.append('pdfname', pdfName);
+    
+    if(pdfFile!=undefined){
+        dataForm.append('pdf', pdf);
+        dataForm.append('pdfname', pdfName);
+    }      
     dataForm.append('tipo', tipo);
     dataForm.append('subtipo', subtipo);
     dataForm.append('doc', doc);
