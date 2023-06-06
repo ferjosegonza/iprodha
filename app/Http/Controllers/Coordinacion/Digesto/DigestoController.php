@@ -8,6 +8,7 @@ use App\Models\Iprodha\Dig_tipoarchivo;
 use App\Models\Iprodha\Dig_archivos;
 use App\Models\Iprodha\Dig_subtipoarchivo;
 use App\Models\Iprodha\Dig_digesto;
+use App\Models\Iprodha\Dig_digesto_areas;
 use App\Models\Personal\Vw_dig_areas;
 
 
@@ -49,6 +50,30 @@ class DigestoController extends Controller
 
         $digesto = new Dig_digesto;
         $res = $digesto->guardar($request->id0, $request->idn, $request->obs);
+        return $res;
+    }
+
+    public function areas(Request $request){
+        $data = Dig_digesto_areas::where('id_archivo', '=', $request->id)
+                ->join('PERSONAL.VW_DIG_AREAS', 'PERSONAL.VW_DIG_AREAS.idarea', '=', 'iprodha.dig_digesto_areas.id_area')
+                ->get();
+        //$areas_original = Dig_digesto_areas::where('id_archivo', '=', $request->id)->get();
+        return response()->json($data);
+    }
+
+    public function remove_area(Request $request){
+        $area = Dig_digesto_areas::where('id_archivo', '=', $request->id_archivo)
+                ->where('id_area', '=', $request->id_area)
+                ->first();
+        $res = $area->delete();
+        return $res;
+    }
+
+    public function add_area(Request $request){
+        $area = new Dig_digesto_areas;
+        $area->id_area = $request->id_area;
+        $area->id_archivo = $request->id_archivo;
+        $res = $area->save();
         return $res;
     }
 }

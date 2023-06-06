@@ -85,7 +85,7 @@ $(document).ready(function() {
     $("#subtipo option:first").attr('selected','selected');
 });
 
-function buscarArchivo(){
+function buscarArchivo(estado){
     let tipo = document.getElementById('tipo').value
     let subtipo = getSubtipoId(document.getElementById('subtipo'))
     let doc = document.getElementById('doc').value
@@ -114,7 +114,8 @@ function buscarArchivo(){
             document.getElementById('emb-org').setAttribute('src', res.path_archivo + res.nombre_archivo)
             document.getElementById('preview-org').removeAttribute('hidden')
             document.getElementById('buscador-modif').removeAttribute('hidden')
-            document.getElementById('buscador-org').setAttribute('hidden', 'hidden')
+            document.getElementById('buscador-org').setAttribute('hidden', 'hidden') 
+            actualizarTabla()              
         },
         error: function(res){
             console.log(res)
@@ -221,16 +222,185 @@ function popup(estado){
     let popEl = document.getElementById('popup')
     if(estado == 1){
         document.getElementById('popTitulo').innerHTML = 'Éxito'
-        document.getElementById('popBody').innerHTML = '<p>Se ha guardado el digesto.</p>'             
+        document.getElementById('popBody').innerHTML = '<p>Se ha guardado el digesto.</p>'        
+        document.getElementById('ok').setAttribute('onclick', "volveralbuscador()")     
     }
     else if(estado == -1){
         document.getElementById('popTitulo').innerHTML = 'Error'
-        document.getElementById('popBody').innerHTML = '<p>No se ha podido guardar el digesto.</p>'            
+        document.getElementById('popBody').innerHTML = '<p>No se ha podido guardar el digesto.</p>'
+        document.getElementById('ok').removeAttribute('onclick')
     }    
     else if(estado == -2){
         document.getElementById('popTitulo').innerHTML = 'Error'
-        document.getElementById('popBody').innerHTML = '<p>No se ha podido encontrar el archivo.</p>'            
-    }    
+        document.getElementById('popBody').innerHTML = '<p>No se ha podido encontrar el archivo.</p>' 
+        document.getElementById('ok').removeAttribute('onclick')           
+    }   
+    else if(estado == 2){
+        document.getElementById('popTitulo').innerHTML = 'Éxito'
+        document.getElementById('popBody').innerHTML = '<p>El documento ya no afecta al área retirada.</p>'  
+        document.getElementById('ok').removeAttribute('onclick')          
+    }  
+    else if(estado == -3){
+        document.getElementById('popTitulo').innerHTML = 'Error'
+        document.getElementById('popBody').innerHTML = '<p>No se ha podido retirar el área.</p>'      
+        document.getElementById('ok').removeAttribute('onclick')      
+    } 
+    else if(estado == 3){
+        document.getElementById('popTitulo').innerHTML = 'Éxito'
+        document.getElementById('popBody').innerHTML = '<p>Se ha agregado el área afectada al documento.</p>'  
+        document.getElementById('ok').removeAttribute('onclick')          
+    }  
+    else if(estado == -4){
+        document.getElementById('popTitulo').innerHTML = 'Error'
+        document.getElementById('popBody').innerHTML = '<p>No se ha podido agregar el área.</p>'      
+        document.getElementById('ok').removeAttribute('onclick')      
+    } 
     let pop= bootstrap.Modal.getOrCreateInstance(popEl)
     pop.show()
 }
+
+function remove_area(id_area, tr){
+    //
+    let route = 'digesto/sacarArea'
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id_archivo: idoriginal,
+            id_area: id_area
+        }),
+        dataType: 'json',
+        success: function(res){
+            popup(2)
+            actualizarTabla()
+        },
+        error: function(res){
+            console.log(res)
+            popup(-3)
+        }
+    }); 
+}
+
+function actualizarTabla(){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: 'digesto/areas',
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id: idoriginal
+        }),
+        dataType: 'json',
+        success: function(res){  
+            let table = document.getElementById('areas-afectadas')
+            while(table.hasChildNodes()){
+                table.removeChild(table.lastChild)
+            }
+            if (res!=null){
+                for(let i = 0; i<res.length; i++){
+                    let tr = document.createElement('tr')
+                    id='tr'+i
+                    tr.id=id
+                    tr.innerHTML = res[i].area + ' <button class="btn btn-danger btn-sm quitar" onclick="remove_area('+ res[i].idarea + ',' + id +')">-</button>'
+                    table.append(tr)
+                }
+            }
+            else{
+                let tr = document.createElement('tr')
+                    tr.innerHTML = 'Aun no existen areas asignadas'
+                    table.append(tr)
+            }                    
+        },
+        error: function(res){
+            console.log(res)
+            popup(-2)
+        }
+    });       
+}
+
+function add_area(){
+    let id_area= document.getElementById('area_select').value
+    let route = 'digesto/añadirArea'
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id_archivo: idoriginal,
+            id_area: id_area
+        }),
+        dataType: 'json',
+        success: function(res){
+            popup(3)
+            actualizarTabla()
+        },
+        error: function(res){
+            console.log(res)
+            popup(-4)
+        }
+    }); 
+}
+
+function checkBtnAgregar(){
+    let val = document.getElementById('area_select').value
+    if(val !='sel'){
+        document.getElementById('btn-agregar-area').removeAttribute('disabled')
+    }
+    else{
+        document.getElementById('btn-agregar-area').setAttribute('disabled', 'disabled')
+    }
+}
+
+window.addEventListener("DOMContentLoaded", (event) => {
+    const tipo = document.getElementById('tipo')
+    const subtipo = document.getElementById('subtipo')
+    const doc= document.getElementById('doc')
+    const tipo2 = document.getElementById('tipo2')
+    const subtipo2 = document.getElementById('subtipo2')
+    const doc2= document.getElementById('doc2')
+    const btn = document.getElementById('btn-buscar')
+    const btn2 = document.getElementById('btn-buscar2')
+
+    const checkEnableButton = () => {    
+        if(tipo.value!='sel' && subtipo.value!='sel' && doc.value!= ''){
+            btn.removeAttribute('disabled');    
+        }        
+        else{
+            btn.setAttribute('disabled', 'disabled');
+        }   
+    }
+
+    const checkEnableButton2 = () => {    
+        if(tipo2.value!='sel' && subtipo2.value!='sel' && doc2.value!= ''){
+            btn2.removeAttribute('disabled');    
+        }        
+        else{
+            btn2.setAttribute('disabled', 'disabled');
+        }   
+    }
+
+    doc.addEventListener('input', checkEnableButton)
+    subtipo.addEventListener('change', checkEnableButton)
+    tipo.addEventListener('change', checkEnableButton)
+    doc2.addEventListener('input', checkEnableButton2)
+    subtipo2.addEventListener('change', checkEnableButton2)
+    tipo2.addEventListener('change', checkEnableButton2)
+});

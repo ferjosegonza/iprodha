@@ -205,4 +205,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], func
     Route::get('digesto', [DigestoController::class, 'index'])->name('digesto.index');
     Route::get('digesto/buscar', [DigestoController::class, 'buscarArchivo'])->name('digesto.buscar');
     Route::get('digesto/guardar', [DigestoController::class, 'guardar'])->name('digesto.guardar');
+    Route::get('digesto/areas', [DigestoController::class, 'areas'])->name('digesto.areas');
+    Route::get('digesto/sacarArea', [DigestoController::class, 'remove_area'])->name('digesto.sacarArea');
+    Route::get('digesto/añadirArea', [DigestoController::class, 'add_area'])->name('digesto.añadirArea');    
 });
