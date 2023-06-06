@@ -59,15 +59,16 @@
                                                 </td>
                                                 <td class='text-center' style="overflow: hidden;">
                                                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.edit',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
+                                                        @can('EDITAR-OFEOBRA')
+                                                            {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.edit', base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                                             {!! Form::submit('Editar', ['class' => 'btn btn-warning m-1']) !!}
-                                                        {!! Form::close() !!}
-
+                                                            {!! Form::close() !!}
+                                                        @endcan
                                                         @can('BORRAR-OFEOBRA')
-                                                        {!! Form::open([
+                                                            {!! Form::open([
                                                             'method' => 'DELETE','route' => ['ofeobra.destroy', $unaOferta->idobra],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Borrar', ['class' => 'btn btn-danger m-1','onclick' => "return confirm('Estas seguro que desea ELIMINAR la oferta??')",]) !!}
-                                                        {!! Form::close() !!}
+                                                            {!! Form::close() !!}
                                                         @endcan
                                                         
                                                         <button type="button" class="btn btn-info m-1 rounded" data-toggle="collapse" data-target="#demo{{$cont}}">Detalle <i class="fas fa-caret-down"></i></button> 
@@ -75,18 +76,18 @@
                                                             <div id="demo{{$cont}}" class="collapse pt-1">
                                                                 <div class="row">
                                                                     <div class="col-xs-12 col-sm-12 col-md-3">
-                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobraitems.itemsoferta',encrypt($unaOferta->idobra)],'style' => '']) !!}
+                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobraitems.itemsoferta',base64url_encode($unaOferta->idobra)],'style' => '']) !!}
                                                                         {!! Form::submit('Items', ['class' => 'btn btn-primary']) !!}
                                                                         {!! Form::close() !!}
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-12 col-md-4">
-                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.indexx',$unaOferta->idobra],'style' => '']) !!}
+                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.indexx', base64url_encode($unaOferta->idobra)],'style' => '']) !!}
                                                                         {!! Form::submit('Sombrero', ['class' => 'btn btn-primary']) !!}
                                                                         {!! Form::close() !!}
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-12 col-md-5">
                                                                         @can('VER-CRONOGRAMAOBRA')
-                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.edit',encrypt($unaOferta->idobra)],'style' => '']) !!}
+                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.edit',base64url_encode($unaOferta->idobra)],'style' => '']) !!}
                                                                             {!! Form::submit('Cronograma', ['class' => 'btn btn-primary']) !!}
                                                                         {!! Form::close() !!}                                  
                                                                         @endcan
@@ -95,9 +96,10 @@
                                                             </div>
                                                             <div class="row pt-2">
                                                                 <div class="col">
-                                                                    @if (auth()->user()->hasRole('EMPRESA') and $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
-                                                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.presentar',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
-                                                                        {!! Form::submit('Presentar Oferta', ['class' => 'btn btn-success', 'style' => 'width: 86%']) !!}
+
+                                                                    @if ((auth()->user()->hasRole('EMPRESA') or auth()->user()->hasRole('OFEOBRA')) and $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
+                                                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.presentar',base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
+                                                                        {!! Form::submit('Presentar Oferta', ['class' => 'btn btn-success', 'style' => 'width: 85%']) !!}
                                                                         {!! Form::close() !!}
                                                                     @endif
                                                                 </div>
@@ -107,7 +109,7 @@
                                                                 @if ($unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado == 2)
                                                                     <div class="col-12 m-0 p-0 pe-1">
                                                                         @can('BORRAR-OFEOBRA')
-                                                                            {!! Form::open(['method' => 'GET', 'class' => 'validacion', 'route' => ['ofeobra.vervalidar',encrypt($unaOferta->idobra)],'style' => 'display:inline']) !!}
+                                                                            {!! Form::open(['method' => 'GET', 'class' => 'validacion', 'route' => ['ofeobra.vervalidar',base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                                                                 {!! Form::submit('Validar', ['class' => 'btn btn-success', 'style' => 'width: 79%']) !!}
                                                                             {!! Form::close() !!}                                 
                                                                         @endcan

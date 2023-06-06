@@ -3750,3 +3750,8 @@ footer .copyright ul li a:hover {
 .tag {
     display: inline-block;
 }
+
+
+.obligatorio {
+    color: red;
+}
