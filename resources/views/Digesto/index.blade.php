@@ -46,17 +46,19 @@
         </div>
         <div class="row" id="archivo-on" hidden>
             <div class="col-lg-12 row">
-                <button type="button" class="btn btn-sm" id='btn-volver'>Volver al buscador</button>
+                <button type="button" class="btn btn-sm" id='btn-volver' onclick='volveralbuscador()'>Volver al buscador</button>
             </div>
-            <div class="card col-lg-4" id='preview-org'>
+            <div class="card col-lg-4" id='preview-org' hidden>
                 <div class="card-head">
                     <h5>Original</h5>                    
                 </div>
                 <div class="card-body">
-                    <div id='info-original'></div>
+                    <div id='claves-org'></div>
+                    <br> 
+                    <embed src="#" width="100%" height="450" id="emb-org">
                 </div>
             </div>
-            <div class="card col-lg-8" id='buscador-modif'>
+            <div class="card col-lg-8" id='buscador-modif' hidden>
                 <div class="card-head">
                     <h5>Buscar archivo que modifica el original</h5>                    
                 </div>
@@ -90,9 +92,42 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-8 card" id='preview-modificador' hidden>
+                <div class="col-lg-12">
+                    <div class="card-head">
+                        <h5>Modificador</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id='claves-modif'></div>
+                        <br> 
+                        <embed src="#" width="100%" height="450" id="emb-modif">
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <h6>Cargar Observaciones</h6>
+                    <textarea id="observaciones" onkeyup="contadorchar('lab-obs','observaciones',500)"></textarea>
+                    <label for="observaciones" id="lab-obs">Quedan 500 caracteres</label>
+                    <button type="button" class="btn btn-success btn-block" onclick="guardar()">Guardar Relación</button>
+                </div>        
+            </div>
         </div>          
     </div>
 </section>
+<div class="modal fade modal-sm" id="popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="popTitulo"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="popBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="volveralbuscador()">Ok</button>
+        </div>
+      </div>
+    </div>
+</div>
 @include('layouts.modal.confirmation') 
 
 @endsection

@@ -206,4 +206,5 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|CREAR-ARCHIVOS|D
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], function () {
     Route::get('digesto', [DigestoController::class, 'index'])->name('digesto.index');
     Route::get('digesto/buscar', [DigestoController::class, 'buscarArchivo'])->name('digesto.buscar');
+    Route::get('digesto/guardar', [DigestoController::class, 'guardar'])->name('digesto.guardar');
 });
