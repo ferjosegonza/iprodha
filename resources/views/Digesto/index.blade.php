@@ -39,7 +39,7 @@
                         {!! Form::number('doc', null, ['class' => 'form-control no-spin', 'id'=>'doc', 'min'=>'0']) !!}
                     </div>
                     <div class="col-lg-3"> 
-                        <button type="button" class="btn btn-success btn-block" id='btn-buscar' onclick="buscarArchivo()">Buscar</button>
+                        <button type="button" class="btn btn-success btn-block" id='btn-buscar' onclick="buscarArchivo()" disabled>Buscar</button>
                     </div>
                 </div>
             </div>
@@ -48,17 +48,32 @@
             <div class="col-lg-12 row">
                 <button type="button" class="btn btn-sm" id='btn-volver' onclick='volveralbuscador()'>Volver al buscador</button>
             </div>
-            <div class="card col-lg-4" id='preview-org' hidden>
+            <div class="card col-lg-6" id='preview-org' hidden>
                 <div class="card-head">
                     <h5>Original</h5>                    
                 </div>
-                <div class="card-body">
+                <div class="card-body row">
                     <div id='claves-org'></div>
                     <br> 
                     <embed src="#" width="100%" height="450" id="emb-org">
+                    <div class="col-lg-6">
+                        <h6>Áreas que afecta:</h6>
+                        <table id="areas-afectadas"></table>
+                    </div>
+                    <div class="col-lg-6 row">
+                        <div class="col-lg-11"><h6>Agregar un área:</h6>
+                            <select class="form-select" id="area_select" onchange="checkBtnAgregar()" name="area_select">
+                                <option value="sel" selected>Seleccionar</option>
+                                @foreach ($areas as $area)                           
+                                    <option value="{{$area->idarea}}">{{$area->area}}</option>
+                                @endforeach                        
+                            </select>   
+                        </div>
+                        <button class="btn btn-sm btn-success col-lg-1" id="btn-agregar-area" onclick="add_area()" disabled>+</button>
+                    </div>
                 </div>
             </div>
-            <div class="card col-lg-8" id='buscador-modif' hidden>
+            <div class="card col-lg-6" id='buscador-modif' hidden>
                 <div class="card-head">
                     <h5>Buscar archivo que modifica el original</h5>                    
                 </div>
@@ -86,13 +101,13 @@
                                 {!! Form::number('doc2', null, ['class' => 'form-control no-spin', 'id'=>'doc2', 'min'=>'0']) !!}
                             </div>
                             <div class="col-lg-3"> 
-                                <button type="button" class="btn btn-success btn-block" id='btn-buscar' onclick="buscarArchivoModificador()">Buscar</button>
+                                <button type="button" class="btn btn-success btn-block" id='btn-buscar2' onclick="buscarArchivoModificador()" disabled>Buscar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 card" id='preview-modificador' hidden>
+            <div class="col-lg-6 card" id='preview-modificador' hidden>
                 <div class="col-lg-12">
                     <div class="card-head">
                         <h5>Modificador</h5>
@@ -123,7 +138,7 @@
         <div class="modal-body" id="popBody">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="volveralbuscador()">Ok</button>
+          <button id='ok' type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="volveralbuscador()">Ok</button>
         </div>
       </div>
     </div>

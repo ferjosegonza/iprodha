@@ -262,7 +262,53 @@
                         </div>
                     </div>
                 </div>
-            </div>          
+            </div>       
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-head">
+                        <br>
+                        <div class="text-center"><h5>Cronograma de desembolso</h5></div>                        
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-hover mt-2">
+                                <thead>
+                                    <th class= 'text-center' scope="col" style="color:#fff;width:20%;"></th>
+                                    <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos mensuales</th>
+                                    <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos acumulados</th>
+                                </thead>
+                                <tbody>
+                                    @foreach($desembolsos as $desembolso)
+                                        <tr>
+                                            <td class= 'text-center'>MES {{$desembolso->mes}}</td>
+
+                                            <td class= 'text-center'>@money($desembolso->montomensual)</td>
+
+                                            <td class= 'text-center'>@money($desembolso->acumulado)</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                             
+                            </table>                      
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-head">
+                        <br>
+                        <div class="text-center"><h5>Grafico de desembolso</h5></div>                        
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
@@ -374,6 +420,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -407,8 +454,63 @@
 
 @section('js')
 <script src="{{ asset('js/Obrasyfinan/Ofertas/presentacion.js') }}"></script>
+
 <script>
     contadorMes = {{$cronograma->last()->mes;}}
 </script>
-{{--<script src="{{ asset('js/Obrasyfinan/Ofertas/index_oferta.js') }}"></script>--}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  
+<script>
+    contadorMes = {{$cronograma->last()->mes}};
+    meses = [];
+    monto = [0];
+    var app = @json($desembolsos);
+
+    app.forEach(element => {
+        monto.push(Number(element.acumulado.toFixed(2)))
+        console.log(element.acumulado)
+    });
+
+    for (let index = 0; index <= contadorMes; index++) {
+        meses.push('mes '+index); 
+    }
+    meses.push('mes '+(contadorMes+1)); 
+    const ctx = document.getElementById('myChart');
+    // Chart.register(ChartDataLabels);
+    
+    new Chart(ctx, {
+       type: 'line',
+       data: {
+         labels: meses,
+         datasets: [{
+           label: 'Desembolso por mes',
+           data: monto,
+           borderWidth: 1,
+           pointStyle: 'rect',
+         }]
+       },
+       plugins: [ChartDataLabels],
+       options: {
+        plugins: {
+      // Change options for ALL labels of THIS CHART
+            datalabels: {
+                font: {
+                    size: 18
+                },
+            }
+        },
+         scales: {
+           y: {
+            beginAtZero: true
+           },
+         },
+       }
+     });
+
+
+
+</script>
 @endsection

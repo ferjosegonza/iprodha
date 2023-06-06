@@ -18,7 +18,9 @@ class Vw_ofe_items extends Model
         'iditem',
         'orden',
         'nom_item',
+        'cod_tipo',
         'nom_tipo',
+        'por_inc',
         'vivienda',
         'infra'];
     protected $attributes = [
@@ -26,7 +28,9 @@ class Vw_ofe_items extends Model
         'iditem'=> true,
         'orden'=> true,
         'nom_item'=> true,
+        'cod_tipo'=>true,
         'nom_tipo'=> true,
+        'por_inc'=>true,
         'vivienda'=> true,
         'infra'=> true
     ];

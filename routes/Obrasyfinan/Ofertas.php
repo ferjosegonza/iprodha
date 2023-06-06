@@ -69,7 +69,9 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA']], func
     Route::get('/ofeobra/{idobra}/ver/validar', [ofe_obraController::class, 'verValidarOferta'])->name('ofeobra.vervalidar');
     Route::get('/ofeobra/{idobra}/pdf1', [ofe_obraController::class, 'pdf1'])->name('ofeobra.pdf1'); 
     Route::get('/ofeobra/{idobra}/pdf2', [ofe_obraController::class, 'pdf2'])->name('ofeobra.pdf2'); 
-    Route::get('/ofeobra/{idobra}/pdf', [ofe_obraController::class, 'pdf'])->name('ofeobra.pdf');   
+    Route::get('/ofeobra/{idobra}/pdf', [ofe_obraController::class, 'pdf'])->name('ofeobra.pdf'); 
+    Route::get('/ofeobra/{idobra}/{opc}/pdfitems', [ofe_obraController::class, 'pdfItems'])->name('ofeobraItems.pdf'); 
+    Route::get('/ofeobraprueba', [ofe_obraController::class, 'prueba']);
 });
 
 // Route::get('ajax-autocomplete-search', [EmpresaController::class,'buscarEmpresa']);

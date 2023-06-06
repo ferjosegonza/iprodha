@@ -13,6 +13,7 @@ use App\Models\Iprodha\Ofe_subitem;
 use App\Models\Iprodha\Vw_ofe_obra_valida;
 use App\Models\Iprodha\Vw_ofe_items;
 use App\Models\Iprodha\Vw_ofe_cronograma;
+use App\Models\Iprodha\Membrete;
 use App\Http\Controllers\Obrasyfinan\Ofertas\ofe_obraController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -195,26 +196,21 @@ class ofe_obraController extends Controller
     }    
 
     public function presentarOferta($idobra)
-    {
-        //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 2]);  
+    { 
         $idobra = base64url_decode($idobra);
         $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
         $items = Vw_ofe_items::where('idobra', $idobra)->get();
         $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
         $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
-        // return $cronograma->where('iditem', 4)->all();
-        // return is_null($cronograma->where('iditem', 6)->where('mes', 1)->first());
-        $obra=Ofe_obra::where('idobra','=', $idobra)->first();
-              
-        //return $tipoContrato;
-
-        // return $sombreros->where('idconceptosombrero', 10)->first()->valor;
+        $obra = Ofe_obra::where('idobra','=', $idobra)->first();
+        $desembolsosPorMes = $this->desembolsoPorMes($idobra);
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
             ->with('data', $data)
             ->with('items', $items)
             ->with('cronograma', $cronograma)
             ->with('obra', $obra)
-            ->with('sombreros', $sombreros);
+            ->with('sombreros', $sombreros)
+            ->with('desembolsos', $desembolsosPorMes);
     }
 
     public function presentarSave($idobra){
@@ -369,4 +365,140 @@ class ofe_obraController extends Controller
         
     }
 
+    public function pdfItems($id, $opc){
+        $pdf = app('dompdf.wrapper');
+
+        $ofeobra = Ofe_obra::find($id);
+        $vw = Vw_ofe_items::where('idobra', $id)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', $id)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', $id)->get();
+
+        $conceptos = Ofe_sombrero::select('iprodha.ofe_sombrero.idobra', 'iprodha.ofe_sombrero.valor', 'iprodha.ofe_conceptosombrero.idconceptosombrero', 'iprodha.ofe_conceptosombrero.conceptosombrero' )
+                        ->join('iprodha.ofe_conceptosombrero', 'iprodha.ofe_sombrero.idconceptosombrero', '=', 'iprodha.ofe_conceptosombrero.idconceptosombrero')
+                        ->where('idobra', $id)
+                        ->get();
+        // return $conceptos;
+
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+
+        switch ($opc) {
+            case 1:
+                $tipo = 'VIVIENDA';
+                $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 1)->orderBy('orden')->get();
+                break;
+            case 2:
+                $tipo = 'INFRAESTRUCTURA';
+                $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 2)->orderBy('orden')->get();
+                break;
+
+            case 3:
+                # code...
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.items-pdf',[
+                    'obra' => $ofeobra,
+                    'tipo' => $tipo, 
+                    'items' => $items,
+                    'opc'=> $opc, 
+                    'conceptos'=> $conceptos,
+                    'data'=>$data, 
+                    'sombreros'=>$sombreros, 
+                    'cronograma'=>$cronograma, 
+                    'texto'=>$texto])->setPaper('legal', 'portrait')
+                                    ->stream('ItemsDeLaObra.pdf');
+    } 
+    // public function desembolsoPorMes($idobra){
+    //     $ofeObra = Ofe_obra::find($idobra);
+    //     $montos = array();
+    //     $mes = 0;
+    //     $montoMes = 0;
+    //     $avanceTotal = 0;
+
+    //     for ($i=1; $i <= $ofeObra->plazo; $i++) { 
+    //         foreach ($ofeObra->getItems as $item) {
+    //             foreach ($item->getCronograma as $cronograma) {
+    //                 if($cronograma->mes == $i){
+    //                     $montoMes += $cronograma->avance * $item->costo;
+    //                 }
+    //             }
+    //         }
+    //         array_push($montos, (object)[
+    //             'mes' => $i,
+    //             'montomensual' => $montoMes,
+    //         ]);
+
+    //         $montoMes = 0;
+    //     }
+    //     return $cronoDesembolso = collect($montos)->sortBy('mes');
+    // }
+
+    public function desembolsoPorMes($idobra){
+        $ofeObra = Ofe_obra::find($idobra);
+        $montos = array();
+        $mes = 0;
+        $montoMes = 0;
+        $acumulado = 0;
+
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
+
+        for ($i=1; $i <= $ofeObra->plazo; $i++) { 
+            foreach ($cronograma as $crono) {
+                if($crono->mes == $i){
+                    $montoMes += $crono->importe;
+                }
+            }
+            array_push($montos, (object)[
+                'mes' => $i,
+                'montomensual' => $montoMes,
+                'acumulado' => $acumulado += $montoMes,
+            ]);
+
+            $montoMes = 0;
+        }
+        return $cronoDesembolso = collect($montos)->sortBy('mes');
+    }
+
+    public function prueba(){
+        return view('Obrasyfinan.Ofertas.ofeobra.prueba');
+    }
+
+    // public function todasLasViviendasDeUnaObra(Ob_obra $obra){
+    //     $viviendasTabla = array();
+    //     foreach($obra->getEtapas as $etapa){
+    //         foreach($etapa->getEntregas as $entrega){
+    //             foreach ($entrega->getViviendas->sortBy('orden') as $vivienda) {
+    //                 array_push($viviendasTabla, (object)[
+    //                     'orden' => $vivienda->orden,
+    //                     'etapa' => $etapa->nro_eta,
+    //                     'entrega' => $entrega->num_ent,
+    //                     'discap' => $vivienda->discap,
+    //                     'partida' => $vivienda->partida,
+    //                     'plano' => $vivienda->plano,
+    //                     'seccion' => $vivienda->seccion,
+    //                     'chacra' => $vivienda->chacra,
+    //                     'manzana' => $vivienda->manzana,
+    //                     'parcela' => $vivienda->parcela,
+    //                     'finca' => $vivienda->finca,
+    //                     'sup_fin' => $vivienda->sup_fin,
+    //                     'sup_lot' => $vivienda->sup_lot,
+    //                     'num_cal' => $vivienda->num_cal,
+    //                     'nom_cal' => $vivienda->nom_cal,
+    //                     'latitud' => $vivienda->latitud,
+    //                     'longitud' => $vivienda->longitud,
+    //                     'edificio' => $vivienda->edificio,
+    //                     'piso' => $vivienda->piso,
+    //                     'departamento' => $vivienda->departamento,
+    //                     'escalera' => $vivienda->escalera]);
+    //             }
+    //         }
+    //     }
+    //     return $viviendasTabla = collect($viviendasTabla)->sortBy('orden');
+    // }
 }  
