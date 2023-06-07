@@ -56,6 +56,7 @@
                     <div id='claves-org'></div>
                     <br> 
                     <embed src="#" width="100%" height="450" id="emb-org">
+                    <br>
                     <div class="col-lg-6">
                         <h6>Áreas que afecta:</h6>
                         <table id="areas-afectadas"></table>
@@ -73,40 +74,47 @@
                     </div>
                 </div>
             </div>
-            <div class="card col-lg-6" id='buscador-modif' hidden>
-                <div class="card-head">
-                    <h5>Buscar archivo que modifica el original</h5>                    
-                </div>
-                <div class="card-body">
-                    <div>
-                        <div class="card-body row">
-                            <div class="col-lg-3">
-                                {!! Form::label('*Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                                <select class="form-select" id="tipo2" onchange="tipos()" name="tipo2">
-                                    @foreach ($tipos as $tipo)                           
-                                        <option value="{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
-                                    @endforeach                        
-                                </select>   
-                            </div>
-                            <div class="col-lg-3">
-                                {!! Form::label('*Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                <select class="form-select" id="subtipo2" name="subtipo2">
-                                    @foreach ($subtipos as $subtipo)
-                                        <option value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
-                                    @endforeach                        
-                                </select>    
-                            </div>
-                            <div class="col-lg-3">
-                                {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                {!! Form::number('doc2', null, ['class' => 'form-control no-spin', 'id'=>'doc2', 'min'=>'0']) !!}
-                            </div>
-                            <div class="col-lg-3"> 
-                                <button type="button" class="btn btn-success btn-block" id='btn-buscar2' onclick="buscarArchivoModificador()" disabled>Buscar</button>
-                            </div>
+            <div class="col-lg-6" id='buscador-modif' hidden>
+                <div class="card">
+                    <div class="card-head">
+                        <h5>Buscar archivo que modifica el original</h5>                    
+                    </div>                
+                    <div class="card-body row">
+                        <div class="col-lg-3">
+                            {!! Form::label('*Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                            <select class="form-select" id="tipo2" onchange="tipos()" name="tipo2">
+                                @foreach ($tipos as $tipo)                           
+                                    <option value="{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
+                                @endforeach                        
+                            </select>   
+                        </div>
+                        <div class="col-lg-3">
+                            {!! Form::label('*Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                            <select class="form-select" id="subtipo2" name="subtipo2">
+                                @foreach ($subtipos as $subtipo)
+                                    <option value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
+                                @endforeach                        
+                            </select>    
+                        </div>
+                        <div class="col-lg-3">
+                            {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                            {!! Form::number('doc2', null, ['class' => 'form-control no-spin', 'id'=>'doc2', 'min'=>'0']) !!}
+                        </div>
+                        <div class="col-lg-3"> 
+                            <button type="button" class="btn btn-success btn-block" id='btn-buscar2' onclick="buscarArchivoModificador()" disabled>Buscar</button>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="card col-lg-12" id="archivos-relacionados" hidden>
+                    <div class="card-head">
+                        <h5>Archivos relacionados</h5>
+                    </div>
+                    <div class="card-body">
+                        <table id="table-relacionados">   
+                        </table>
+                    </div>                    
+                </div>
+            </div>            
             <div class="col-lg-6 card" id='preview-modificador' hidden>
                 <div class="col-lg-12">
                     <div class="card-head">
@@ -123,7 +131,8 @@
                     <textarea id="observaciones" onkeyup="contadorchar('lab-obs','observaciones',500)"></textarea>
                     <label for="observaciones" id="lab-obs">Quedan 500 caracteres</label>
                     <button type="button" class="btn btn-success btn-block" onclick="guardar()">Guardar Relación</button>
-                </div>        
+                </div>    
+                <br>    
             </div>
         </div>          
     </div>
