@@ -115,7 +115,83 @@ function buscarArchivo(estado){
             document.getElementById('preview-org').removeAttribute('hidden')
             document.getElementById('buscador-modif').removeAttribute('hidden')
             document.getElementById('buscador-org').setAttribute('hidden', 'hidden') 
-            actualizarTabla()              
+            actualizarTabla()        
+            buscarRelacionados(res.id_archivo)      
+        },
+        error: function(res){
+            console.log(res)
+            popup(-2)
+        }
+    }); 
+}
+
+function buscarRelacionados(id){
+    console.log(id)
+    let route = 'digesto/relacionados'
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id:id
+        }),
+        dataType: 'json',
+        success: function(res){  
+            console.log(res)
+            document.getElementById('archivos-relacionados').removeAttribute('hidden')
+            let table = document.getElementById('table-relacionados')
+            while(table.hasChildNodes()){
+                table.removeChild(table.lastChild)
+            }
+            let head= document.createElement('thead')
+            table.append(head)
+            if(res.length>0){
+                let tr = document.createElement('tr')
+                let th1 = document.createElement('th')    
+                th1.innerHTML = 'Nro de Archivo'
+                tr.appendChild(th1)
+                th1.className ='primero'
+                let th2 = document.createElement('th')    
+                th2.innerHTML = 'Observación'
+                tr.appendChild(th2)
+                th2.className ='segundo'
+                let th3 = document.createElement('th')    
+                th3.innerHTML = 'Nombre de Archivo'
+                tr.appendChild(th3)             
+                tr.className = 'row2'   
+                th3.className ='tercero'
+                head.appendChild(tr)
+                body=document.createElement('tbody')
+                table.append(body)
+                for(let i=0; i<res.length; i++){
+                    let tr = document.createElement('tr')
+                    tr.className = 'row2'
+                    let td1 = document.createElement('td')
+                    let td2 = document.createElement('td')
+                    let td3 = document.createElement('td')
+                    td1.innerHTML = res[i].nro_archivo
+                    td1.className = 'primero'
+                    td2.innerHTML = res[i].observacion
+                    td2.className = 'segundo'
+                    td3.innerHTML = res[i].nombre_archivo
+                    td3.className = 'tercero'
+                    tr.appendChild(td1)
+                    tr.appendChild(td2)
+                    tr.appendChild(td3)
+                    body.append(tr)
+                }
+            }
+            else{
+                let tr = document.createElement('tr')
+                tr.innerHTML = 'Aún no existen archivos que modifiquen a este documento'
+                table.append(tr)
+            }
         },
         error: function(res){
             console.log(res)
@@ -173,7 +249,6 @@ function contadorchar(label, input, max){
     else{
         lab.innerHTML = "Quedan " + (max - inp.value.length) + " caracteres"
     }
-
 }
 
 function volveralbuscador(){
@@ -199,7 +274,7 @@ function guardar(){
     });
     $.ajax({
         url: route,
-        type: 'GET',
+        type: 'POST',
         cache: false,
         data: ({
             _token: $('#signup-token').val(),
@@ -269,7 +344,7 @@ function remove_area(id_area, tr){
     });
     $.ajax({
         url: route,
-        type: 'GET',
+        type: 'DELETE',
         cache: false,
         data: ({
             _token: $('#signup-token').val(),
@@ -340,7 +415,7 @@ function add_area(){
     });
     $.ajax({
         url: route,
-        type: 'GET',
+        type: 'POST',
         cache: false,
         data: ({
             _token: $('#signup-token').val(),

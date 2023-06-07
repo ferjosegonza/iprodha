@@ -48,10 +48,17 @@ tr:hover{
 table{
     width: 100%;
 }
+th{
+    color: white;
+}
+td, th{
+    border: 1px solid lightgray;
+    font-size: 15px;
+}
 .quitar{
     float: right;
     height: 20px;
-    display: grid;
+    display: revert;
     align-content: center;
     margin-left: 5px;
     width: 20px;
@@ -62,4 +69,19 @@ table{
     margin-right: -25px;
     margin-top: 25px;
     align-self: center;
+}
+#archivos-relacionados{
+    float: right;
+}
+.primero{
+    width: 30%;
+}
+.segundo{
+    width: 35%;
+}
+.tercero{    
+    width: 35%;
+}
+.row2{
+    display: revert;
 }
