@@ -13,6 +13,7 @@ use App\Models\Iprodha\Ofe_subitem;
 use App\Models\Iprodha\Vw_ofe_obra_valida;
 use App\Models\Iprodha\Vw_ofe_items;
 use App\Models\Iprodha\Vw_ofe_cronograma;
+use App\Models\Iprodha\Vw_ofe_crono_desem;
 use App\Models\Iprodha\Membrete;
 use App\Http\Controllers\Obrasyfinan\Ofertas\ofe_obraController;
 use Illuminate\Support\Facades\Auth;
@@ -203,7 +204,8 @@ class ofe_obraController extends Controller
         $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
         $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
         $obra = Ofe_obra::where('idobra','=', $idobra)->first();
-        $desembolsosPorMes = $this->desembolsoPorMes($idobra);
+        $desembolsosPorMes = Vw_ofe_crono_desem::where('idobra','=', $idobra)->orderBy('mes')->get();
+        // $desembolsosPorMes = $this->desembolsoPorMes($idobra);
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
             ->with('data', $data)
             ->with('items', $items)

@@ -161,7 +161,8 @@
                         </div>
                     </div>
                 </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
+
+            {{-- <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
                         <br>
@@ -197,11 +198,211 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot align="right" style='background-color: #f3c48638;'>
+                                    <tr> 
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>  --}}
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-head">
+                        <br>
+                        <div class="text-center"><h5>Ítems</h5></div>                        
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover mt-2">
+                                <thead>
+                                    <th class= 'text-center' style="color:#fff; width:5%;">Orden</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">Item</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">Tipo</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">Monto</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">% Incidencia</th>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $totalItems = number_format(floatval(0), 2);
+                                        $totalInc = 0;
+                                    @endphp
+                                    @foreach ($items->sortBy('orden') as $item)
+                                        <tr>
+                                            <td class= 'text-center'>{{$item->orden}}</td>                                            
+                                            <td class= 'text-center'>{{$item->nom_item}}</td>                                            
+                                            <td class= 'text-center'>{{$item->nom_tipo}}</td>
+
+                                            @if ($item->cod_tipo == 1)
+                                                <td class= 'text-center'>${{number_format($item->vivienda,2, ',', '.')}}</td>
+                                                @php
+                                                    $totalItems += $item->vivienda;
+                                                @endphp
+                                            @else
+                                                @if ($item->cod_tipo == 2)
+                                                    <td class= 'text-center'>${{number_format($item->infra,2, ',', '.')}}</td>
+                                                    @php
+                                                        $totalItems += $item->infra;
+                                                    @endphp
+                                                @else
+                                                    <td class= 'text-center'>${{number_format($item->vivienda + $item->infra,2, ',', '.')}}</td>
+                                                    @php
+                                                        $totalItems += $item->vivienda + $item->infra;
+                                                    @endphp
+                                                @endif            
+                                            @endif
+
+                                            <td class= 'text-center'>{{number_format($item->por_inc,4)}}</td>
+                                            @php
+                                                $totalInc += $item->por_inc;
+                                            @endphp
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot align="right" style='background-color: #f3c48638;'>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">$ {{number_format($totalItems,2, ',', '.')}}</th>
+                                        <th class="text-center">{{number_format($totalInc,4, ',', '.')}}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-head">
+                        <br>
+                        <div class="text-center"><h5>Sombrero</h5></div>                        
+                    </div>
+                    <div class="card-body">
+                       <div class="table-responsive">
+                        <table class="table table-hover mt-2">
+                            <thead>
+                                <th class= 'text-center' scope="col" style="color:#fff;width:35%;">Concepto</th>
+                                <th class= 'text-center' scope="col" style="color:#fff;width:32%;">Total Vivienda</th>
+                                <th class= 'text-center' scope="col" style="color:#fff;width:32%;">Total Infraestructura</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class= 'text-center' style="vertical-align: middle;">Subtotal 1</td>
+                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($data->tot1viv,2, ',', '.')}}</td>
+                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($data->tot1inf,2, ',', '.')}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class= 'text-center' style="vertical-align: middle;">Flete ({{$sombreros->where('idconceptosombrero', 10)->first()->valor}}%)</td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($fleteviv=$data->tot1viv * (($sombreros->where('idconceptosombrero', '=', 10)->first()->valor)/100),2, ',', '.')}}                                    
+                                    </td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($fleteinf=$data->tot1inf * (($sombreros->where('idconceptosombrero', '=', 10)->first()->valor)/100),2, ',', '.')}} 
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class= 'text-center' style="vertical-align: middle;">Subtotal 2</td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot2viv=$data->tot1viv + $fleteviv,2, ',', '.')}}
+                                    </td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot2inf=$data->tot1inf + $fleteinf,2, ',', '.')}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td <td class= 'text-center' style="vertical-align: middle;">Gastos ({{$sombreros->where('idconceptosombrero', '=', 20)->first()->valor}}%)</td>
+                                    <td <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($gastosviv=$tot2viv * (($sombreros->where('idconceptosombrero', '=', 20)->first()->valor)/100),2, ',', '.')}}
+                                    </td>
+                                    <td <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($gastosinf=$tot2inf * (($sombreros->where('idconceptosombrero', '=', 20)->first()->valor)/100),2, ',', '.')}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class= 'text-center' style="vertical-align: middle;">Subtotal 3</td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot3viv = $tot2viv + $gastosviv,2, ',', '.')}}
+                                    </td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot3inf = $tot2inf + $gastosinf,2, ',', '.')}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td <td class= 'text-center' style="vertical-align: middle;">Utilidad ({{$sombreros->where('idconceptosombrero', '=', 30)->first()->valor}}%)</td>
+                                    <td <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($utiviv=$tot3viv * (($sombreros->where('idconceptosombrero', '=', 30)->first()->valor)/100),2, ',', '.')}}
+                                    </td>
+                                    <td <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($utiinf=$tot3inf * (($sombreros->where('idconceptosombrero', '=', 30)->first()->valor)/100),2, ',', '.')}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class= 'text-center' style="vertical-align: middle;">Subtotal 4</td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot4viv = $tot3viv + $utiviv),2, ',', '.'}}
+                                    </td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot4inf = $tot3inf + $utiinf),2, ',', '.'}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    @if($sombreros->where('idconceptosombrero', '=', 40)->first() != null)
+                                        @if ($sombreros->where('idconceptosombrero', '=', 50)->first() != null)
+                                        <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: {{$sombreros->where('idconceptosombrero', '=', 40)->first()->valor}}%, Infraestructura: {{$sombreros->where('idconceptosombrero', '=', 50)->first()->valor}}%)</td>
+                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=$tot4viv * (($sombreros->where('idconceptosombrero', '=', 40)->first()->valor)/100),2, ',', '.')}}</td>
+                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=$tot4inf * (($sombreros->where('idconceptosombrero', '=', 50)->first()->valor)/100),2, ',', '.')}}</td>
+                                        @else
+                                        <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: {{$sombreros->where('idconceptosombrero', '=', 40)->first()->valor}}%, Infraestructura: No existe)</td>
+                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=$tot4viv * (($sombreros->where('idconceptosombrero', '=', 40)->first()->valor)/100),2, ',', '.')}}</td>
+                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=0,2, ',', '.')}}</td>
+                                        @endif
+                                    @else
+                                        @if ($sombreros->where('idconceptosombrero', '=', 50)->first() != null)
+                                        <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: No existe, Infraestructura: {{$sombreros->where('idconceptosombrero', '=', 50)->first()->valor}}%)</td>
+                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=0,2, ',', '.')}}</td>    
+                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=$tot4inf * (($sombreros->where('idconceptosombrero', '=', 50)->first()->valor)/100),2, ',', '.')}}</td>
+                                        @else
+                                            <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: No existe, Infraestructura: No existe)</td>
+                                            <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=0,2, ',', '.')}}</td>    
+                                            <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=0,2, ',', '.')}}</class=>
+                                        @endif        
+                                    @endif                     
+                                </tr>
+
+                                <tr>
+                                    <td class= 'text-center' style="vertical-align: middle;">Totales</td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot5viv = $tot4viv + $ivaviv,2, ',', '.')}}
+                                    </td>
+                                    <td class= 'text-center' style="vertical-align: middle;">
+                                        ${{number_format($tot5inf = $tot4inf + $ivainf,2, ',', '.')}}
+                                    </td>
+                                </tr>
+                            </tbody>     
+                        </table>
+                        <p class="text-center" style="font-size:18px;">TOTAL: <strong>${{number_format($total=$tot5viv + $tot5inf,2, ',', '.')}}</strong></p>                       
+                       </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
@@ -213,7 +414,6 @@
                             $contador = 1;
                             $contadorMes = $cronograma->last()->mes;
                         @endphp
-                        {{-- {{$contadorMes = $cronograma->sortByDesc('mes')->first()->mes}} --}}
                         <div class="table-responsive">
                             <table class="table table-hover mt-2" id='cronogramaa'>
                                 <thead>
@@ -264,6 +464,77 @@
                 </div>
             </div>       
 
+            {{-- <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-head">
+                        <br>
+                        <div class="text-center"><h5>Cronograma nuevo</h5></div>                        
+                    </div>
+                    <div class="card-body">
+                        @php
+                            $contador = 1;
+                            $contadorMes = $cronograma->last()->mes;
+                        @endphp
+                        <div class="table-responsive">
+                            <table id="ejemplo" class="table table-hover mt-2">
+                                <thead>
+                                    <th class="text-center" style="color:#fff;width:5%;">Orden</th>
+                                    <th class="text-center" style="color:#fff;min-width:30%;">Denom. Ítem</th>
+                                    @while($contador <= $contadorMes)
+                                    <th class="text-center" style="color:#fff;">{{$contador}}</th>
+                                        @php
+                                            $contador = $contador+1;
+                                        @endphp
+                                    @endwhile
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $contador = 1;
+                                        $totalIncCro = number_format(floatval(0), 2);
+                                    @endphp
+                                    @foreach ($items->sortBy('orden') as $item)
+                                        <tr>
+                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->orden}}</td>
+                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->nom_item}}</td>
+                                            @while ($contador <= $contadorMes)
+                                                @if (is_null($cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()))
+                                                    <td class= 'text-center' style="vertical-align: middle;"></td>
+                                                @else
+                                                    <td class= 'text-center' style="vertical-align: middle;">{{$cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()->avance}}</td>
+                                                @endif
+
+                                                @php
+                                                    $contador = $contador+1;
+                                                @endphp
+                                            @endwhile
+                                            @php
+                                                $contador = 1;
+                                            @endphp
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot align="right" style='background-color: #f3c48638;'>
+                                    <tr>
+                                        <th></th>
+                                        <th class="text-center">Total</th>
+                                        @for($i = 1; $i <= $contadorMes; $i++)
+                                            <th></th>
+                                        @endfor
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th class="text-center">Total Acumulado</th>
+                                        @for($i = 1; $i <= $contadorMes; $i++)
+                                            <th></th>
+                                        @endfor
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
@@ -272,20 +543,26 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example" class="table table-hover mt-2">
+                            <table class="table table-hover mt-2">
                                 <thead>
-                                    <th class= 'text-center' scope="col" style="color:#fff;width:20%;"></th>
+                                    <th class= 'text-center' scope="col" style="color:#fff;width:20%;">Meses</th>
                                     <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos mensuales</th>
                                     <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos acumulados</th>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $costoAcu = 0
+                                    @endphp
                                     @foreach($desembolsos as $desembolso)
+                                        @php
+                                            $costoAcu += $desembolso->costo
+                                        @endphp
                                         <tr>
                                             <td class= 'text-center'>MES {{$desembolso->mes}}</td>
 
-                                            <td class= 'text-center'>@money($desembolso->montomensual)</td>
+                                            <td class= 'text-center'>@money($desembolso->costo)</td>
 
-                                            <td class= 'text-center'>@money($desembolso->acumulado)</td>
+                                            <td class= 'text-center'>@money($costoAcu)</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -308,118 +585,6 @@
                 </div>
             </div>
             
-
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="card">
-                    <div class="card-head">
-                        <br>
-                        <div class="text-center"><h5>Sombrero</h5></div>                        
-                    </div>
-                    <div class="card-body">
-                       <div class="table-responsive">
-                        <table id="example" class="table table-hover mt-2">
-                            <thead>
-                                <th class= 'text-center' scope="col" style="color:#fff;width:1%;"></th>
-                                <th class= 'text-center' scope="col" style="color:#fff;width:3%;">Total Vivienda</th>
-                                <th class= 'text-center' scope="col" style="color:#fff;width:3%;">Total Infraestructura</th>
-                            </thead>
-                            <tr>
-                                <td class= 'text-center' style="vertical-align: middle;">Subtotal 1</td>
-                                <td class= 'text-center' style="vertical-align: middle;">${{number_format($data->tot1viv,2, ',', '.')}}</td>
-                                <td class= 'text-center' style="vertical-align: middle;">${{number_format($data->tot1inf,2, ',', '.')}}</td>
-                            </tr>
-                            <tr>
-                                <td class= 'text-center' style="vertical-align: middle;">Flete ({{$sombreros->where('idconceptosombrero', 10)->first()->valor}}%)</td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($fleteviv=$data->tot1viv * (($sombreros->where('idconceptosombrero', '=', 10)->first()->valor)/100),2, ',', '.')}}                                    
-                                </td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($fleteinf=$data->tot1inf * (($sombreros->where('idconceptosombrero', '=', 10)->first()->valor)/100),2, ',', '.')}} 
-                                </td>
-                            </tr>
-                             <tr>
-                                <td class= 'text-center' style="vertical-align: middle;">Subtotal 2</td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot2viv=$data->tot1viv + $fleteviv,2, ',', '.')}}
-                                </td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot2inf=$data->tot1inf + $fleteinf,2, ',', '.')}}
-                                </td>
-                            </tr> 
-                            <tr>
-                                <td <td class= 'text-center' style="vertical-align: middle;">Gastos ({{$sombreros->where('idconceptosombrero', '=', 20)->first()->valor}}%)</td>
-                                <td <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($gastosviv=$tot2viv * (($sombreros->where('idconceptosombrero', '=', 20)->first()->valor)/100),2, ',', '.')}}
-                                </td>
-                                <td <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($gastosinf=$tot2inf * (($sombreros->where('idconceptosombrero', '=', 20)->first()->valor)/100),2, ',', '.')}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class= 'text-center' style="vertical-align: middle;">Subtotal 3</td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot3viv = $tot2viv + $gastosviv,2, ',', '.')}}
-                                </td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot3inf = $tot2inf + $gastosinf,2, ',', '.')}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td <td class= 'text-center' style="vertical-align: middle;">Utilidad ({{$sombreros->where('idconceptosombrero', '=', 30)->first()->valor}}%)</td>
-                                <td <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($utiviv=$tot3viv * (($sombreros->where('idconceptosombrero', '=', 30)->first()->valor)/100),2, ',', '.')}}
-                                </td>
-                                <td <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($utiinf=$tot3inf * (($sombreros->where('idconceptosombrero', '=', 30)->first()->valor)/100),2, ',', '.')}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class= 'text-center' style="vertical-align: middle;">Subtotal 4</td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot4viv = $tot3viv + $utiviv),2, ',', '.'}}
-                                </td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot4inf = $tot3inf + $utiinf),2, ',', '.'}}
-                                </td>
-                            </tr>
-                            <tr>
-                                @if($sombreros->where('idconceptosombrero', '=', 40)->first() != null)
-                                    @if ($sombreros->where('idconceptosombrero', '=', 50)->first() != null)
-                                    <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: {{$sombreros->where('idconceptosombrero', '=', 40)->first()->valor}}%, Infraestructura: {{$sombreros->where('idconceptosombrero', '=', 50)->first()->valor}}%)</td>
-                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=$tot4viv * (($sombreros->where('idconceptosombrero', '=', 40)->first()->valor)/100),2, ',', '.')}}</td>
-                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=$tot4inf * (($sombreros->where('idconceptosombrero', '=', 50)->first()->valor)/100),2, ',', '.')}}</td>
-                                    @else
-                                    <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: {{$sombreros->where('idconceptosombrero', '=', 40)->first()->valor}}%, Infraestructura: No existe)</td>
-                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=$tot4viv * (($sombreros->where('idconceptosombrero', '=', 40)->first()->valor)/100),2, ',', '.')}}</td>
-                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=0,2, ',', '.')}}</td>
-                                    @endif
-                                @else
-                                    @if ($sombreros->where('idconceptosombrero', '=', 50)->first() != null)
-                                    <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: No existe, Infraestructura: {{$sombreros->where('idconceptosombrero', '=', 50)->first()->valor}}%)</td>
-                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=0,2, ',', '.')}}</td>    
-                                    <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=$tot4inf * (($sombreros->where('idconceptosombrero', '=', 50)->first()->valor)/100),2, ',', '.')}}</td>
-                                    @else
-                                        <td class= 'text-center' style="vertical-align: middle;">IVA + IIBR (Vivienda: No existe, Infraestructura: No existe)</td>
-                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivaviv=0,2, ',', '.')}}</td>    
-                                        <td class= 'text-center' style="vertical-align: middle;">${{number_format($ivainf=0,2, ',', '.')}}</class=>
-                                    @endif        
-                                @endif                     
-                            </tr>
-                            <tr>
-                                <td class= 'text-center' style="vertical-align: middle;">Totales</td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot5viv = $tot4viv + $ivaviv,2, ',', '.')}}
-                                </td>
-                                <td class= 'text-center' style="vertical-align: middle;">
-                                    ${{number_format($tot5inf = $tot4inf + $ivainf,2, ',', '.')}}
-                                </td>
-                            </tr>       
-                        </table>
-                        <p class="text-center" style="font-size:18px;">TOTAL: ${{number_format($total=$tot5viv + $tot5inf,2, ',', '.')}}</p>                       
-                       </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
@@ -466,12 +631,14 @@
 <script>
     contadorMes = {{$cronograma->last()->mes}};
     meses = [];
+    let acu = 0;
     monto = [0];
     var app = @json($desembolsos);
-
+    
     app.forEach(element => {
-        monto.push(Number(element.acumulado.toFixed(2)))
-        console.log(element.acumulado)
+        // console.log(element.costo.toFixed(2));
+        acu += Number(element.costo);
+        monto.push(acu.toFixed(2));
     });
 
     for (let index = 0; index <= contadorMes; index++) {
@@ -498,7 +665,7 @@
       // Change options for ALL labels of THIS CHART
             datalabels: {
                 font: {
-                    size: 18
+                    size: 15
                 },
             }
         },
