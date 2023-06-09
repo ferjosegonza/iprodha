@@ -47,7 +47,11 @@ class DigestoController extends Controller
         }
 
         $base = Dig_archivos::where('id_archivo', '=', $id)->first();
-                
+        $base->path_archivo = substr($base->path_archivo, 14);
+        for($i = 0; $i<sizeof($archivos); $i++){
+            $archivos[$i]->path_archivo = substr($archivos[$i]->path_archivo, 14);
+        }
+
         return view('Digesto.modificaciones')
         ->with('base', $base)
         ->with('archivos', $archivos);        
