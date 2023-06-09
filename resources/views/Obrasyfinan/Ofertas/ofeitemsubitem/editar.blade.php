@@ -43,7 +43,7 @@
                                     <div class="form-group">
                                         {!! Form::label('Cantidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         <span class="obligatorio">*</span>
-                                        {!! Form::number('cantidad', $unSubItem->cantidad, ['class' => 'form-control']) !!}
+                                        {!! Form::number('cantidad', $unSubItem->cantidad, ['class' => 'form-control', 'step' => '.01']) !!}
                                     </div>
                                 </div>
                                 <div class="col-4">

@@ -22,8 +22,8 @@ class Vw_ofe_crono_desem extends Model
         'costo',
     ];
 
-    protected $casts = [
-        'costo' => 'decimal:2',
-    ];
+    // protected $casts = [
+    //     'costo' => 'decimal:2',
+    // ];
 
 }
