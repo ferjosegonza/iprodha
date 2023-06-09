@@ -209,8 +209,4 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], func
     Route::delete('digesto/sacarArea', [DigestoController::class, 'remove_area'])->name('digesto.sacarArea');
     Route::post('digesto/añadirArea', [DigestoController::class, 'add_area'])->name('digesto.añadirArea');    
     Route::get('digesto/relacionados', [DigestoController::class, 'relacionados'])->name('digesto.relacionados');    
-    Route::get('digesto/modificaciones', [DigestoController::class, 'modificaciones'])->name('digesto.modificaciones');
-    Route::get('digesto/buscador', [DigestoController::class, 'buscador'])->name('digesto.buscador');
-   
-    
 });
