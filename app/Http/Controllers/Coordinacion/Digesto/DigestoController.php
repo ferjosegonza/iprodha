@@ -21,7 +21,6 @@ class DigestoController extends Controller
 
     public function index(){
         $tipos = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
-       // $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->get(); se necesita agregar un atributo de modificable
         $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
         $areas = Vw_dig_areas::orderBy('area')->get();
         return view('Digesto.index')
@@ -29,6 +28,33 @@ class DigestoController extends Controller
         ->with('tipos', $tipos)
         ->with('subtipos', $subtipos)
         ->with('areas', $areas);
+    }
+
+    public function modificaciones(Request $request){
+        $archivos = Dig_digesto::where('id_archivo0', '=', $request->id)
+                    ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', 'iprodha.dig_digesto.id_archivon')
+                    ->get();
+
+        if($archivos == null){
+            $get = Dig_digesto::where('id_archivon', '=', $request->id)->first();
+            $archivos = Dig_digesto::where('id_archivo0', '=', $get->id_archivo0)
+                    ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', 'iprodha.dig_digesto.id_archivon')
+                    ->get();  
+        }
+
+        $base = Dig_archivos::where('id_archivo', '=', $archivos[0]->id_archivo0)->first();
+                
+        return view('Digesto.modificaciones')
+        ->with('base', $base)
+        ->with('archivos', $archivos);        
+    }
+
+    public function buscador(){
+        $tipos = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
+        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
+        return view('Digesto.buscador')
+            ->with('tipos', $tipos)
+            ->with('subtipos', $subtipos);
     }
 
     public function buscarArchivo(Request $request){
