@@ -9,6 +9,7 @@ use App\Models\Iprodha\Ofe_tipocontratoferta;
 use App\Models\Iprodha\Ofe_estadoxobra;
 use App\Models\Iprodha\Ofe_obraestado;
 use App\Models\Iprodha\Ofe_sombrero;
+use App\Models\Iprodha\Ofe_item;
 use App\Models\Iprodha\Ofe_subitem;
 use App\Models\Iprodha\Vw_ofe_obra_valida;
 use App\Models\Iprodha\Vw_ofe_items;
@@ -416,6 +417,62 @@ class ofe_obraController extends Controller
                     'texto'=>$texto])->setPaper('legal', 'portrait')
                                     ->stream('ItemsDeLaObra.pdf');
     } 
+
+    public function pdfDsmxmes($id){
+        $pdf = app('dompdf.wrapper');
+
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.dsmpormes-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'desembolsos'=>$desembolsos,
+                    'texto'=>$texto
+                    ])  ->setPaper('legal', 'portrait')
+                        ->stream('ItemsDeLaObra.pdf');
+    } 
+
+    public function pdfIncItems($id){
+        $pdf = app('dompdf.wrapper');
+
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.incitems-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'items'=>$items,
+                    'texto'=>$texto
+                    ])  ->setPaper('legal', 'portrait')
+                        ->stream('ItemsDeLaObra.pdf');
+    } 
+
+    // public function deseAcuPormes($id){
+    //     $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+    //     $deseAcuxmes = array();
+    //     $acuMes = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->first()->costo;
+    //     foreach ($desembolsos as $desembolso) {
+    //         array_push($deseAcuxmes, (object)[
+    //                             'mes' => $desembolso->mes,
+    //                             'montomensual' => number_format($desembolso->costo, 2),
+    //                             'montoacumulado' => number_format($acuMes, 2),
+    //                      ]);
+    //         $acuMes = $desembolso->costo;
+    //     }
+
+    //     return $deseAcuxmes = collect($deseAcuxmes)->sortBy('mes');
+    // }
+
     // public function desembolsoPorMes($idobra){
     //     $ofeObra = Ofe_obra::find($idobra);
     //     $montos = array();
