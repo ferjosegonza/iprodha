@@ -144,9 +144,16 @@ class ofe_obraController extends Controller
         return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato'));
     }
 
-    public function show()
+    public function show($idobra)
     { 
-        return redirect()->route('ofeobra.crear');
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
+        $obra = Ofe_obra::where('idobra','=', $idobra)->first();
+        $desembolsos = Vw_ofe_crono_desem::where('idobra','=', $idobra)->orderBy('mes')->get();
+        return view('Obrasyfinan.Ofertas.ofeobra.show',compact('data','items','cronograma', 'obra', 'sombreros', 'desembolsos'));
     }   
 
     
@@ -380,6 +387,7 @@ class ofe_obraController extends Controller
     public function pdfItems($id, $opc){
         $pdf = app('dompdf.wrapper');
 
+        $id = base64url_decode($id);
         $ofeobra = Ofe_obra::find($id);
         $vw = Vw_ofe_items::where('idobra', $id)->get();
         $cronograma = Vw_ofe_cronograma::where('idobra', $id)->orderBy('mes')->get();
@@ -406,7 +414,8 @@ class ofe_obraController extends Controller
                 break;
 
             case 3:
-                # code...
+                $tipo = 'GENERAL';
+                $items = Vw_ofe_items::where('idobra', $id)->orderBy('orden')->get();
                 break;
 
             default:
@@ -429,7 +438,7 @@ class ofe_obraController extends Controller
 
     public function pdfDsmxmes($id){
         $pdf = app('dompdf.wrapper');
-
+        $id = base64url_decode($id);
         $ofeobra = Ofe_obra::find($id);
         $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
         $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
@@ -448,7 +457,7 @@ class ofe_obraController extends Controller
 
     public function pdfIncItems($id){
         $pdf = app('dompdf.wrapper');
-
+        $id = base64url_decode($id);
         $ofeobra = Ofe_obra::find($id);
         $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
         $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
@@ -466,6 +475,49 @@ class ofe_obraController extends Controller
                         ->stream('ItemsDeLaObra.pdf');
     } 
 
+    public function pdfCurvaDes($id){
+        $chartData = [
+            "type" => 'horizontalBar',
+              "data" => [
+                "labels" => ['Coluna 1', 'Coluna 2', 'Coluna 3'],
+                  "datasets" => [
+                    [
+                      "label" => "Dados", 
+                      "data" => [100, 60, 20],
+                      "backgroundColor" => ['#27ae60', '#f1c40f', '#e74c3c']
+                    ], 
+                  ],
+                ]
+            ]; 
+        $chartData = json_encode($chartData);
+        $chartURL = "https://quickchart.io/chart?width=300&height=200&c=".urlencode($chartData);
+        $chartData = file_get_contents($chartURL); 
+        $chart = 'data:image/png;base64, '.base64_encode($chartData);
+
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
+
+        $ofeobra = Ofe_obra::find($id);
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $id)->orderBy('mes')->get();
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.curvades-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'items'=>$items,
+                    'texto'=>$texto,
+                    'cronograma' => $cronograma,
+                    'desembolsos' => $desembolsos,
+                    'chart'=> $chart
+                    ])  ->set_option('isRemoteEnabled', true)
+                        ->setPaper('legal', 'portrait')
+                        ->stream('ItemsDeLaObra.pdf');
+    } 
     // public function deseAcuPormes($id){
     //     $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
     //     $deseAcuxmes = array();
