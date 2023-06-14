@@ -29,7 +29,12 @@
                                     <div class="form-group">
                                         {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
-                                        {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
+                                            @foreach ($Localidad as $unaLocalidad)
+                                                <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
+                                            @endforeach
+                                        </select>
+                                        {{-- {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!} --}}
                                     </div>
                                 </div>
                             </div>
@@ -59,14 +64,12 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        <span class="obligatorio">*</span>
-                                        {!! Form::date('publica', \Carbon\Carbon::now(), [
-                                            'min' => '2022-01-01',
-                                            'max' => \Carbon\Carbon::now()->year . '-12',
-                                            'id' => 'fec_pub',
-                                            'class' => 'form-control',
-                                            'readonly'
+                                        {!! Form::label('Situacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::select('idsituacion', $TipoSituacion, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
                                         ]) !!}
                                     </div>
                                 </div>
@@ -79,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Vivienda:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         {!! Form::number('monviv', null, ['readonly','class' => 'form-control']) !!}
@@ -96,6 +99,8 @@
                                         {!! Form::label('Nexo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         {!! Form::number('monnex', null, ['readonly','class' => 'form-control']) !!}
                                     </div>
+                                </div> --}}
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
@@ -107,8 +112,48 @@
                                         {{-- {!! Form::number('montotope', null, ['class' => 'form-control']) !!} --}}
                                     </div>
                                 </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::date('publica', \Carbon\Carbon::now(), [
+                                            'min' => '2022-01-01',
+                                            'max' => \Carbon\Carbon::now()->year . '-12',
+                                            'id' => 'fec_pub',
+                                            'class' => 'form-control',
+                                            'readonly'
+                                        ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="d-flex">
+                                        <div class="me-auto p-2"></div>
+                                        <div class="p-2" style="background-color: rgb(223, 188, 144)">
+                                            <div class="form-group">
+                                                {!! Form::label('Plazo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                                <span class="obligatorio">*</span>
+                                                {!! Form::number('plazo', null, ['class' => 'form-control']) !!}
+                                            </div>
+                                        </div>
+                                        <div class="p-2" style="background-color: rgb(223, 188, 144)">
+                                            <div class="form-group">
+                                                {!! Form::label('Año y Mes de Cotización:', null, [
+                                                    'class' => 'control-label',
+                                                    'style' => 'white-space: nowrap;',
+                                                ]) !!}
+                                                <span class="obligatorio">*</span>
+                                                {!! Form::month('anioymes', \Carbon\Carbon::now(), [
+                                                    'min' => '2022-01-01',
+                                                    'max' => \Carbon\Carbon::now()->year . '-12',
+                                                    'id' => 'periodo',
+                                                    'class' => 'form-control',
+                                                ]) !!}
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="d-flex">
                                     <div class="me-auto p-2"></div>
                                     <div class="p-2" style="background-color: rgb(223, 188, 144)">
@@ -134,7 +179,7 @@
                                         </div>
                                     </div>
                                 </div>                      
-                            </div>
+                            </div> --}}
                             <div class="row pt-3">
                                 <div class="d-flex">
                                     <div class="me-auto my-auto">

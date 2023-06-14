@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFECRONO']],
     Route::resource('ofecrono', Ofe_cronogramaController::class);
 });
 
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA']], function () {
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA|OFEOBRA']], function () {
     Route::post('/ofeobra/{idobra}/presentarSave', [ofe_obraController::class, 'presentarSave'])->name('ofeobra.presentarSave');
     Route::get('/ofeobra/{idobra}/presentar', [ofe_obraController::class, 'presentarOferta'])->name('ofeobra.presentar');    
     Route::post('/ofeobra/{idobra}/validar', [ofe_obraController::class, 'validarOferta'])->name('ofeobra.validar');
