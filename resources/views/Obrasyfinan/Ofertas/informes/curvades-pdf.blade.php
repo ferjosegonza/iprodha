@@ -98,7 +98,7 @@
             <h4 class="m-auto" >CURVA DE DESEMBOLSOS</h4>
         </div>
         <div class="section-body">
-            <img src="http://quickchart.io/chart?c={type:'bar',data:{labels:[2012,2013,2014,2015,2016],datasets:[{label:'Users',data:[120,60,50,180,120]}]}}">
+            {{-- <img src="http://quickchart.io/chart?c={type:'bar',data:{labels:[2012,2013,2014,2015,2016],datasets:[{label:'Users',data:[120,60,50,180,120]}]}}"> --}}
             {{-- <img class= "logo column-2" alt="image"  src="{{asset('img/logo_iprodha.jpg') }}"> --}}
             <img src="{{$chart}}">
         </div>
