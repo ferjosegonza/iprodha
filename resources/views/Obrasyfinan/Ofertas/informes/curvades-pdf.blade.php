@@ -95,33 +95,12 @@
     
     <section style="margin-top: 10px">
         <div class="section-header">
-            <h4 class="m-auto" >CRONOGRAMA DE DESEMBOLSOS</h4>
+            <h4 class="m-auto" >CURVA DE DESEMBOLSOS</h4>
         </div>
         <div class="section-body">
-            <table class="table">
-                <thead>
-                    <th>Mes</th>
-                    <th>Montos mensuales</th>
-                    <th>Montos acumulados</th>
-                </thead>
-                <tbody>
-                    @php
-                        $totalAcu = 0;
-                    @endphp
-
-                    @foreach ($desembolsos as $desembolso)
-                        @php
-                            $totalAcu += $desembolso->costo;
-                        @endphp
-                        <tr>
-                            <td>MES {{$desembolso->mes}} </td>
-                            <td>$ {{number_format($desembolso->costo, 2, ',', '.')}}</td>
-                            <td>$ {{number_format($totalAcu, 2, ',', '.')}}</td>
-                        </tr> 
-                    @endforeach  
-                       
-                </tbody>
-            </table>
+            <img src="http://quickchart.io/chart?c={type:'bar',data:{labels:[2012,2013,2014,2015,2016],datasets:[{label:'Users',data:[120,60,50,180,120]}]}}">
+            {{-- <img class= "logo column-2" alt="image"  src="{{asset('img/logo_iprodha.jpg') }}"> --}}
+            <img src="{{$chart}}">
         </div>
     </section> 
 </body>
