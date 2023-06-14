@@ -436,7 +436,7 @@
                                     </td>
                                 </tr>
                                 @php
-                                    $flete = $sombreros->where('idconceptosombrero', '=', 10)->first()->valor;
+                                    $flete = $sombreros->where('idconceptosombrero', '=', 10)->first()->valor ?? 0;
                                     $somfleteviv = $data->tot1viv * ($flete/100);
                                     $somfleteinfra = $data->tot1inf * ($flete/100);
                                 @endphp
@@ -473,7 +473,7 @@
                                     </td>
                                 </tr>
                                 @php
-                                    $gasto = $sombreros->where('idconceptosombrero', '=', 20)->first()->valor;
+                                    $gasto = $sombreros->where('idconceptosombrero', '=', 20)->first()->valor ?? 0;
                                     $somGastoviv = $subtot2viv * ($gasto/100);
                                     $somGastoinfra = $subtot2infra * ($gasto/100);
                                 @endphp
@@ -510,7 +510,7 @@
                                     </td>
                                 </tr>
                                 @php
-                                    $uti = $sombreros->where('idconceptosombrero', '=', 30)->first()->valor;
+                                    $uti = $sombreros->where('idconceptosombrero', '=', 30)->first()->valor ?? 0;
                                     $somUtiviv = $subtot3viv * ($uti/100);
                                     $somUtiinfra = $subtot3infra * ($uti/100);
                                 @endphp

@@ -5,6 +5,7 @@ use App\Models\Iprodha\Ofe_obra;
 use App\Models\Iprodha\Localidad;
 use App\Models\Me\Expediente;
 use App\Models\Iprodha\Empresa;
+use App\Models\Iprodha\Ob_situacion;
 use App\Models\Iprodha\Ofe_tipocontratoferta;
 use App\Models\Iprodha\Ofe_estadoxobra;
 use App\Models\Iprodha\Ofe_obraestado;
@@ -64,8 +65,8 @@ class ofe_obraController extends Controller
     public function create(Request $request)
     {
         $input = $request->all();
-        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc');
-
+        // $Localidad = Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc');
+        $Localidad = Localidad::orderBy('nom_loc')->get();
         // if(Auth::user()->hasRole('EMPRESA')){
         //     $Empresa= Empresa::where('iduserweb' ,Auth::user()->id)->orderBy('nom_emp')->pluck('nom_emp','id_emp');
         // }else{
@@ -73,8 +74,9 @@ class ofe_obraController extends Controller
         // }
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
         $Empresa= Empresa::orderBy('nom_emp')->get();
-        $TipoContrato= Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 
-        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato'));
+        $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 
+        $TipoSituacion = Ob_situacion::pluck('descripcion', 'id_situacion');
+        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato', 'TipoSituacion'));
     }
 
    public function store(Request $request)
@@ -107,6 +109,13 @@ class ofe_obraController extends Controller
             'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
             'numofer' => 1,
         ]);
+
+        if($request->input('idsituacion')){
+            $laOferta->update([
+                'id_situacion' => $request->input('idsituacion')
+            ]);
+        }
+
         Ofe_estadoxobra::create(['idobra' => $laOferta->idobra, 'idestado' => 1]);
         $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;
         $datOfe = Ofe_obra::where('idobra', $laOferta->idobra)->first();
