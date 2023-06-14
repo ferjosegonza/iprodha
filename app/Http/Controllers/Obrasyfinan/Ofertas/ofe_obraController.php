@@ -486,12 +486,12 @@ class ofe_obraController extends Controller
         $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
 
         for ($i=0; $i <= $ofeobra->plazo; $i++) { 
-            array_push($meses, 'Mes '.$i);
+            array_push($meses, $i);
         }
 
         foreach ($desembolsos as $desembolso) {
             $acu += $desembolso->costo;
-            array_push($monto);
+            array_push($monto, $acu);
         }
         // type: 'line',
         // data: {
@@ -536,7 +536,7 @@ class ofe_obraController extends Controller
                 "plugins" => ['ChartDataLabels']
              ]; 
         $chartData = json_encode($chartData);
-        $chartURL = "https://quickchart.io/chart?width=300&height=200&c=".urlencode($chartData);
+        $chartURL = "https://quickchart.io/chart?width=600&height=200&c=".urlencode($chartData);
         $chartData = file_get_contents($chartURL); 
         $chart = 'data:image/png;base64, '.base64_encode($chartData);
     
