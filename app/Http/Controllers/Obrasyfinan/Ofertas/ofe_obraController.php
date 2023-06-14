@@ -476,26 +476,72 @@ class ofe_obraController extends Controller
     } 
 
     public function pdfCurvaDes($id){
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
+        $monto = [];
+        $meses = [];
+        $acu = 0;
+
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+
+        for ($i=0; $i <= $ofeobra->plazo; $i++) { 
+            array_push($meses, 'Mes '.$i);
+        }
+
+        foreach ($desembolsos as $desembolso) {
+            $acu += $desembolso->costo;
+            array_push($monto);
+        }
+        // type: 'line',
+        // data: {
+        //     labels: meses,
+        //     datasets: [{
+        //     label: 'Desembolso por mes',
+        //     data: monto,
+        //     borderWidth: 1,
+        //     pointStyle: 'rect',
+        //     }]
+        // },
+        // plugins: [ChartDataLabels],
+        // options: {
+        //     plugins: {
+        // // Change options for ALL labels of THIS CHART
+        //         datalabels: {
+        //             font: {
+        //                 size: 15
+        //             },
+        //         }
+        //     },
+        //     scales: {
+        //     y: {
+        //         beginAtZero: true
+        //     },
+        //     },
+        // }
+     
         $chartData = [
-            "type" => 'horizontalBar',
-              "data" => [
-                "labels" => ['Coluna 1', 'Coluna 2', 'Coluna 3'],
-                  "datasets" => [
-                    [
-                      "label" => "Dados", 
-                      "data" => [100, 60, 20],
-                      "backgroundColor" => ['#27ae60', '#f1c40f', '#e74c3c']
-                    ], 
-                  ],
-                ]
-            ]; 
+             "type" => 'line',
+               "data" => [
+                 "labels" => $meses,
+                   "datasets" => [
+                     [
+                       "label" => "CURVA DE INVERSIONES", 
+                       "data" => $monto,
+                       "borderWidth" => 1,
+                        "pointStyle" => 'rect',
+                     ], 
+                   ],
+                ],
+                "plugins" => ['ChartDataLabels']
+             ]; 
         $chartData = json_encode($chartData);
         $chartURL = "https://quickchart.io/chart?width=300&height=200&c=".urlencode($chartData);
         $chartData = file_get_contents($chartURL); 
         $chart = 'data:image/png;base64, '.base64_encode($chartData);
-
-        $pdf = app('dompdf.wrapper');
-        $id = base64url_decode($id);
+    
+        
+        
 
         $ofeobra = Ofe_obra::find($id);
         $cronograma = Vw_ofe_cronograma::where('idobra', '=', $id)->orderBy('mes')->get();
@@ -515,7 +561,7 @@ class ofe_obraController extends Controller
                     'desembolsos' => $desembolsos,
                     'chart'=> $chart
                     ])  ->set_option('isRemoteEnabled', true)
-                        ->setPaper('legal', 'portrait')
+                        ->setPaper('legal', 'landscape')
                         ->stream('ItemsDeLaObra.pdf');
     } 
     // public function deseAcuPormes($id){
