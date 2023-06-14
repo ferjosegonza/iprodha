@@ -478,7 +478,7 @@ class ofe_obraController extends Controller
     public function pdfCurvaDes($id){
         $pdf = app('dompdf.wrapper');
         $id = base64url_decode($id);
-        $monto = [];
+        $monto = [0];
         $meses = [];
         $acu = 0;
 
@@ -533,10 +533,10 @@ class ofe_obraController extends Controller
                      ], 
                    ],
                 ],
-                "plugins" => ['ChartDataLabels']
+                "plugins" => 'ChartDataLabels',
              ]; 
         $chartData = json_encode($chartData);
-        $chartURL = "https://quickchart.io/chart?width=600&height=200&c=".urlencode($chartData);
+        $chartURL = "https://quickchart.io/chart?width=600&height=400&c=".urlencode($chartData);
         $chartData = file_get_contents($chartURL); 
         $chart = 'data:image/png;base64, '.base64_encode($chartData);
     
