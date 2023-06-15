@@ -19,8 +19,8 @@
         </div>
         <div class="section-body">            
             @include('layouts.modal.mensajes')            
-            <div class="container row barraBusqueda">                
-                <div class="row align-items-center col-lg-9">                               
+            <div class="container row barraBusqueda">      
+                <div class="row align-items-center col-lg-9">       
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex">     
                         <label id="labelswitch">Elegir entre fechas</label>
                         <label class="switch">
@@ -66,9 +66,9 @@
                             @endforeach                        
                         </select>                 
                         <P id="placeholder">---</P>    
-                    </div>  
-                    
+                    </div>                     
                 </div>
+                
                 <div class="row align-items-center col-lg-9">    
                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 flex" hidden>
                         <br>
@@ -94,12 +94,13 @@
                         <input type="text" name="busqueda" id="busq" onkeyup="filtrar()" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">
                         {{--  {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}  --}}
                     </div> 
-                </div>
+                </div>                
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
+                    <button onclick="limpiar()" class="btn btn-outline-info btn-sm flex" id="btnLimpiar"><i class="fas fa-undo-alt"></i>    Limpiar</button>   
                     <label for="btnb">Encuentre lo que busca:</label>
                     <button type="button" class="btn btn-success" id='btnb' disabled onclick="buscarArchivos()">Buscar</button>
                 </div>        
-                                    
+                                       
             </div>            
             <div class="row tags-añadidos" id="tags-añadidos" hidden>
                 <input type="text" id='tag-acumulado' name="tag-acumulado" hidden>  
