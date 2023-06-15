@@ -907,7 +907,5 @@ function limpiar(){
     if(document.getElementById('año')){
         document.getElementById('año').value = 'sel'
     }
-    document.getElementById('busq').value = ''
-    filtrar()
-    
+    document.getElementById('busq').value = ''    
 }
