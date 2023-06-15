@@ -192,3 +192,8 @@ thead input {
   color: red;
   text-decoration: none;
 }
+#btnLimpiar{
+  margin-top: -85%;
+  width: 180px;
+  margin-left: 20%;
+}
