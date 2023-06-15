@@ -493,13 +493,13 @@ class ofe_obraController extends Controller
             $acu += $desembolso->costo;
             array_push($monto, str_replace(',','', number_format($acu, 2)));
         }
-        
+
         $chartData = [
             "type" => "line",
             "data" => [
               "datasets" => [
                 [
-                  "label" => "Dataset 1",
+                  "label" => "Curva de inversiones",
                   "data" => $monto,
                   "fill" => false,
                   "borderColor" => "rgb(255, 99, 132)",
@@ -737,7 +737,7 @@ class ofe_obraController extends Controller
                   "color" => "#666666",
                   "font" => [
                     "family" => "sans-serif",
-                    "size" => 10,
+                    "size" => 5,
                     "style" => "normal"
                   ]
                 ],
@@ -756,7 +756,7 @@ class ofe_obraController extends Controller
             ];
         $chartData = json_encode($chartData);
         // return $chartData;
-        $chartURL = "https://quickchart.io/chart?width=600&height=300&c=".urlencode($chartData);
+        $chartURL = "https://quickchart.io/chart?width=500&height=200&c=".urlencode($chartData);
         $chartData = file_get_contents($chartURL); 
         $chart = 'data:image/png;base64, '.base64_encode($chartData);
     
@@ -782,7 +782,7 @@ class ofe_obraController extends Controller
                     'chart'=> $chart
                     ])  ->set_option('isRemoteEnabled', true)
                         ->setPaper('legal', 'landscape')
-                        ->stream('ItemsDeLaObra.pdf');
+                        ->stream('CurvaDeInversiones.pdf');
     } 
     // public function deseAcuPormes($id){
     //     $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
