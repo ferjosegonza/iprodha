@@ -491,7 +491,7 @@ class ofe_obraController extends Controller
 
         foreach ($desembolsos as $desembolso) {
             $acu += $desembolso->costo;
-            array_push($monto, $acu);
+            array_push($monto, str_replace(',','', number_format($acu, 2)));
         }
         
         $chartData = [
@@ -520,20 +520,7 @@ class ofe_obraController extends Controller
                   "hidden" => false
                 ]
               ],
-              "labels" => [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December"
-              ]
+              "labels" => $meses,
             ],
             "options" => [
               "title" => [
