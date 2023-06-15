@@ -24,8 +24,8 @@ class ArchivoController extends Controller
     }
 
 public function consultar(){
-    $boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
-    $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('nombre_corto', 'asc')->orderBy('ano_archivo', 'desc')->orderBy('mes_archivo', 'desc')->orderBy('dia_archivo', 'desc')->get();
+    //$boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
+    //$archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('nombre_corto', 'asc')->orderBy('ano_archivo', 'desc')->orderBy('mes_archivo', 'desc')->orderBy('dia_archivo', 'desc')->get();
     $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
@@ -33,8 +33,13 @@ public function consultar(){
     return view('archivo.index')
         ->with('TipoDocumento',$TipoDocumento)
         ->with('SubTipoDocumento',$SubTipoDocumento)
-        ->with('Tags',$Tags)
-        ->with('archivos',$archivos);
+        ->with('Tags',$Tags);
+}
+
+public function consultarBoletin(Request $request){
+    $boletin = DB::table('iprodha.Vw_dig_parabuscararchivo')->max('fecha_boletin');
+    $archivos = Vw_dig_parabuscararchivo::where('id_tipocabecera', '=', 1)->where('fecha_boletin', '=', $boletin)->orderBy('nombre_corto', 'asc')->orderBy('ano_archivo', 'desc')->orderBy('mes_archivo', 'desc')->orderBy('dia_archivo', 'desc')->get();
+    return response()->json($archivos);
 }
 
 public function buscar(Request $request){
@@ -50,15 +55,14 @@ public function buscar(Request $request){
         $subtipo = $subtipo[2];
     }    
     $busqueda = strtoupper($request->busqueda);
-    $fecha1=$request->fecha1;
-    $fecha2=$request->fecha2;
-    $año = $request->ano;
     $tag =  explode('|',$request->tag);
     $info = $request->input_tag;    
 
     $query = "SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipocabecera = 1";
     if($request->betwenyears == 'on'){
         //checkbox on    
+        $fecha1=$request->fecha1;
+        $fecha2=$request->fecha2;
         if($fecha1 != null and $fecha2 != null){
             //rango de fechas
             $query = $query . " AND fecha_archivo between to_date('$fecha1', 'YYYY-MM-DD') and to_date('$fecha2', 'YYYY-MM-DD')";
@@ -73,6 +77,7 @@ public function buscar(Request $request){
         }
     }
     else{     
+        $año = $request->ano;
         //checkbox off
         if($año != 'sel'){
             //hay un año
@@ -103,12 +108,7 @@ public function buscar(Request $request){
     $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
 
-    return view('archivo.index')
-        ->with('TipoDocumento',$TipoDocumento)
-        ->with('Tags',$Tags)
-        ->with('SubTipoDocumento',$SubTipoDocumento)
-        ->with('archivos',$archivos);
-
+    return response()->json($archivos);
 } 
 
 public function getpdf($path){
@@ -290,8 +290,8 @@ public function crear(Request $request){
     //guardar los archivos
     if($request->hasFile('pdf')){
         $fileName = $request->pdfname;
-        //$ruta = substr($path->path_archivo, 14);
-        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
+        $ruta = substr($path->path_archivo, 14);
+        $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
@@ -360,6 +360,7 @@ public function modificar(Request $request){
 
 public function derivados(Request $request){
     $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
+
     
     if( is_string($request->value)){
         $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 like '%$request->value%'";
@@ -367,6 +368,7 @@ public function derivados(Request $request){
     else{
         $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 = $request->value";
     }
+
 
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
