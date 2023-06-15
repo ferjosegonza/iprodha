@@ -533,7 +533,14 @@ class ofe_obraController extends Controller
                      ], 
                    ],
                 ],
-                "plugins" => 'ChartDataLabels',
+                "plugins" => [
+                    "datalabels" => [
+                        "display" => true,
+                        "align" => 'bottom',
+                        "backgroundColor" => '#ccc',
+                        "borderRadius" => 3,
+                    ],
+                ],
              ]; 
         $chartData = json_encode($chartData);
         $chartURL = "https://quickchart.io/chart?width=600&height=300&c=".urlencode($chartData);
