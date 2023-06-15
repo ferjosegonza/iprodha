@@ -756,7 +756,7 @@ class ofe_obraController extends Controller
             ];
         $chartData = json_encode($chartData);
         // return $chartData;
-        $chartURL = "https://quickchart.io/chart?width=500&height=200&c=".urlencode($chartData);
+        $chartURL = "https://quickchart.io/chart?width=600&height=200&c=".urlencode($chartData);
         $chartData = file_get_contents($chartURL); 
         $chart = 'data:image/png;base64, '.base64_encode($chartData);
     
