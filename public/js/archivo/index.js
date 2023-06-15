@@ -889,3 +889,25 @@ function cargarBoletin(){
         }
     }); 
 }
+
+function limpiar(){
+    document.getElementById('tipo').value = 'sel'
+    document.getElementById('subtipo').hidden=true
+    document.getElementById('placeholder').removeAttribute('hidden')
+    document.getElementById('tag').value = 'sel'
+    if(document.getElementById('input-tag')){
+        document.getElementById('input-tag').value=''
+    }
+    document.getElementById('inp-tag').hidden=true    
+    document.getElementById('placeholder-tag').removeAttribute('hidden')    
+    if(document.getElementById('max')){
+        document.getElementById('max').value = 'dd-mm-aaaa'
+        document.getElementById('min').value = 'dd-mm-aaaa'
+    }
+    if(document.getElementById('año')){
+        document.getElementById('año').value = 'sel'
+    }
+    document.getElementById('busq').value = ''
+    filtrar()
+    
+}
