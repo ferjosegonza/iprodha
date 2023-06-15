@@ -548,20 +548,7 @@ class ofe_obraController extends Controller
               "datasets" => [
                 [
                   "label" => "Dataset 1",
-                  "data" => [
-                    12000,
-                    15000,
-                    18000,
-                    20000,
-                    17000,
-                    22000,
-                    25000,
-                    28000,
-                    30000,
-                    27000,
-                    32000,
-                    35000
-                  ],
+                  "data" => $monto,
                   "fill" => false,
                   "borderColor" => "rgb(255, 99, 132)",
                   "lineTension" => 0.1,
@@ -581,20 +568,7 @@ class ofe_obraController extends Controller
                   "hidden" => false
                 ]
               ],
-              "labels" => [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December"
-              ]
+              "labels" => $meses,
             ],
             "options" => [
               "title" => [
