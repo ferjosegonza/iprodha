@@ -737,7 +737,7 @@ class ofe_obraController extends Controller
                   "color" => "#666666",
                   "font" => [
                     "family" => "sans-serif",
-                    "size" => 6,
+                    "size" => 5,
                     "style" => "bold"
                   ]
                 ],
