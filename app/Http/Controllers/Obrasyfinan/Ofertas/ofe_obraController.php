@@ -491,7 +491,7 @@ class ofe_obraController extends Controller
 
         foreach ($desembolsos as $desembolso) {
             $acu += $desembolso->costo;
-            array_push($monto, number_format($acu, 2, ',', '.'));
+            array_push($monto, $acu);
         }
         
         $chartData = [
