@@ -119,6 +119,7 @@ function onSelectMesChange(){
             response.forEach(element => {
                 element.importe = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(element.importe);
                 element.costo = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(element.costo);
+                element.incidencia = Number.parseFloat(element.incidencia);
                 $('#example').DataTable().row.add([element.nom_item, element.avance, element.poravaacuitem, element.incidencia, element.importe, element.costo, '<td><button type="button" class="btn btn-danger borrar" id="removeRow" value="'+element.idcrono+'">Eliminar</button>']).draw();
             });
          },

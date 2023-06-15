@@ -20,6 +20,7 @@ class vw_ofe_obra_valida extends Model
         'nom_loc',
         'tot1viv',
         'tot1inf'];
+
     protected $attributes = [
         'idobra'=> true,
         'nomobra'=> true,
@@ -29,4 +30,8 @@ class vw_ofe_obra_valida extends Model
         'tot1inf'=> true
     ];
 
+    protected $casts = [
+        'tot1viv' => 'decimal:2',
+        'tot1inf' => 'decimal:2'
+    ];
 }

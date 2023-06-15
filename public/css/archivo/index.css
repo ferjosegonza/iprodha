@@ -159,9 +159,12 @@ thead input {
   border-radius: 5px;
   background-color: rgb(255, 146, 82);
  }
+ #areset:hover{
+  background-color: rgb(206, 117, 65);
+ }
  #aclaracion{
-  color: rgb(134, 134, 134);
-  font-size: 12px;
+  color: rgb(3, 3, 3);
+  font-size: 13px;
  }
 .tags-añadidos{
   border: 1px solid orange;

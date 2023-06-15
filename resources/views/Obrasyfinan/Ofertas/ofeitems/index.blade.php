@@ -39,6 +39,9 @@
                                         <tr> <th></th> <th></th> <th></th> <th></th> <th class='text-center'></th> <th class='text-center'></th> <th></th></tr>
                                     </tfoot>
                                     <tbody>
+                                        @php
+                                            $inciTotal = 0;
+                                        @endphp
                                         @foreach ($itemsxobra->sortBy('orden') as $unItem)
                                             <tr>
                                                 <td class= 'text-center'>{{ $unItem->orden }}</td>
@@ -59,7 +62,7 @@
                                                 {{-- </td> --}}
                                                 <td class= 'text-center'>{{ substr($unItem->nom_item, 0, 35) }}</td>                                
                                                 <td class= 'text-center'>@money($unItem->costo)</td>
-                                                <td class= 'text-center'>{{ $unItem->por_inc }}</td>
+                                                <td class= 'text-center'>{{number_format($unItem->por_inc, 4, ',', '.') }}</td>
                                                 <td class= 'text-center'>
                                                     @if ($laObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
                                                         {!! Form::open(['method' => 'GET','route' => ['ofeobraitems.edit', base64url_encode($unItem->iditem)],'style' => 'display:inline',]) !!}
@@ -77,6 +80,9 @@
                                                     {!! Form::close() !!}
                                                 </td>
                                             </tr>
+                                            @php
+                                            $inciTotal += $unItem->por_inc;
+                                        @endphp
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -95,6 +101,7 @@
 
 @section('js')
     <script>
+        let totalDeInci = {{$inciTotal}}
         $(document).ready(function () {
             $('#example').DataTable({
                 language: {
@@ -173,7 +180,7 @@
             //   $( api.column( 2 ).footer() ).html(tueTotal);
               // $( api.column( 3 ).footer() ).html(wedTotal);
               $( api.column( 4 ).footer() ).html(new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(thuTotal.toFixed(2)));
-              $( api.column( 5 ).footer() ).html(importeTotal.toFixed(2));
+              $( api.column( 5 ).footer() ).html(totalDeInci);
             //   $( api.column( 6 ).footer() ).html(costoTotal.toFixed(8));
           },
             });

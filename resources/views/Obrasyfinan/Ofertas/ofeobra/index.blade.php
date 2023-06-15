@@ -64,10 +64,17 @@
                                                             {!! Form::submit('Editar', ['class' => 'btn btn-warning m-1']) !!}
                                                             {!! Form::close() !!}
                                                         @endcan
-                                                        @can('BORRAR-OFEOBRA')
+                                                        {{-- @can('BORRAR-OFEOBRA')
                                                             {!! Form::open([
                                                             'method' => 'DELETE','route' => ['ofeobra.destroy', $unaOferta->idobra],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Borrar', ['class' => 'btn btn-danger m-1','onclick' => "return confirm('Estas seguro que desea ELIMINAR la oferta??')",]) !!}
+                                                            {!! Form::close() !!}
+                                                        @endcan --}}
+
+                                                        @can('BORRAR-OFEOBRA')
+                                                            {!! Form::open([
+                                                            'method' => 'GET','route' => ['ofeobra.show', base64url_encode($unaOferta->idobra)],'style' => 'display:inline',]) !!}
+                                                            {!! Form::submit('Ver', ['class' => 'btn btn-primary m-1']) !!}
                                                             {!! Form::close() !!}
                                                         @endcan
                                                         

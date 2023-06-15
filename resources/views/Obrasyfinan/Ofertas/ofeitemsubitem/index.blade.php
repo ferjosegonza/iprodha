@@ -41,7 +41,7 @@
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->denominacion }}</td>                                
                                                 <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->getUnidad->unidad }}</td>
-                                                <td class="text-center" style="vertical-align: middle;">{{ $unSubItem->cantidad }}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{ number_format($unSubItem->cantidad,2, ',', '.') }}</td>
                                                 <td class="text-center" style="vertical-align: middle;">@money($unSubItem->costounitario)</td>
                                                 <td class="text-center" style="vertical-align: middle;">@money($unSubItem->cantidad * $unSubItem->costounitario)</td>
                                                 @if ($unaObra->getEstados->sortByDesc('actual')->first()->getEstado->idestado < 2)
