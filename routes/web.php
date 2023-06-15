@@ -181,7 +181,8 @@ Route::group(['middleware' => ['auth']], function () {
     });//agregar noti
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');    
+    Route::get('archivos', [ArchivoController::class, 'consultar'])->name('archivos.consultar');  
+    Route::get('archivo/boletin', [ArchivoController::class, 'consultarBoletin'])->name('archivos.consultarBoletin');    
     Route::get('archivo/check', [ArchivoController::class, 'check'])->name('archivos.check');
     Route::get('archivo/selects', [ArchivoController::class, 'getSelects'])->name('archivos.selects');
     Route::get('archivo/campos', [ArchivoController::class, 'getCampos'])->name('archivos.campos');

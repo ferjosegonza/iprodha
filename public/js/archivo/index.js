@@ -386,6 +386,16 @@ $(document).ready(function () {
         orderCellsTop: true,
         fixedHeader: true,
         "bSort":false,
+        columnDefs: [
+            {
+                target: 7,
+                visible: false
+            },
+            {
+                target: 6,
+                visible: false,
+            },
+        ],
         language: {
             lengthMenu: 'Mostrar _MENU_ registros por página',
             zeroRecords: 'No se han encontrado registros',
@@ -436,17 +446,13 @@ $(document).ready(function () {
     });   
     $('#archivos tbody').on('click', 'tr', function () {
         let data = table.row(this).data();
+        console.log(data)
         table.columns( '.sub' ).search(data[2]).draw();
         table.columns( '.tipo' ).search(data[1]).draw();
         table.columns( '.nro' ).search(data[4]).draw();
         table.columns( '.fecha' ).search(data[3]).draw();
         table.columns( '.orden' ).search(data[7]).draw();
-        console.log(data[5])
-        let str = data[5].replaceAll('&lt;', '<')
-        str = str.replaceAll('&gt;', '>')
-        console.log(str)
-
-        table.columns( '.asun' ).search(str).draw();
+        table.columns( '.asun' ).search(data[5].replaceAll('&lt;','<').replaceAll('&gt;','>')).draw();
 
         document.getElementById('preview').hidden = false
         document.getElementById('pdfver').setAttribute('data', data[6])
@@ -616,6 +622,10 @@ const checkInput = () => {
             tag.addEventListener('keyup', checkAddButton) */
         });        
     }
+    else{
+        document.getElementById('inp-tag').setAttribute('hidden', 'hidden')
+        document.getElementById('placeholder-tag').removeAttribute('hidden')
+    }
 }
 /* const setValue= () => {
     const tag = document.getElementById('input_tag');   
@@ -758,4 +768,148 @@ function removeFiltro(tag, input){
     }
    
     
+}
+
+function buscarArchivos(){
+    let tipo = document.getElementById('tipo').value
+    let subtipo = document.getElementById('subtipo').value
+    let busqueda = document.getElementById('busq').value
+    let tag = document.getElementById('tag').value
+    let input_tag = null
+    if(document.getElementById('input_tag')){
+       input_tag = document.getElementById('input_tag').value
+    }    
+    let fecha1 = null
+    let fecha2 =null
+    let ano = null
+    let betweenyears = document.getElementById('betwenyears').value
+    if(document.getElementById('yearIn').hidden === true){
+        fecha1 = document.getElementById('min').value
+        fecha2 = document.getElementById('max').value
+    }
+    else{
+        ano = document.getElementById ('año').value
+    }
+    //
+    let route = 'archivo/buscar'
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            tipo:tipo,
+            subtipo:subtipo,
+            busqueda:busqueda,
+            tag:tag,
+            input_tag: input_tag,
+            betweenyears:betweenyears,
+            fecha1:fecha1,
+            fecha2:fecha2,
+            ano:ano
+        }),
+        dataType: 'json',
+        success: function(res){  
+            let table = $('#archivos').DataTable()
+            table.clear()
+            console.log(res.length)
+            for(let i=0; i<res.length; i++){
+                console.log(res[i])
+                //console.log(res[i].nombre_corto, '', res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo, res[i].nro_archivo, res[i].claves_archivo, '', res[i].orden)
+                //table.rows.add([0,1,2,3,4,5,6.7]).draw(true);
+                
+                table.row.add({
+                   0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
+                   1 : res[i].nombre_corto,
+                   2 : res[i].dessubtipoarchivo,
+                   3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
+                   4 : res[i].nro_archivo,
+                   5 : res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;'),
+                   6 : res[i].path_archivo + res[i].nombre_archivo,
+                   7 : res[i].orden
+                })      
+            }      
+            table.draw(true); 
+            
+        },
+        error: function(res){
+            console.log(res)
+            popup(-2)
+        }
+    }); 
+}
+
+function cargarBoletin(){
+    //
+    let advertencia = document.getElementById('aclaracion')
+    advertencia.innerHTML='Por favor espere a que el boletín cargue...'
+    let route = 'archivo/boletin'    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val()
+        }),
+        dataType: 'json',
+        success: function(res){  
+            let table = $('#archivos').DataTable()
+            table.clear()
+            console.log(res.length)
+            for(let i=0; i<res.length; i++){
+                console.log(res[i])
+                table.row.add({
+                   0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
+                   1 : res[i].nombre_corto,
+                   2 : res[i].dessubtipoarchivo,
+                   3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
+                   4 : res[i].nro_archivo,
+                   5 : res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;'),
+                   6 : res[i].path_archivo + res[i].nombre_archivo,
+                   7 : res[i].orden
+                })      
+            }      
+            advertencia.innerHTML='(Por defecto verás los archivos correspondientes al último boletín)'
+            table.draw(true); 
+            
+        },
+        error: function(res){
+            console.log(res)
+            popup(-2)
+        }
+    }); 
+}
+
+function limpiar(){
+    document.getElementById('tipo').value = 'sel'
+    if(document.getElementById('subtipo')){
+       document.getElementById('subtipo').value ='sel'
+    }
+    document.getElementById('subtipo').hidden=true
+    document.getElementById('placeholder').removeAttribute('hidden')
+    document.getElementById('tag').value = 'sel'
+    if(document.getElementById('input-tag')){
+        document.getElementById('input-tag').value=''
+    }
+    document.getElementById('inp-tag').hidden=true    
+    document.getElementById('placeholder-tag').removeAttribute('hidden')    
+    if(document.getElementById('max')){
+        document.getElementById('max').value = 'dd-mm-aaaa'
+        document.getElementById('min').value = 'dd-mm-aaaa'
+    }
+    if(document.getElementById('año')){
+        document.getElementById('año').value = 'sel'
+    }
+    document.getElementById('busq').value = ''
+    cancelarbusqueda()
 }
