@@ -488,7 +488,7 @@ class ofe_obraController extends Controller
         for ($i=0; $i <= $ofeobra->plazo; $i++) { 
             array_push($meses, $i);
         }
-
+        array_push($meses, $ofeobra->plazo+1);
         foreach ($desembolsos as $desembolso) {
             $acu += $desembolso->costo;
             array_push($monto, str_replace(',','', number_format($acu, 2)));
@@ -616,7 +616,7 @@ class ofe_obraController extends Controller
                     ],
                     "ticks" => [
                       "display" => true,
-                      "fontSize" => 12,
+                      "fontSize" => 8,
                       "fontFamily" => "sans-serif",
                       "fontColor" => "#666666",
                       "fontStyle" => "normal",
@@ -646,7 +646,7 @@ class ofe_obraController extends Controller
                     "ticks" => [
                       "beginAtZero" => true,
                       "display" => true,
-                      "fontSize" => 12,
+                      "fontSize" => 8,
                       "fontFamily" => "sans-serif",
                       "fontColor" => "#666666",
                       "fontStyle" => "normal",
