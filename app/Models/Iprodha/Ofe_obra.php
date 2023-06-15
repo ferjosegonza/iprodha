@@ -34,7 +34,7 @@ class Ofe_obra extends Model
         'aniocotizacion',
         'mescotizacion',
         'publica', 
-        'iduserweb',
+        'id_situacion',
     ];
     protected $attributes = [
         'idobra' => false,

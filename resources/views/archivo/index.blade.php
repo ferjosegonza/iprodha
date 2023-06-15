@@ -17,7 +17,6 @@
             <div class="titulo page__heading">Búsqueda de Archivos Digitalizados</div>
             @include('layouts.favorito.fav', ['modo' => 'Agregar'])
         </div>
-        {!! Form::open(['route' => 'archivos.buscar', 'method' => 'GET']) !!}
         <div class="section-body">            
             @include('layouts.modal.mensajes')            
             <div class="container row barraBusqueda">                
@@ -25,7 +24,7 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 flex">     
                         <label id="labelswitch">Elegir entre fechas</label>
                         <label class="switch">
-                            <input type="checkbox" name="betwenyears" onclick="toggle()">
+                            <input type="checkbox" name="betwenyears" id="betwenyears" onclick="toggle()">
                             <span class="slider round"></span>
                         </label>          
                          
@@ -76,7 +75,7 @@
                         <button class="btn btn-success" id="btn-agregar-tag" type="button" onclick="agregarTag()" disabled>+</button>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 flex">
-                        {!! Form::label('Tags:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                        {!! Form::label('Etiquetas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                             <select class="form-select" id="tag" onchange="tags()" name="tag">
                                 <option value="sel" selected>Seleccionar</option>                                
                                 @foreach ($Tags as $tag)                            
@@ -97,8 +96,8 @@
                     </div> 
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
-                    <label>Encuentre lo que busca:</label>
-                    {!! Form::submit('Buscar', ['class' => 'btn btn-success', 'id'=>'btnb', 'disabled' => 'disabled']) !!}
+                    <label for="btnb">Encuentre lo que busca:</label>
+                    <button type="button" class="btn btn-success" id='btnb' disabled onclick="buscarArchivos()">Buscar</button>
                 </div>        
                                     
             </div>            
@@ -106,39 +105,24 @@
                 <input type="text" id='tag-acumulado' name="tag-acumulado" hidden>  
             </div>   
             <div>
-                 <a href="{{ route('archivos.consultar') }}" id="areset">Recargar los archivos</a>
+                 <button onclick="cargarBoletin()" id="areset">Cargar boletín</button>
                 <label id="aclaracion">(Por defecto verás los archivos correspondientes al último boletín)</label>
             </div>
-            {!! Form::close() !!} 
             <div class="row abajo card">
                 <div class="tabla card-body table-responsive col-xs-9 col-sm-9 col-md-9 col-lg-9 flex">
                     <table id="archivos" class="table display table-hover mt-2" class="display">
                         <thead>
                             <tr>
-                                <th class="text-center" scope="col" style="color:#fff;width:1%;"></th>
+                                <th class="text-center imprimir" scope="col" style="color:#fff;width:1%;"></th>
                                 <th class="text-center tipo" scope="col" style="color:#fff;width:8.5%;">Tipo</th>
                                 <th class="text-center sub" scope="col" style="color:#fff;width:15%;">Subtipo</th>                                    
                                 <th class="text-center fecha" scope="col" style="color:#fff;width:10%;">Fecha</th>
                                 <th class="text-center nro" scope="col" style="color:#fff;width:7%;">Nro Archivo</th>
                                 <th class="text-center asun" scope="col" style="color:#fff;width:25%;">Asuntos Claves</th>
-                                <th hidden></th>
+                                <th hidden class="path"></th>
                                 <th hidden class="orden"></th>
                             </tr>
-                        </thead>
-                        <tbody>                            
-                            @foreach ($archivos as $archivo)
-                            <tr>
-                                <td> <button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button></td>
-                                <td>{{$archivo->nombre_corto}}</td>
-                                <td>{{$archivo->dessubtipoarchivo}}</td>
-                                <td>{{$archivo->dia_archivo}}-{{$archivo->mes_archivo}}-{{$archivo->ano_archivo}}</td>
-                                <td>{{$archivo->nro_archivo}}</td>
-                                <td>{{$archivo->claves_archivo}}</td>      
-                                <td hidden>{{$archivo->path_archivo . $archivo->nombre_archivo}} </td>
-                                <td hidden>{{$archivo->orden}} </td>        
-                            </tr>
-                            @endforeach
-                        </tbody>
+                        </thead>          
                     </table>
                 </div>                
             </div>

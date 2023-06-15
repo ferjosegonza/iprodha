@@ -33,34 +33,34 @@
                         <label>{{$obra->getLocalidad->nom_loc}}</label>                    
                     </div>   
                     <div class="column-3 form-group">
-                    <label><b>Empresa:<b></label>
-                    <label>{{$obra->getEmpresa->nom_emp}}</label>
+                        <label><b>Empresa:<b></label>
+                        <label>{{$obra->getEmpresa->nom_emp}}</label>
                     </div>
-                    <div class="column-3 form-group">
+                    {{-- <div class="column-3 form-group">
                         <label><b>Tipo de Contrato: <b></label>
                         <label>{{$obra->getTipoOferta->tipocontratofer}}</label>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="row">                          
-                    <div class="column-3 form-group">                        
+                    <div class="column-4 form-group">                        
                         <label><b>Fecha de publicación:<b></label>
                         <label>{{$obra->publica}}</label>
                         </div>
-                    <div class="column-3 form-group"> 
+                    {{-- <div class="column-3 form-group"> 
                         <label><b>Código de barra del expediente:<b></label>
                         <label>{{$obra->idexpediente}}</label> 
-                    </div>                    
+                    </div>                     --}}
                     <div class="column-3 form-group"> 
                         <label><b>Expediente Número:<b></label>
                         <label>{{$obra->getExpediente->exp_numero}}</label>
                     </div>
                 </div>
-                <div class="row">        
+                {{-- <div class="row">        
                     <div class="form-group">             
                         <label><b>Asunto del Expediente:<b></label>
                         <label>{{$obra->getExpediente->exp_asunto}}</label>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row">
                     <div class="column-4 form-group"> 
                         <label><b>Vivienta:<b></label><br>
@@ -144,7 +144,7 @@
                             ${{number_format($total,2, ',', '.')}}
                         </td>
                         <td>
-                            ${{number_format($totalinc,4, ',', '.')}}
+                            {{number_format($totalinc,4, ',', '.')}}
                         </td>
                     </tr>      
                 </tbody>
@@ -159,6 +159,7 @@
         <div class="section-body">
             @php
                 $contador = 2;
+                $subtotal = $total;
             @endphp
             @foreach ($conceptos as $concepto)
                 <table class="table" style="margin-top: 30px">
@@ -172,8 +173,8 @@
                         <tr>
                             <td>{{$concepto->conceptosombrero}}</td>
                             <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
-                            <td>$ {{number_format((($total*$concepto->valor)/100),2, ',', '.')}}</td>
-                            <td>$ {{number_format(((($total*$concepto->valor)/100)+$total),2, ',', '.')}}</td>
+                            <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                            <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
                         </tr>
                         <tr style="background-color: rgb(190, 190, 190)">
                         </tr>
@@ -181,8 +182,17 @@
                 </table>
                 @php
                     $contador += 1;
+                    $subtotal += $subtotal*($concepto->valor/100);
                 @endphp
             @endforeach
+                <table class="table" style="margin-top: 30px">
+                    <tbody>
+                        <tr>
+                            <th>MONTO TOTAL</th>
+                            <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
+                        </tr>
+                    </tbody>
+                </table>
             {{-- @php
                 $total = ($total*$concepto->valor)/100;
             @endphp

@@ -52,7 +52,7 @@ class Ofe_itemdetController extends Controller
         $this->validate($request, [
             'denominacion' => 'required|min:5|max:150|string',
             'unidad' => 'required|min:1|integer',
-            'cantidad' => 'required|min:1||numeric|between:0,99.99', 
+            'cantidad' => 'required|min:1|numeric|between:0,99.99', 
             'costounitario' => 'required',
         ], [
             'idunidad.required' => 'Seleccione la Unidad.',
@@ -85,8 +85,8 @@ class Ofe_itemdetController extends Controller
         $this->validate($request, [
             'denominacion' => 'required|min:5|max:150|string',
             'unidad' => 'required|min:1|integer',
-            'cantidad' => 'required|min:1|integer', 
-            'costounitario' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'cantidad' => 'required|min:1|numeric|between:0,99.99', 
+            'costounitario' => 'required',
         ], [
             'idunidad.required' => 'Seleccione la Unidad.',
         ]);
