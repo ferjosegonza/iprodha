@@ -520,29 +520,316 @@ class ofe_obraController extends Controller
         //     },
         // }
      
+        // $chartData = [
+        //      "type" => 'line',
+        //        "data" => [
+        //          "labels" => $meses,
+        //            "datasets" => [
+        //              [
+        //                "label" => "CURVA DE INVERSIONES", 
+        //                "data" => $monto,
+        //                "borderWidth" => 1,
+        //                 "pointStyle" => 'rect',
+        //              ], 
+        //            ],
+        //         ],
+        //         "plugins" => [
+        //             "datalabels" => [
+        //                 "display" => true,
+        //                 "align" => 'bottom',
+        //                 "backgroundColor" => '#ccc',
+        //                 "borderRadius" => 3,
+        //             ],
+        //         ],
+        //      ]; 
         $chartData = [
-             "type" => 'line',
-               "data" => [
-                 "labels" => $meses,
-                   "datasets" => [
-                     [
-                       "label" => "CURVA DE INVERSIONES", 
-                       "data" => $monto,
-                       "borderWidth" => 1,
-                        "pointStyle" => 'rect',
-                     ], 
-                   ],
-                ],
-                "plugins" => [
-                    "datalabels" => [
-                        "display" => true,
-                        "align" => 'bottom',
-                        "backgroundColor" => '#ccc',
-                        "borderRadius" => 3,
+            "type" => "line",
+            "data" => [
+              "datasets" => [
+                [
+                  "label" => "Dataset 1",
+                  "data" => [
+                    12000,
+                    15000,
+                    18000,
+                    20000,
+                    17000,
+                    22000,
+                    25000,
+                    28000,
+                    30000,
+                    27000,
+                    32000,
+                    35000
+                  ],
+                  "fill" => false,
+                  "borderColor" => "rgb(255, 99, 132)",
+                  "lineTension" => 0.1,
+                  "spanGaps" => false,
+                  "pointRadius" => 3,
+                  "pointHoverRadius" => 3,
+                  "pointStyle" => "circle",
+                  "borderDash" => [
+                    0,
+                    0
+                  ],
+                  "barPercentage" => 0.9,
+                  "categoryPercentage" => 0.8,
+                  "type" => "line",
+                  "backgroundColor" => "rgb(255, 99, 132)33",
+                  "borderWidth" => 3,
+                  "hidden" => false
+                ]
+              ],
+              "labels" => [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+              ]
+            ],
+            "options" => [
+              "title" => [
+                "display" => false,
+                "position" => "top",
+                "fontSize" => 12,
+                "fontFamily" => "sans-serif",
+                "fontColor" => "#666666",
+                "fontStyle" => "bold",
+                "padding" => 10,
+                "lineHeight" => 1.2,
+                "text" => "Chart title"
+              ],
+              "layout" => [
+                "padding" => [],
+                "left" => 0,
+                "right" => 0,
+                "top" => 0,
+                "bottom" => 0
+              ],
+              "legend" => [
+                "display" => true,
+                "position" => "top",
+                "align" => "center",
+                "fullWidth" => true,
+                "reverse" => false,
+                "labels" => [
+                  "fontSize" => 12,
+                  "fontFamily" => "sans-serif",
+                  "fontColor" => "#666666",
+                  "fontStyle" => "normal",
+                  "padding" => 10
+                ]
+              ],
+              "scales" => [
+                "xAxes" => [
+                  [
+                    "id" => "X1",
+                    "position" => "bottom",
+                    "display" => true,
+                    "type" => "category",
+                    "stacked" => false,
+                    "offset" => false,
+                    "time" => [
+                      "unit" => false,
+                      "stepSize" => 1,
+                      "displayFormats" => [
+                        "millisecond" => "h =>mm =>ss.SSS a",
+                        "second" => "h =>mm =>ss a",
+                        "minute" => "h =>mm a",
+                        "hour" => "hA",
+                        "day" => "MMM D",
+                        "week" => "ll",
+                        "month" => "MMM YYYY",
+                        "quarter" => "[Q]Q - YYYY",
+                        "year" => "YYYY"
+                      ]
                     ],
+                    "distribution" => "linear",
+                    "gridLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1,
+                      "drawBorder" => true,
+                      "drawOnChartArea" => true,
+                      "drawTicks" => true,
+                      "tickMarkLength" => 10,
+                      "zeroLineWidth" => 1,
+                      "zeroLineColor" => "rgba(0, 0, 0, 0.25)",
+                      "zeroLineBorderDash" => [
+                        0,
+                        0
+                      ]
+                    ],
+                    "angleLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1
+                    ],
+                    "pointLabels" => [
+                      "display" => true,
+                      "fontColor" => "#666",
+                      "fontSize" => 10,
+                      "fontStyle" => "normal"
+                    ],
+                    "ticks" => [
+                      "display" => true,
+                      "fontSize" => 12,
+                      "fontFamily" => "sans-serif",
+                      "fontColor" => "#666666",
+                      "fontStyle" => "normal",
+                      "padding" => 0,
+                      "stepSize" => null,
+                      "minRotation" => 0,
+                      "maxRotation" => 50,
+                      "mirror" => false,
+                      "reverse" => false
+                    ],
+                    "scaleLabel" => [
+                      "display" => false,
+                      "labelString" => "Axis label",
+                      "lineHeight" => 1.2,
+                      "fontColor" => "#666666",
+                      "fontFamily" => "sans-serif",
+                      "fontSize" => 12,
+                      "fontStyle" => "normal",
+                      "padding" => 4
+                    ]
+                  ]
                 ],
-             ]; 
+                "yAxes" => [
+                  [
+                    "id" => "Y1",
+                    "position" => "left",
+                    "ticks" => [
+                      "beginAtZero" => true,
+                      "display" => true,
+                      "fontSize" => 12,
+                      "fontFamily" => "sans-serif",
+                      "fontColor" => "#666666",
+                      "fontStyle" => "normal",
+                      "padding" => 0,
+                      "stepSize" => null,
+                      "minRotation" => 0,
+                      "maxRotation" => 50,
+                      "mirror" => false,
+                      "reverse" => false
+                    ],
+                    "display" => true,
+                    "type" => "linear",
+                    "stacked" => false,
+                    "offset" => false,
+                    "time" => [
+                      "unit" => false,
+                      "stepSize" => 1,
+                      "displayFormats" => [
+                        "millisecond" => "h =>mm =>ss.SSS a",
+                        "second" => "h =>mm =>ss a",
+                        "minute" => "h =>mm a",
+                        "hour" => "hA",
+                        "day" => "MMM D",
+                        "week" => "ll",
+                        "month" => "MMM YYYY",
+                        "quarter" => "[Q]Q - YYYY",
+                        "year" => "YYYY"
+                      ]
+                    ],
+                    "distribution" => "linear",
+                    "gridLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1,
+                      "drawBorder" => true,
+                      "drawOnChartArea" => true,
+                      "drawTicks" => true,
+                      "tickMarkLength" => 10,
+                      "zeroLineWidth" => 1,
+                      "zeroLineColor" => "rgba(0, 0, 0, 0.25)",
+                      "zeroLineBorderDash" => [
+                        0,
+                        0
+                      ]
+                    ],
+                    "angleLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1
+                    ],
+                    "pointLabels" => [
+                      "display" => true,
+                      "fontColor" => "#666",
+                      "fontSize" => 10,
+                      "fontStyle" => "normal"
+                    ],
+                    "scaleLabel" => [
+                      "display" => false,
+                      "labelString" => "Axis label",
+                      "lineHeight" => 1.2,
+                      "fontColor" => "#666666",
+                      "fontFamily" => "sans-serif",
+                      "fontSize" => 12,
+                      "fontStyle" => "normal",
+                      "padding" => 4
+                    ]
+                  ]
+                ]
+              ],
+              "plugins" => [
+                "datalabels" => [
+                  "display" => true,
+                  "align" => "center",
+                  "anchor" => "center",
+                  "backgroundColor" => "#eee",
+                  "borderColor" => "#ddd",
+                  "borderRadius" => 6,
+                  "borderWidth" => 1,
+                  "padding" => 4,
+                  "color" => "#666666",
+                  "font" => [
+                    "family" => "sans-serif",
+                    "size" => 10,
+                    "style" => "normal"
+                  ]
+                ],
+                "datalabelsZAxis" => [
+                  "enabled" => false
+                ],
+                "googleSheets" => [],
+                "airtable" => [],
+                "tickFormat" => ""
+              ],
+              "cutoutPercentage" => 50,
+              "rotation" => -1.5707963267948966,
+              "circumference" => 6.283185307179586,
+              "startAngle" => -1.5707963267948966
+            ]
+        ];
         $chartData = json_encode($chartData);
+        // return $chartData;
         $chartURL = "https://quickchart.io/chart?width=600&height=300&c=".urlencode($chartData);
         $chartData = file_get_contents($chartURL); 
         $chart = 'data:image/png;base64, '.base64_encode($chartData);
