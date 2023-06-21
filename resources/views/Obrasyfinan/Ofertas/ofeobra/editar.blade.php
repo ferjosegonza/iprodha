@@ -42,10 +42,19 @@
                                     <div class="form-group">
                                         {!! Form::label('Localidad:', null, ['class' => 'control-label']) !!}
                                         <span class="obligatorio">*</span>
-                                        {!! Form::select('idloc', $Localidad, $unaOferta->idloc, [
+                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
+                                            @foreach ($Localidad as $unaLocalidad)
+                                                @if ($unaLocalidad->id_loc == $unaOferta->idloc)
+                                                    <option value="{{$unaLocalidad->id_loc}}" selected>{{$unaLocalidad->nom_loc}}</option>
+                                                @else
+                                                    <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        {{-- {!! Form::select('idloc', $Localidad, $unaOferta->idloc, [
                                             'placeholder' => 'Seleccionar',
                                             'class' => 'form-select', $editaTodo
-                                        ]) !!}
+                                        ]) !!} --}}
                                     </div>
                                 </div>
                             </div>
@@ -126,19 +135,19 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Vivienda:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('monviv', $unaOferta->monviv ?? 0, ['class' => 'form-control', 'readonly']) !!}
+                                        {!! Form::text('monviv', '$ '.number_format(($unaOferta->monviv ?? 0), 2, ',','.'), ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Infraestructura:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('moninf', $unaOferta->moninf ?? 0, ['class' => 'form-control', 'readonly']) !!}
+                                        {!! Form::text('moninf', '$ '.number_format(($unaOferta->moninf ?? 0), 2, ',','.'), ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Nexo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('monnex', $unaOferta->monnex ?? 0, ['class' => 'form-control', 'readonly']) !!}
+                                        {!! Form::text('monnex', '$ '.number_format(($unaOferta->monnex ?? 0), 2, ',','.'), ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
