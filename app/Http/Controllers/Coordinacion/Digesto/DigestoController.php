@@ -38,10 +38,18 @@ class DigestoController extends Controller
 
         if(sizeof($archivos) == 0){
             $get = Dig_digesto::where('id_archivon', '=', $request->id)->first();
-            $id=$get->id_archivo0;
-            $archivos = Dig_digesto::where('id_archivo0', '=', $id)
+            if($get==null){
+                return view('Digesto.modificaciones')
+                ->with('base', null)
+                ->with('archivos', null); 
+            }
+            else{
+                $id=$get->id_archivo0;
+                $archivos = Dig_digesto::where('id_archivo0', '=', $id)
                     ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', 'iprodha.dig_digesto.id_archivon')
-                    ->get();  
+                    ->get();
+            }
+              
         }
         else{
            $id = $request->id;

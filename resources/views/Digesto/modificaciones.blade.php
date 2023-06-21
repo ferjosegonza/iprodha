@@ -29,19 +29,21 @@
                             <th>Observación</th>
                         </thead>             
                         <tbody>
-                            <tr class="hoveriano" onclick="openPDF({{$base}})">
-                                <td>{{$base->nro_archivo}}</td>
-                                <td> - </td>
-                                <td> Archivo original </td>
-                            </tr>
-                            @if($archivos != null)
-                                @foreach ($archivos as $archivo)
-                                    <tr onclick="openPDF({{$archivo}})" class="hoveriano">
-                                        <td>{{$archivo->nro_archivo}}</td>
-                                        <td>{{$base->nro_archivo}}</td>
-                                        <td>{{$archivo->observacion}}</td>
-                                    </tr>
-                                @endforeach
+                            @if($base != null)
+                                <tr class="hoveriano" onclick="openPDF({{$base}})">
+                                    <td>{{$base->nro_archivo}}</td>
+                                    <td> - </td>
+                                    <td> Archivo original </td>
+                                </tr>
+                                @if($archivos != null)
+                                    @foreach ($archivos as $archivo)
+                                        <tr onclick="openPDF({{$archivo}})" class="hoveriano">
+                                            <td>{{$archivo->nro_archivo}}</td>
+                                            <td>{{$base->nro_archivo}}</td>
+                                            <td>{{$archivo->observacion}}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             @endif
                         </tbody>
                     </table>
