@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Incidencia de los items PDF</title>
+    <title>Cronograma de avance PDF</title>
 </head>
 <body style="margin-left: 3cm">
     <header style="margin-left: 1cm;">
@@ -95,36 +95,92 @@
     
     <section style="margin-top: 10px">
         <div class="section-header">
-            <h4 class="m-auto" >INCIDENCIA POR ITEM</h4>
+            <h4 class="m-auto" >CRONOGRAMA DE AVANCE</h4>
         </div>
         <div class="section-body">
             <table class="table">
                 <thead>
-                    <th>Orden</th>
+                    <th class="width: 5%">Orden</th>
                     <th>Denominacion</th>
-                    <th>% Incidencia</th>
+                    <th>Monto</th>
+                    <th>Inc</th>
+                    @for ($i = 1; $i <= $obra->plazo; $i++)
+                        <th>{{$i}}</th>
+                    @endfor
+                    
                 </thead>
                 <tbody>
                     @php
-                        $acuInc = 0;
+                        $contador = 1;
+                        $montoAcu = 0;
+                        $totalInc = 0;
+                        $cronoMen = [$obra->plazo];
                     @endphp
                     @foreach ($items as $item)
-                        @php
-                            $acuInc += $item->por_inc;
-                        @endphp
                         <tr>
-                            <td>{{$item->orden}} </td>
-                            <td>{{$item->nom_item}}</td>
-                            <td>{{number_format($item->por_inc, 4, ',', '.')}}</td>
-                        </tr> 
+                            @php
+                                $montoAcu += $item->monto;
+                            @endphp
+                            <td class= 'text-center' style="vertical-align: middle;">{{$item->orden}}</td>
+                            <td class= 'text-center' style="vertical-align: middle;">{{$item->nom_item}}</td>
+                            <td class= 'text-center' style="vertical-align: middle;">$ {{number_format($item->monto, 2, ',','.')}}</td>
+                            <td class= 'text-center' style="vertical-align: middle;">{{number_format($item->por_inc, 4, ',', '.')}}</td>
+                            @while ($contador <= $obra->plazo)
+                                @if (is_null($cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()))
+                                    <td class= 'text-center' style="vertical-align: middle;"></td>
+                                @else
+                                    <td class= 'text-center' style="vertical-align: middle;">{{$cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()->avance}}</td>
+                                @endif
+
+                                @php
+                                    $contador = $contador+1;
+                                @endphp
+                            @endwhile
+                            @php
+                                $totalInc += $item->por_inc;
+                                $contador = 1;
+                            @endphp
+                        </tr>
                     @endforeach
-                        <tr style="background-color: rgb(190, 190, 190)">
+                        <tr style="background-color: rgb(141, 141, 141)">
+                            <td style="color: rgb(141, 141, 141)">1</td>
                             <td></td>
-                            <td>Total:</td>
-                            <td>
-                                {{number_format($acuInc,4, ',', '.')}}
-                            </td>
-                        </tr>   
+                            <td></td>
+                            <td></td>
+                            @for ($i = 1; $i <= $obra->plazo; $i++)
+                                <td></td>
+                            @endfor
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Totales</td>
+                            <td>$ {{number_format($montoAcu, 2, ',','.')}}</td>
+                            <td>{{number_format($totalInc,4, ',', '.')}}</td>
+                            @for ($i = 1; $i <= $obra->plazo; $i++)
+                                <td></td>
+                            @endfor
+                        </tr>
+
+                        {{-- <tr style="background-color: rgb(141, 141, 141)">
+                            <td style="color: rgb(141, 141, 141)">1</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            @for ($i = 1; $i <= $obra->plazo; $i++)
+                                <td></td>
+                            @endfor
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Inc mensual</td>
+                            <td>{{number_format($montoAcu, 2, ',','.')}}</td>
+                            <td>{{number_format($totalInc,4, ',', '.')}}</td>
+                            @for ($i = 1; $i <= $obra->plazo; $i++)
+                                <td></td>
+                            @endfor
+                        </tr> --}}
                 </tbody>
             </table>
         </div>

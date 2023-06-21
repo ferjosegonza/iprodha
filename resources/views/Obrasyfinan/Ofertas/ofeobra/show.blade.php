@@ -20,6 +20,7 @@
                   <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Item Infraestructura</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Item Vivienda</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraIncItems.pdf', base64url_encode($data->idobra))}}" target="_blank">Item Incidencia</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraCrono.pdf', base64url_encode($data->idobra))}}" target="_blank">Cronograma</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraDesmes.pdf', base64url_encode($data->idobra))}}" target="_blank">Desembolsos</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraCurvaDes.pdf', base64url_encode($data->idobra))}}" target="_blank">Curva</a></li>
                 </ul>

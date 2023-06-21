@@ -131,7 +131,8 @@ class ofe_obraController extends Controller
     public function edit( $idobra)
     {
         $unaOferta = Ofe_obra::find(base64url_decode($idobra));
-        $Localidad= Localidad::pluck('nom_loc','id_loc');
+        // $Localidad= Localidad::pluck('nom_loc','id_loc');
+        $Localidad= Localidad::orderBy('nom_loc')->get();
 
         if(Auth::user()->hasRole('EMPRESA')){
             $Empresa = Empresa::where('iduserweb','=',Auth::user()->id)->get();
@@ -784,6 +785,65 @@ class ofe_obraController extends Controller
                         ->setPaper('legal', 'landscape')
                         ->stream('CurvaDeInversiones.pdf');
     } 
+
+    public function pdfCrono($id){
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', $id)->get();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        // return $items = $this->itemsConSombrero($id);
+        $items = $this->itemsConSombrero($id);
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.crono-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'items'=>$items,
+                    'texto'=>$texto,
+                    'cronograma' => $cronograma,
+                    ])  ->setPaper('legal', 'landscape')
+                        ->stream('ItemsDeLaObra.pdf');
+    }
+
+    public function totalSombrero($idobra){
+      $totalCnSom = 0;
+      $totalItem = 0;
+      $sombreros = Ofe_sombrero::where('idobra', $idobra)->orderBy('idconceptosombrero')->get();
+      $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+
+      foreach ($items as $item) {
+        $totalItem += $item->costo; 
+      }
+
+      foreach ($sombreros as $unSombrero) {
+          $valor += ($valor + $unSombrero->valor/100); 
+      }
+
+      $totalCnSom = $valor;
+      return $totalCnSom;
+    }
+
+    public function itemsConSombrero($idobra){
+        $itemsCnSom = array();
+        $items = Ofe_item::where('idobra', $idobra)->orderBy('orden')->get();
+
+        foreach ($items as $unItem) {
+          $som = DB::select('SELECT iprodha.fun_ofe_porsobrero(?, ?) as mon FROM dual', [$idobra, $unItem->iditem]);
+            array_push($itemsCnSom, (object)[
+                                 'iditem' => $unItem->iditem,
+                                 'nom_item' => $unItem->nom_item,
+                                 'monto' => $som[0]->mon * $unItem->costo,
+                                 'por_inc' => $unItem->por_inc,
+                                 'orden' => $unItem->orden,
+                          ]);
+        }
+
+        return $itemsCnSom = collect($itemsCnSom)->sortBy('orden');
+    }
     // public function deseAcuPormes($id){
     //     $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
     //     $deseAcuxmes = array();
