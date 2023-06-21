@@ -892,6 +892,9 @@ function cargarBoletin(){
 
 function limpiar(){
     document.getElementById('tipo').value = 'sel'
+    if(document.getElementById('subtipo')){
+       document.getElementById('subtipo').value ='sel'
+    }
     document.getElementById('subtipo').hidden=true
     document.getElementById('placeholder').removeAttribute('hidden')
     document.getElementById('tag').value = 'sel'
@@ -907,5 +910,6 @@ function limpiar(){
     if(document.getElementById('año')){
         document.getElementById('año').value = 'sel'
     }
-    document.getElementById('busq').value = ''    
+    document.getElementById('busq').value = ''
+    cancelarbusqueda()
 }
