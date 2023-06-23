@@ -509,6 +509,7 @@ function tieneDigesto(id, data){
         }),
         dataType: 'json',
         success: function(res){
+            console.log(res)
             if(res){
                 document.getElementById('despdf').innerHTML=  '<a href="/digesto/modificaciones?id='+ data[8] +'">Esta resolucion tiene modificaciones</a><br><b>FECHA:</b> ' + data[3]+ '<br><b>ASUNTOS CLAVES:</b><br>' + data[5]
             }else{
