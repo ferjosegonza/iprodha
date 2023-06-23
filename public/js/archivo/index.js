@@ -955,4 +955,5 @@ function limpiar(){
     }
     document.getElementById('busq').value = ''
     cancelarbusqueda()
+    checkEnableButton()
 }
