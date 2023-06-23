@@ -31,6 +31,49 @@ class DigestoController extends Controller
         ->with('areas', $areas);
     }
 
+    public function modificaciones(Request $request){
+        $archivos = Dig_digesto::where('id_archivo0', '=', $request->id)
+                    ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', 'iprodha.dig_digesto.id_archivon')
+                    ->get();
+
+        if(sizeof($archivos) == 0){
+            $get = Dig_digesto::where('id_archivon', '=', $request->id)->first();
+            if($get==null){
+                return view('Digesto.modificaciones')
+                ->with('base', null)
+                ->with('archivos', null); 
+            }
+            else{
+                $id=$get->id_archivo0;
+                $archivos = Dig_digesto::where('id_archivo0', '=', $id)
+                    ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', 'iprodha.dig_digesto.id_archivon')
+                    ->get();
+            }
+              
+        }
+        else{
+           $id = $request->id;
+        }
+
+        $base = Dig_archivos::where('id_archivo', '=', $id)->first();
+        $base->path_archivo = substr($base->path_archivo, 14);
+        for($i = 0; $i<sizeof($archivos); $i++){
+            $archivos[$i]->path_archivo = substr($archivos[$i]->path_archivo, 14);
+        }
+
+        return view('Digesto.modificaciones')
+        ->with('base', $base)
+        ->with('archivos', $archivos);        
+    }
+
+    public function buscador(){
+        $tipos = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
+        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
+        return view('Digesto.buscador')
+            ->with('tipos', $tipos)
+            ->with('subtipos', $subtipos);
+    }
+
     public function buscarArchivo(Request $request){
         //return $request;
         $archivo = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
@@ -82,5 +125,15 @@ class DigestoController extends Controller
         ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', '=', 'iprodha.dig_digesto.id_archivon')
         ->where('id_archivo0', '=', $request->id)->get();
         return response()->json($archivos);
+    }
+
+    public function check(Request $request){
+        $check = Dig_digesto::where('id_archivo0','=',$request->id)->orWhere('id_archivon','=',$request->id)->get();
+        if($check == null){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }
