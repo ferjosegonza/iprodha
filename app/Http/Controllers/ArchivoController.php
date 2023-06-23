@@ -55,7 +55,13 @@ public function buscar(Request $request){
         $subtipo = $subtipo[2];
     }    
     $busqueda = strtoupper($request->busqueda);
-    $tag =  explode('|',$request->tag);
+    if($request->tag != 'sel'){
+        $tag =  explode('|',$request->tag);
+    }
+    else{
+        $tag=null;
+    }
+    
     $info = $request->input_tag;    
 
     $query = "SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipocabecera = 1";
