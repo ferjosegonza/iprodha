@@ -330,11 +330,13 @@ function tags(){
                         input.type = "text"
                     }
                     input.className = "form-control"
+                    input.addEventListener('keyup', checkEnableButton)
                 }
                 if(tag.dato == 2){
                     input = document.createElement("select");
                     input.className="form-select"
                     getSelects(input, tag.id_tag)
+                    input.addEventListener('change', checkEnableButton)
                 }
                 if(tag.dato == 3){
                     input = document.createElement("input");
@@ -353,6 +355,7 @@ function tags(){
                         findTexto(input.value, tag.id_tag, input, "opciones");
                         }
                     });
+                    input.addEventListener('change', checkEnableButton)
                 }
                 input.setAttribute('name','input_tag');
                 input.id= 'input_tag'
@@ -360,6 +363,7 @@ function tags(){
                 div2.className = "col-lg-12";
                 div2.appendChild(input);
                 div.appendChild(div2);
+                
             },
             error: function(res){
                 console.log(res)
@@ -583,80 +587,118 @@ function toggle() {
     }
 }
 
+function checkEnableButton(){
+    const submitBtn = document.getElementById('btnb')
+    let año = document.getElementById('año')
+    let tipo = document.getElementById('tipo')
+    let  busqueda = document.getElementById('busq')
+    let fecha1 = document.getElementById('min')
+    let fecha2 = document.getElementById('max')
+    let tag_sel = document.getElementById('tag')
+    let check = document.getElementById('betwenyears')
+
+    if(check.checked){
+        if(tag_sel.value != 'sel'){
+            let tag = document.getElementById('input_tag')
+            if(fecha1.value != '' && tipo.value != 'sel' 
+            || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != '' 
+            || tag.value != 'sel' && tag.value != ''){
+                submitBtn.removeAttribute('disabled')
+                submitBtn.classList.remove("btn-secondary"); 
+                submitBtn.classList.add("btn-success"); 
+            }
+            else{
+                submitBtn.setAttribute('disabled', 'disabled')
+                submitBtn.classList.remove("btn-success"); 
+                submitBtn.classList.add("btn-secondary"); 
+            }   
+        }
+        else{
+            if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
+            || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != ''){
+                submitBtn.removeAttribute('disabled')
+                submitBtn.classList.remove("btn-secondary"); 
+                submitBtn.classList.add("btn-success"); 
+            }
+            else{
+                submitBtn.setAttribute('disabled', 'disabled')
+                submitBtn.classList.remove("btn-success"); 
+                submitBtn.classList.add("btn-secondary"); 
+            }   
+        }
+    }
+    else{
+        if(tag_sel.value != 'sel'){
+            let tag = document.getElementById('input_tag')
+            if(año.value!= 'sel' && tipo.value != 'sel' 
+            || busqueda.value != '' || tag.value != 'sel' && tag.value != ''){
+                submitBtn.removeAttribute('disabled')
+                submitBtn.classList.remove("btn-secondary"); 
+                submitBtn.classList.add("btn-success"); 
+            }
+            else{
+                submitBtn.setAttribute('disabled', 'disabled')
+                submitBtn.classList.remove("btn-success"); 
+                submitBtn.classList.add("btn-secondary"); 
+            }   
+        }
+        else{
+            if(año.value!= 'sel' && tipo.value != 'sel' || busqueda.value != ''){
+                submitBtn.removeAttribute('disabled')
+                submitBtn.classList.remove("btn-secondary"); 
+                submitBtn.classList.add("btn-success"); 
+            }
+            else{
+                submitBtn.setAttribute('disabled', 'disabled')
+                submitBtn.classList.remove("btn-success"); 
+                submitBtn.classList.add("btn-secondary"); 
+            }   
+        }
+    }
+}
+
 window.addEventListener("DOMContentLoaded", (event) => {
-const submitBtn = document.getElementById('btnb')
-const addBtn = document.getElementById('btn-agregar-tag')
+    const submitBtn = document.getElementById('btnb')
+    let año = document.getElementById('año')
+    let tipo = document.getElementById('tipo')
+    let  busqueda = document.getElementById('busq')
+    let fecha1 = document.getElementById('min')
+    let fecha2 = document.getElementById('max')
+    let tag_sel = document.getElementById('tag')
+    let tag = document.getElementById('input_tag')
 
-const año = document.getElementById('año')
-const tipo = document.getElementById('tipo')
-const busqueda = document.getElementById('busq')
-const fecha1 = document.getElementById('min')
-const fecha2 = document.getElementById('max')
-const tag_sel = document.getElementById('tag')
-
-
-// run this function whenever the values of any of the above 4 inputs change.
-// this is to check if the input for all 4 is valid.  if so, enable submitBtn.
-// otherwise, disable it.
-const checkEnableButton = () => {    
-    let tag = document.getElementById('input_tag');  
-    //console.log(tag.value)
-    //console.log(año.value, tipo.value, fecha1.value, fecha2.value, busqueda.value) 
-    if(año.value!= 'sel' && tipo.value != 'sel' ||  fecha1.value != '' && tipo.value != 'sel' 
-    || fecha2.value != '' && tipo.value != 'sel' || busqueda.value != '' 
-    || tag.value != 'sel' && tag.value != ''){
-        submitBtn.removeAttribute('disabled')
+    const checkInput = () => {
+        if(tag_sel.value != 'sel'){
+            $.when(tags()).done(function(a1){            
+                var tag = document.getElementById('input_tag');
+                if(tag.nodeName == 'select'){
+                    tag.addEventListener('change', checkEnableButton)
+                }
+                else{
+                    tag.addEventListener('keyup', checkEnableButton)
+                }
+                
+            });        
+        }
+        else{
+            document.getElementById('inp-tag').setAttribute('hidden', 'hidden')
+            document.getElementById('placeholder-tag').removeAttribute('hidden')
+        }
     }
-    else{
-        submitBtn.setAttribute('disabled', 'disabled')
-    }   
-}
 
-const checkInput = () => {
-    if(tag_sel.value != 'sel'){
-        $.when(tags()).done(function(a1){            
-            const tag = document.getElementById('input_tag');
-            tag.addEventListener('input', checkEnableButton)
-           /*  tag.addEventListener('keyup', checkEnableButton) */
-            /* tag.addEventListener('change', checkAddButton)
-            tag.addEventListener('keyup', checkAddButton) */
-        });        
-    }
-    else{
-        document.getElementById('inp-tag').setAttribute('hidden', 'hidden')
-        document.getElementById('placeholder-tag').removeAttribute('hidden')
-    }
-}
-/* const setValue= () => {
-    const tag = document.getElementById('input_tag');   
-    addBtn.setAttribute('disabled', 'disabled')
-    if(tag){tag.value = ''}
-    
-} */
-
-/* const checkAddButton = () => {    
-    addBtn.removeAttribute('disabled')
-    let tag = document.getElementById('input_tag');   
-    console.log(tag.value)
-    if(tag.value != '' && tag.value != 'sel'){
-        addBtn.removeAttribute('disabled')
-    }
-    else{
-        addBtn.setAttribute('disabled', 'disabled')
-    }
-} */
-
-
-if(fecha1){fecha1.addEventListener('change', checkEnableButton)}
-if(fecha2){fecha2.addEventListener('change', checkEnableButton)}
-año.addEventListener('change', checkEnableButton)
-tipo.addEventListener('change', checkEnableButton)
-busqueda.addEventListener('keyup', checkEnableButton)
-tag_sel.addEventListener('change', checkInput)
-//tag_sel.addEventListener('change', setValue)
+    if(fecha1){fecha1.addEventListener('change', checkEnableButton)}
+    if(fecha2){fecha2.addEventListener('change', checkEnableButton)}
+    año.addEventListener('change', checkEnableButton)
+    tipo.addEventListener('change', checkEnableButton)
+    busqueda.addEventListener('keyup', checkEnableButton)
+    tag_sel.addEventListener('change', checkInput)
 
 
 });
+
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
 
 function getSelects(padre, id){
     console.log(id)
@@ -890,17 +932,18 @@ function cargarBoletin(){
     }); 
 }
 
-function limpiar(){
-    document.getElementById('tipo').value = 'sel'
+function limpiar(){ 
     if(document.getElementById('subtipo')){
        document.getElementById('subtipo').value ='sel'
     }
     document.getElementById('subtipo').hidden=true
-    document.getElementById('placeholder').removeAttribute('hidden')
-    document.getElementById('tag').value = 'sel'
+    document.getElementById('tipo').value = 'sel' 
+    document.getElementById('placeholder').removeAttribute('hidden')    
     if(document.getElementById('input-tag')){
         document.getElementById('input-tag').value=''
     }
+    document.getElementById('tag').value = 'sel'
+
     document.getElementById('inp-tag').hidden=true    
     document.getElementById('placeholder-tag').removeAttribute('hidden')    
     if(document.getElementById('max')){
@@ -912,4 +955,5 @@ function limpiar(){
     }
     document.getElementById('busq').value = ''
     cancelarbusqueda()
+    checkEnableButton()
 }
