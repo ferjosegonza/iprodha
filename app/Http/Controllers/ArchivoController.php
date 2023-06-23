@@ -61,7 +61,6 @@ public function buscar(Request $request){
     else{
         $tag=null;
     }
-    
     $info = $request->input_tag;    
 
     $query = "SELECT * FROM iprodha.vw_dig_parabuscararchivo WHERE id_tipocabecera = 1";

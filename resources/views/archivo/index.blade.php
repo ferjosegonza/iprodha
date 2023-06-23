@@ -99,6 +99,7 @@
                     <button onclick="limpiar()" class="btn btn-outline-info btn-sm flex" id="btnLimpiar"><i class="fas fa-undo-alt"></i>    Limpiar</button>   
                     <label for="btnb">Encuentre lo que busca:</label>
                     <button type="button" class="btn btn-secondary" id='btnb' disabled onclick="buscarArchivos()">Buscar</button>
+
                 </div>        
                                        
             </div>            

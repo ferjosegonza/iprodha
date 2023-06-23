@@ -655,6 +655,10 @@ function checkEnableButton(){
             }   
         }
     }
+    else{
+        document.getElementById('inp-tag').setAttribute('hidden', 'hidden')
+        document.getElementById('placeholder-tag').removeAttribute('hidden')
+    }
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
@@ -943,6 +947,7 @@ function limpiar(){
         document.getElementById('input-tag').value=''
     }
     document.getElementById('tag').value = 'sel'
+
     document.getElementById('inp-tag').hidden=true    
     document.getElementById('placeholder-tag').removeAttribute('hidden')    
     if(document.getElementById('max')){
