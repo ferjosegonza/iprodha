@@ -655,10 +655,6 @@ function checkEnableButton(){
             }   
         }
     }
-    else{
-        document.getElementById('inp-tag').setAttribute('hidden', 'hidden')
-        document.getElementById('placeholder-tag').removeAttribute('hidden')
-    }
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
