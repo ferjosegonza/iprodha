@@ -5,6 +5,8 @@
 
     class Ob_entrega extends Model{
 
+        protected $connection = 'oracleuser';
+        
         use HasFactory;
 
         public $timestamps = false;        

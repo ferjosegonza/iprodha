@@ -17,11 +17,12 @@ use App\Models\Iprodha\Localidad;
 use App\Models\Iprodha\Empresa;
 
 //Gestion de usuario oracle
-use Illuminate\Support\Facades\Config;
+use App\Traits\ConectarUserDB;
 
 
 class ObraviviendaController extends Controller
 {
+
     function __construct()
     {
         $this->middleware('auth');
@@ -29,13 +30,17 @@ class ObraviviendaController extends Controller
         //  $this->middleware('permission:CREAR-CATEGORIALABORAL', ['only' => ['create','store']]);
         //  $this->middleware('permission:EDITAR-CATEGORIALABORAL', ['only' => ['edit','update']]);
         //  $this->middleware('permission:BORRAR-CATEGORIALABORAL', ['only' => ['destroy']]);
-        // Config::set('database.connections.oracleuser.username', 'IPRODHA');
-        // Config::set('database.connections.oracleuser.password', 'IPRO201301');
-
     }
+    
+    // public function conectar(){
+    //     Config::set('database.connections.oracleuser.username', Lav_user_db::find(Auth::user()->id)->user_lav);
+    //     Config::set('database.connections.oracleuser.password', Crypt::decryptString(Lav_user_db::find(Auth::user()->id)->pass_lav));
+    // }
+    use ConectarUserDB;
 
     public function index(Request $request)
-    {     
+    {
+        $this->conectar();
         $name = $request->query->get('name');
         $page = $request->query->get('page');
         $obras = [];
@@ -51,8 +56,10 @@ class ObraviviendaController extends Controller
     
     public function create(Request $request)
     {
-        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
-        $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp'); 
+        // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
+        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        $Localidad= Localidad::orderBy('nom_loc')->get();
+        $Empresa= Empresa::orderBy('nom_emp')->get();
         return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa'));
     }
 
@@ -75,7 +82,7 @@ class ObraviviendaController extends Controller
             'can_viv.required' => 'El campo Cantidad de viviendas de obra es obligatorio.',
             'descrip.required' => 'El campo Descripcion de una etapa es obligatorio.',
         ]);
-
+        $this->conectar();
         $obra = Ob_obra::create([
             'num_obr' => $request->input('num_obr'),
             'nom_obr' => strtoupper($request->input('nom_obra')),
@@ -153,6 +160,7 @@ class ObraviviendaController extends Controller
 
     public function show($id)
     {
+        $this->conectar();
         // $user = User::find(342);
         // $user->syncPermissions(["VER-TICKET", "CREAR-TICKET", "EDITAR-TICKET", "VER-ARCHIVOS", "VER-OBRAVIVIENDA", "CREAR-OBRAVIVIENDA", "EDITAR-OBRAVIVIENDA", "CARGAR-VIVIENDAS"]);
         $obra = Ob_obra::find($id);
@@ -162,9 +170,12 @@ class ObraviviendaController extends Controller
    
     public function edit(Request $request, $id)
     {
+        $this->conectar();
         $obra = Ob_obra::find($id);
-        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
-        $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp'); 
+        // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
+        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        $Localidad= Localidad::orderBy('nom_loc')->get();
+        $Empresa= Empresa::orderBy('nom_emp')->get();
         return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa'));
     }
     
@@ -186,7 +197,7 @@ class ObraviviendaController extends Controller
             'can_viv.required' => 'El campo Cantidad de viviendas de obra es obligatorio.',
             'descrip.required' => 'El campo Descripcion de una etapa es obligatorio.',
         ]);
-
+        $this->conectar();
         $obra = Ob_obra::find($id);
 
         // return $obra;
@@ -230,6 +241,7 @@ class ObraviviendaController extends Controller
     }
 
     public function verViv($id){
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $viviendas = array();
 
@@ -255,11 +267,12 @@ class ObraviviendaController extends Controller
     }
 
     public function viviendaDeObra($id){
+        $this->conectar();
         return Ob_vivienda::find($id);
     }
 
     public function viviendaDeObraId($id){
-        
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $viviendas = null;
         foreach($obra->getEtapas as $etapa){
@@ -278,6 +291,7 @@ class ObraviviendaController extends Controller
         $this->validate($request, [
             'vivienda' => 'required',
         ]);
+        $this->conectar();
         // return $request;
         $id_viv = $request->input('vivienda');
         $id_obr = $request->input('id_obr');
@@ -420,12 +434,14 @@ class ObraviviendaController extends Controller
     }
 
     public function verEta($id){
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $viviendasTabla = $this->todasLasViviendasDeUnaObra($obra);
         return view('Planificacion.Planificacion.Obravivienda.altaeta', compact('obra', 'viviendasTabla'));
     }
 
     public function nuevaEta($id){
+        $this->conectar();
         $obra = Ob_obra::find($id);
         return view('Planificacion.Planificacion.Obravivienda.etapa.crear', compact('obra'));
     }
@@ -439,7 +455,7 @@ class ObraviviendaController extends Controller
             'num_eta.required' => 'El campo Numero de etapa no puede estar vacio.',
             'descrip.required' => 'El campo Descripcion de etapa no puede estar vacio.',
         ]);
-
+        $this->conectar();
         $id_obr = $request->input('id_obr');
         $nro_eta = $request->input('num_eta');
         $obra = Ob_obra::find($id_obr);
@@ -478,17 +494,17 @@ class ObraviviendaController extends Controller
     }
 
     public function verEditarEta($id){
+        $this->conectar();
         $etapa = Ob_etapa::find($id);
         return view('Planificacion.Planificacion.Obravivienda.etapa.editar', compact('etapa'));
     }
 
     public function editarEta(Request $request, $id){
-        // return $request;
         $this->validate($request, [
             'num_eta' => 'required',
             'descrip' => 'required',
         ]);
-
+        $this->conectar();
         $nro_eta = $request->input('num_eta');
 
         $etapa = Ob_etapa::find($id);
@@ -509,6 +525,7 @@ class ObraviviendaController extends Controller
     }
 
     public function eliminarEta($id){
+        $this->conectar();
         $etapa = Ob_etapa::find($id);
         $id_obr = $etapa->id_obr;
 
@@ -522,6 +539,7 @@ class ObraviviendaController extends Controller
 
     public function verNuevaEnt($id)
     {
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $etapas = $obra->getEtapas->pluck('nro_eta','id_etapa');
         $todasLasEntregas = array();
@@ -546,7 +564,7 @@ class ObraviviendaController extends Controller
             'descrip.required' => 'El campo Descripcion de la entrega no puede estar vacio',
             'idetapa' => 'Seleccione una etapa a la que corresponda la entrega.'
         ]);
-
+        $this->conectar();
         // return $request;
         $id_obr = $request->input('id_obr');
         $num_ent = $request->input('num_ent');
@@ -577,6 +595,7 @@ class ObraviviendaController extends Controller
     }
 
     public function verEditarEnt($id, $idobra){
+        $this->conectar();
         $entrega = Ob_entrega::find($id);
         $obra = Ob_obra::find($idobra);
         $etapas = $obra->getEtapas->pluck('nro_eta','id_etapa');
@@ -590,7 +609,7 @@ class ObraviviendaController extends Controller
             'descrip' => 'required',
             'idetapa' => 'required'
         ]);
-
+        $this->conectar();
         $nro_ent = $request->input('num_ent');
         $id_obr = $request->input('id_obr');
 
@@ -618,6 +637,7 @@ class ObraviviendaController extends Controller
     }
 
     public function eliminarEnt($id){
+        $this->conectar();
         $entrega = Ob_entrega::find($id);
         $id_obr = $entrega->getEtapa->id_obr;
 
@@ -630,7 +650,7 @@ class ObraviviendaController extends Controller
     }
 
     public function asignarVivEnt($id, $entrega){
-        
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $listaViviendas = array();
         $viviendaDeEntrega = Ob_vivienda::where('id_ent', $entrega)->get();
@@ -656,6 +676,7 @@ class ObraviviendaController extends Controller
     }
 
     public function cargaMasiva($id){
+        $this->conectar();
         $obra = Ob_obra::find($id); 
         $viviendas = array();
         foreach($obra->getEtapas as $etapa){
@@ -686,7 +707,7 @@ class ObraviviendaController extends Controller
             'ordenDesde' => 'required',
             'ordenHasta' => 'required',
         ]);
-
+        $this->conectar();
         $desde = $request->input('ordenDesde');
         $hasta = $request->input('ordenHasta');
         $obra = Ob_obra::find($id);
@@ -750,7 +771,7 @@ class ObraviviendaController extends Controller
     }
 
     public function buscarViviendaOrden($orden, $idobra){
-
+        $this->conectar();
         $obra = Ob_obra::find($idobra);
         $todasLasViviendas = array();
         foreach($obra->getEtapas as $etapa){
@@ -765,6 +786,7 @@ class ObraviviendaController extends Controller
     }
 
     public function todasLasViviendas($id){
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $todasLasViviendas = array();
 
@@ -781,6 +803,7 @@ class ObraviviendaController extends Controller
     }
 
     public function todasLasViviendasDeUnaEtapa($id){
+        $this->conectar();
         $etapa = Ob_etapa::find($id);
         $todasLasViviendas = array();
 
@@ -796,7 +819,7 @@ class ObraviviendaController extends Controller
     }
 
     public function asignarViviendas(Request $request, $id, $ideta){
-
+        $this->conectar();
         $entregaCero = Ob_entrega::where('id_eta', $ideta)->where('num_ent', 0)->first()->id_ent;
         $etapa = Ob_etapa::find($ideta);
 
@@ -876,6 +899,7 @@ class ObraviviendaController extends Controller
     }
 
     public function verNuevaViv($id){
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $ultimoOrden = 1;
         $viviendas = array();
@@ -903,6 +927,7 @@ class ObraviviendaController extends Controller
             'orden.required' => 'El campo numero de orden no puede estar vacio.',
             'orden.min' => 'El numero de orden debe ser mayor o igual a 1.'
         ]);
+        $this->conectar();
         $obra = Ob_obra::find($id);
         $ordenExiste = $this->numeroOrdenUsoViviendas($obra);
         $id_etapa = $request->input('etapa');
