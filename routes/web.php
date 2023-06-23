@@ -213,5 +213,5 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], func
     Route::get('digesto/relacionados', [DigestoController::class, 'relacionados'])->name('digesto.relacionados');    
     Route::get('digesto/modificaciones', [DigestoController::class, 'modificaciones'])->name('digesto.modificaciones');
     Route::get('digesto/buscador', [DigestoController::class, 'buscador'])->name('digesto.buscador');
-
+    Route::get('digesto/check', [DigestoController::class, 'check'])->name('digesto.check');
 });
