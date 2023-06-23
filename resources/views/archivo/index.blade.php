@@ -98,7 +98,8 @@
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-2" id="btnbusq">
                     <button onclick="limpiar()" class="btn btn-outline-info btn-sm flex" id="btnLimpiar"><i class="fas fa-undo-alt"></i>    Limpiar</button>   
                     <label for="btnb">Encuentre lo que busca:</label>
-                    <button type="button" class="btn btn-success" id='btnb' disabled onclick="buscarArchivos()">Buscar</button>
+                    <button type="button" class="btn btn-secondary" id='btnb' disabled onclick="buscarArchivos()">Buscar</button>
+
                 </div>        
                                        
             </div>            
