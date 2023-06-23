@@ -123,7 +123,6 @@
                                 <th class="text-center asun" scope="col" style="color:#fff;width:25%;">Asuntos Claves</th>
                                 <th hidden class="path"></th>
                                 <th hidden class="orden"></th>
-                                <th hidden class="id"></th>
                             </tr>
                         </thead>          
                     </table>
