@@ -80,7 +80,7 @@ class RegisterController extends Controller
             $user->assignRole($rol->id);
             $user->syncPermissions(['CREAR-TICKET', 'EDITAR-TICKET', 'VER-ARCHIVOS', 'VER-TICKET']);
 
-            //Creacion de atajo a documentacion digital
+            //Creacion de atajo a ticket
             Fav_Favorito::create(['idusuario' => $user->id , 'ruta' => 'ticket.index', 'titulo' => 'Ticket para el Soporte Informático', 'descripcion' => 'Generar tickets para soporte informático.']);
             //Creacion de atajo a documentacion digital
             Fav_Favorito::create(['idusuario' => $user->id , 'ruta' => 'archivos.consultar', 'titulo' => 'Búsqueda de Archivos Digitalizados', 'descripcion' => 'Busqueda de archivos que se encuentras digitalizados.']);
