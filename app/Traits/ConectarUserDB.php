@@ -11,6 +11,8 @@ trait ConectarUserDB
 
     public function conectar()
     {
+        // First purge the configuration to remove config details from cache 
+        DB::purge('oracleuser');
         Config::set('database.connections.oracleuser.username', Lav_user_db::find(Auth::user()->id)->user_lav);
         Config::set('database.connections.oracleuser.password', Crypt::decryptString(Lav_user_db::find(Auth::user()->id)->pass_lav));
     }
