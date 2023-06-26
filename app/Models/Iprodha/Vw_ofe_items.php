@@ -18,17 +18,24 @@ class Vw_ofe_items extends Model
         'iditem',
         'orden',
         'nom_item',
+        'cod_tipo',
         'nom_tipo',
+        'por_inc',
         'vivienda',
-        'infra'];
+        'infra',
+        'por_inc'
+    ];
     protected $attributes = [
         'idobra'=> true,
         'iditem'=> true,
         'orden'=> true,
         'nom_item'=> true,
+        'cod_tipo'=>true,
         'nom_tipo'=> true,
+        'por_inc'=>true,
         'vivienda'=> true,
-        'infra'=> true
+        'infra'=> true,
+        'por_inc'=>true
     ];
 
     public function getSubItems()

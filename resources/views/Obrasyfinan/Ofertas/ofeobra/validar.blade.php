@@ -424,7 +424,7 @@
                             <div class="col-12">
                                 {!! Form::open(['method' => 'GET',
                                         'class' => 'rechazar',
-                                        'route' => ['ofeobra.rechazar',encrypt($data->idobra)],
+                                        'route' => ['ofeobra.rechazar', base64url_encode($data->idobra)],
                                         'style' => 'display:inline',
                                         'id' => 'rechazarOfe']) !!}
                                 <label class="control-label" style="">Se rechazo la oferta de obra debido a:</label>
@@ -456,7 +456,7 @@
                                     @if ($obra->getEstados->sortByDesc('actual')->first()->getEstado->idestado == 2)
                                         {!! Form::open([
                                             'method' => 'POST',
-                                            'route' => ['ofeobra.validar', encrypt($data->idobra)],
+                                            'route' => ['ofeobra.validar', base64url_encode($data->idobra)],
                                             'class' => 'validacion',
                                             'style' => 'display:inline',
                                             'files'=>'true']) !!}

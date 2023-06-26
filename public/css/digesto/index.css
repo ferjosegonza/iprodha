@@ -1,0 +1,87 @@
+body{
+    justify-content: center;
+}
+.card-head{
+    padding-top: 5px;
+    margin-bottom: -20px;
+}
+.card{
+    padding-left: 5px;
+    padding-right: 1px;
+}
+.card-body{
+    padding-left: 1px;
+    padding-right: 1px;
+}
+#btn-buscar{
+    margin-top: 30px;
+}
+#buscador-modif{
+    height: 150px;
+    margin-left: 7px;
+    margin-right: -5px;
+}
+#preview-org{
+    margin-left: -2px;
+}
+#btn-volver{
+    margin-bottom: 20px;
+}
+#preview-modificador{
+    margin-left: 7px;
+    margin-right: -5px;
+}
+#observaciones{
+    width: 100%;
+}
+.modal.modal-sm { max-width: unset !important; right: 0; }
+tr{
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(95, 95, 95, 0.418);
+    padding: 5px;
+    display: block;
+}
+tr:hover{
+    background-color: rgba(128, 128, 128, 0.226);
+}
+table{
+    width: 100%;
+}
+th{
+    color: white;
+}
+td, th{
+    border: 1px solid lightgray;
+    font-size: 15px;
+}
+.quitar{
+    float: right;
+    height: 20px;
+    display: revert;
+    align-content: center;
+    margin-left: 5px;
+    width: 20px;
+}
+#btn-agregar-area{
+    height: 30px;
+    width: 30px;
+    margin-right: -25px;
+    margin-top: 25px;
+    align-self: center;
+}
+#archivos-relacionados{
+    float: right;
+}
+.primero{
+    width: 30%;
+}
+.segundo{
+    width: 35%;
+}
+.tercero{    
+    width: 35%;
+}
+.row2{
+    display: revert;
+}

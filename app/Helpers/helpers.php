@@ -32,3 +32,17 @@ if (! function_exists('getDBuser')) {
         return $DBuser;
     }
 }
+
+if (! function_exists('base64url_encode')) {
+    function base64url_encode($plainText)
+    {
+        return strtr(base64_encode($plainText), '+/=', '-_,');
+    }
+}
+
+if (! function_exists('base64url_decode')) {
+    function base64url_decode($b64Text)
+    {
+        return base64_decode(strtr($b64Text, '-_,', '+/='));
+    }
+}
