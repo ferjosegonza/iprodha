@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Config;
 use App\Models\Iprodha\Lav_user_db;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 trait ConectarUserDB
  {
