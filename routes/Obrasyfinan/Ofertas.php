@@ -9,6 +9,7 @@ use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_itemController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_itemdetController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_sombreroController;
 use App\Http\Controllers\Obrasyfinan\Ofertas\Ofe_cronogramaController;
+use App\Http\Controllers\EmpresaController;
 //use App\Http\Controllers\Obrasyfinan\Ofertas\vw_ofe_obrasController;
 
 
@@ -37,11 +38,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMOBRA'
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOBRA']], function () {
     Route::get('/ofeobraitemdet/detalleitem/{iditem}', [Ofe_itemdetController::class, 'detalleItem'])->name('ofeobraitemdet.detalleitem');
-    Route::get('/ofeobraitemdet/create/{iditem}', [Ofe_itemdetController::class, 'create'])->name('ofeobraitemdet.crear');
-    Route::get('/ofeobraitemdet/{unsubItem}/{unItem}/editar', [Ofe_itemdetController::class, 'edit'])->name('ofeobraitemdet.editar');
-    Route::patch('/ofeobraitemdet/{iditem}/{idsubitem}/update', [Ofe_itemdetController::class, 'update'])->name('ofeobraitemdet.actualizar');
-    Route::delete('/ofeobraitemdet/{idItem}/{idsubitem}/eliminar', [Ofe_itemdetController::class, 'destroy'])->name('ofeobraitemdet.eliminar');
-    /////////    
+    Route::get('/ofeobraitemdet/create/{iditem}', [Ofe_itemdetController::class, 'create'])->name('ofeobraitemdet.crear');  
     Route::resource('ofeobraitemdet', Ofe_itemdetController::class);
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOBRA']], function () {
@@ -63,7 +60,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFECRONO']],
     Route::resource('ofecrono', Ofe_cronogramaController::class);
 });
 
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA']], function () {
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA|OFEOBRA']], function () {
     Route::post('/ofeobra/{idobra}/presentarSave', [ofe_obraController::class, 'presentarSave'])->name('ofeobra.presentarSave');
     Route::get('/ofeobra/{idobra}/presentar', [ofe_obraController::class, 'presentarOferta'])->name('ofeobra.presentar');    
     Route::post('/ofeobra/{idobra}/validar', [ofe_obraController::class, 'validarOferta'])->name('ofeobra.validar');
@@ -72,5 +69,13 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA']], func
     Route::get('/ofeobra/{idobra}/ver/validar', [ofe_obraController::class, 'verValidarOferta'])->name('ofeobra.vervalidar');
     Route::get('/ofeobra/{idobra}/pdf1', [ofe_obraController::class, 'pdf1'])->name('ofeobra.pdf1'); 
     Route::get('/ofeobra/{idobra}/pdf2', [ofe_obraController::class, 'pdf2'])->name('ofeobra.pdf2'); 
-    Route::get('/ofeobra/{idobra}/pdf', [ofe_obraController::class, 'pdf'])->name('ofeobra.pdf');   
+    Route::get('/ofeobra/{idobra}/pdf', [ofe_obraController::class, 'pdf'])->name('ofeobra.pdf'); 
+    Route::get('/ofeobra/{idobra}/{opc}/pdfitems', [ofe_obraController::class, 'pdfItems'])->name('ofeobraItems.pdf'); 
+    Route::get('/ofeobra/{idobra}/pdfdsmxmes', [ofe_obraController::class, 'pdfDsmxmes'])->name('ofeobraDesmes.pdf');
+    Route::get('/ofeobra/{idobra}/pdfincitems', [ofe_obraController::class, 'pdfIncItems'])->name('ofeobraIncItems.pdf');
+    Route::get('/ofeobra/{idobra}/pdfcurvades', [ofe_obraController::class, 'pdfCurvaDes'])->name('ofeobraCurvaDes.pdf');
+    Route::get('/ofeobra/{idobra}/pdfcrono', [ofe_obraController::class, 'pdfCrono'])->name('ofeobraCrono.pdf');
+    Route::get('/ofeobraprueba', [ofe_obraController::class, 'prueba']);
 });
+
+// Route::get('ajax-autocomplete-search', [EmpresaController::class,'buscarEmpresa']);

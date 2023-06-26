@@ -1,20 +1,22 @@
 <?php
 namespace App\Http\Controllers\Obrasyfinan\Ofertas;
 
-//use App\Models\Iprodha\Obras;
-
 use App\Models\Iprodha\Ofe_obra;
 use App\Models\Iprodha\Localidad;
 use App\Models\Me\Expediente;
 use App\Models\Iprodha\Empresa;
+use App\Models\Iprodha\Ob_situacion;
 use App\Models\Iprodha\Ofe_tipocontratoferta;
 use App\Models\Iprodha\Ofe_estadoxobra;
 use App\Models\Iprodha\Ofe_obraestado;
 use App\Models\Iprodha\Ofe_sombrero;
+use App\Models\Iprodha\Ofe_item;
 use App\Models\Iprodha\Ofe_subitem;
 use App\Models\Iprodha\Vw_ofe_obra_valida;
 use App\Models\Iprodha\Vw_ofe_items;
 use App\Models\Iprodha\Vw_ofe_cronograma;
+use App\Models\Iprodha\Vw_ofe_crono_desem;
+use App\Models\Iprodha\Membrete;
 use App\Http\Controllers\Obrasyfinan\Ofertas\ofe_obraController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,21 +36,15 @@ class ofe_obraController extends Controller
 
     function __construct()
     {
-        /*$this->middleware('auth');
-        $this->middleware('permission:VER-OBRAS|CREAR-OBRAS|EDITAR-OBRAS|BORRAR-OBRAS', ['only' => ['index']]);
-        $this->middleware('permission:CREAR-OBRAS', ['only' => ['create','store']]);
-        $this->middleware('permission:EDITAR-OBRAS', ['only' => ['edit','update']]);
-        $this->middleware('permission:BORRAR-OBRAS', ['only' => ['destroy']]);*/
+        $this->middleware('auth');
+        $this->middleware('permission:VER-OFEOBRA|CREAR-OFEOBRA|EDITAR-OFEOBRA|BORRAR-OFEOBRA', ['only' => ['index']]);
+        $this->middleware('permission:CREAR-OFEOBRA', ['only' => ['create','store']]);
+        $this->middleware('permission:EDITAR-OFEOBRA', ['only' => ['edit','update']]);
+        $this->middleware('permission:BORRAR-OFEOBRA', ['only' => ['destroy']]);
     }
     
     public function index(Request $request)
     {        
-        /*if(Auth::user()->hasRole('EMPRESA')){
-            $editaTodo=false;
-        }else{
-            $editaTodo=true ;
-        }
-    */
         $LaEmpresa = Empresa::where('iduserweb','=',Auth::user()->id)->first();
         if(empty($LaEmpresa)) {
             $Ofertas = Ofe_obra::all();
@@ -69,10 +65,18 @@ class ofe_obraController extends Controller
     public function create(Request $request)
     {
         $input = $request->all();
-        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
-        $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp'); 
-        $TipoContrato= Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 
-        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato'));
+        // $Localidad = Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc');
+        $Localidad = Localidad::orderBy('nom_loc')->get();
+        // if(Auth::user()->hasRole('EMPRESA')){
+        //     $Empresa= Empresa::where('iduserweb' ,Auth::user()->id)->orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        // }else{
+        //     $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        // }
+        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        $Empresa= Empresa::orderBy('nom_emp')->get();
+        $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 
+        $TipoSituacion = Ob_situacion::pluck('descripcion', 'id_situacion');
+        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato', 'TipoSituacion'));
     }
 
    public function store(Request $request)
@@ -86,41 +90,34 @@ class ofe_obraController extends Controller
             'publica' => 'required',
             'anioymes' => 'required',
             'plazo' => 'required|min:1|max:999|numeric',
-        ]);              
-        
-        $input = $request->all();
-        $laOferta = new Ofe_obra;
-        $laOferta->nomobra = strtoupper($request->input('nomobra'));
-        $laOferta->idexpediente = $request->input('idexpediente');
-        $laOferta->idloc = $request->input('idloc');
-        $laOferta->idempresa = $request->input('idempresa');
-        $laOferta->moninf = $request->input('moninf');
-        $laOferta->monviv = $request->input('monviv');
-        $laOferta->monnex = $request->input('monnex');
-        $laOferta->montotope = $request->input('montotope');
-        $laOferta->plazo = $request->input('plazo');
-        $laOferta->publica = $request->input('publica');
-        $laOferta->idtipocontratofer = $request->input('idtipocontrato');
-        $laOferta->numofer = '1';
+        ], [
+            'publica.required' => 'La fecha de publicacion no puede estar vacio.'
+        ]);
 
-        $laOferta->aniocotizacion = date("Y", strtotime($request->input('anioymes')));
-        $laOferta->mescotizacion = date("m", strtotime($request->input('anioymes')));
+        $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
 
-        $data = Ofe_obra::latest('idobra')->first();
-        if (isset($data)){
-            if(($data['idobra'] )=='') {
-                $laOferta->idobra=    1;
-            }else{
-                $laOferta->idobra= $data['idobra'] +1;
-            }
-        }else{
+        $laOferta = Ofe_obra::create([
+            'nomobra' => strtoupper($request->input('nomobra')),
+            'idloc' => $request->input('idloc'),
+            'idempresa' => $request->input('idempresa'),
+            'idtipocontratofer' =>  $request->input('idtipocontrato'),
+            'publica' => $request->input('publica'),
+            'idexpediente' => $request->input('idexpediente'),
+            'montotope' => $montotope,
+            'plazo' => $request->input('plazo'),
+            'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+            'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+            'numofer' => 1,
+        ]);
 
-            $laOferta->idobra= 1;
+        if($request->input('idsituacion')){
+            $laOferta->update([
+                'id_situacion' => $request->input('idsituacion')
+            ]);
         }
-        
-        $laOferta->save();
+
         Ofe_estadoxobra::create(['idobra' => $laOferta->idobra, 'idestado' => 1]);
-        $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;;
+        $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;
         $datOfe = Ofe_obra::where('idobra', $laOferta->idobra)->first();
 
         try {
@@ -133,127 +130,145 @@ class ofe_obraController extends Controller
     
     public function edit( $idobra)
     {
-            
-            $unaOferta = Ofe_obra::find(decrypt($idobra));
-            $Localidad= Localidad::pluck('nom_loc','id_loc');
-            // return $unaOferta->getTipoOferta;
-            if(Auth::user()->hasRole('EMPRESA')){
-                $Empresa = Empresa::where('iduserweb','=',Auth::user()->id)->pluck('nom_emp', 'id_emp');
-                $TipoContrato = Ofe_tipocontratoferta::where('idtipocontratofer', '=', $unaOferta->idtipocontratofer)->pluck('tipocontratofer','idtipocontratofer');
-            }else{
-                $Empresa = Empresa::pluck('nom_emp','id_emp'); 
-                $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
-            }
-             
-            return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato'));
-            //return view('ofeObra.editar', ['unaOferta' => $unaOferta]);
+        $unaOferta = Ofe_obra::find(base64url_decode($idobra));
+        // $Localidad= Localidad::pluck('nom_loc','id_loc');
+        $Localidad= Localidad::orderBy('nom_loc')->get();
 
+        if(Auth::user()->hasRole('EMPRESA')){
+            $Empresa = Empresa::where('iduserweb','=',Auth::user()->id)->get();
+            $TipoContrato = Ofe_tipocontratoferta::where('idtipocontratofer', '=', $unaOferta->idtipocontratofer)->pluck('tipocontratofer','idtipocontratofer');
+        }else{
+            $Empresa = Empresa::get(); 
+            $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
+        }
+            
+        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato'));
     }
-    public function show(){ 
-        return redirect()->route('ofeobra.crear');
+
+    public function show($idobra)
+    { 
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
+        $obra = Ofe_obra::where('idobra','=', $idobra)->first();
+        $desembolsos = Vw_ofe_crono_desem::where('idobra','=', $idobra)->orderBy('mes')->get();
+        return view('Obrasyfinan.Ofertas.ofeobra.show',compact('data','items','cronograma', 'obra', 'sombreros', 'desembolsos'));
     }   
 
     
-    public function update(Request $request,$idobra)
+    public function update(Request $request, $idobra)
     {   
-        // return $request->input();
-        // return date("m", strtotime($request->input('aymcot')));
-        $this->validate($request, [
-            'nomobra' => 'required|min:10|max:150|string',
-            'idexpediente' => 'required|min:0|max:999999|numeric',
-            'idloc' => 'required',
-            'idempresa' => 'required',
-            'idtipocontrato' => 'required',
-            'anioymes' => 'required',
-            'publica' => 'required',
-            'plazo' => 'required|min:1|max:999|numeric',
-        ]);        
-        $input = $request->all();
-        $laOferta = Ofe_obra::find(decrypt($idobra));
-        
-        $laOferta->nomobra = strtoupper($request->input('nomobra'));
-        $laOferta->idexpediente = $request->input('idexpediente');
-        $laOferta->idloc = $request->input('idloc');
-        $laOferta->idempresa = $request->input('idempresa');
-        $laOferta->plazo = $request->input('plazo');
-        $laOferta->idtipocontratofer = $request->input('idtipocontrato');
-        $laOferta->numofer = '1';
-        $laOferta->publica = $request->input('publica');
-        $laOferta->aniocotizacion = date("Y", strtotime($request->input('anioymes')));
-        $laOferta->mescotizacion = date("m", strtotime($request->input('anioymes')));
-        $laOferta->save();
-        //return $laOferta;
-        return redirect()->route('ofeobra.index')->with('mensaje','Oferta '.$request->input('nomobra').' editado con éxito!.');       
-        
+        if (Auth::user()->hasRole('EMPRESA')){
+            $this->validate($request, [
+                'anioymes' => 'required',
+                'plazo' => 'required|min:1|max:999|numeric',
+            ]);
+
+            $laOferta = Ofe_obra::find(base64url_decode($idobra));
+            $laOferta->update([
+                'plazo' => $request->input('plazo'),
+                'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+                'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+            ]);
+
+        }else{
+            $this->validate($request, [
+                'nomobra' => 'required|min:10|max:150|string',
+                'idexpediente' => 'required|min:0|max:999999|numeric',
+                'idloc' => 'required',
+                'idempresa' => 'required',
+                'idtipocontrato' => 'required',
+                'anioymes' => 'required',
+                'publica' => 'required',
+                'plazo' => 'required|min:1|max:999|numeric',
+            ]);
+            $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
+            $laOferta = Ofe_obra::find(base64url_decode($idobra));
+            $laOferta->update([
+                'nomobra' => strtoupper($request->input('nomobra')),
+                'idexpediente' => $request->input('idexpediente'),
+                'idloc' => $request->input('idloc'),
+                'idempresa' => $request->input('idempresa'),
+                'plazo' => $request->input('plazo'),
+                'idtipocontratofer' => $request->input('idtipocontrato'),
+                'publica' => $request->input('publica'),
+                'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+                'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+                'montotope' => $montotope,
+            ]);
+
+        }
+        return redirect()->route('ofeobra.index')->with('mensaje','La Oferta '.$laOferta->nomobra.' editado con éxito!.');            
     }
         
     public function destroy($idobra)
-    {        
-        Ofe_estadoxobra::where('idobra', '=', $idobra)->delete();
-        $laOferta = Ofe_obra::find($idobra);
-        $laOferta->delete();
-        return redirect()->route('ofeobra.index')->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');//->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');  
+    {     
+        return redirect()->route('ofeobra.index')->with('mensaje','Funcionalidad en desarrollo.');
+        // return Ofe_estadoxobra::where('idobra', '=', $idobra)->get();
+        // Ofe_estadoxobra::where('idobra', '=', $idobra)->delete();
+        // return 1;
+        // $laOferta = Ofe_obra::find($idobra);
+        // $laOferta->delete();
+        // return redirect()->route('ofeobra.index')->with('mensaje','Oferta '. $laOferta->nomobr.' borrada con éxito!.');
     }    
 
     public function presentarOferta($idobra)
-    {
-        //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 2]);  
-        //return $idobra;
-        $data = Vw_ofe_obra_valida::where('idobra', '=', decrypt($idobra))->first();
-        $items = Vw_ofe_items::where('idobra', '=', decrypt($idobra))->get();
-        $cronograma = Vw_ofe_cronograma::where('idobra', '=', decrypt($idobra))->orderBy('mes')->get();
-        $sombreros = Ofe_sombrero::where('idobra', '=', decrypt($idobra))->get();
-        // return $cronograma->where('iditem', 4)->all();
-        // return is_null($cronograma->where('iditem', 6)->where('mes', 1)->first());
-        $obra=Ofe_obra::where('idobra','=',decrypt($idobra))->first();
-              
-        //return $tipoContrato;
-
-        // return $sombreros->where('idconceptosombrero', 10)->first()->valor;
+    { 
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
+        $obra = Ofe_obra::where('idobra','=', $idobra)->first();
+        $desembolsosPorMes = Vw_ofe_crono_desem::where('idobra','=', $idobra)->orderBy('mes')->get();
+        // $desembolsosPorMes = $this->desembolsoPorMes($idobra);
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
-        ->with('data',$data)
-        ->with('items',$items)
-        ->with('cronograma',$cronograma)
-        ->with('obra', $obra)
-        ->with('sombreros',$sombreros);
+            ->with('data', $data)
+            ->with('items', $items)
+            ->with('cronograma', $cronograma)
+            ->with('obra', $obra)
+            ->with('sombreros', $sombreros)
+            ->with('desembolsos', $desembolsosPorMes);
     }
 
     public function presentarSave($idobra){
-        //  return decrypt($idobra);
-        Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 2]);
+        $idobra = base64url_decode($idobra);
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 2]);
         return redirect()->route('ofeobra.index')->with('mensaje','Se presentó la oferta de obra con exito.');
     }
 
     public function verValidarOferta($idobra){
-        $data = Vw_ofe_obra_valida::where('idobra', '=', decrypt($idobra))->first();
-        $obra = Ofe_obra::where('idobra','=',decrypt($idobra))->first();
-        $cronograma = Vw_ofe_cronograma::where('idobra', '=', decrypt($idobra))->orderBy('mes')->get();
-        $sombreros = Ofe_sombrero::where('idobra', '=', decrypt($idobra))->get();
-        $items = Vw_ofe_items::where('idobra', '=', decrypt($idobra))->get();
-        // return $obra->getItems;
+        $idobra = base64url_decode($idobra);
+        $data = Vw_ofe_obra_valida::where('idobra', $idobra)->first();
+        $obra = Ofe_obra::where('idobra', $idobra)->first();
+        $cronograma = Vw_ofe_cronograma::where('idobra', $idobra)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', $idobra)->get();
+        $items = Vw_ofe_items::where('idobra', $idobra)->get();
         return view('Obrasyfinan.Ofertas.ofeobra.validar',compact('obra','data', 'cronograma', 'sombreros', 'items'));
-        // return "Entro en verValidarOferta con id en ".decrypt($idobra);
     }
 
     public function validarOferta($idobra)
     {
-        // return 'Cuidado al ingresar aca';
-        //Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 3]);
-        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $idobra = base64url_decode($idobra);
+
+        $datOfe = Ofe_obra::where('idobra', $idobra)->first();
         $email = strval(Empresa::where('id_emp', $datOfe->idempresa)->first()->email);
         $result = null;
         $procedureName = 'iprodha.SP_OFE_MIGRAOBRA';
         $bindings = [
-            'idobra'  => decrypt($idobra),
+            'idobra'  => $idobra,
             'result' => [
                 'value' => &$result,
                 'length' => 1000,
             ],
         ];
-        // return $idobra;
+        
         $succeeded = DB::executeProcedure($procedureName, $bindings);
 
         if($succeeded) {
+            Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 3]);
             try {
                 Mail::to($email)->send(new AceptarOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
                 return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
@@ -268,23 +283,22 @@ class ofe_obraController extends Controller
 
     public function rechazarOferta(Request $request, $idobra)
     {
+        $idobra = base64url_decode($idobra);
         $comentario = $request->input('comentario');
         $name = $request->input('nom_emp');
         $oferta = $request->input('nombobra');
         $subject = "Asunto del correo";
-        $datOfe = Ofe_obra::where('idobra', decrypt($idobra))->first();
+        $datOfe = Ofe_obra::where('idobra', $idobra)->first();
         $email = Empresa::where('id_emp', $datOfe->idempresa)->first()->email;
 
         
-
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 4]);
+        Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 1]);
+        
         try {
             Mail::to($email)->send(new RechazarOfeObra($name, $oferta, $comentario));
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
             return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.');
         } catch (Throwable $e) {
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 4]);
-            Ofe_estadoxobra::create(['idobra' => decrypt($idobra), 'idestado' => 1]);
             return redirect()->route('ofeobra.index')->with('mensaje','Se rechazo la oferta de obra con exito.')->with('error', 'No se pudo mandar el email');
         }
     }
@@ -371,4 +385,566 @@ class ofe_obraController extends Controller
         
     }
 
+    public function pdfItems($id, $opc){
+        $pdf = app('dompdf.wrapper');
+
+        $id = base64url_decode($id);
+        $ofeobra = Ofe_obra::find($id);
+        $vw = Vw_ofe_items::where('idobra', $id)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', $id)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', $id)->get();
+
+        $conceptos = Ofe_sombrero::select('iprodha.ofe_sombrero.idobra', 'iprodha.ofe_sombrero.valor', 'iprodha.ofe_conceptosombrero.idconceptosombrero', 'iprodha.ofe_conceptosombrero.conceptosombrero' )
+                        ->join('iprodha.ofe_conceptosombrero', 'iprodha.ofe_sombrero.idconceptosombrero', '=', 'iprodha.ofe_conceptosombrero.idconceptosombrero')
+                        ->where('idobra', $id)
+                        ->get();
+        // return $conceptos;
+
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+
+        switch ($opc) {
+            case 1:
+                $tipo = 'VIVIENDA';
+                $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 1)->orderBy('orden')->get();
+                break;
+            case 2:
+                $tipo = 'INFRAESTRUCTURA';
+                $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 2)->orderBy('orden')->get();
+                break;
+
+            case 3:
+                $tipo = 'GENERAL';
+                $items = Vw_ofe_items::where('idobra', $id)->orderBy('orden')->get();
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.items-pdf',[
+                    'obra' => $ofeobra,
+                    'tipo' => $tipo, 
+                    'items' => $items,
+                    'opc'=> $opc, 
+                    'conceptos'=> $conceptos,
+                    'data'=>$data, 
+                    'sombreros'=>$sombreros, 
+                    'cronograma'=>$cronograma, 
+                    'texto'=>$texto])->setPaper('legal', 'portrait')
+                                    ->stream('ItemsDeLaObra.pdf');
+    } 
+
+    public function pdfDsmxmes($id){
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.dsmpormes-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'desembolsos'=>$desembolsos,
+                    'texto'=>$texto
+                    ])  ->setPaper('legal', 'portrait')
+                        ->stream('ItemsDeLaObra.pdf');
+    } 
+
+    public function pdfIncItems($id){
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.incitems-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'items'=>$items,
+                    'texto'=>$texto
+                    ])  ->setPaper('legal', 'portrait')
+                        ->stream('ItemsDeLaObra.pdf');
+    } 
+
+    public function pdfCurvaDes($id){
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
+        $monto = [0];
+        $meses = [];
+        $acu = 0;
+
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+
+        for ($i=0; $i <= $ofeobra->plazo; $i++) { 
+            array_push($meses, $i);
+        }
+        array_push($meses, $ofeobra->plazo+1);
+        foreach ($desembolsos as $desembolso) {
+            $acu += $desembolso->costo;
+            array_push($monto, str_replace(',','', number_format($acu, 2)));
+        }
+
+        $chartData = [
+            "type" => "line",
+            "data" => [
+              "datasets" => [
+                [
+                  "label" => "Curva de inversiones",
+                  "data" => $monto,
+                  "fill" => false,
+                  "borderColor" => "rgb(255, 99, 132)",
+                  "lineTension" => 0.1,
+                  "spanGaps" => false,
+                  "pointRadius" => 3,
+                  "pointHoverRadius" => 3,
+                  "pointStyle" => "circle",
+                  "borderDash" => [
+                    0,
+                    0
+                  ],
+                  "barPercentage" => 0.9,
+                  "categoryPercentage" => 0.8,
+                  "type" => "line",
+                  "backgroundColor" => "rgb(255, 99, 132)33",
+                  "borderWidth" => 3,
+                  "hidden" => false
+                ]
+              ],
+              "labels" => $meses,
+            ],
+            "options" => [
+              "title" => [
+                "display" => false,
+                "position" => "top",
+                "fontSize" => 12,
+                "fontFamily" => "sans-serif",
+                "fontColor" => "#666666",
+                "fontStyle" => "bold",
+                "padding" => 10,
+                "lineHeight" => 1.2,
+                "text" => "Chart title"
+              ],
+              "layout" => [
+                "padding" => [],
+                "left" => 0,
+                "right" => 0,
+                "top" => 0,
+                "bottom" => 0
+              ],
+              "legend" => [
+                "display" => true,
+                "position" => "top",
+                "align" => "center",
+                "fullWidth" => true,
+                "reverse" => false,
+                "labels" => [
+                  "fontSize" => 12,
+                  "fontFamily" => "sans-serif",
+                  "fontColor" => "#666666",
+                  "fontStyle" => "normal",
+                  "padding" => 10
+                ]
+              ],
+              "scales" => [
+                "xAxes" => [
+                  [
+                    "id" => "X1",
+                    "position" => "bottom",
+                    "display" => true,
+                    "type" => "category",
+                    "stacked" => false,
+                    "offset" => false,
+                    "time" => [
+                      "unit" => false,
+                      "stepSize" => 1,
+                      "displayFormats" => [
+                        "millisecond" => "h =>mm =>ss.SSS a",
+                        "second" => "h =>mm =>ss a",
+                        "minute" => "h =>mm a",
+                        "hour" => "hA",
+                        "day" => "MMM D",
+                        "week" => "ll",
+                        "month" => "MMM YYYY",
+                        "quarter" => "[Q]Q - YYYY",
+                        "year" => "YYYY"
+                      ]
+                    ],
+                    "distribution" => "linear",
+                    "gridLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1,
+                      "drawBorder" => true,
+                      "drawOnChartArea" => true,
+                      "drawTicks" => true,
+                      "tickMarkLength" => 10,
+                      "zeroLineWidth" => 1,
+                      "zeroLineColor" => "rgba(0, 0, 0, 0.25)",
+                      "zeroLineBorderDash" => [
+                        0,
+                        0
+                      ]
+                    ],
+                    "angleLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1
+                    ],
+                    "pointLabels" => [
+                      "display" => true,
+                      "fontColor" => "#666",
+                      "fontSize" => 10,
+                      "fontStyle" => "normal"
+                    ],
+                    "ticks" => [
+                      "display" => true,
+                      "fontSize" => 8,
+                      "fontFamily" => "sans-serif",
+                      "fontColor" => "#666666",
+                      "fontStyle" => "normal",
+                      "padding" => 0,
+                      "stepSize" => null,
+                      "minRotation" => 0,
+                      "maxRotation" => 50,
+                      "mirror" => false,
+                      "reverse" => false
+                    ],
+                    "scaleLabel" => [
+                      "display" => false,
+                      "labelString" => "Axis label",
+                      "lineHeight" => 1.2,
+                      "fontColor" => "#666666",
+                      "fontFamily" => "sans-serif",
+                      "fontSize" => 12,
+                      "fontStyle" => "normal",
+                      "padding" => 4
+                    ]
+                  ]
+                ],
+                "yAxes" => [
+                  [
+                    "id" => "Y1",
+                    "position" => "left",
+                    "ticks" => [
+                      "beginAtZero" => true,
+                      "display" => true,
+                      "fontSize" => 8,
+                      "fontFamily" => "sans-serif",
+                      "fontColor" => "#666666",
+                      "fontStyle" => "normal",
+                      "padding" => 0,
+                      "stepSize" => null,
+                      "minRotation" => 0,
+                      "maxRotation" => 50,
+                      "mirror" => false,
+                      "reverse" => false
+                    ],
+                    "display" => true,
+                    "type" => "linear",
+                    "stacked" => false,
+                    "offset" => false,
+                    "time" => [
+                      "unit" => false,
+                      "stepSize" => 1,
+                      "displayFormats" => [
+                        "millisecond" => "h =>mm =>ss.SSS a",
+                        "second" => "h =>mm =>ss a",
+                        "minute" => "h =>mm a",
+                        "hour" => "hA",
+                        "day" => "MMM D",
+                        "week" => "ll",
+                        "month" => "MMM YYYY",
+                        "quarter" => "[Q]Q - YYYY",
+                        "year" => "YYYY"
+                      ]
+                    ],
+                    "distribution" => "linear",
+                    "gridLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1,
+                      "drawBorder" => true,
+                      "drawOnChartArea" => true,
+                      "drawTicks" => true,
+                      "tickMarkLength" => 10,
+                      "zeroLineWidth" => 1,
+                      "zeroLineColor" => "rgba(0, 0, 0, 0.25)",
+                      "zeroLineBorderDash" => [
+                        0,
+                        0
+                      ]
+                    ],
+                    "angleLines" => [
+                      "display" => true,
+                      "color" => "rgba(0, 0, 0, 0.1)",
+                      "borderDash" => [
+                        0,
+                        0
+                      ],
+                      "lineWidth" => 1
+                    ],
+                    "pointLabels" => [
+                      "display" => true,
+                      "fontColor" => "#666",
+                      "fontSize" => 10,
+                      "fontStyle" => "normal"
+                    ],
+                    "scaleLabel" => [
+                      "display" => false,
+                      "labelString" => "Axis label",
+                      "lineHeight" => 1.2,
+                      "fontColor" => "#666666",
+                      "fontFamily" => "sans-serif",
+                      "fontSize" => 12,
+                      "fontStyle" => "normal",
+                      "padding" => 4
+                    ]
+                  ]
+                ]
+              ],
+              "plugins" => [
+                "datalabels" => [
+                  "display" => true,
+                  "align" => "center",
+                  "anchor" => "center",
+                  "backgroundColor" => "#eee",
+                  "borderColor" => "#ddd",
+                  "borderRadius" => 6,
+                  "borderWidth" => 1,
+                  "padding" => 4,
+                  "color" => "#666666",
+                  "font" => [
+                    "family" => "sans-serif",
+                    "size" => 5,
+                    "style" => "bold"
+                  ]
+                ],
+                "datalabelsZAxis" => [
+                  "enabled" => false
+                ],
+                "googleSheets" => [],
+                "airtable" => [],
+                "tickFormat" => ""
+              ],
+              "cutoutPercentage" => 50,
+              "rotation" => -1.5707963267948966,
+              "circumference" => 6.283185307179586,
+              "startAngle" => -1.5707963267948966
+            ]
+            ];
+        $chartData = json_encode($chartData);
+        // return $chartData;
+        $chartURL = "https://quickchart.io/chart?width=600&height=200&c=".urlencode($chartData);
+        $chartData = file_get_contents($chartURL); 
+        $chart = 'data:image/png;base64, '.base64_encode($chartData);
+    
+        
+        
+
+        $ofeobra = Ofe_obra::find($id);
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $id)->orderBy('mes')->get();
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.curvades-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'items'=>$items,
+                    'texto'=>$texto,
+                    'cronograma' => $cronograma,
+                    'desembolsos' => $desembolsos,
+                    'chart'=> $chart
+                    ])  ->set_option('isRemoteEnabled', true)
+                        ->setPaper('legal', 'landscape')
+                        ->stream('CurvaDeInversiones.pdf');
+    } 
+
+    public function pdfCrono($id){
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
+        $ofeobra = Ofe_obra::find($id);
+        $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', $id)->get();
+        // return $this->deseAcuPormes($id);
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        // return $items = $this->itemsConSombrero($id);
+        $items = $this->itemsConSombrero($id);
+        return $pdf->loadView('Obrasyfinan.Ofertas.informes.crono-pdf',[
+                    'obra' => $ofeobra,
+                    'data'=>$data,
+                    'items'=>$items,
+                    'texto'=>$texto,
+                    'cronograma' => $cronograma,
+                    ])  ->setPaper('legal', 'landscape')
+                        ->stream('ItemsDeLaObra.pdf');
+    }
+
+    public function totalSombrero($idobra){
+      $totalCnSom = 0;
+      $totalItem = 0;
+      $sombreros = Ofe_sombrero::where('idobra', $idobra)->orderBy('idconceptosombrero')->get();
+      $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+
+      foreach ($items as $item) {
+        $totalItem += $item->costo; 
+      }
+
+      foreach ($sombreros as $unSombrero) {
+          $valor += ($valor + $unSombrero->valor/100); 
+      }
+
+      $totalCnSom = $valor;
+      return $totalCnSom;
+    }
+
+    public function itemsConSombrero($idobra){
+        $itemsCnSom = array();
+        $items = Ofe_item::where('idobra', $idobra)->orderBy('orden')->get();
+
+        foreach ($items as $unItem) {
+          $som = DB::select('SELECT iprodha.fun_ofe_porsobrero(?, ?) as mon FROM dual', [$idobra, $unItem->iditem]);
+            array_push($itemsCnSom, (object)[
+                                 'iditem' => $unItem->iditem,
+                                 'nom_item' => $unItem->nom_item,
+                                 'monto' => $som[0]->mon * $unItem->costo,
+                                 'por_inc' => $unItem->por_inc,
+                                 'orden' => $unItem->orden,
+                          ]);
+        }
+
+        return $itemsCnSom = collect($itemsCnSom)->sortBy('orden');
+    }
+    // public function deseAcuPormes($id){
+    //     $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+    //     $deseAcuxmes = array();
+    //     $acuMes = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->first()->costo;
+    //     foreach ($desembolsos as $desembolso) {
+    //         array_push($deseAcuxmes, (object)[
+    //                             'mes' => $desembolso->mes,
+    //                             'montomensual' => number_format($desembolso->costo, 2),
+    //                             'montoacumulado' => number_format($acuMes, 2),
+    //                      ]);
+    //         $acuMes = $desembolso->costo;
+    //     }
+
+    //     return $deseAcuxmes = collect($deseAcuxmes)->sortBy('mes');
+    // }
+
+    // public function desembolsoPorMes($idobra){
+    //     $ofeObra = Ofe_obra::find($idobra);
+    //     $montos = array();
+    //     $mes = 0;
+    //     $montoMes = 0;
+    //     $avanceTotal = 0;
+
+    //     for ($i=1; $i <= $ofeObra->plazo; $i++) { 
+    //         foreach ($ofeObra->getItems as $item) {
+    //             foreach ($item->getCronograma as $cronograma) {
+    //                 if($cronograma->mes == $i){
+    //                     $montoMes += $cronograma->avance * $item->costo;
+    //                 }
+    //             }
+    //         }
+    //         array_push($montos, (object)[
+    //             'mes' => $i,
+    //             'montomensual' => $montoMes,
+    //         ]);
+
+    //         $montoMes = 0;
+    //     }
+    //     return $cronoDesembolso = collect($montos)->sortBy('mes');
+    // }
+
+    public function desembolsoPorMes($idobra){
+        $ofeObra = Ofe_obra::find($idobra);
+        $montos = array();
+        $mes = 0;
+        $montoMes = 0;
+        $acumulado = 0;
+
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
+
+        for ($i=1; $i <= $ofeObra->plazo; $i++) { 
+            foreach ($cronograma as $crono) {
+                if($crono->mes == $i){
+                    $montoMes += $crono->importe;
+                }
+            }
+            array_push($montos, (object)[
+                'mes' => $i,
+                'montomensual' => $montoMes,
+                'acumulado' => $acumulado += $montoMes,
+            ]);
+
+            $montoMes = 0;
+        }
+        return $cronoDesembolso = collect($montos)->sortBy('mes');
+    }
+
+    public function prueba(){
+        return view('Obrasyfinan.Ofertas.ofeobra.prueba');
+    }
+
+    // public function todasLasViviendasDeUnaObra(Ob_obra $obra){
+    //     $viviendasTabla = array();
+    //     foreach($obra->getEtapas as $etapa){
+    //         foreach($etapa->getEntregas as $entrega){
+    //             foreach ($entrega->getViviendas->sortBy('orden') as $vivienda) {
+    //                 array_push($viviendasTabla, (object)[
+    //                     'orden' => $vivienda->orden,
+    //                     'etapa' => $etapa->nro_eta,
+    //                     'entrega' => $entrega->num_ent,
+    //                     'discap' => $vivienda->discap,
+    //                     'partida' => $vivienda->partida,
+    //                     'plano' => $vivienda->plano,
+    //                     'seccion' => $vivienda->seccion,
+    //                     'chacra' => $vivienda->chacra,
+    //                     'manzana' => $vivienda->manzana,
+    //                     'parcela' => $vivienda->parcela,
+    //                     'finca' => $vivienda->finca,
+    //                     'sup_fin' => $vivienda->sup_fin,
+    //                     'sup_lot' => $vivienda->sup_lot,
+    //                     'num_cal' => $vivienda->num_cal,
+    //                     'nom_cal' => $vivienda->nom_cal,
+    //                     'latitud' => $vivienda->latitud,
+    //                     'longitud' => $vivienda->longitud,
+    //                     'edificio' => $vivienda->edificio,
+    //                     'piso' => $vivienda->piso,
+    //                     'departamento' => $vivienda->departamento,
+    //                     'escalera' => $vivienda->escalera]);
+    //             }
+    //         }
+    //     }
+    //     return $viviendasTabla = collect($viviendasTabla)->sortBy('orden');
+    // }
 }  

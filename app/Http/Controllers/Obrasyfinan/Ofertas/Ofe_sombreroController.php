@@ -13,12 +13,13 @@ class Ofe_sombreroController extends Controller
 {
     public function index($idobra)
     {
-        $unaObra = Ofe_obra::find($idobra);
+        $unaObra = Ofe_obra::find(base64url_decode($idobra));
         $sombrerosxobra =  $unaObra->getSombrero;
         return view('Obrasyfinan.Ofertas.ofesombrero.index',compact('unaObra','sombrerosxobra'));
     }
     public function create($idobra)
     {
+        $idobra = base64url_decode($idobra);
         $unaObra = Ofe_obra::find($idobra);
         $losConceptos = DB::table('iprodha.Ofe_conceptosombrero')
         ->whereNotIn('idconceptosombrero', Ofe_sombrero::select('idconceptosombrero')->where('Ofe_sombrero.idobra','=', $idobra))
@@ -27,7 +28,7 @@ class Ofe_sombreroController extends Controller
     }
     public function editar($idobra)
     {
-        $unaObra = Ofe_obra::find($idobra);
+        $unaObra = Ofe_obra::find(base64url_decode($idobra));
         $sombrerosxobra =  $unaObra->getSombrero ;        
         $losConceptos = Ofe_conceptosombrero::all();
         return view('Obrasyfinan.Ofertas.ofesombrero.editar',compact('unaObra','sombrerosxobra','losConceptos'));
@@ -59,7 +60,7 @@ class Ofe_sombreroController extends Controller
         for($p = 0; $p < $items; $p++) {
             if($ar_valores[$p]<0 || $ar_valores[$p]>100){
                 $todoOK=false;
-                return redirect()->route('ofesombreroxobra.crear',$request->input('idobra'))->with('error', 'Los valores deben estar comprendidos entre 0 y 100.');
+                return redirect()->route('ofesombreroxobra.crear', base64url_encode($request->input('idobra')))->with('error', 'Los valores deben estar comprendidos entre 0 y 100.');
             }
         }
         if($todoOK){
@@ -75,20 +76,20 @@ class Ofe_sombreroController extends Controller
             //return redirect('ofesombreroxobra.index')->with('error', 'Valores no permitidos');
             
             //return redirect('/')->with('error', 'Error string');
-            return redirect()->route('ofesombreroxobra.crear',$request->input('idobra'))->with('error', 'Los valores deben estar comprendidos entre 0 y 100.');
+            return redirect()->route('ofesombreroxobra.crear', base64url_encode($request->input('idobra')))->with('error', 'Los valores deben estar comprendidos entre 0 y 100.');
         }
         
         //return redirect('/ofesombreroxobra')->route('ofesombreroxobra.indexx',$request->input('idobra'));
-        return redirect()->route('ofesombreroxobra.indexx',$request->input('idobra') );
+        return redirect()->route('ofesombreroxobra.indexx',base64url_encode($request->input('idobra')));
     } 
 
     
-    public function destroy($idobra,$idsombrero)
+    public function destroy($idobra, $idsombrero)
     {
         $unConcepto = Ofe_sombrero::where('idobra','=', $idobra)
         ->where('idconceptosombrero','=', $idsombrero)->first();
         $unConcepto->delete(); 
-        return redirect()->route('ofesombreroxobra.indexx',$idobra)->with('mensaje', 'Se borro el concepto con exito.');
+        return redirect()->route('ofesombreroxobra.indexx', base64url_encode($idobra))->with('mensaje', 'Se borro el concepto con exito.');
     }
 
     public function update(Request $request, $idobra)
@@ -121,7 +122,7 @@ class Ofe_sombreroController extends Controller
             $sombre->valor = $ar_valores[$p];
             $sombre->save();
         }
-        return redirect()->route('ofesombreroxobra.indexx',$idobra)->with('mensaje', 'Concepto de sombrero se modifico con exito.');
+        return redirect()->route('ofesombreroxobra.indexx', base64url_encode($idobra))->with('mensaje', 'Concepto de sombrero se modifico con exito.');
         // return redirect()->route('ofeobra.index');
         // return redirect()->route('categorialaboral.index')->with('mensaje','Concepto de sombrero se modifico con exito.');
     }

@@ -213,3 +213,80 @@ $(document).ready(function pintarTabla() {
           },
     });
 });
+
+$(document).ready(function() {
+    $('#tbl-attendance').dataTable({
+        language: {
+            lengthMenu: 'Mostrar _MENU_ registros por pagina',
+            zeroRecords: 'No se ha encontrado registros',
+            info: 'Mostrando pagina _PAGE_ de _PAGES_',
+            infoEmpty: 'No se ha encontrado registros',
+            infoFiltered: '(Filtrado de _MAX_ registros totales)',
+            search: 'Buscar',
+            paginate:{
+                first:"Prim.",
+                last: "Ult.",
+                previous: 'Ant.',
+                next: 'Sig.',
+            },
+        },
+        "aaSorting": [],
+    	"footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // converting to interger to find total
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // computing column Total of the complete result 
+            var wedTotal = api
+                .column( 3 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+				
+			
+			
+            // Update footer by showing the total with the reference of the column index 
+            $( api.column( 2 ).footer() ).html('Total').addClass('text-center');
+            $( api.column( 3 ).footer() ).html(wedTotal).addClass('text-center');
+        },
+    } );
+} );
+
+// $(document).ready(function()
+// {
+//   //Defino los totales de mis 2 columnas en 0
+//   var total_col = [];
+//   var prefijo = 'col';
+//   var total_col1 = 0;
+//   var total_col2 = 0;
+//   //Recorro todos los tr ubicados en el tbody
+//   $('#ejemplo tbody').find('tr').each(function (i, el) {
+//         //Voy incrementando las variables segun la fila ( .eq(0) representa la fila 1 )
+        
+//          if(Number.isNaN(parseFloat($(this).find('td').eq(2).text()))){
+//               total_col1 += 0;
+//          }else{
+//               total_col1 += parseFloat($(this).find('td').eq(2).text());
+//         }
+//         total_col.push(total_col1);
+
+
+
+//         // $('#ejemplo tfoot tr th').eq(2).text(total_col1.toFixed(4));
+//         // total_col2 += parseFloat($(this).find('td').eq(3).text());
+//     // total_col1=0;    
+//     });
+//     for (let i = 2; i <= contadorMes; i++) {
+//         $('#ejemplo tfoot tr th').eq(i).text(total_col[i].toFixed(4));  
+//     }
+//     //Muestro el resultado en el th correspondiente a la columna
+//     // $('#ejemplo tfoot tr th').eq(3).text(total_col1.toFixed(4));
+//     // $('#ejemplo tfoot tr th').eq(3).text(total_col2);
+// });
