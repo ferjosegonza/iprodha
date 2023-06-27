@@ -5,6 +5,8 @@
 
     class Ob_vivienda extends Model{
 
+        protected $connection = 'oracleuser';
+        
         use HasFactory;
 
         public $timestamps = false;        
