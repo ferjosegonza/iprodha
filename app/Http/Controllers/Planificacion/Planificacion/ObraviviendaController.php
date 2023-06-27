@@ -623,7 +623,7 @@ class ObraviviendaController extends Controller
                 'id_eta' => $request->input('idetapa'),
                 'num_ent' => $request->input('num_ent'),
                 'descripcion' => strtoupper($request->input('descrip')),
-                'cant_viv' => $request->input('cant_viv')
+                // 'cant_viv' => $request->input('cant_viv')
             ]);
 
             if($request->input('fec_ent')){
