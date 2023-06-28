@@ -15,7 +15,7 @@
 
         protected $primaryKey = 'id_etapa';
 
-        public $incrementing = false;
+        public $incrementing = true;
 
         protected $fillable=[
             'id_etapa',
