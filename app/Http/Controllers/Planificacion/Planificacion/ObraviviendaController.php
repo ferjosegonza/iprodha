@@ -80,78 +80,81 @@ class ObraviviendaController extends Controller
             'can_viv.required' => 'El campo Cantidad de viviendas de obra es obligatorio.',
             'descrip.required' => 'El campo Descripcion de una etapa es obligatorio.',
         ]);
-        $this->conectar();
-        $obra = Ob_obra::create([
-            'num_obr' => $request->input('num_obr'),
-            'nom_obr' => strtoupper($request->input('nom_obra')),
-            'id_emp' => $request->input('idempresa'),
-            'id_loc' => $request->input('idloc'),
-            'can_viv' => $request->input('can_viv')
-        ]);
-
-        if($request->input('plazo')){
-            $obra->update([
-                'plazo' => $request->input('plazo')
+        
+        DB::transaction(function(){
+            $this->conectar();
+            $obra = Ob_obra::create([
+                'num_obr' => $request->input('num_obr'),
+                'nom_obr' => strtoupper($request->input('nom_obra')),
+                'id_emp' => $request->input('idempresa'),
+                'id_loc' => $request->input('idloc'),
+                'can_viv' => $request->input('can_viv')
             ]);
-        }
 
-        if($request->input('expediente')){
-            $obra->update([
-                'expedte' => $request->input('expediente')
+            if($request->input('plazo')){
+                $obra->update([
+                    'plazo' => $request->input('plazo')
+                ]);
+            }
+
+            if($request->input('expediente')){
+                $obra->update([
+                    'expedte' => $request->input('expediente')
+                ]);
+            }
+
+            if($request->input('fec_ini')){
+                $obra->update([
+                    'fec_ini' => $request->input('fec_ini')
+                ]);
+            }
+
+            if($request->input('plazo')){
+                $obra->update([
+                    'fec_ter' => $request->input('fec_ter')
+                ]);
+            }
+
+            //Obtener el id de la obra que se genero en la BD
+            $id_obr = Ob_obra::where('num_obr', $obra->num_obr)->first()->id_obr;
+
+            //Crear la etapa
+            $etapa = Ob_etapa::create([
+                'id_obr' => $id_obr,
+                'nro_eta' => 1,
+                'descripcion' => strtoupper($request->input('descrip')),
+                'can_viv_0' => 0,
+                'can_viv_2' => 0,
+                'can_viv_3' => 0,
+                'can_viv_4' => 0,
+                'cant_viv' => $request->input('can_viv'),
+                'id_localidad' => $request->input('idloc')
             ]);
-        }
 
-        if($request->input('fec_ini')){
-            $obra->update([
-                'fec_ini' => $request->input('fec_ini')
+            //Obtener la id de la etapa que se genero en la BD
+            $id_etapa = Ob_etapa::where('id_obr', $id_obr)->first()->id_etapa;
+
+            //Crear entrega
+            $entrega = Ob_entrega::create([
+                'id_eta' => $id_etapa,
+                'num_ent' => 0,
+                'cant_viv' => $request->input('can_viv'),
+                'fec_ent' => null
             ]);
-        }
 
-        if($request->input('plazo')){
-            $obra->update([
-                'fec_ter' => $request->input('fec_ter')
-            ]);
-        }
+            //Obtener la id de la entrega que se genero en la BD
+            $id_ent = Ob_entrega::where('id_eta', $id_etapa)->first()->id_ent;
 
-        //Obtener el id de la obra que se genero en la BD
-        $id_obr = Ob_obra::where('num_obr', $obra->num_obr)->first()->id_obr;
-
-        //Crear la etapa
-        $etapa = Ob_etapa::create([
-            'id_obr' => $id_obr,
-            'nro_eta' => 1,
-            'descripcion' => strtoupper($request->input('descrip')),
-            'can_viv_0' => 0,
-            'can_viv_2' => 0,
-            'can_viv_3' => 0,
-            'can_viv_4' => 0,
-            'cant_viv' => $request->input('can_viv'),
-            'id_localidad' => $request->input('idloc')
-        ]);
-
-        //Obtener la id de la etapa que se genero en la BD
-        $id_etapa = Ob_etapa::where('id_obr', $id_obr)->first()->id_etapa;
-
-        //Crear entrega
-        $entrega = Ob_entrega::create([
-            'id_eta' => $id_etapa,
-            'num_ent' => 0,
-            'cant_viv' => $request->input('can_viv'),
-            'fec_ent' => null
-        ]);
-
-        //Obtener la id de la entrega que se genero en la BD
-        $id_ent = Ob_entrega::where('id_eta', $id_etapa)->first()->id_ent;
-
-        //Crear las viviendas
-        for ($i=1; $i <= $request->input('can_viv'); $i++) { 
-            Ob_vivienda::create([
-                'orden' => $i,
-                'id_mun' => Localidad::where('id_loc', $request->input('idloc'))->first()->id_mun,
-                'id_ent' => $id_ent,
-                'id_loc' => $request->input('idloc')
-            ]);
-        }
+            //Crear las viviendas
+            for ($i=1; $i <= $request->input('can_viv'); $i++) { 
+                Ob_vivienda::create([
+                    'orden' => $i,
+                    'id_mun' => Localidad::where('id_loc', $request->input('idloc'))->first()->id_mun,
+                    'id_ent' => $id_ent,
+                    'id_loc' => $request->input('idloc')
+                ]);
+            }
+        });
 
         return redirect()->route('obravivienda.index')->with('mensaje','La obra se creo con exito.');  
     }
