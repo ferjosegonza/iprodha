@@ -9,13 +9,13 @@
 
         use HasFactory;
 
-        public $timestamps=false;        
+        public $timestamps = false;        
 
         protected $table = 'iprodha.ob_obra';
 
         protected $primaryKey = 'id_obr';
 
-        public $incrementing = false;
+        public $incrementing = true;
 
         protected $fillable=[
             'id_obr',
