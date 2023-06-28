@@ -116,7 +116,7 @@ class ObraviviendaController extends Controller
             }
 
             //Obtener el id de la obra que se genero en la BD
-            $id_obr = Ob_obra::where('num_obr', $obra->num_obr)->first()->id_obr;
+            $id_obr = $obra->id_obr;
 
             //Crear la etapa
             $etapa = Ob_etapa::create([
@@ -132,7 +132,7 @@ class ObraviviendaController extends Controller
             ]);
 
             //Obtener la id de la etapa que se genero en la BD
-            $id_etapa = Ob_etapa::where('id_obr', $id_obr)->first()->id_etapa;
+            $id_etapa = $etapa->id_etapa;
 
             //Crear entrega
             $entrega = Ob_entrega::create([
@@ -143,7 +143,7 @@ class ObraviviendaController extends Controller
             ]);
 
             //Obtener la id de la entrega que se genero en la BD
-            $id_ent = Ob_entrega::where('id_eta', $id_etapa)->first()->id_ent;
+            $id_ent = $entrega->id_ent;
 
             //Crear las viviendas
             for ($i=1; $i <= $request->input('can_viv'); $i++) { 
