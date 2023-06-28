@@ -15,7 +15,7 @@
 
         protected $primaryKey = 'id_ent';
 
-        public $incrementing = false;
+        public $incrementing = true;
 
         protected $fillable = [
             'id_ent',
