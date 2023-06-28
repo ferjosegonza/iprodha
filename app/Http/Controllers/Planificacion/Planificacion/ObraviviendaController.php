@@ -81,7 +81,7 @@ class ObraviviendaController extends Controller
             'descrip.required' => 'El campo Descripcion de una etapa es obligatorio.',
         ]);
 
-        DB::transaction(function(Request $request){
+        DB::transaction(function() use ($request){
             $this->conectar();
             $obra = Ob_obra::create([
                 'num_obr' => $request->input('num_obr'),
