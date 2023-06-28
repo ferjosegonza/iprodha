@@ -80,8 +80,8 @@ class ObraviviendaController extends Controller
             'can_viv.required' => 'El campo Cantidad de viviendas de obra es obligatorio.',
             'descrip.required' => 'El campo Descripcion de una etapa es obligatorio.',
         ]);
-        
-        DB::transaction(function(){
+
+        DB::transaction(function(Request $request){
             $this->conectar();
             $obra = Ob_obra::create([
                 'num_obr' => $request->input('num_obr'),
