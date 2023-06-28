@@ -15,7 +15,7 @@
 
         protected $primaryKey = 'id_viv';
 
-        public $incrementing = false;
+        public $incrementing = true;
 
         protected $fillable = [
             'id_viv',
