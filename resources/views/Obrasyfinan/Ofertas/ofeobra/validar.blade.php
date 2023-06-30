@@ -190,7 +190,7 @@
                         <div class="form-check text-center">
                             <input class="form-check-input fs-5" type="checkbox" value="info-items-card" id="info-items" checked>
                             <strong>
-                            {!! Form::label('Ítems', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
+                                {!! Form::label('Valor de item y sub-item', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
                             </strong>
                         </div>
                         {{-- <div class="text-center">
@@ -233,73 +233,80 @@
                     </div>
                 </div>
             </div>  
+
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="card border border-3 border-success" id="info-crono-card">
+                <div class="card border border-3 border-success" id="info-items-gr-card">
                     <div class="card-head">
                         <br>
                         <div class="form-check text-center">
-                            <input class="form-check-input fs-5" type="checkbox" value="info-crono-card" id="info-crono" checked>
+                            <input class="form-check-input fs-5" type="checkbox" value="info-items-gr-card" id="info-items-gr" checked>
                             <strong>
-                            {!! Form::label('Cronograma', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
+                                {!! Form::label('Items', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
                             </strong>
-                        </div>
-                        {{-- <div class="text-center"><h5>Cronograma</h5></div>                         --}}
+                        </div>                      
                     </div>
                     <div class="card-body">
-                        @php
-                            $contador = 1;
-                            $contadorMes = $cronograma->last()->mes;
-                        @endphp
-                        {{-- {{$contadorMes = $cronograma->sortByDesc('mes')->first()->mes}} --}}
                         <div class="table-responsive">
-                            <table class="table table-hover mt-2" id='cronogramaa'>
+                            <table class="table table-hover mt-2">
                                 <thead>
-                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
-                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Denom. Ítem</th>
-                                    @while($contador <= $contadorMes)
-                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">{{$contador}}</th>
-                                        @php
-                                            $contador = $contador+1;
-                                        @endphp
-                                    @endwhile
+                                    <th class= 'text-center' style="color:#fff; width:5%;">Orden</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">Item</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">Tipo</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">Monto</th>
+                                    <th class= 'text-center' style="color:#fff; width:10%;">% Incidencia</th>
                                 </thead>
-                                <tfoot align="right" style='background-color: #f3c48638;'>
-                                    <tr> <th></th><th></th>
-                                    @for($i = 1; $i <= $contadorMes; $i++)
-                                        <th></th>
-                                    @endfor
-                                    </tr>
-                                </tfoot>
                                 <tbody>
                                     @php
-                                        $contador = 1;
+                                        $totalItems = number_format(floatval(0), 2);
+                                        $totalInc = 0;
                                     @endphp
-                                    @foreach ($items as $item)
+                                    @foreach ($items->sortBy('orden') as $item)
                                         <tr>
-                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->orden}}</td>
-                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->nom_item}}</td>
-                                            @while ($contador <= $contadorMes)
-                                                @if (is_null($cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()))
-                                                    <td class= 'text-center' style="vertical-align: middle;"></td>
-                                                @else
-                                                    <td class= 'text-center' style="vertical-align: middle;">{{$cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()->avance}}</td>
-                                                @endif
+                                            <td class= 'text-center'>{{$item->orden}}</td>                                            
+                                            <td class= 'text-center'>{{$item->nom_item}}</td>                                            
+                                            <td class= 'text-center'>{{$item->nom_tipo}}</td>
 
+                                            @if ($item->cod_tipo == 1)
+                                                <td class= 'text-center'>${{number_format($item->vivienda,2, ',', '.')}}</td>
                                                 @php
-                                                    $contador = $contador+1;
+                                                    $totalItems += $item->vivienda;
                                                 @endphp
-                                            @endwhile
+                                            @else
+                                                @if ($item->cod_tipo == 2)
+                                                    <td class= 'text-center'>${{number_format($item->infra,2, ',', '.')}}</td>
+                                                    @php
+                                                        $totalItems += $item->infra;
+                                                    @endphp
+                                                @else
+                                                    <td class= 'text-center'>${{number_format($item->vivienda + $item->infra,2, ',', '.')}}</td>
+                                                    @php
+                                                        $totalItems += $item->vivienda + $item->infra;
+                                                    @endphp
+                                                @endif            
+                                            @endif
+
+                                            <td class= 'text-center'>{{number_format($item->por_inc,4)}}</td>
                                             @php
-                                                $contador = 1;
+                                                $totalInc += $item->por_inc;
                                             @endphp
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot align="right" style='background-color: #f3c48638;'>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">$ {{number_format($totalItems,2, ',', '.')}}</th>
+                                        <th class="text-center">{{number_format($totalInc,4, ',', '.')}}</th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>          
+            </div> 
+
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card border border-3 border-success" id="info-som-card">
                     <div class="card-head">
@@ -417,6 +424,135 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card border border-3 border-success" id="info-crono-card">
+                    <div class="card-head">
+                        <br>
+                        <div class="form-check text-center">
+                            <input class="form-check-input fs-5" type="checkbox" value="info-crono-card" id="info-crono" checked>
+                            <strong>
+                            {!! Form::label('Cronograma', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
+                            </strong>
+                        </div>
+                        {{-- <div class="text-center"><h5>Cronograma</h5></div>                         --}}
+                    </div>
+                    <div class="card-body">
+                        @php
+                            $contador = 1;
+                            $contadorMes = $cronograma->last()->mes;
+                        @endphp
+                        {{-- {{$contadorMes = $cronograma->sortByDesc('mes')->first()->mes}} --}}
+                        <div class="table-responsive">
+                            <table class="table table-hover mt-2" id='cronogramaa'>
+                                <thead>
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Denom. Ítem</th>
+                                    @while($contador <= $contadorMes)
+                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">{{$contador}}</th>
+                                        @php
+                                            $contador = $contador+1;
+                                        @endphp
+                                    @endwhile
+                                </thead>
+                                <tfoot align="right" style='background-color: #f3c48638;'>
+                                    <tr> <th></th><th></th>
+                                    @for($i = 1; $i <= $contadorMes; $i++)
+                                        <th></th>
+                                    @endfor
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    @php
+                                        $contador = 1;
+                                    @endphp
+                                    @foreach ($items as $item)
+                                        <tr>
+                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->orden}}</td>
+                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->nom_item}}</td>
+                                            @while ($contador <= $contadorMes)
+                                                @if (is_null($cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()))
+                                                    <td class= 'text-center' style="vertical-align: middle;"></td>
+                                                @else
+                                                    <td class= 'text-center' style="vertical-align: middle;">{{$cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()->avance}}</td>
+                                                @endif
+
+                                                @php
+                                                    $contador = $contador+1;
+                                                @endphp
+                                            @endwhile
+                                            @php
+                                                $contador = 1;
+                                            @endphp
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>          
+            
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card border border-3 border-success" id="crono-desem-card">
+                    <div class="card-head">
+                        <br>
+                        <div class="form-check text-center">
+                            <input class="form-check-input fs-5" type="checkbox" value="crono-desem-card" id="info-crono-desem" checked>
+                            <strong>
+                            {!! Form::label('Cronograma de desembolso', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
+                            </strong>
+                        </div>                        
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover mt-2">
+                                <thead>
+                                    <th class= 'text-center' scope="col" style="color:#fff;width:20%;">Meses</th>
+                                    <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos mensuales</th>
+                                    <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos acumulados</th>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $costoAcu = 0
+                                    @endphp
+                                    @foreach($desembolsos as $desembolso)
+                                        @php
+                                            $costoAcu += $desembolso->costo
+                                        @endphp
+                                        <tr>
+                                            <td class= 'text-center'>MES {{$desembolso->mes}}</td>
+
+                                            <td class= 'text-center'>@money($desembolso->costo)</td>
+
+                                            <td class= 'text-center'>@money($costoAcu)</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                             
+                            </table>                      
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="card border border-3 border-success" id="crono-gra-card">
+                    <div class="card-head">
+                        <br>
+                        <div class="form-check text-center">
+                            <input class="form-check-input fs-5" type="checkbox" value="crono-gra-card" id="gra-crono-desem" checked>
+                            <strong>
+                            {!! Form::label('Grafico de desembolso', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
+                            </strong>
+                        </div>                         
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xs-12 col-sm-12 col-md-12" style="display: none;" id="cardComentario" >
                 <div class="card">
                     <div class="card-body">
@@ -489,5 +625,58 @@
 <script src="{{ asset('js/Obrasyfinan/Ofertas/index_oferta.js') }}"></script>
 <script>
     contadorMes = {{$cronograma->last()->mes;}}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  
+<script>
+    contadorMes = {{$cronograma->last()->mes}};
+    meses = [];
+    let acu = 0;
+    monto = [0];
+    var app = @json($desembolsos);
+    
+    app.forEach(element => {
+        // console.log(element.costo.toFixed(2));
+        acu += Number(element.costo);
+        monto.push(acu.toFixed(2));
+    });
+
+    for (let index = 0; index <= contadorMes; index++) {
+        meses.push('mes '+index); 
+    }
+    meses.push('mes '+(contadorMes+1)); 
+    const ctx = document.getElementById('myChart');
+    // Chart.register(ChartDataLabels);
+    
+    new Chart(ctx, {
+       type: 'line',
+       data: {
+         labels: meses,
+         datasets: [{
+           label: 'Desembolso por mes',
+           data: monto,
+           borderWidth: 1,
+           pointStyle: 'rect',
+         }]
+       },
+       plugins: [ChartDataLabels],
+       options: {
+        plugins: {
+      // Change options for ALL labels of THIS CHART
+            datalabels: {
+                font: {
+                    size: 15
+                },
+            }
+        },
+         scales: {
+           y: {
+            beginAtZero: true
+           },
+         },
+       }
+     });
 </script>
 @endsection
