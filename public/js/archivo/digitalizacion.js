@@ -1687,7 +1687,6 @@ function guardar(){
         dataForm.append('pdf', pdf);
         dataForm.append('pdfname', pdfName);
     }      
-    dataForm.append('_token', $('#signup-token').val());
     dataForm.append('tipo', tipo);
     dataForm.append('subtipo', subtipo);
     dataForm.append('doc', doc);
@@ -1707,7 +1706,7 @@ function guardar(){
         url: route,
         type: 'POST',
         cache: false,
-        data: dataForm,
+        data:{'_token': $('#signup-token').val(), dataForm},
         processData: false,
         contentType: false,
         //dataType: 'json',
