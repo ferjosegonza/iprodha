@@ -1687,6 +1687,7 @@ function guardar(){
         dataForm.append('pdf', pdf);
         dataForm.append('pdfname', pdfName);
     }      
+    dataForm.append('_token', $('#signup-token').val());
     dataForm.append('tipo', tipo);
     dataForm.append('subtipo', subtipo);
     dataForm.append('doc', doc);
