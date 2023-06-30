@@ -5,6 +5,8 @@
 
     class Ob_entrega extends Model{
 
+        protected $connection = 'oracleuser';
+        
         use HasFactory;
 
         public $timestamps = false;        
@@ -13,7 +15,7 @@
 
         protected $primaryKey = 'id_ent';
 
-        public $incrementing = false;
+        public $incrementing = true;
 
         protected $fillable = [
             'id_ent',

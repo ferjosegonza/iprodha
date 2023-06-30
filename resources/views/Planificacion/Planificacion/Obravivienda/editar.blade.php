@@ -44,13 +44,31 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                                     <div class="form-group">
                                         <label for="Empresa:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Empresa: <span class="obligatorio">*</span></label>
-                                        {!! Form::select('idempresa', $Empresa, $obra->id_emp, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                                        <select name="idempresa" class="selectpicker w-100 form-select"  placeholder="Seleccionar" required>
+                                            @foreach ($Empresa as $unaEmpresa)
+                                                @if ($unaEmpresa->id_emp == $obra->id_emp)
+                                                    <option value="{{$unaEmpresa->id_emp}}" selected>{{$unaEmpresa->nom_emp}}</option>
+                                                @else
+                                                    <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        {{-- {!! Form::select('idempresa', $Empresa, $obra->id_emp, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!} --}}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                     <div class="form-group">
                                         <label for="Localidad:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Localidad: <span class="obligatorio">*</span></label>
-                                        {!! Form::select('idloc', $Localidad, $obra->id_loc, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!}
+                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
+                                            @foreach ($Localidad as $unaLocalidad)
+                                                @if ($unaLocalidad->id_loc == $obra->id_loc)
+                                                    <option value="{{$unaLocalidad->id_loc}}" selected>{{$unaLocalidad->nom_loc}}</option>
+                                                @else
+                                                    <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        {{-- {!! Form::select('idloc', $Localidad, $obra->id_loc, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!} --}}
                                     </div>
                                 </div>
                             </div>
@@ -129,4 +147,10 @@
             </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function() {
+            $('.selectpicker').select2();
+            $('.selectpickerLoc').select2();
+        });
+    </script>
 @endsection

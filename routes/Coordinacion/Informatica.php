@@ -20,6 +20,7 @@ use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorControl
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemaController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemasubController;
 use App\Http\Controllers\FavoritoController;
+use App\Http\Controllers\Auth\LoginController;
 //use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
 
 use App\Http\Controllers\HomeController;
@@ -43,6 +44,8 @@ use App\Http\Controllers\HomeController;
 Route::get('/inicio', [HomeController::class, 'inicio'])->name('inicio');
 Route::get('/', [HomeController::class, 'inicio']);
 Route::resource('home', HomeController::class);
+
+Route::post('login', [LoginController::class, 'authenticate']);
 
 
 
