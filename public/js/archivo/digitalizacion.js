@@ -1701,8 +1701,6 @@ function guardar(){
         asunto: asunto,
         pdf: pdf,
         pdfname: pdfName}),
-        processData: false,
-        contentType: false,
         //dataType: 'json',
         success: function(res) {
             console.log(res)
