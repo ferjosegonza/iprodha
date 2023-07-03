@@ -806,6 +806,7 @@ class ofe_obraController extends Controller
                     'items'=>$items,
                     'texto'=>$texto,
                     'cronograma' => $cronograma,
+                    'desembolsos' => $desembolsos,
                     ])  ->setPaper('legal', 'landscape')
                         ->stream('ItemsDeLaObra.pdf');
     }
