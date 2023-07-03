@@ -1705,6 +1705,7 @@ function guardar(){
         contentType: false,
         //dataType: 'json',
         success: function(res) {
+            console.log(res)
             popup(1, res)
         },
         error: function(res){

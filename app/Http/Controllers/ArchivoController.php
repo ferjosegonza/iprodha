@@ -268,12 +268,12 @@ public function busquedaDirigida(Request $request){
     return response()->json($datos);
 }
 
-public function crear(Request $request){
-    return $request;
+public function crear(Request $request){   
     //
     $fecha = explode("-", $request->fecha);
     $subtipo = explode("|", $request->subtipo);
     //
+    return $subtipo;
     $archivo = new Dig_archivos;
     $archivo->id_tipoarchivo = $request->tipo;
     $archivo->id_subtipoarchivo = $subtipo[1];
