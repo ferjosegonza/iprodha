@@ -1665,11 +1665,11 @@ function modificar() {
 }
 
 function guardar(){
-    let pdf
+    let pdf = 'off'
     let pdfFile = document.getElementById('pdf')
-    let pdfName
-    if(pdfFile!=undefined){
-       pdf = pdfFile.files[0] 
+    let pdfName = ''
+    if(pdfFile!=undefined){ 
+        pdf = 'on'
        pdfName = document.getElementById('pdfname').innerHTML
     }        
     let tipo = document.getElementById('tipo').value
@@ -1679,21 +1679,6 @@ function guardar(){
     let claves = document.getElementById('claves').value
     let orden = document.getElementById('orden').value
     let asunto = document.getElementById('asunto').value
-
-
-    let dataForm = new FormData();
-    
-    if(pdfFile!=undefined){
-        dataForm.append('pdf', pdf);
-        dataForm.append('pdfname', pdfName);
-    }      
-    dataForm.append('tipo', tipo);
-    dataForm.append('subtipo', subtipo);
-    dataForm.append('doc', doc);
-    dataForm.append('fecha', fecha);
-    dataForm.append('claves', claves);
-    dataForm.append('orden', orden);
-    dataForm.append('asunto', asunto);
 
     //
     let route = '/archivo/crear'  
@@ -1706,7 +1691,16 @@ function guardar(){
         url: route,
         type: 'POST',
         cache: false,
-        data:{'_token': $('#signup-token').val(), dataForm},
+        data:{'_token': $('#signup-token').val(), 
+        'tipo': tipo,
+        'subtipo': subtipo,
+        'doc': doc,
+        'fecha': fecha,
+        'claves': claves,
+        'orden': orden,
+        'asunto': asunto,
+        'pdf': pdf,
+        'pdfname': pdfName},
         processData: false,
         contentType: false,
         //dataType: 'json',
