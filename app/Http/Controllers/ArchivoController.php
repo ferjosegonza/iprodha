@@ -269,7 +269,7 @@ public function busquedaDirigida(Request $request){
 }
 
 public function crear(Request $request){
-    //return $request;
+    return $request;
     //
     $fecha = explode("-", $request->fecha);
     $subtipo = explode("|", $request->subtipo);
