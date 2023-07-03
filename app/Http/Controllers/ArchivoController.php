@@ -273,7 +273,6 @@ public function crear(Request $request){
     $fecha = explode("-", $request->fecha);
     $subtipo = explode("|", $request->subtipo);
     //
-    return $request;
     $archivo = new Dig_archivos;
     $archivo->id_tipoarchivo = $request->tipo;
     $archivo->id_subtipoarchivo = $subtipo[1];
