@@ -1679,7 +1679,7 @@ function guardar(){
     let claves = document.getElementById('claves').value
     let orden = document.getElementById('orden').value
     let asunto = document.getElementById('asunto').value
-
+    console.log(subtipo)
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
