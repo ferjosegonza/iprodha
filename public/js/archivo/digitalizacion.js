@@ -1616,6 +1616,12 @@ function popup(tipo, estado){
             document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar el archivo.</p>'
         }
     }    
+    document.getElementById('tipo').value = 'sel'
+    document.getElementById('subtipo').value = 'sel'
+    document.getElementById('fecha').value = 'dd/mm/aaaa'
+    document.getElementById('orden').value = 1
+    document.getElementById('doc').value = ''
+    document.getElementById('asunto').value= ''
     let pop= bootstrap.Modal.getOrCreateInstance(popEl)
     pop.show()
 }
