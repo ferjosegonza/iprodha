@@ -1,6 +1,6 @@
 @extends('layouts.auth_app')
 @section('title')
-    Inicio de sesión
+    Inicio de sesión de administrador
 @endsection
 @section('content')
     <div class="card card-warning">

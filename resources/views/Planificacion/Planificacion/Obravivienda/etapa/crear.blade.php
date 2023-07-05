@@ -8,11 +8,7 @@
 </style>
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1 fs-5">
-                <strong>
-                    Nueva etapa para la obra
-                </strong>
-            </div>
+            <div class="titulo py-1">Nueva etapa para la obra</div>
         </div>
         <div class="section-body">
             <div class="row">
