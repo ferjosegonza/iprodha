@@ -51,24 +51,14 @@
                                     <div class="form-group">
                                         <label for="Empresa:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Empresa: <span class="obligatorio">*</span></label>
                                         {{-- {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!} --}}
-                                        <select name="idempresa" class="selectpicker w-100 form-select"  placeholder="Seleccionar" required>
-                                            @foreach ($Empresa as $unaEmpresa)
-                                                <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
-                                            @endforeach
-                                        </select>
-                                        {{-- {!! Form::select('idempresa', $Empresa, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!} --}}
+                                        {!! Form::select('idempresa', $Empresa, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                     <div class="form-group">
                                         <label for="Localidad:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Localidad: <span class="obligatorio">*</span></label>
                                         {{-- {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!} --}}
-                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
-                                            @foreach ($Localidad as $unaLocalidad)
-                                                <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
-                                            @endforeach
-                                        </select>
-                                        {{-- {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!} --}}
+                                        {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
                                     </div>
                                 </div>
                             </div>

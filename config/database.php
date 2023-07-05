@@ -126,6 +126,7 @@ return [
             'load_balance'   => env('DB_LOAD_BALANCE', 'yes'),
             'dynamic'        => [],
         ],
+
     ],
 
     /*

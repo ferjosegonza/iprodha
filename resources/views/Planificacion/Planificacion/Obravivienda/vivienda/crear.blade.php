@@ -219,7 +219,7 @@
                                         (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAVIVIENDA')
+                                        @can('CREAR-OBRAS')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                         @endcan
                                         {!! Form::close() !!}
