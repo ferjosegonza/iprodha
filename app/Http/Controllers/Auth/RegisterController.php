@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Diegoz\MenuM;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Crypt;
+use App\Models\Iprodha\Lav_user_db;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -101,6 +104,23 @@ class RegisterController extends Controller
             'pass_lav' => Crypt::encryptString($data['password']),
             'user_lav' => $userWeb,
         ]);
+
+        $userWeb = "WEB-".$user->id;
+        $pass = $data['password'];
+
+        $creaUserDB = 'CREATE USER "'.$userWeb.'" PROFILE DEFAULT IDENTIFIED BY "'.$pass.'" DEFAULT TABLESPACE USERS ACCOUNT UNLOCK';
+        // DB::select(DB::raw($creaUserDB));
+        DB::statement($creaUserDB);
+        $permisoUserDB = 'GRANT CONNECT,RESOURCE,TABLAVIEJA,TABLANUEVA,TABLAGENERAL TO "'.$userWeb.'"';
+        // DB::select(DB::raw($permisoUserDB));
+        DB::statement($permisoUserDB);
+
+        Lav_user_db::create([
+            'id_user_lav' => $user->id,
+            'pass_lav' => Crypt::encryptString($data['password']),
+            'user_lav' => $userWeb,
+        ]);
+        
 
         return $user;
     }

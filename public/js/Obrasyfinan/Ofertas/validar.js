@@ -5,7 +5,10 @@ $(function(){
     $('#info-viv').on('change', cambioEstado); //viv-input
     $('#info-infra').on('change', cambioEstado); //infra-input
     $('#info-items').on('change', cambioEstado);//info-items-card
+    $('#info-items-gr').on('change', cambioEstado);//info-items-gr-card
     $('#info-crono').on('change', cambioEstado);//info-crono-card
+    $('#info-crono-desem').on('change', cambioEstado);//crono-desem-card
+    $('#gra-crono-desem').on('change', cambioEstado);//crono-gra-card
     $('#info-som').on('change', cambioEstado);//info-som-card
     $('#info-nexo').on('change', cambioEstado);//nexo-input
     // $('#addRow').on('click', nuevoCrono);
@@ -14,7 +17,7 @@ $(function(){
 
 function cambioEstado(){
     // console.log('hola');
-    console.log($(this).val());
+    // console.log($(this).val());
     let id = $(this).val();
     if ( document.getElementById(id).className.match(/(?:^|\s)border-success(?!\S)/) ){
         document.getElementById(id).className = document.getElementById(id).className.replace( /(?:^|\s)border-success(?!\S)/g , ' border-danger');
@@ -39,7 +42,7 @@ function sensarInformacion(){
 }
 
 function validarOrechazar(){
-    let secciones = ['info-som-card', 'info-crono-card', 'info-items-card', 'info-obra-card'];
+    let secciones = ['info-som-card', 'info-crono-card', 'info-items-card', 'info-obra-card', 'info-items-gr-card', 'crono-desem-card', 'crono-gra-card'];
     let bandera = 0;
     let btnValidar = document.getElementById('btnValidar');
     let btnRechazar = document.getElementById('btnRechazar');

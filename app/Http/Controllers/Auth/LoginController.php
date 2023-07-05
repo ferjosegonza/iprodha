@@ -71,7 +71,9 @@ class LoginController extends Controller
 
                     Lav_user_db::create([
                         'id_user_lav' => Auth::user()->id,
+
                         'pass_lav' => Crypt::encryptString($request->input('password').'a'),
+
                         'user_lav' => $user,
                     ]);
                 

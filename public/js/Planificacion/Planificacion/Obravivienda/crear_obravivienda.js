@@ -1,3 +1,8 @@
+$(document).ready(function() {
+    $('.selectpicker').select2();
+    $('.selectpickerLoc').select2();
+});
+
 $(".formulario").on('submit', function(evt){
     evt.preventDefault();  
     $('#presentar').attr('action',$(this).attr("action"));

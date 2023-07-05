@@ -204,14 +204,10 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|CREAR-ARCHIVOS|D
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], function () {
     Route::get('digesto', [DigestoController::class, 'index'])->name('digesto.index');
-    Route::get('digesto/buscador', [DigestoController::class, 'buscarArchivo'])->name('digesto.buscador'); //borrar esto
     Route::get('digesto/buscar', [DigestoController::class, 'buscarArchivo'])->name('digesto.buscar');
     Route::post('digesto/guardar', [DigestoController::class, 'guardar'])->name('digesto.guardar');
     Route::get('digesto/areas', [DigestoController::class, 'areas'])->name('digesto.areas');
     Route::delete('digesto/sacarArea', [DigestoController::class, 'remove_area'])->name('digesto.sacarArea');
     Route::post('digesto/añadirArea', [DigestoController::class, 'add_area'])->name('digesto.añadirArea');    
     Route::get('digesto/relacionados', [DigestoController::class, 'relacionados'])->name('digesto.relacionados');    
-    Route::get('digesto/modificaciones', [DigestoController::class, 'modificaciones'])->name('digesto.modificaciones');
-    Route::get('digesto/buscador', [DigestoController::class, 'buscador'])->name('digesto.buscador');
-    Route::get('digesto/check', [DigestoController::class, 'check'])->name('digesto.check');
 });
