@@ -1616,6 +1616,12 @@ function popup(tipo, estado){
             document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar el archivo.</p>'
         }
     }    
+    document.getElementById('tipo').value = 'sel'
+    document.getElementById('subtipo').value = 'sel'
+    document.getElementById('fecha').value = 'dd/mm/aaaa'
+    document.getElementById('orden').value = 1
+    document.getElementById('doc').value = ''
+    document.getElementById('asunto').value= ''
     let pop= bootstrap.Modal.getOrCreateInstance(popEl)
     pop.show()
 }
@@ -1665,11 +1671,11 @@ function modificar() {
 }
 
 function guardar(){
-    let pdf
+    let pdf = 'off'
     let pdfFile = document.getElementById('pdf')
-    let pdfName
-    if(pdfFile!=undefined){
-       pdf = pdfFile.files[0] 
+    let pdfName = ''
+    if(pdfFile!=undefined){ 
+        pdf = 'on'
        pdfName = document.getElementById('pdfname').innerHTML
     }        
     let tipo = document.getElementById('tipo').value
@@ -1679,22 +1685,7 @@ function guardar(){
     let claves = document.getElementById('claves').value
     let orden = document.getElementById('orden').value
     let asunto = document.getElementById('asunto').value
-
-
-    let dataForm = new FormData();
-    
-    if(pdfFile!=undefined){
-        dataForm.append('pdf', pdf);
-        dataForm.append('pdfname', pdfName);
-    }      
-    dataForm.append('tipo', tipo);
-    dataForm.append('subtipo', subtipo);
-    dataForm.append('doc', doc);
-    dataForm.append('fecha', fecha);
-    dataForm.append('claves', claves);
-    dataForm.append('orden', orden);
-    dataForm.append('asunto', asunto);
-
+    console.log(subtipo)
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
@@ -1706,11 +1697,19 @@ function guardar(){
         url: route,
         type: 'POST',
         cache: false,
-        data: dataForm,
-        processData: false,
-        contentType: false,
+        data: ({_token: $('#signup-token').val(), 
+        tipo: tipo,
+        subtipo: subtipo,
+        doc: doc,
+        fecha: fecha,
+        claves: claves,
+        orden: orden,
+        asunto: asunto,
+        pdf: pdf,
+        pdfname: pdfName}),
         //dataType: 'json',
         success: function(res) {
+            console.log(res)
             popup(1, res)
         },
         error: function(res){
