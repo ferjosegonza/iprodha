@@ -98,7 +98,7 @@ class DigestoController extends Controller
 
     public function areas(Request $request){
         $data = Dig_digesto_areas::where('id_archivo', '=', $request->id)
-                ->join('PERSONAL.VW_DIG_AREAS', 'PERSONAL.VW_DIG_AREAS.idarea', '=', 'iprodha.dig_digesto_areas.id_area')
+                ->join('IPRODHA.VW_DIG_AREAS', 'IPRODHA.VW_DIG_AREAS.idarea', '=', 'iprodha.dig_digesto_areas.id_area')
                 ->get();
         //$areas_original = Dig_digesto_areas::where('id_archivo', '=', $request->id)->get();
         return response()->json($data);
