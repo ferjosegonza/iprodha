@@ -399,6 +399,10 @@ $(document).ready(function () {
                 target: 6,
                 visible: false,
             },
+            {
+                target: 8,
+                visible: false,
+            },
         ],
         language: {
             lengthMenu: 'Mostrar _MENU_ registros por página',
@@ -462,7 +466,16 @@ $(document).ready(function () {
         document.getElementById('pdfver').setAttribute('data', data[6])
         document.getElementById('linkpdf').setAttribute('href', data[6])
         document.getElementById('pdftitle').innerHTML= data[1] + ' - ' + data[2] + ' - ' + data[4]
-        document.getElementById('despdf').innerHTML=  '<b>FECHA:</b> ' + data[3]+ '<br><b>ASUNTOS CLAVES:</b><br>' + data[5]
+
+        if(data[1] == 'RESOLUCIONES' && data[2] == 'Reglamentaria'){
+            tieneDigesto(data[8], data)
+        }
+        else{
+            document.getElementById('despdf').innerHTML=  '<b>FECHA:</b> ' + data[3]+ '<br><b>ASUNTOS CLAVES:</b><br>' + data[5]
+        }
+        
+
+        
         //document.getElementById('ruta').innerHTML= data[6]
         //alert('You clicked on ' + data[6] + "'s row");
     });
@@ -475,6 +488,35 @@ $(document).ready(function () {
       });
 
 });
+
+
+function tieneDigesto(id, data){
+    let route = 'digesto/check'
+    console.log(id)
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        async: false,
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id:id
+        }),
+        dataType: 'json',
+        success: function(res){
+            console.log(res)
+            if(res){
+                document.getElementById('despdf').innerHTML=  '<a href="/digesto/modificaciones?id='+ data[8] +'">Esta resolucion tiene modificaciones</a><br><b>FECHA:</b> ' + data[3]+ '<br><b>ASUNTOS CLAVES:</b><br>' + data[5]
+            }else{
+                document.getElementById('despdf').innerHTML=  '<b>FECHA:</b> ' + data[3]+ '<br><b>ASUNTOS CLAVES:</b><br>' + data[5]
+            }
+        }})
+}
 
 function cancelarbusqueda(){
     let table = $('#archivos').DataTable()
@@ -873,7 +915,8 @@ function buscarArchivos(){
                    4 : res[i].nro_archivo,
                    5 : res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;'),
                    6 : res[i].path_archivo + res[i].nombre_archivo,
-                   7 : res[i].orden
+                   7 : res[i].orden,
+                   8: res[i].id_archivo
                 })      
             }      
             table.draw(true); 
@@ -918,7 +961,8 @@ function cargarBoletin(){
                    4 : res[i].nro_archivo,
                    5 : res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;'),
                    6 : res[i].path_archivo + res[i].nombre_archivo,
-                   7 : res[i].orden
+                   7 : res[i].orden,
+                   8 : res[i].id_archivo
                 })      
             }      
             advertencia.innerHTML='(Por defecto verás los archivos correspondientes al último boletín)'
