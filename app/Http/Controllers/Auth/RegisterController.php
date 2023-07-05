@@ -88,6 +88,22 @@ class RegisterController extends Controller
             //Creacion de atajo a documentacion digital
             Fav_Favorito::create(['idusuario' => $user->id , 'ruta' => 'archivos.consultar', 'titulo' => 'Búsqueda de Archivos Digitalizados', 'descripcion' => 'Busqueda de archivos que se encuentras digitalizados.']);
         }
+        
+        $userWeb = "WEB-".$user->id;
+        $pass = $data['password'];
+
+        $creaUserDB = 'CREATE USER "'.$userWeb.'" PROFILE DEFAULT IDENTIFIED BY "'.$pass.'" DEFAULT TABLESPACE USERS ACCOUNT UNLOCK';
+        // DB::select(DB::raw($creaUserDB));
+        DB::statement($creaUserDB);
+        $permisoUserDB = 'GRANT CONNECT,RESOURCE,TABLAVIEJA,TABLANUEVA,TABLAGENERAL TO "'.$userWeb.'"';
+        // DB::select(DB::raw($permisoUserDB));
+        DB::statement($permisoUserDB);
+
+        Lav_user_db::create([
+            'id_user_lav' => $user->id,
+            'pass_lav' => Crypt::encryptString($data['password']),
+            'user_lav' => $userWeb,
+        ]);
 
         $userWeb = "WEB-".$user->id;
         $pass = $data['password'];

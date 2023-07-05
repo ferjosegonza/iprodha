@@ -83,4 +83,14 @@ class DigestoController extends Controller
         ->where('id_archivo0', '=', $request->id)->get();
         return response()->json($archivos);
     }
+
+    public function check(Request $request){
+        $check = Dig_digesto::where('id_archivo0','=',$request->id)->orWhere('id_archivon','=',$request->id)->get();
+        if(sizeof($check) == 0){
+            return response()->json(false);
+        }
+        else{
+            return response()->json(true);
+        }
+    }
 }

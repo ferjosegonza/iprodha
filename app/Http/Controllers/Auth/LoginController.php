@@ -62,7 +62,7 @@ class LoginController extends Controller
                 $user = "WEB-".Auth::user()->id;
                 $pass = $request->input('password');
 
-                $creaUserDB = 'CREATE USER "'.$user.'" PROFILE DEFAULT IDENTIFIED BY "'.$pass.'" DEFAULT TABLESPACE USERS ACCOUNT UNLOCK';
+                $creaUserDB = 'CREATE USER "'.$user.'" PROFILE DEFAULT IDENTIFIED BY "'.$pass.'a" DEFAULT TABLESPACE USERS ACCOUNT UNLOCK';
                     // DB::select(DB::raw($creaUserDB));
                     DB::statement($creaUserDB);
                     $permisoUserDB = 'GRANT CONNECT,RESOURCE,TABLAVIEJA,TABLANUEVA,TABLAGENERAL TO "'.$user.'"';
@@ -71,7 +71,9 @@ class LoginController extends Controller
 
                     Lav_user_db::create([
                         'id_user_lav' => Auth::user()->id,
-                        'pass_lav' => Crypt::encryptString($request->input('password')),
+
+                        'pass_lav' => Crypt::encryptString($request->input('password').'a'),
+
                         'user_lav' => $user,
                     ]);
                 

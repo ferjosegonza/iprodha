@@ -476,6 +476,35 @@ $(document).ready(function () {
 
 });
 
+
+function tieneDigesto(id, data){
+    let route = 'digesto/check'
+    console.log(id)
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        async: false,
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id:id
+        }),
+        dataType: 'json',
+        success: function(res){
+            console.log(res)
+            if(res){
+                document.getElementById('despdf').innerHTML=  '<a href="/digesto/modificaciones?id='+ data[8] +'">Esta resolucion tiene modificaciones</a><br><b>FECHA:</b> ' + data[3]+ '<br><b>ASUNTOS CLAVES:</b><br>' + data[5]
+            }else{
+                document.getElementById('despdf').innerHTML=  '<b>FECHA:</b> ' + data[3]+ '<br><b>ASUNTOS CLAVES:</b><br>' + data[5]
+            }
+        }})
+}
+
 function cancelarbusqueda(){
     let table = $('#archivos').DataTable()
     //console.log(document.getElementById('tipo').value)
