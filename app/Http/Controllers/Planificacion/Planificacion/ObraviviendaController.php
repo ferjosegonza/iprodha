@@ -56,10 +56,8 @@ class ObraviviendaController extends Controller
     
     public function create(Request $request)
     {
-        // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
-        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
-        $Localidad = Localidad::orderBy('nom_loc')->get();
-        $Empresa = Empresa::orderBy('nom_emp')->get();
+        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
+        $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp'); 
         return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa'));
     }
 
@@ -175,10 +173,8 @@ class ObraviviendaController extends Controller
     {
         $this->conectar();
         $obra = Ob_obra::find($id);
-        // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
-        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
-        $Localidad = Localidad::orderBy('nom_loc')->get();
-        $Empresa = Empresa::orderBy('nom_emp')->get(); 
+        $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
+        $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp'); 
         return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa'));
     }
     

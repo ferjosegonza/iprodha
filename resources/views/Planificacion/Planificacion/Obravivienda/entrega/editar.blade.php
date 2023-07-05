@@ -8,11 +8,7 @@
 </style>
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1 fs-5">
-                <strong>
-                    Editar entrega para la etapa de la obra
-                </strong>
-            </div>
+            <div class="titulo py-1">Editar entrega para la etapa de la obra</div>
         </div>
         <div class="section-body">
             <div class="row">
@@ -27,13 +23,13 @@
                                         {!! Form::text('id_obr', $obra->id_obr, ['class' => 'form-control']) !!}
                                     </div>
                                     <div class="form-group">
-                                        {!! Form::label('N° Entrega:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('N° Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::number('num_ent', $entrega->num_ent, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
                                     <div class="form-group">
-                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::text('descrip', $entrega->descripcion, [
                                             'class' => 'form-control',
                                             'required' => 'required',
@@ -46,7 +42,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                     <div class="form-group">
-                                        {!! Form::label('N° Etapa', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('N° Etapa', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::select('idetapa', $etapas, $entrega->id_eta, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
                                     </div>
                                 </div>
@@ -55,7 +51,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Fecha de entrega:', null, [
-                                                'class' => 'control-label fs-6',
+                                                'class' => 'control-label',
                                                 'style' => '',
                                             ]) !!}
                                             {!! Form::date('fec_ent', Carbon\Carbon::parse($entrega->fec_ent)->format('Y-m-d'), [
@@ -68,8 +64,8 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
-                                        {!! Form::label('Cant. de viviendas:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::number('cant_viv', $entrega->cant_viv, ['class' => 'form-control', 'readonly']) !!}
+                                        {!! Form::label('Cantidad de viviendas:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::number('cant_viv', $entrega->cant_viv, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                             </div>

@@ -8,12 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cronograma de avance PDF</title>
 </head>
-<body> {{-- style="margin-left: 3cm" --}} 
-    <header> {{-- style="margin-left: 1cm" --}} 
+<body style="margin-left: 3cm">
+    <header style="margin-left: 1cm;">
         <img class= "logo column-2" alt="image"  src="{{asset('img/logo_iprodha.jpg') }}">
         <label class="txt column-2"><br>{{$texto[0]->texto_1}}</label>
     </header>
-    <footer> {{-- style="margin-left: 3cm" --}} 
+    <footer style="margin-left: 3cm">   
     </footer>
     <section class="section">
         <div class="section-header">
@@ -98,14 +98,14 @@
             <h4 class="m-auto" >CRONOGRAMA DE AVANCE</h4>
         </div>
         <div class="section-body">
-            <table class="table" style="table-layout:fixed; font-size:70%">
+            <table class="table">
                 <thead>
-                    <th class="width: 1%">Orden</th>
-                    <th class="width: 10%">Denominacion</th>
-                    <th class="width: 5%">Monto</th>
-                    <th class="width: 5%">Inc</th>
+                    <th class="width: 5%">Orden</th>
+                    <th>Denominacion</th>
+                    <th>Monto</th>
+                    <th>Inc</th>
                     @for ($i = 1; $i <= $obra->plazo; $i++)
-                        <th class="width: 1%">{{$i}}</th>
+                        <th>{{$i}}</th>
                     @endfor
                     
                 </thead>
@@ -114,19 +114,7 @@
                         $contador = 1;
                         $montoAcu = 0;
                         $totalInc = 0;
-                        $totalMes = 0;
-                        // $cronoMen = array();
-                        for ($i=0; $i < $obra->plazo; $i++) { 
-                            $cronoMen[] = 0;
-                        }
-
-                        for ($i=0; $i < $obra->plazo; $i++) { 
-                            $acuMen[] = 0;
-                        }
-
-                        // for ($i=0; $i < $obra->plazo; $i++) { 
-                        //     $acuMenMon[] = 0;
-                        // }
+                        $cronoMen = [$obra->plazo];
                     @endphp
                     @foreach ($items as $item)
                         <tr>
@@ -134,7 +122,7 @@
                                 $montoAcu += $item->monto;
                             @endphp
                             <td class= 'text-center' style="vertical-align: middle;">{{$item->orden}}</td>
-                            <td class= 'text-center' style="vertical-align: middle; font-size:80%">{{$item->nom_item}}</td>
+                            <td class= 'text-center' style="vertical-align: middle;">{{$item->nom_item}}</td>
                             <td class= 'text-center' style="vertical-align: middle;">$ {{number_format($item->monto, 2, ',','.')}}</td>
                             <td class= 'text-center' style="vertical-align: middle;">{{number_format($item->por_inc, 4, ',', '.')}}</td>
                             @while ($contador <= $obra->plazo)
@@ -142,10 +130,6 @@
                                     <td class= 'text-center' style="vertical-align: middle;"></td>
                                 @else
                                     <td class= 'text-center' style="vertical-align: middle;">{{$cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()->avance}}</td>
-                                    @php
-                                        $cronoMen[$contador-1] += $cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()->avance;
-                                        // array_push($cronoMen, $totalMes);
-                                    @endphp
                                 @endif
 
                                 @php
@@ -167,32 +151,18 @@
                                 <td></td>
                             @endfor
                         </tr>
-                        @php
-                            $ax = 0;
-                            for ($i=0; $i < $obra->plazo; $i++) { 
-                                $acuMen[$i] = $ax + $cronoMen[$i];
-                                $ax += $cronoMen[$i];
-                            }
-                            $ax = 0;
-                            foreach ($desembolsos as $unDesem) {
-                                $acuMenMon[] = $ax + $unDesem->costo;
-                                $ax += $unDesem->costo;
-                            }
-                        @endphp
+
                         <tr>
                             <td></td>
                             <td>Totales</td>
                             <td>$ {{number_format($montoAcu, 2, ',','.')}}</td>
                             <td>{{number_format($totalInc,4, ',', '.')}}</td>
-                            @for ($i = 0; $i < $obra->plazo; $i++)
-                                <td>{{$cronoMen[$i]}}</td>
+                            @for ($i = 1; $i <= $obra->plazo; $i++)
+                                <td></td>
                             @endfor
-                            {{-- @foreach( $cronoMen as $unCrono)
-                                <td>{{$unCrono}}</td>
-                            @endforeach --}}
                         </tr>
 
-                        <tr style="background-color: rgb(141, 141, 141)">
+                        {{-- <tr style="background-color: rgb(141, 141, 141)">
                             <td style="color: rgb(141, 141, 141)">1</td>
                             <td></td>
                             <td></td>
@@ -204,43 +174,13 @@
 
                         <tr>
                             <td></td>
-                            <td>Inc. Acumulado</td>
-                            <td></td>
-                            <td></td>
-                            @for ($i = 0; $i < $obra->plazo; $i++)
-                                <td>{{$acuMen[$i]}}</td>
-                            @endfor
-                        </tr>
-
-                        <tr style="background-color: rgb(141, 141, 141)">
-                            <td style="color: rgb(141, 141, 141)">1</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>Inc mensual</td>
+                            <td>{{number_format($montoAcu, 2, ',','.')}}</td>
+                            <td>{{number_format($totalInc,4, ',', '.')}}</td>
                             @for ($i = 1; $i <= $obra->plazo; $i++)
                                 <td></td>
                             @endfor
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td>Monto mensual</td>
-                            <td></td>
-                            <td></td>
-                            @foreach ($desembolsos as $undesem)
-                                <td>$ {{number_format($undesem->costo, 2, ',', '.')}}</td>
-                            @endforeach
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td>Monto Acumulado</td>
-                            <td></td>
-                            <td></td>
-                            @for ($i = 0; $i < $obra->plazo; $i++)
-                                <td>$ {{number_format($acuMenMon[$i], 2, ',','.')}}</td>
-                            @endfor
-                        </tr>
+                        </tr> --}}
                 </tbody>
             </table>
         </div>

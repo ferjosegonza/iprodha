@@ -8,11 +8,7 @@
 </style>
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1 fs-5">
-                <strong>
-                    Nueva entrega para la etapa de la obra
-                </strong> 
-            </div>
+            <div class="titulo py-1">Nueva entrega para la etapa de la obra</div>
         </div>
         <div class="section-body">
             <div class="row">
@@ -27,13 +23,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('N° Entrega:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
+                                        {!! Form::label('N° Entrega:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
                                         {!! Form::number('num_ent', max($todasLasEntregas) + 1, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
                                     <div class="form-group">
-                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
+                                        {!! Form::label('Descripcion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
                                         {!! Form::text('descrip', null, [
                                             'class' => 'form-control',
                                             'required' => 'required',
@@ -46,7 +42,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                     <div class="form-group">
-                                        {!! Form::label('N° Etapa', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('N° Etapa', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::select('idetapa', $etapas, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
                                     </div>
@@ -56,7 +52,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Fecha de entrega:', null, [
-                                                'class' => 'control-label fs-6',
+                                                'class' => 'control-label',
                                                 'style' => '',
                                             ]) !!}
                                             {!! Form::date('fec_ent', null, [
