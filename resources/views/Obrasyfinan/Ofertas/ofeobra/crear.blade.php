@@ -75,9 +75,12 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::label('Numero del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
-                                        {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!} 
+                                        {!! Form::text('numExp', null, ['class' => 'form-control', 'placeholder' => '00000-A/00', 'required','onkeyup' => 'javascript:this.value=this.value.toUpperCase()']) !!} 
+                                        {{-- {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!}  --}}
                                     </div>
                                 </div>
                             </div>
@@ -100,8 +103,18 @@
                                         {!! Form::number('monnex', null, ['readonly','class' => 'form-control']) !!}
                                     </div>
                                 </div> --}}
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                </div>
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="form-group">
+                                        {!! Form::label('Numero del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control col-lg-4" placeholder="00000" aria-label="Username">
+                                            <span class="input-group-text">-</span>
+                                            <input type="text" class="form-control col-lg-2" placeholder="A" aria-label="Server" style="width: 5px">
+                                            <span class="input-group-text">/</span>
+                                            <input type="text" class="form-control col-lg-2" placeholder="00" aria-label="Server">
+                                        </div>
+                                    </div>         
+                                </div> --}}
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
@@ -132,7 +145,7 @@
                                             <div class="form-group">
                                                 {!! Form::label('Plazo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                                 <span class="obligatorio">*</span>
-                                                {!! Form::number('plazo', null, ['class' => 'form-control']) !!}
+                                                {!! Form::number('plazo', null, ['class' => 'form-control', 'required']) !!}
                                             </div>
                                         </div>
                                         <div class="p-2" style="background-color: rgb(223, 188, 144)">

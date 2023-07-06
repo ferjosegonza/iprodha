@@ -55,8 +55,10 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOB
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFECRONO']], function () {
     Route::post('/ofecrono/{mes}/{item}/{avance}/nuevo', [Ofe_cronogramaController::class, 'guardarCrono']);
     Route::post('/ofecrono/{item}/comprobar', [Ofe_cronogramaController::class, 'comprobarAvance']);
+    Route::post('/ofecrono/{item}/infoitem', [Ofe_cronogramaController::class, 'infoItem']);
     Route::post('/ofecrono/{id}/{mes}/items', [Ofe_cronogramaController::class, 'losItems']);
     Route::post('/ofecrono/{mes}/{item}/buscar', [Ofe_cronogramaController::class, 'buscarItemMes']);
+    Route::get('/ofecrono/porc/{id}', [Ofe_cronogramaController::class, 'indexPorc'])->name('ofecrono.porc');
     Route::resource('ofecrono', Ofe_cronogramaController::class);
 });
 
