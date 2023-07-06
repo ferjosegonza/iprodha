@@ -718,9 +718,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
     let containerRe =  document.getElementById('comp-recomendado'); //aca van los tags recomendados
     let containerOp =  document.getElementById('comp-opcional'); //aca van los tags opcionales
     //
-    let x = 0;
-    let k = 0;
-    let bandera = 0;
+    let x = 0
+    //k= son los contadores para las filas de complejos
+    let k1 = 0
+    let k2 = 0
+    let k3= 0
+    let bandera = 0
     let tag1
     let tag2
     let row
@@ -737,12 +740,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j] 
                     x++;
-                    if(k % 2  == 0){
+                    if(k1 % 2  == 0){
                         row = document.createElement('div')
                         row.className = 'row'
-                    }                    
+                    }  
                     insertarInputComplejo(tag1, tag2, x, containerOb, row)                     
-                    k++
+                    k1++
                 }                
             }
         }
@@ -759,12 +762,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    if(k % 2  == 0){
+                    if(k2 % 2  == 0){
                         row = document.createElement('div')
                         row.className = 'row'
                     }                    
                     insertarInputComplejo(tag1, tag2, x, containerRe, row)                     
-                    k++
+                    k2++
                 }                
             }
         }
@@ -781,12 +784,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    if(k % 2  == 0){
+                    if(k3 % 2  == 0){
                         row = document.createElement('div')
                         row.className = 'row'
                     }                    
                     insertarInputComplejo(tag1, tag2, x, containerOp, row)                     
-                    k++
+                    k3++
                 }                
             }
         }
@@ -925,6 +928,9 @@ function insertarInputSimple(divmayor, tag, i){
 
 function insertarInputComplejo(tag1, tag2, i, container, divmayor){
     //Titulo del padre
+    console.log(container)
+    console.log(divmayor)
+
     let texto = document.createElement("p");
     texto.innerHTML=tag1.descripcion
     texto.className = 'complejos';                            
