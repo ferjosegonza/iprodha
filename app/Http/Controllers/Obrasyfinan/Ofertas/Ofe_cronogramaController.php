@@ -28,6 +28,15 @@ class Ofe_cronogramaController extends Controller
     {     
         return view('Obrasyfinan.Ofertas.ofecrono.index');
     }
+
+    public function indexPorc(Request $request, $id)
+    {     
+        $losItems = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        // return $losItems;
+        $items = Ofe_item::where('idobra', '=', $id)->orderBy('iditem')->pluck('nom_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
+        $plazo = Ofe_obra::where('idobra', $id)->first()->plazo;
+        return view('Obrasyfinan.Ofertas.ofecrono.indexPorc', compact('losItems', 'plazo', 'items', 'id'));
+    }
     
     public function create(Request $request)
     {
@@ -110,5 +119,25 @@ class Ofe_cronogramaController extends Controller
         }else{
             return 0;
         }
+    }
+
+    public function infoItem($item)
+    {
+        $elItem = Vw_ofe_cronograma::where('iditem', '=', $item)->first();
+        // return $elItem;
+        $infoItem = array();
+        
+        if(!empty($elItem)){
+            array_push($infoItem, (object)['por_inc' => $elItem->por_inc,
+                                        'avaTotal' => $elItem->poravaacuitem,
+                                        'avaTotalPor' => $elItem->avaitempor
+                                        ]);
+        }else{
+            array_push($infoItem, (object)['por_inc' => 0,
+                                        'avaTotal' => 0,
+                                        'avaTotalPor' => 0
+                                        ]);
+        }
+        return $infoItem;
     }
 }

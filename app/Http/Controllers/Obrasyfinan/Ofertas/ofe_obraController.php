@@ -83,7 +83,8 @@ class ofe_obraController extends Controller
     {
         $this->validate($request, [
             'nomobra' => 'required|min:10|max:150|string',
-            'idexpediente' => 'required|min:0|max:999999|numeric',
+            // 'idexpediente' => 'required|min:0|max:999999|numeric',
+            'numExp' => 'required',
             'idloc' => 'required',
             'idempresa' => 'required',
             'idtipocontrato' => 'required',
@@ -93,6 +94,18 @@ class ofe_obraController extends Controller
         ], [
             'publica.required' => 'La fecha de publicacion no puede estar vacio.'
         ]);
+        
+        $numExp = $request->input('numExp');
+        // $numExp = str_replace("/", "\/", $numExp);
+        // return $exp = Expediente::where('exp_numero', 'like','%'.$numExp.'%')->first();
+        // return DB::table('me.expedientes')  
+        //         ->where('exp_numero', '=', '01478-K/03      ') 
+        //         ->get();
+        $exp = Expediente::where('exp_numero', $numExp.'      ')->first();
+
+        if(is_null($exp)){
+          return redirect()->route('ofeobra.create')->withInput()->with('error','El numero de expediente no se encuentra.');
+        }
 
         $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
 
@@ -102,7 +115,7 @@ class ofe_obraController extends Controller
             'idempresa' => $request->input('idempresa'),
             'idtipocontratofer' =>  $request->input('idtipocontrato'),
             'publica' => $request->input('publica'),
-            'idexpediente' => $request->input('idexpediente'),
+            'idexpediente' => $exp->exp_doc_id,
             'montotope' => $montotope,
             'plazo' => $request->input('plazo'),
             'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
