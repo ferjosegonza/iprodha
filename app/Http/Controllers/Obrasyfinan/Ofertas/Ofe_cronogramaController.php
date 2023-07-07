@@ -126,6 +126,8 @@ class Ofe_cronogramaController extends Controller
     {
         $elItem = Vw_ofe_cronograma::where('iditem', '=', $item)->first();
         // return $elItem;
+        $incItem = Ofe_item::where('iditem', $item)->first();
+        
         $infoItem = array();
         
         if(!empty($elItem)){
@@ -134,7 +136,7 @@ class Ofe_cronogramaController extends Controller
                                         'avaTotalPor' => $elItem->avaitempor
                                         ]);
         }else{
-            array_push($infoItem, (object)['por_inc' => 0,
+            array_push($infoItem, (object)['por_inc' => $incItem->por_inc,
                                         'avaTotal' => 0,
                                         'avaTotalPor' => 0
                                         ]);
