@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Obrasyfinan\Ofertas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 //agregamos
 
 use App\Models\Iprodha\Ofe_cronograma;
@@ -31,7 +31,8 @@ class Ofe_cronogramaController extends Controller
 
     public function indexPorc(Request $request, $id)
     {     
-        $losItems = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        $losItems = DB::select('select orden, nom_item, por_inc, round((iprodha.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) AvaItemPor, CASE WHEN round((IPRODHA.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item where idobra = ? order by orden', [$id]);
+        // $losItems = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
         // return $losItems;
         $items = Ofe_item::where('idobra', '=', $id)->orderBy('iditem')->pluck('nom_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
         $plazo = Ofe_obra::where('idobra', $id)->first()->plazo;

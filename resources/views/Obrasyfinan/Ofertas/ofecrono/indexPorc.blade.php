@@ -48,8 +48,13 @@
                                                 <td class= 'text-center'>{{$item->orden}}</td>                                            
                                                 <td class= 'text-center'>{{$item->nom_item}}</td>                                            
                                                 <td class= 'text-center'>{{number_format($item->por_inc, 4, ',','.')}}</td>
-                                                <td class= 'text-center'>0 %</td>
-                                                <td class= 'text-center' style="color: red">Incompleto</td>
+                                                <td class= 'text-center'>{{$item->avaitempor}} %</td>
+                                                @if ($item->estado == 1)
+                                                    <td class= 'text-center' style="color: green">Completo</td>
+                                                @else
+                                                    <td class= 'text-center' style="color: red">Incompleto</td>
+                                                @endif
+                                                
     
                                                 {{-- @if ($item->cod_tipo == 1)
                                                     <td class= 'text-center'>${{number_format($item->vivienda,2, ',', '.')}}</td>
