@@ -31,9 +31,12 @@ function nuevoCrono(){
                     },
                 success: function (response) {
                     let totalAv = parseFloat(response) + parseFloat(avance);
-                    console.log(response);
-                    console.log(totalAv);
-                    if(totalAv <= inc){
+                    let dife = totalAv - inc;
+                    // console.log(response);
+                    // console.log(totalAv);
+
+                    // console.log(dife.toFixed(4) < 0.0010);
+                    if(totalAv <= inc || dife.toFixed(4) < 0.0010){
                         $.when($.ajax({
                             type: "post",
                             url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/nuevo',
@@ -81,7 +84,7 @@ function mostrarAcumulado(){
         item: item,
         },
     success: function (response) {
-        console.log(response);
+        // console.log(response);
         acu.value = response[0].avaTotal;
         incI.value = response[0].por_inc;
         incIP.value = response[0].avaTotalPor;
@@ -230,7 +233,7 @@ $(document).ready(function pintarTabla() {
 
     $('#example').on( 'click', '.borrar', function () {
         let idcrono = $(this).val();
-        console.log(idcrono);
+        // console.log(idcrono);
         $.when($.ajax({
             type: "delete",
             url: '/ofecrono/'+idcrono,
