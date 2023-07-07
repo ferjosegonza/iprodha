@@ -94,7 +94,7 @@
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-12 col-md-5">
                                                                         @can('VER-CRONOGRAMAOBRA')
-                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.edit',base64url_encode($unaOferta->idobra)],'style' => '']) !!}
+                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.porc',base64url_encode($unaOferta->idobra)],'style' => '']) !!}
                                                                             {!! Form::submit('Cronograma', ['class' => 'btn btn-primary']) !!}
                                                                         {!! Form::close() !!}                                  
                                                                         @endcan

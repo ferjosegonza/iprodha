@@ -10,7 +10,7 @@
         <div class="section-header" >
             {{-- <h3 class="titulo">Cronograma para Obra n°: {{decrypt($id)}}</h3> --}}
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
-                <h3 class="titulo my-auto">Cronograma para Obra n°: </h3>    
+                <h3 class="titulo my-auto">Cronograma para Obra n°: {{$id}}</h3>    
             </div>
             <div class="col-lg-5 my-auto">
             </div>
@@ -48,7 +48,7 @@
                                                 <td class= 'text-center'>{{$item->orden}}</td>                                            
                                                 <td class= 'text-center'>{{$item->nom_item}}</td>                                            
                                                 <td class= 'text-center'>{{number_format($item->por_inc, 4, ',','.')}}</td>
-                                                <td class= 'text-center'>{{$item->avaitempor}} %</td>
+                                                <td class= 'text-center'>{{$item->avaitempor ?? 0}} %</td>
                                                 @if ($item->estado == 1)
                                                     <td class= 'text-center' style="color: green">Completo</td>
                                                 @else
