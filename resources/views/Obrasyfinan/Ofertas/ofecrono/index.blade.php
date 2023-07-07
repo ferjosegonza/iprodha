@@ -15,7 +15,7 @@
             <div class="col-lg-5 my-auto">
             </div>
             <div class="col-lg-2 my-auto">
-                {{-- <a href="{{ route('ofecrono.porc', base64url_decode($id)) }}" class="btn btn-primary my-1" Style="width: 80%">Cronograma %</a> --}}
+                <a href="{{ route('ofecrono.porc', base64url_decode($id)) }}" class="btn btn-primary my-1" Style="width: 80%">Cronograma %</a>
             </div> 
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])

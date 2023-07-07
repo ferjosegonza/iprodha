@@ -160,7 +160,7 @@
                         next: 'Sig.',
                     },
                 },
-                order: [[ 1, 'desc' ]],
+                 order: [[ 0, 'desc' ]],
             });
             });
     </script>

@@ -7,7 +7,7 @@
         </div>
         <div class="section-body">
             <div class="row">
-                {!! Form::open(['route' => 'ofeobra.store', 'method' => 'POST']) !!}
+                {!! Form::open(['route' => 'ofeobra.store', 'method' => 'POST', 'class' => 'form-prevent-multiple-submits']) !!}
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-11">
                     <div class="card">
@@ -200,7 +200,7 @@
                                     </div>
                                     <div class="p-1">
                                         @can('CREAR-OFEOBRA')
-                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success button-prevent-multiple-submits']) !!}
                                         @endcan
                                         {!! Form::close() !!}
                                     </div>
@@ -219,4 +219,11 @@
     </section>
     <script src="{{ asset('js/Obrasyfinan/Ofertas/crear_oferta.js') }}"></script>
     <script src="{{ asset('js/input-format-dinero.js') }}"></script>
+    <script src="{{ asset('js/prevent_multiple_submits.js') }}"></script>
+    <script>
+        function oneClick() {
+        // Disable the button
+            document.getElementById("btnGuardar").disabled = true;
+        }
+    </script>
 @endsection
