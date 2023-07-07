@@ -31,6 +31,7 @@ class Ofe_cronogramaController extends Controller
 
     public function indexPorc(Request $request, $id)
     {     
+        $id = base64url_decode($id);
         $losItems = DB::select('select orden, nom_item, por_inc, round((iprodha.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) AvaItemPor, CASE WHEN round((IPRODHA.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item where idobra = ? order by orden', [$id]);
         // $losItems = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
         // return $losItems;
