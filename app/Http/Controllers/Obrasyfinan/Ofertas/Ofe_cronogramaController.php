@@ -76,7 +76,7 @@ class Ofe_cronogramaController extends Controller
 
     public function losItems($obra, $mes)
     {
-        $items = Vw_ofe_cronograma::where('idobra', '=', $obra)->where('mes', '=', $mes)->get();
+        $items = Vw_ofe_cronograma::where('idobra', '=', $obra)->where('mes', '=', $mes)->orderBy('orden')->get();
         return $items;
     }
 
