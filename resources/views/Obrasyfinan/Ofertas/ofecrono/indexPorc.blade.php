@@ -225,6 +225,7 @@
                             <div class="table-responsive">
                                 <table id="example" class="table table-striped mt-2">
                                     <thead style="height:50px;">
+                                        <th style="color:#fff;">Orden</th>
                                         <th style="color:#fff;">Item</th>
                                         <th style="color:#fff;">Avance</th>
                                         <th style="color:#fff;">Av. Acu</th>
@@ -235,7 +236,7 @@
                                         <th style="color:#fff;">Acciones</th>
                                     </thead>
                                     <tfoot align="right" style='background-color: #ff910033;'>
-                                        <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+                                        <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
                                     </tfoot>
                                     <tbody>
                                         
