@@ -147,7 +147,7 @@ class ofe_obraController extends Controller
         $unaOferta = Ofe_obra::find(base64url_decode($idobra));
         // $Localidad= Localidad::pluck('nom_loc','id_loc');
         $Localidad= Localidad::orderBy('nom_loc')->get();
-
+        $TipoSituacion = Ob_situacion::pluck('descripcion', 'id_situacion');
         if(Auth::user()->hasRole('EMPRESA')){
             $Empresa = Empresa::where('iduserweb','=',Auth::user()->id)->get();
             $TipoContrato = Ofe_tipocontratoferta::where('idtipocontratofer', '=', $unaOferta->idtipocontratofer)->pluck('tipocontratofer','idtipocontratofer');
@@ -156,7 +156,7 @@ class ofe_obraController extends Controller
             $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
         }
             
-        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato'));
+        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato', 'TipoSituacion'));
     }
 
     public function show($idobra)
@@ -211,6 +211,7 @@ class ofe_obraController extends Controller
                 'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
                 'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
                 'montotope' => $montotope,
+                'id_situacion' => $request->input('idsituacion'),
             ]);
 
         }

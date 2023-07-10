@@ -92,6 +92,17 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
+                                        {!! Form::label('Situacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::select('idsituacion', $TipoSituacion, $unaOferta->id_situacion, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required', $editaTodo
+                                        ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
                                         {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::date('publica', $unaOferta->publica, [
