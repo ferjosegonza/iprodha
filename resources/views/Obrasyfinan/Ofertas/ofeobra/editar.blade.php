@@ -42,7 +42,7 @@
                                     <div class="form-group">
                                         {!! Form::label('Localidad:', null, ['class' => 'control-label']) !!}
                                         <span class="obligatorio">*</span>
-                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
+                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required {{$editaTodo}}>
                                             @foreach ($Localidad as $unaLocalidad)
                                                 @if ($unaLocalidad->id_loc == $unaOferta->idloc)
                                                     <option value="{{$unaLocalidad->id_loc}}" selected>{{$unaLocalidad->nom_loc}}</option>
