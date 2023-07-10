@@ -346,3 +346,41 @@ function formatCurrency(input, blur) {
   caret_pos = updated_len - original_len + caret_pos;
   input[0].setSelectionRange(caret_pos, caret_pos);
 }
+
+
+$("input[data-type='porc']").on({
+    keyup: function() {
+        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        formatPorc($(this));
+    },
+    blur: function() { 
+        formatPorc($(this), "blur");
+    }
+});
+
+function formatPorc(input, blur) {
+    // get input value
+    var input_val = input.val();
+    var original_len = input_val.length;
+    // console.log(original_len);
+    // don't validate empty input
+    if (input_val === ""){ 
+        return;
+    }
+    
+
+    if (input_val === "0"){ 
+        input_val = input_val.replace(/[0-]/g,'');
+    }
+
+    if(input_val > 100){
+        input_val = input_val.substring(0, original_len-1);
+    }
+
+    input_val = input_val.replace(/[,.]/g,'');
+    // console.log(input_val);
+    // console.log(input_val);
+
+    // send updated string to input
+    input.val(input_val);
+}

@@ -124,7 +124,8 @@
                                     <div class="form-group">
                                         <label for="formFile" class="form-label fs-6">Avance: </label>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="00" type="text" name="avance" id='avance' pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="avance">
+                                            {{-- <input class="form-control" type="text" name="balloons" min="1" max="100" data-type="porc" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" name="avance" id='avance'>  --}}
+                                            <input type="text" class="form-control" placeholder="00" type="text" name="avance" id='avance' pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="porc">
                                             <span class="input-group-text" id="basic-addon2">%</span>
                                         </div>
                                     </div>
