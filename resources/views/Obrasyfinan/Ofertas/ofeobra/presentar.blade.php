@@ -6,10 +6,12 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <section class="section">
     <div class="section-header">
-        <div class="titulo page__heading" style="padding:10px">
-            Presentar obra
+        <div class="titulo page__heading fs-5" style="padding:10px">
+            <strong>
+                Presentar obra
+            </strong>
         </div>       
-        <div class="dropdown" style="float:right;">
+        {{-- <div class="dropdown" style="float:right;">
             <button class="dropbtn">
                 <i class="fas fa-print" style="color: #ffffff;"></i>
             </button>
@@ -18,7 +20,7 @@
                 <a href={{route('ofeobra.pdf2', $data->idobra)}} target="_blank">Informacion de obra y sombrero</a>
                 <a href={{route('ofeobra.pdf1', $data->idobra)}} target="_blank">Items y cronograma</a>
             </div>
-        </div>
+        </div> --}}
     </div>    
     <div class="section-body">
         <div class="row">
