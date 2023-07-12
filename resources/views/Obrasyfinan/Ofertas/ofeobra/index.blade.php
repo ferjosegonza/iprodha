@@ -115,7 +115,7 @@
                                                                 
                                                                 @if ($unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado == 2)
                                                                     <div class="col-12 m-0 p-0 pe-1">
-                                                                        @can('BORRAR-OFEOBRA')
+                                                                        @can('VALIDAR-OFEOBRA')
                                                                             {!! Form::open(['method' => 'GET', 'class' => 'validacion', 'route' => ['ofeobra.vervalidar',base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                                                                 {!! Form::submit('Validar', ['class' => 'btn btn-success', 'style' => 'width: 79%']) !!}
                                                                             {!! Form::close() !!}                                 

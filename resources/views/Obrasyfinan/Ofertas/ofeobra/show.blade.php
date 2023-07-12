@@ -469,6 +469,7 @@
                             TOTAL:
                             <strong>
                                 $ {{number_format($totalDef, 2, ',', '.')}}
+                                {{-- $ {{$totalDef}} --}}
                             </strong>
                         </p>                       
                        </div>
