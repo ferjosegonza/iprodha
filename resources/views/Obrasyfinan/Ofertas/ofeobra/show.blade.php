@@ -285,7 +285,7 @@
                                         </strong>
                                     </td>
                                 </tr>
-                                {{$data->tot1inf}}
+                                
                                 @php
                                     $flete = $sombreros->where('idconceptosombrero', '=', 10)->first()->valor ?? 0;
                                     $somfleteviv = $data->tot1viv * ($flete/100);
