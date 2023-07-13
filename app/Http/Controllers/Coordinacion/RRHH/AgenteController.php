@@ -23,7 +23,7 @@ class AgenteController extends Controller
 
     public function historial(Request $request){
         $id = $request->id;
-        $historial = Historial::where('idagente', '=', $id)->join('PERSONAL.HISTORIAL_ARCHIVO', 'PERSONAL.HISTORIAL_ARCHIVO.idhistorial','PERSONAL.HISTORIAL.idhistorial')->orderBy('fecha')->get();
+        $historial = Historial::where('idagente', '=', $id)->leftJoin('PERSONAL.HISTORIAL_ARCHIVO', 'PERSONAL.HISTORIAL_ARCHIVO.idhistorial','PERSONAL.HISTORIAL.idhistorial')->orderBy('fecha')->get();
         return response()->json($historial);
     }
 }

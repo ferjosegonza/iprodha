@@ -198,14 +198,20 @@ $(document).ready(function () {
             }
             for(let i=0; i<res.length; i++){
                 tr = document.createElement('tr')
-                let str
+                let str, str2
                 if(res[i].observacion==null){
                     str='-'
                 }
                 else{
                     str=res[i].observacion
                 }
-                tr.innerHTML = '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+res[i].idarchivo+'</td>'+'<td>'+str+'</td>'
+                if(res[i].idarchivo==null){
+                    str2='-'
+                }
+                else{
+                    str2=res[i].idarchivo
+                }
+                tr.innerHTML = '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td>'
                 info.appendChild(tr)
             }
         },
