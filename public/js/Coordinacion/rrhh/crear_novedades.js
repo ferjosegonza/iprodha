@@ -271,7 +271,7 @@ function openPreview(id, path, nombre){
     console.log(nombre)
     document.getElementById('elegirArchivo').classList.remove('col-lg-12')
     document.getElementById('elegirArchivo').classList.add('col-lg-6')
-    document.getElementById('pdfembed').setAttribute('src', path+nombre)
+    document.getElementById('pdfembed').setAttribute('src', path.slice(14)+nombre)
     document.getElementById('title-preview').innerHTML = nombre
     document.getElementById('previewpdf').removeAttribute('hidden')
     document.getElementById('btn-preview').setAttribute('onclick', 'guardarAvalatorio("' + id + '", "' + nombre +'")')
