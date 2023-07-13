@@ -120,22 +120,6 @@ function year(){
     
 }
 
-function filtrar(){
-    if(document.getElementById('busq').value == ""){
-        // $( "#archivos" ).DataTable().ajax.reload()
-        var table = $('#archivos').DataTable()
-        table
-        .columns( '.asun' ).search("").draw();
-     }
-     else{
-         var asunto = document.getElementById('busq').value; 
-         console.log(asunto);
-         var table = $('#archivos').DataTable()
-         table
-             .columns( '.asun' ).search(asunto).draw();
-     }
-}
-
 function subtipos(){
     if(document.getElementById('subtipo').value == 'sel'){
         var table = $('#archivos').DataTable()
@@ -460,7 +444,7 @@ $(document).ready(function () {
         table.columns( '.nro' ).search(data[4]).draw();
         table.columns( '.fecha' ).search(data[3]).draw();
         table.columns( '.orden' ).search(data[7]).draw();
-        table.columns( '.asun' ).search(data[5].replaceAll('&lt;','<').replaceAll('&gt;','>')).draw();
+        //table.columns( '.asun' ).search(data[5].replaceAll('&lt;','<').replaceAll('&gt;','>')).draw();
 
         document.getElementById('preview').hidden = false
         document.getElementById('pdfver').setAttribute('data', data[6])
@@ -604,13 +588,13 @@ function cancelarbusqueda(){
         console.log(year)
         table.columns( '.fecha' ).search(year).draw();
     }  
-    if(document.getElementById('busq').value == ""){
+    /* if(document.getElementById('busq').value == ""){
         table.columns( '.asun' ).search("").draw();
     }
     else{
         let asun = document.getElementById('busq').value; 
         table.columns( '.asun' ).search(asun).draw();
-    }   
+    }    */
     document.getElementById('preview').hidden = true
 }
 
