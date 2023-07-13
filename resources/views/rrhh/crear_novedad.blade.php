@@ -15,6 +15,7 @@
                     @include('layouts.modal.mensajes')
                     <div class="card col-sm-12">
                         <div class="card-body"> 
+                            <div hidden id="id">{{$agente->idagente}}</div>
                             Modificando el historial del agente {{$agente->apellido}}, {{$agente->nombre}}. Número de Documento: {{$agente->nrodoc}}
                             <hr>
                             <h5>Historial Actual</h5>
@@ -65,7 +66,7 @@
                                 </div>
                                 
                                 <br>
-                                <input type="radio" class="btn-check" id="btnguardar" name="options" onclick="guardar()">
+                                <input type="radio" class="btn-check" id="btnguardar" name="options" onclick="guardar()" disabled>
                                 <label for="btnguardar" class="btn btn-success">Guardar instancia</label>
                                 <input type= "radio" class="btn-check" id="btndoc" onclick="documento()" name="options">
                                 <label for="btndoc" class="btn btn-primary">Agregar documento avalador</label>
