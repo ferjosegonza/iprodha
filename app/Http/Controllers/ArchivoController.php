@@ -102,7 +102,7 @@ public function buscar(Request $request){
         $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
     }    
     if($tag != null and $info != null){
-        $query = $query . " AND claves_archivo LIKE '%<$tag[1]:$info>%'";
+        $query = $query . " AND claves_archivo LIKE '%<$tag[1]:$info%>%'";
     }
     //ordenamos
     $query = $query . " order by nombre_corto asc, ano_archivo desc, mes_archivo desc, dia_archivo desc";
@@ -268,8 +268,7 @@ public function busquedaDirigida(Request $request){
     return response()->json($datos);
 }
 
-public function crear(Request $request){
-    //return $request;
+public function crear(Request $request){   
     //
     $fecha = explode("-", $request->fecha);
     $subtipo = explode("|", $request->subtipo);
@@ -293,10 +292,10 @@ public function crear(Request $request){
     $archivo->path_archivo = $ruta;
 
     //guardar los archivos
-    if($request->hasFile('pdf')){
+    if($request->pdf == 'on'){
         $fileName = $request->pdfname;
-        $ruta = substr($path->path_archivo, 14);
-        $request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
+        //$ruta = substr($path->path_archivo, 14);
+        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
     }   
     else{
         $fileName = 'No se ha cargado un archivo';
@@ -377,6 +376,13 @@ public function derivados(Request $request){
 
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
+}
+
+public function buscarArchivosRRHH(Request $request){
+    $archivos = Dig_archivos::where('id_tipoarchivo','=',$request->tipo)
+    ->where('id_subtipoarchivo', '=', $request->subtipo)
+    ->where('nro_archivo', '=', $request->nro)->get();
+    return response()->json($archivos);
 }
 }
 
