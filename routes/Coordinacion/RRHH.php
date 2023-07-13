@@ -11,4 +11,5 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|RRHH']], functio
     Route::get('agente/buscar', [AgenteController::class, 'buscar'])->name('agente.buscar');
     Route::get('agente/historial', [AgenteController::class, 'historial'])->name('agente.historial');
     Route::get('{id}/crear_novedad', [NovedadesController::class, 'crear_novedad'])->name('agente.crear_novedad');
+    Route::post('agente/guardarNovedad', [NovedadesController::class, 'guardarNovedad'])->name('agente.crearNovedad');
 });

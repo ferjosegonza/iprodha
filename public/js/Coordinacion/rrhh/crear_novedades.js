@@ -3,11 +3,6 @@ function tipos(){
         document.getElementById('subtipo').hidden = true;
         document.getElementById('placeholder').hidden = false;        
         document.getElementById('subtipo').value = "sel"
-        let table = $('#archivos').DataTable()
-        table
-        .columns( '.tipo' ).search("").draw()
-        .columns( '.sub' ).search("").draw();
-
     }  
     else{
         let tipo = document.getElementById('tipo').value;
@@ -38,10 +33,6 @@ function tipos(){
         
         console.log(tipoId);
         console.log(tipoNombre);
-        let table = $('#archivos').DataTable()
-        table
-        .columns( '.tipo' ).search(tipoNombre).draw()
-        .columns( '.sub' ).search("").draw();
         
         let subtipo = document.getElementById('subtipo')
         let subtid
@@ -90,9 +81,6 @@ function tipos(){
 
 function subtipos(){
     if(document.getElementById('subtipo').value == 'sel'){
-        var table = $('#archivos').DataTable()
-        table
-        .columns( '.sub' ).search("").draw();
     }
     else{
     var subtipo = document.getElementById('subtipo').value; 
@@ -133,14 +121,6 @@ function subtipos(){
                 }}  
         }
     var table = $('#archivos').DataTable()
-    if(subtipoNombre != 'sel'){
-        table
-        .columns( '.sub' ).search(subtipoNombre).draw();
-    }
-    else{
-        table
-        .columns( '.sub' ).search("").draw();
-    }
     }
 }
 
@@ -232,6 +212,7 @@ function buscarArchivos(){
                     tr=document.createElement('tr')                    
                     tr.innerHTML = '<td>'+res[i].nro_archivo+'</td><td>'+res[i].nombre_archivo+'</td><td>'+res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')+'</td>'
                     tr.setAttribute('onclick', 'openPreview("'+ res[i].id_archivo + '", "' + res[i].path_archivo.replaceAll('\\','\\\\') + ' ", "' + res[i].nombre_archivo + '")')
+                    tr.className= 'hoverable'
                     info.appendChild(tr)
                 }
             }
@@ -280,6 +261,65 @@ function openPreview(id, path, nombre){
 function guardarAvalatorio(id, nombre){
     document.getElementById('docsasociados').removeAttribute('hidden')
     let tr = document.createElement('tr')
+    tr.className= 'hoverable'
     tr.innerHTML = '<td>' + nombre +'</td><td><i class="fas fa-trash-alt" style="color: #ff0000;"></i></td><td hidden>' + id +'</td>'
     document.getElementById('infoasociados').appendChild(tr)
+
+}
+
+window.addEventListener("DOMContentLoaded", (event) => {
+    let fecha = document.getElementById('fecha')
+    let detalle = document.getElementById('detalle')
+    let btnGuardar = document.getElementById('btnguardar')
+
+    const verificarGuardar = () => {
+        if(detalle.value != '' && fecha.value != ''){
+            btnGuardar.removeAttribute('disabled')
+        }
+        else{
+            btnGuardar.setAttribute('disabled','disabled')
+        }
+    }
+
+    detalle.addEventListener('keyup', verificarGuardar)
+    fecha.addEventListener('change', verificarGuardar)
+});
+
+function guardar(){
+    let fecha = document.getElementById('fecha').value
+    let detalle = document.getElementById('detalle').value
+    let observacion = document.getElementById('observacion').value
+    let id = document.getElementById('id').innerHTML
+    let avalatorios = []
+    let table = document.getElementById('docsasociados')
+    for (let i = 1, row; row = table.rows[i]; i++) {
+        avalatorios[i-1]= row.children.item(2).innerHTML
+    }
+
+
+   $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: window.location.origin + '/agente/guardarNovedad',
+        type: 'POST',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            fecha: fecha,
+            detalle: detalle,
+            observacion: observacion,
+            id: id,
+            avalatorios: avalatorios
+          
+        }),
+        dataType: 'json',
+        success: function(res) {          
+           console.log(res)
+        },
+        error: function(res){
+            console.log(res)
+        }}); 
 }
