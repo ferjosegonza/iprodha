@@ -69,10 +69,21 @@ function mostrarHistorial(id){
         dataType: 'json',
         success: function(res) {          
             console.log(res)
-            document.getElementById('info-historial')
+            let info = document.getElementById('info-historial')
+            while(info.hasChildNodes()){
+                info.removeChild(info.lastChild)
+            }
             for(let i=0; i<res.length; i++){
                 tr = document.createElement('tr')
-                tr.innerHTML = '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+res[i].idarchivo+'</td>'+'<td>'+res[i].observacion+'</td>'
+                let str
+                if(res[i].observacion==null){
+                    str='-'
+                }
+                else{
+                    str=res[i].observacion
+                }
+                tr.innerHTML = '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+res[i].idarchivo+'</td>'+'<td>'+str+'</td>'
+                info.appendChild(tr)
             }
         },
         error: function(res){
