@@ -1,0 +1,16 @@
+#dni{
+    width: 20%;
+    display: inline;
+}
+#buscar{
+    margin-left: 2%;
+}
+#resultados{
+    margin-top: 5%;
+}
+table#historial {
+    width: 100%;
+}
+#btndoc{
+    margin: 10px;
+}
