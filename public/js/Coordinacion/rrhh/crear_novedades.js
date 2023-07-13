@@ -174,6 +174,44 @@ $(document).ready(function () {
         },
         order: [[ 1, 'asc' ]]
     });
+
+    let id=document.getElementById('id').innerHTML
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: window.location.origin + '/agente/historial',
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id:id
+        }),
+        dataType: 'json',
+        success: function(res) {          
+            console.log(res)
+            let info = document.getElementById('info-historial')
+            while(info.hasChildNodes()){
+                info.removeChild(info.lastChild)
+            }
+            for(let i=0; i<res.length; i++){
+                tr = document.createElement('tr')
+                let str
+                if(res[i].observacion==null){
+                    str='-'
+                }
+                else{
+                    str=res[i].observacion
+                }
+                tr.innerHTML = '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+res[i].idarchivo+'</td>'+'<td>'+str+'</td>'
+                info.appendChild(tr)
+            }
+        },
+        error: function(res){
+            console.log(res)
+        }});
 });
 
 function buscarArchivos(){
