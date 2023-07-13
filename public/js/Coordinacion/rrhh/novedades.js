@@ -107,3 +107,4 @@ function redirect(){
     id = document.getElementById('id').innerHTML
     location.href = '/'+ id + "/crear_novedad";
 }
+

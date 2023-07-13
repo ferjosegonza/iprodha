@@ -42,11 +42,11 @@
                                         <th>Archivo</th>
                                         <th>Observacion</th>
                                     </thead>
-                                        <tbody id='info-historial'>
+                                    <tbody id='info-historial'>
 
-                                        </tbody>
+                                    </tbody>
                                 </table>             
-                                <button class="btn btn-primary" onclick="redirect()">Crear nueva instancia del historial</button>        
+                                <button class="btn btn-primary" onclick="redirect()">Crear o modificar el historial</button>        
                                                       
                            </div>
                         </div>

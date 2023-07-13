@@ -377,5 +377,12 @@ public function derivados(Request $request){
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
 }
+
+public function buscarArchivosRRHH(Request $request){
+    $archivos = Dig_archivos::where('id_tipoarchivo','=',$request->tipo)
+    ->where('id_subtipoarchivo', '=', $request->subtipo)
+    ->where('nro_archivo', '=', $request->nro)->get();
+    return response()->json($archivos);
+}
 }
 
