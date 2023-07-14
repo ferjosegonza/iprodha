@@ -8,9 +8,16 @@ use Illuminate\Database\Eloquent\Builder;
 class Historial_Archivo extends Model{
     use HasFactory;
     public $timestamps=false;        
+    public $incrementing=false;
     protected $table='PERSONAL.HISTORIAL_ARCHIVO';
-    protected $primaryKey='idhistorial';
+    protected $primaryKey=['idhistorial', 'idarchivo'];
     protected $fillable=[ 
-        'idarchivo'
+        'idhistorial','idarchivo'
     ];        
+    protected function setKeysForSaveQuery($query){
+        $query
+        ->where('idhistorial','=',$this->getAttribute('idhistorial'))
+        ->where('idarchivo','=',$this->getAttribute('idarchivo'));
+        return $query;
+    }
 }
