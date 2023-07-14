@@ -7,7 +7,7 @@
         </div>
         <div class="section-body">
             <div class="row">
-                {!! Form::open(['route' => ['obravivienda.guardarnuevaviv', $obra->id_obr], 'method' => 'POST']) !!}
+                {!! Form::open(['route' => ['obravivienda.updateviv', $vivienda->id_viv, $obra->id_obr], 'method' => 'GET']) !!}
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-12 col-md-12" id="carga-individual">
                     <div class="card">
@@ -220,7 +220,7 @@
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">
-                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.etapas', $obra->id_obr], 'style' => '']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas', $obra->id_obr], 'style' => '']) !!}
                                         {!! Form::submit('Volver', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>
