@@ -130,6 +130,10 @@ function documento(){
 
 function mostrarCrear(){
     document.getElementById('crear').removeAttribute('hidden')
+    document.getElementById('btncrear').removeAttribute('hidden')
+    document.getElementById('lbl-guardar').removeAttribute('hidden')
+    document.getElementById('btnmodificar').setAttribute('hidden','hidden')
+    document.getElementById('lbl-modificar').setAttribute('hidden','hidden')
 }
 
 $(document).ready(function () {
@@ -141,7 +145,7 @@ $(document).ready(function () {
             lengthMenu: 'Mostrando _MENU_ registros',
             zeroRecords: 'No se han encontrado registros',
             info: 'Pág _PAGE_ de _PAGES_',
-            infoEmpty: 'No se han encontrado registros',
+            infoEmpty: '',
             infoFiltered: '(De _MAX_ registros totales)',
             search: 'Buscar',
             paginate:{
@@ -162,7 +166,7 @@ $(document).ready(function () {
             lengthMenu: 'Mostrando _MENU_ registros',
             zeroRecords: 'No se han encontrado registros',
             info: 'Pág _PAGE_ de _PAGES_',
-            infoEmpty: 'No se han encontrado registros',
+            infoEmpty: '',
             infoFiltered: '(De _MAX_ registros totales)',
             search: 'Buscar',
             paginate:{
@@ -175,6 +179,10 @@ $(document).ready(function () {
         order: [[ 1, 'asc' ]]
     });
 
+    cargarHistorial()
+});
+
+function cargarHistorial(){
     let id=document.getElementById('id').innerHTML
     $.ajaxSetup({
         headers: {
@@ -209,16 +217,22 @@ $(document).ready(function () {
                     str2='-'
                 }
                 else{
-                    str2=res[i].idarchivo
+                    str2=res[i].tipo 
+                    if(res[i].subtipo != null){
+                        str2 = str2+ '-' + res[i].subtipo
+                    }
+                    if(res[i].nro_archivo != null){
+                        str2 = str2+ '-' + res[i].nro_archivo
+                    }
                 }
-                tr.innerHTML = '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td>'
+                tr.innerHTML = '<td>'+res[i].fecha.slice(0, 10)+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td><td><button class="btn" onclick="abrirEditar(\'' + res[i].idhistorial + '\',\'' + res[i].fecha + '\',\'' + res[i].detalle + '\',\''+ res[i].observacion +'\' )"><i class="fas fa-edit" style="color: #ff5900;"></i></button></td>'
                 info.appendChild(tr)
             }
         },
         error: function(res){
             console.log(res)
         }});
-});
+}
 
 function buscarArchivos(){
     let tipo= document.getElementById('tipo').value
@@ -254,8 +268,8 @@ function buscarArchivos(){
                 }
                 for(let i=0; i<res.length; i++){
                     tr=document.createElement('tr')                    
-                    tr.innerHTML = '<td>'+res[i].nro_archivo+'</td><td>'+res[i].nombre_archivo+'</td><td>'+res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')+'</td>'
-                    tr.setAttribute('onclick', 'openPreview("'+ res[i].id_archivo + '", "' + res[i].path_archivo.replaceAll('\\','\\\\') + ' ", "' + res[i].nombre_archivo + '")')
+                    tr.innerHTML = '<td>'+res[i].tipo + '-' + res[i].subtipo + '-' + res[i].nro_archivo + '</td><td>'+res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')+'</td>'
+                    tr.setAttribute('onclick', 'openPreview("'+ res[i].id_archivo + '", "' + res[i].path_archivo.replaceAll('\\','\\\\') + ' ", "' + res[i].nombre_archivo + '", "' + res[i].tipo +  '", "' + res[i].subtipo + '", "' + res[i].nro_archivo +'")')
                     tr.className= 'hoverable'
                     info.appendChild(tr)
                 }
@@ -291,30 +305,34 @@ function getSubtipoId(){
     return subtid;
 }
 
-function openPreview(id, path, nombre){
+function openPreview(id, path, nombre, tipo, subtipo, nro){
     console.log(path)
     console.log(nombre)
     document.getElementById('elegirArchivo').classList.remove('col-lg-12')
     document.getElementById('elegirArchivo').classList.add('col-lg-6')
     document.getElementById('pdfembed').setAttribute('src', path.slice(14)+nombre)
-    document.getElementById('title-preview').innerHTML = nombre
+    let str = tipo + '-' + subtipo + '-' + nro
+    document.getElementById('title-preview').innerHTML = str
     document.getElementById('previewpdf').removeAttribute('hidden')
-    document.getElementById('btn-preview').setAttribute('onclick', 'guardarAvalatorio("' + id + '", "' + nombre +'")')
+    document.getElementById('btn-preview').setAttribute('onclick', 'guardarAvalatorio("' + id + '", "' + str +'")')
 }
 
 function guardarAvalatorio(id, nombre){
     document.getElementById('docsasociados').removeAttribute('hidden')
+    let table = document.getElementById('infoasociados')
     let tr = document.createElement('tr')
     tr.className= 'hoverable'
-    tr.innerHTML = '<td>' + nombre +'</td><td><i class="fas fa-trash-alt" style="color: #ff0000;"></i></td><td hidden>' + id +'</td>'
-    document.getElementById('infoasociados').appendChild(tr)
-
+    i= table.children.length
+    tr.innerHTML = '<td>' + nombre +'</td><td><button class="btn" onclick="deleteAsociado('+i+')"><i class="fas fa-trash-alt" style="color: #ff0000;"></i></button></td><td hidden>' + id +'</td>'
+    table.appendChild(tr)
+    ocultarDocumentos()
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
     let fecha = document.getElementById('fecha')
     let detalle = document.getElementById('detalle')
     let btnGuardar = document.getElementById('btnguardar')
+    let btnModificar = document.getElementById('btnmodificar')
 
     const verificarGuardar = () => {
         if(detalle.value != '' && fecha.value != ''){
@@ -323,10 +341,21 @@ window.addEventListener("DOMContentLoaded", (event) => {
         else{
             btnGuardar.setAttribute('disabled','disabled')
         }
+    }    
+
+    const verificarModificar = () => {
+        if(detalle.value != '' && fecha.value != ''){
+            btnModificar.removeAttribute('disabled')
+        }
+        else{
+            btnModificar.setAttribute('disabled','disabled')
+        }
     }
 
-    detalle.addEventListener('keyup', verificarGuardar)
+    detalle.addEventListener('input', verificarGuardar)
     fecha.addEventListener('change', verificarGuardar)
+    detalle.addEventListener('input', verificarModificar)
+    fecha.addEventListener('change', verificarModificar)
 });
 
 function guardar(){
@@ -362,8 +391,162 @@ function guardar(){
         dataType: 'json',
         success: function(res) {          
            console.log(res)
+           let popEl = document.getElementById('popup')
+           document.getElementById('popTitulo').innerHTML = 'Éxito'
+           document.getElementById('popBody').innerHTML = '<p>Se ha guardado correctamente.</p>'
+           let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+            pop.show()
+            cargarHistorial()
         },
         error: function(res){
             console.log(res)
+            let popEl = document.getElementById('popup')
+            document.getElementById('popTitulo').innerHTML = 'Error'
+            document.getElementById('popBody').innerHTML = '<p>No se ha podido guardar.</p>'
+            let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+            pop.show()
+            cargarHistorial()
+        }}); 
+}
+
+function abrirEditar(id, fecha, detalle, observacion){
+    document.getElementById('idhistorial').innerHTML=id;
+    document.getElementById('btncrear').setAttribute('hidden','hidden')
+    document.getElementById('crear').removeAttribute('hidden')
+    document.getElementById('btnguardar').setAttribute('hidden','hidden')
+    document.getElementById('lbl-guardar').setAttribute('hidden','hidden')
+    document.getElementById('btnmodificar').removeAttribute('hidden')
+    document.getElementById('lbl-modificar').removeAttribute('hidden')
+    document.getElementById('fecha').value = fecha.slice(0, 10)
+    if(detalle!= 'null'){
+       document.getElementById('detalle').value = detalle 
+    }
+    else{
+        document.getElementById('detalle').value = ''
+    }
+    if(observacion != 'null'){
+        document.getElementById('observacion').value = observacion
+    }
+    else{
+        document.getElementById('observacion').value = ''
+    }
+    document.getElementById('btnguardar').removeAttribute('disabled')
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: window.location.origin + '/novedad/avalatorios',
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id: id          
+        }),
+        dataType: 'json',
+        success: function(res) {   
+            console.log(res)     
+            if(res.length>0){
+                document.getElementById('docsasociados').removeAttribute('hidden')
+                let info = document.getElementById('infoasociados')
+                for(let i=0; i<res.length; i++){
+                    tr = document.createElement('tr')
+                    tr.innerHTML = '<td>' + res[i].tipo + '-' + res[i].subtipo + '-' + res[i].nro_archivo +'</td><td><button class="btn" onclick="deleteAsociado('+i+')"><i class="fas fa-trash-alt" style="color: #ff0000;"></i></button></td><td hidden>' + res[i].idarchivo + '</td>'
+                    info.appendChild(tr)
+                }
+            }
+        },
+        error: function(res){
+            console.log(res)
+        }}); 
+
+    
+}
+
+function ocultarCrear(){
+    document.getElementById('btncrear').removeAttribute('hidden')
+    document.getElementById('fecha').value = null
+    document.getElementById('detalle').value = ''
+    document.getElementById('observacion').value = ''
+    let table = document.getElementById('infoasociados')
+    while(table.hasChildNodes()){
+        table.removeChild(table.lastChild)
+    }
+    ocultarDocumentos()
+    document.getElementById('crear').setAttribute('hidden', 'hidden')
+}
+
+function ocultarDocumentos(){
+    document.getElementById('subtipo').value = 'sel'
+    document.getElementById('tipo').value = 'sel'
+    document.getElementById('nro').value = ''
+    let table2= document.getElementById('infoarchivos')
+    while(table2.hasChildNodes()){
+        table2.removeChild(table2.lastChild)
+    }
+    document.getElementById('elegirArchivo').classList.remove('col-lg-6')
+    document.getElementById('elegirArchivo').classList.add('col-lg-12')
+    document.getElementById('previewpdf').setAttribute('hidden','hidden')
+    document.getElementById('elegirArchivo').setAttribute('hidden','hidden')    
+    document.getElementById('documento').setAttribute('hidden', 'hidden')
+}
+
+function deleteAsociado(i){
+    let table = document.getElementById('infoasociados')
+    table.removeChild(table.children[i])
+}
+
+function modificar(){  
+    let idhistorial = document.getElementById('idhistorial').innerHTML
+    let fecha = document.getElementById('fecha').value
+    let detalle = document.getElementById('detalle').value
+    let observacion = document.getElementById('observacion').value
+    let idagente = document.getElementById('id').innerHTML
+    let avalatorios = []
+    let table = document.getElementById('docsasociados')
+    for (let i = 1, row; row = table.rows[i]; i++) {
+        avalatorios[i-1]= row.children.item(2).innerHTML
+    }
+
+
+   $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: window.location.origin + '/agente/modificarNovedad',
+        type: 'PUT',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            fecha: fecha,
+            detalle: detalle,
+            observacion: observacion,
+            idagente: idagente,
+            idhistorial: idhistorial,
+            avalatorios: avalatorios
+          
+        }),
+        dataType: 'json',
+        success: function(res) {          
+           console.log(res)
+           let popEl = document.getElementById('popup')
+           document.getElementById('popTitulo').innerHTML = 'Éxito'
+           document.getElementById('popBody').innerHTML = '<p>Se ha modificado correctamente.</p>'
+           let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+            pop.show()
+            cargarHistorial()
+        },
+        error: function(res){
+            console.log(res)
+            let popEl = document.getElementById('popup')
+            document.getElementById('popTitulo').innerHTML = 'Error'
+            document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar.</p>'
+            let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+            pop.show()
+            cargarHistorial()
         }}); 
 }
