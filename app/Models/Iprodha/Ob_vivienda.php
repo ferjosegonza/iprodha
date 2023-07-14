@@ -60,4 +60,9 @@
         {
             return $this->belongsTo(Ob_entrega::class,'id_ent','id_ent');
         }
+
+        protected $casts = [
+            'sup_lot' => 'decimal:2',
+            'sup_fin' => 'decimal:2',
+        ];
     }

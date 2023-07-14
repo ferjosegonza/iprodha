@@ -95,7 +95,20 @@
                     <div class="card">
                         <div class="card-head">
                             <br>
-                            <div class="text-center"><h5>Viviendas</h5></div>                        
+                            <div class="row m-auto">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 text-center">
+                                    <h5 class="text-center">Viviendas</h5>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
+                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.nuevavivalt', $obra->id_obr], 'style' => '']) !!}
+                                    {!! Form::submit('Crear', ['class' => 'btn btn-success w-100']) !!}
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                            {{-- <br>
+                            <div class="text-center"><h5>Viviendas</h5></div>                         --}}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -117,6 +130,7 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Piso</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Dpto</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Acciones</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($viviendasTabla as $vivienda)
@@ -140,6 +154,13 @@
                                                 <td class= 'text-center' >{{$vivienda->piso}}</td>
                                                 <td class= 'text-center' >{{$vivienda->departamento}}</td>
                                                 <td class= 'text-center' >{{$vivienda->escalera}}</td>
+                                                <td class= 'text-center' >
+                                                    @can('EDITAR-OBRAVIVIENDA')
+                                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.editarviv', $vivienda->id_viv, $obra->id_obr], 'style' => 'display:inline']) !!}
+                                                        {!! Form::submit('Editar', ['class' => 'btn btn-primary mb-2 w-100']) !!}
+                                                        {!! Form::close() !!}
+                                                    @endcan
+                                                </td>
                                             </tr>
                                         @endforeach
                                         {{-- @foreach ($obra->getEtapas as $etapa)

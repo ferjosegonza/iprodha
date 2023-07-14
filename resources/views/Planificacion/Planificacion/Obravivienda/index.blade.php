@@ -22,7 +22,7 @@
                                     <div class="row justify-content-evenly align-items-evenly">
                                         <form method="GET" action="{{route('obravivienda.index')}}">
                                             <div class="input-group mb-3">
-                                                <input name="name" type="text" class="form-control" placeholder="Buscar Obra por [Numero o Nombre]" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                <input name="name" type="text" class="form-control" placeholder="Buscar Obra por [Numero, Nombre o Expediente]" aria-label="Recipient's username" aria-describedby="button-addon2">
                                                 <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                                             </div>
                                         </form>
@@ -59,6 +59,7 @@
                                     <thead style="height:50px;">
                                         <th class='ml-3 text-center' style="color:#fff; width:5%;">Numero</th>
                                         <th class='text-center' style="color:#fff; width:20%;">Obra</th>
+                                        <th class='text-center' style="color:#fff; width:20%;">Expendiente</th>
                                         <th class='text-center' style="color:#fff; width:20%;">Empresa</th>
                                         <th class='text-center' style="color:#fff; width:10%;">Localidad</th>
                                         <th class='text-center' style="color: #fff; width:5%;">Acciones</th>
@@ -68,7 +69,9 @@
                                             <tr>
                                                 <td class='text-center' style="vertical-align: middle;">{{$obra->num_obr}}</td>
 
-                                                <td style="vertical-align: middle;">{{$obra->nom_obr}}</td>
+                                                <td class='text-center' style="vertical-align: middle;">{{$obra->nom_obr}}</td>
+
+                                                <td class='text-center' style="vertical-align: middle;">{{$obra->expedte}}</td>
 
                                                 <td class='text-center' style="vertical-align: middle;">{{$obra->getEmpresa->nom_emp}}</td>
                                                 

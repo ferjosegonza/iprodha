@@ -225,7 +225,7 @@
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">
-                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.etapas', $obra->id_obr], 'style' => '']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas', $obra->id_obr], 'style' => '']) !!}
                                         {!! Form::submit('Volver', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>

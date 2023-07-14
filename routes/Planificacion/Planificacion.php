@@ -12,6 +12,10 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAVIVIENDA
     Route::post('/obravivienda/viviendasdelaetapa/{id}', [ObraviviendaController::class, 'todasLasViviendasDeUnaEtapa']);
     //-----
     Route::get('/obravivienda/nueva-viv/{id}', [ObraviviendaController::class, 'verNuevaViv'])->name('obravivienda.nuevaviv');
+
+    Route::get('/obravivienda/nueva-viv-alt/{id}', [ObraviviendaController::class, 'verNuevaVivAlt'])->name('obravivienda.nuevavivalt');
+    Route::get('/obravivienda/editar-viv/{viv}/{obra}', [ObraviviendaController::class, 'editarViv'])->name('obravivienda.editarviv');
+
     Route::post('/obravivienda/guardar-nueva-viv/{id}', [ObraviviendaController::class, 'guardarNuevaViv'])->name('obravivienda.guardarnuevaviv');
     Route::post('/obravivienda/asignarviviendas/{id}/{ideta}', [ObraviviendaController::class, 'asignarViviendas'])->name('obravivienda.asignarviviendas');
     Route::post('/obra/vivienda/{id}', [ObraviviendaController::class, 'viviendaDeObra']);

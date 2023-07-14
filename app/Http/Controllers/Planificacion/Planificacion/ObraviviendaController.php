@@ -46,7 +46,19 @@ class ObraviviendaController extends Controller
         $obras = [];
 
         if(isset($name)){
-            $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')->orWhere('nom_obr', 'like', '%' . strtoupper($name) . '%')->orderBy('num_obr','asc')->take(300)->get();
+            // $idemp = Empresa::where('nom_emp', 'like', '%'.strtoupper($name).'%')->select('id_emp')->first();
+            // return $idemp;
+            // $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')->orWhere('nom_obr', 'like', '%' . strtoupper($name) . '%')->orderBy('num_obr','asc')->take(300)->get();
+            $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')
+                            ->orWhere('nom_obr', 'like', '%' . strtoupper($name) . '%')
+                            ->orWhere('expedte', 'like', '%' . strtoupper($name) . '%')
+                            ->orderBy('num_obr','asc')->take(300)
+                            ->get();
+
+            // $obras = $obras->whereHas('empresas', function ($query) use ($name) { 
+            //     $query->where('nom_emp', 'like', '%'.strtoupper($name).'%'); 
+            // });
+           
         }else{
             $obras = Ob_obra::orderBy('id_obr', 'desc')->limit(5)->get();
         }
@@ -69,16 +81,16 @@ class ObraviviendaController extends Controller
             'num_obr' => 'required|string',
             'nom_obra' => 'required|string',
             'num_eta' => 'required',
-            'idempresa' => 'required|numeric|min:1',
-            'idloc' => 'required|numeric|min:1',
+            'idempresa' => 'required',
+            'idloc' => 'required',
             'can_viv' => 'required',
             'descrip' => 'required|string',
 
         ], [
             'num_obr.required' => 'El campo Numero de obra es obligatorio.',
             'nom_obra.required' => 'El campo Obra es obligatorio.',
-            'idempresa.min' => 'Seleccione una empresa valida.',
-            'idloc.min' => 'Seleccione una provincia valida.',
+            // 'idempresa.min' => 'Seleccione una empresa valida.',
+            // 'idloc.min' => 'Seleccione una provincia valida.',
             'can_viv.required' => 'El campo Cantidad de viviendas de obra es obligatorio.',
             'descrip.required' => 'El campo Descripcion de una etapa es obligatorio.',
         ]);
@@ -189,14 +201,14 @@ class ObraviviendaController extends Controller
             'id_obr' => 'required',
             'num_obr' => 'required|string',
             'nom_obra' => 'required|string',
-            'idempresa' => 'required|numeric|min:1',
-            'idloc' => 'required|numeric|min:1',
+            'idempresa' => 'required',
+            'idloc' => 'required',
             'can_viv' => 'required',
         ], [
             'num_obr.required' => 'El campo Numero de obra es obligatorio.',
             'nom_obra.required' => 'El campo Obra es obligatorio.',
-            'idempresa.min' => 'Seleccione una empresa valida.',
-            'idloc.min' => 'Seleccione una provincia valida.',
+            // 'idempresa.min' => 'Seleccione una empresa valida.',
+            // 'idloc.min' => 'Seleccione una provincia valida.',
             'can_viv.required' => 'El campo Cantidad de viviendas de obra es obligatorio.',
             'descrip.required' => 'El campo Descripcion de una etapa es obligatorio.',
         ]);
@@ -920,6 +932,34 @@ class ObraviviendaController extends Controller
         return view('Planificacion.Planificacion.Obravivienda.vivienda.crear', compact('obra', 'ultimoOrden'));
     }
 
+    public function verNuevaVivAlt($id){
+        $this->conectar();
+        $obra = Ob_obra::find($id);
+        $ultimoOrden = 1;
+        $viviendas = array();
+        foreach($obra->getEtapas as $etapa){
+            foreach($etapa->getEntregas as $entrega){
+                foreach ($entrega->getViviendas->sortBy('orden') as $vivienda) {
+                    array_push($viviendas, (object)[
+                        'id_viv' => $vivienda->id_viv,
+                        'orden' => $vivienda->orden,]);
+                }
+            }
+        }
+        $viviendas = collect($viviendas);
+        $ultimoOrden = $viviendas->sortBy('orden')->last()->orden + 1;
+        return view('Planificacion.Planificacion.Obravivienda.vivienda.crearAlt', compact('obra', 'ultimoOrden'));
+    }
+
+    public function editarViv($viv, $obra){
+        $this->conectar();
+        $obra = Ob_obra::find($obra);
+        $vivienda = Ob_vivienda::find($viv);
+        $entregaActual = Ob_entrega::find($vivienda->id_ent);
+        $etapaActual = Ob_etapa::find($entregaActual->id_eta)->id_etapa;
+        return view('Planificacion.Planificacion.Obravivienda.vivienda.editar', compact('vivienda', 'obra', 'etapaActual'));
+    } 
+
     public function guardarNuevaViv(Request $request, $id){
         // return $request;
         $this->validate($request, [
@@ -1097,6 +1137,7 @@ class ObraviviendaController extends Controller
             foreach($etapa->getEntregas as $entrega){
                 foreach ($entrega->getViviendas->sortBy('orden') as $vivienda) {
                     array_push($viviendasTabla, (object)[
+                        'id_viv' => $vivienda->id_viv,
                         'orden' => $vivienda->orden,
                         'etapa' => $etapa->nro_eta,
                         'entrega' => $entrega->num_ent,
