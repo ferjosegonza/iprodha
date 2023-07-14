@@ -16,6 +16,7 @@
                     <div class="card col-sm-12">
                         <div class="card-body"> 
                             <div hidden id="id">{{$agente->idagente}}</div>
+                            <div hidden id="idhistorial"></div>
                             Modificando el historial del agente {{$agente->apellido}}, {{$agente->nombre}}. Número de Documento: {{$agente->nrodoc}}
                             <hr>
                             <h5>Historial Actual</h5>
@@ -34,7 +35,7 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <button class="btn btn-success" onclick="mostrarCrear()">Crear nueva instancia del historial</button>
+                            <button class="btn btn-success" onclick="mostrarCrear()" id="btncrear">Crear nueva instancia del historial</button>
                             <div id="crear" hidden>
                                 <hr>
                                 <div class="row">
@@ -67,7 +68,9 @@
                                 
                                 <br>
                                 <input type="radio" class="btn-check" id="btnguardar" name="options" onclick="guardar()" disabled>
-                                <label for="btnguardar" class="btn btn-success">Guardar instancia</label>
+                                <label for="btnguardar" class="btn btn-success" id="lbl-guardar">Guardar instancia</label>
+                                <input type="radio" class="btn-check" id="btnmodificar" name="options" onclick="modificar()" disabled>
+                                <label for="btnmodificar" class="btn btn-success" id="lbl-modificar">Modificar instancia</label>
                                 <input type= "radio" class="btn-check" id="btndoc" onclick="documento()" name="options">
                                 <label for="btndoc" class="btn btn-primary">Agregar documento avalador</label>
                                 <div id="documento" hidden>
@@ -111,8 +114,7 @@
                                         <div id="elegirArchivo" class="col-lg-12" hidden>
                                             <table id="archivos">
                                                 <thead>
-                                                    <th>Nro Archivo</th>
-                                                    <th>Nombre documento</th>
+                                                    <th>Documento</th>
                                                     <th>Claves</th>
                                                 </thead>
                                                 <tbody id="infoarchivos">
@@ -134,6 +136,21 @@
                 </div>
             </div>
         </section>
+        <div class="modal fade" id="popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="popTitulo"></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="popBody">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="ocultarCrear()">Ok</button>
+                </div>
+              </div>
+            </div>
+        </div>
 @include('layouts.favorito.editar', ['modo' => 'Agregar'])
 @include('layouts.modal.confirmation') 
 @endsection

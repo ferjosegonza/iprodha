@@ -86,9 +86,15 @@ function mostrarHistorial(id){
                     str2='-'
                 }
                 else{
-                    str2=res[i].idarchivo
+                    str2=res[i].tipo 
+                    if(res[i].subtipo != null){
+                        str2 = str2+ '-' + res[i].subtipo
+                    }
+                    if(res[i].nro_archivo != null){
+                        str2 = str2+ '-' + res[i].nro_archivo
+                    }
                 }
-                tr.innerHTML = '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td>'
+                tr.innerHTML = '<td>'+res[i].fecha.slice(0, 10)+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td>'
                 info.appendChild(tr)
             }
         },
