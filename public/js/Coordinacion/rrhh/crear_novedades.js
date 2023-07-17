@@ -226,6 +226,7 @@ function cargarHistorial(){
                     }
                 }
                 tr.innerHTML = '<td>'+res[i].fecha.slice(0, 10)+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td><td><button class="btn" onclick="abrirEditar(\'' + res[i].idhistorial + '\',\'' + res[i].fecha + '\',\'' + res[i].detalle + '\',\''+ res[i].observacion +'\' )"><i class="fas fa-edit" style="color: #ff5900;"></i></button></td>'
+                tr.className= 'hoverable'
                 info.appendChild(tr)
             }
         },
@@ -416,6 +417,8 @@ function abrirEditar(id, fecha, detalle, observacion){
     document.getElementById('btnguardar').setAttribute('hidden','hidden')
     document.getElementById('lbl-guardar').setAttribute('hidden','hidden')
     document.getElementById('btnmodificar').removeAttribute('hidden')
+    document.getElementById('btnmodificar').removeAttribute('disabled')
+    document.getElementById('btnocultar').removeAttribute('hidden')
     document.getElementById('lbl-modificar').removeAttribute('hidden')
     document.getElementById('fecha').value = fecha.slice(0, 10)
     if(detalle!= 'null'){
@@ -451,9 +454,13 @@ function abrirEditar(id, fecha, detalle, observacion){
             if(res.length>0){
                 document.getElementById('docsasociados').removeAttribute('hidden')
                 let info = document.getElementById('infoasociados')
+                while(info.hasChildNodes()){
+                    info.removeChild(info.lastChild)
+                }
                 for(let i=0; i<res.length; i++){
                     tr = document.createElement('tr')
                     tr.innerHTML = '<td>' + res[i].tipo + '-' + res[i].subtipo + '-' + res[i].nro_archivo +'</td><td><button class="btn" onclick="deleteAsociado('+i+')"><i class="fas fa-trash-alt" style="color: #ff0000;"></i></button></td><td hidden>' + res[i].idarchivo + '</td>'
+                    tr.className= 'hoverable' 
                     info.appendChild(tr)
                 }
             }
@@ -467,6 +474,7 @@ function abrirEditar(id, fecha, detalle, observacion){
 
 function ocultarCrear(){
     document.getElementById('btncrear').removeAttribute('hidden')
+    document.getElementById('btnocultar').setAttribute('hidden', 'hidden')
     document.getElementById('fecha').value = null
     document.getElementById('detalle').value = ''
     document.getElementById('observacion').value = ''
