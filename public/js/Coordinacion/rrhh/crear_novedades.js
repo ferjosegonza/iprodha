@@ -134,6 +134,7 @@ function mostrarCrear(){
     document.getElementById('lbl-guardar').removeAttribute('hidden')
     document.getElementById('btnmodificar').setAttribute('hidden','hidden')
     document.getElementById('lbl-modificar').setAttribute('hidden','hidden')
+    document.getElementById('btnocultar').removeAttribute('hidden') 
 }
 
 $(document).ready(function () {
@@ -482,6 +483,7 @@ function ocultarCrear(){
     while(table.hasChildNodes()){
         table.removeChild(table.lastChild)
     }
+    document.getElementById('docsasociados').setAttribute('hidden', 'hidden')
     ocultarDocumentos()
     document.getElementById('crear').setAttribute('hidden', 'hidden')
 }
@@ -494,6 +496,8 @@ function ocultarDocumentos(){
     while(table2.hasChildNodes()){
         table2.removeChild(table2.lastChild)
     }
+    document.getElementById('subtipo').setAttribute('hidden', 'hidden')
+    document.getElementById('placeholder').removeAttribute('hidden')
     document.getElementById('elegirArchivo').classList.remove('col-lg-6')
     document.getElementById('elegirArchivo').classList.add('col-lg-12')
     document.getElementById('previewpdf').setAttribute('hidden','hidden')
