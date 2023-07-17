@@ -8,3 +8,6 @@ table{
 .hoverable:hover{
     background-color: rgba(129, 129, 129, 0.123);
 }
+#btnocultar{
+    float: right;
+}

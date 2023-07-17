@@ -87,6 +87,8 @@ class NovedadesController extends Controller
 
         $avalatorios=Historial_Archivo::where('idhistorial', '=', $historial->idhistorial)->get();
         $array=$request->avalatorios;
+        
+      
 
         if($array != null){             
             for($i = 0; $i<sizeof($avalatorios); $i++){
@@ -115,8 +117,8 @@ class NovedadesController extends Controller
         }
         else{
             if($avalatorios != null){
-                for($i = 0; $i<sizeof($avalatorios); $i++){
-                    $res *=$array[$i]->delete();
+                for($i = 0; $i<sizeof($avalatorios); $i++){                    
+                    $res *= $avalatorios[$i]->delete();
                 }
             }
         }

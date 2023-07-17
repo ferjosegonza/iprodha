@@ -36,6 +36,8 @@
                     <div class="card">
                         <div class="card-body">
                             <button class="btn btn-success" onclick="mostrarCrear()" id="btncrear">Crear nueva instancia del historial</button>
+                            <button class="btn btn-danger" id="btnocultar" onclick="ocultarCrear()" hidden>X</button>
+                            <br>
                             <div id="crear" hidden>
                                 <hr>
                                 <div class="row">
