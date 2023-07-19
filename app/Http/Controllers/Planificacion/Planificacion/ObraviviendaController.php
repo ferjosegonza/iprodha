@@ -973,7 +973,7 @@ class ObraviviendaController extends Controller
 
         if($request->input('orden')){
             $vivienda->update([
-                'plano' => $request->input('orden')
+                'orden' => $request->input('orden')
             ]);
         }
 
