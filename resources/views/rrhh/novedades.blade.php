@@ -4,6 +4,7 @@
 <head>
     <link rel="stylesheet" href="{{asset('css/rrhh/novedades.css')}}">
     <script src="{{ asset('js/Coordinacion/rrhh/novedades.js') }}"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 </head>
     <section class="section">
         <div class="section-header">
@@ -34,7 +35,8 @@
                                     </div>
                                 </div>    
                                 <hr>
-                                <h5>Historial del Agente</h5>
+                                <h5>Historial del Agente</h5>                                
+                                <i onclick="excel('xlsx')" class="fa fa-file-excel fa-2x" style="color: #008a09;"></i>
                                 <table id="historial"> 
                                     <thead>
                                         <th>Fecha</th>
