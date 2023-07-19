@@ -131,3 +131,23 @@ function redirect(){
     location.href = '/'+ id + "/crear_novedad";
 }
 
+function excel(){
+    $(document).ready(function() {
+        $('#historial').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        } );
+    } );
+}
+
+function excel(type, fn, dl){
+    let nombre = document.getElementById('apellido').value + '-' + document.getElementById('nombre').value
+    var elt = document.getElementById('historial');
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+    return dl ?
+      XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+      XLSX.writeFile(wb, fn || (nombre +'.' + (type || 'xlsx')));
+}
+
