@@ -125,6 +125,19 @@ class NovedadesController extends Controller
 
         return $res;
     }
+
+    public function borrarNovedad(Request $request){
+        $historial = Historial::find($request->idhistorial);
+        $avalatorios=Historial_Archivo::where('idhistorial', '=', $historial->idhistorial)->get();
+        $res = 1;
+        if($avalatorios != null){
+            for($i = 0; $i<sizeof($avalatorios); $i++){                    
+                $res *= $avalatorios[$i]->delete();
+            }
+        }
+        $res *= $historial->delete();
+        return $res;
+    }
 }
 
 
