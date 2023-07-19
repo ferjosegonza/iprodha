@@ -312,7 +312,9 @@ function openPreview(id, path, nombre, tipo, subtipo, nro){
     console.log(nombre)
     document.getElementById('elegirArchivo').classList.remove('col-lg-12')
     document.getElementById('elegirArchivo').classList.add('col-lg-6')
-    document.getElementById('pdfembed').setAttribute('src', path.slice(14)+nombre)
+    let src= path.trim()+nombre.trim()
+    src = src.slice(14)
+    document.getElementById('pdfembed').setAttribute('src', src)
     let str = tipo + '-' + subtipo + '-' + nro
     document.getElementById('title-preview').innerHTML = str
     document.getElementById('previewpdf').removeAttribute('hidden')
