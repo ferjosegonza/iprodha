@@ -135,6 +135,8 @@ function mostrarCrear(){
     document.getElementById('btnmodificar').setAttribute('hidden','hidden')
     document.getElementById('lbl-modificar').setAttribute('hidden','hidden')
     document.getElementById('btnocultar').removeAttribute('hidden') 
+    document.getElementById('btneliminar').setAttribute('hidden', 'hidden')
+    document.getElementById('lbl-eliminar').setAttribute('hidden', 'hidden')
 }
 
 $(document).ready(function () {
@@ -205,31 +207,41 @@ function cargarHistorial(){
             while(info.hasChildNodes()){
                 info.removeChild(info.lastChild)
             }
-            for(let i=0; i<res.length; i++){
+            if(res.length>0){
+                for(let i=0; i<res.length; i++){
+                    tr = document.createElement('tr')
+                    let str, str2
+                    if(res[i].observacion==null){
+                        str='-'
+                    }
+                    else{
+                        str=res[i].observacion
+                    }
+                    if(res[i].idarchivo==null){
+                        str2='-'
+                    }
+                    else{
+                        str2=res[i].tipo 
+                        if(res[i].subtipo != null){
+                            str2 = str2+ '-' + res[i].subtipo
+                        }
+                        if(res[i].nro_archivo != null){
+                            str2 = str2+ '-' + res[i].nro_archivo
+                        }
+                    }
+                    tr.innerHTML = '<td>'+res[i].fecha.slice(0, 10)+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td><td><button class="btn" onclick="abrirEditar(\'' + res[i].idhistorial + '\',\'' + res[i].fecha + '\',\'' + res[i].detalle + '\',\''+ res[i].observacion +'\' )"><i class="fas fa-edit" style="color: #ff5900;"></i></button></td>'
+                    tr.className= 'hoverable'
+                    info.appendChild(tr)
+                }
+            }
+            else{
                 tr = document.createElement('tr')
-                let str, str2
-                if(res[i].observacion==null){
-                    str='-'
-                }
-                else{
-                    str=res[i].observacion
-                }
-                if(res[i].idarchivo==null){
-                    str2='-'
-                }
-                else{
-                    str2=res[i].tipo 
-                    if(res[i].subtipo != null){
-                        str2 = str2+ '-' + res[i].subtipo
-                    }
-                    if(res[i].nro_archivo != null){
-                        str2 = str2+ '-' + res[i].nro_archivo
-                    }
-                }
-                tr.innerHTML = '<td>'+res[i].fecha.slice(0, 10)+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td><td><button class="btn" onclick="abrirEditar(\'' + res[i].idhistorial + '\',\'' + res[i].fecha + '\',\'' + res[i].detalle + '\',\''+ res[i].observacion +'\' )"><i class="fas fa-edit" style="color: #ff5900;"></i></button></td>'
+                tr.innerHTML = '<td colspan="5">No se han encontrado registros.</td>'
                 tr.className= 'hoverable'
+                
                 info.appendChild(tr)
             }
+            
         },
         error: function(res){
             console.log(res)
@@ -270,7 +282,7 @@ function buscarArchivos(){
                 }
                 for(let i=0; i<res.length; i++){
                     tr=document.createElement('tr')                    
-                    tr.innerHTML = '<td>'+res[i].tipo + '-' + res[i].subtipo + '-' + res[i].nro_archivo + '</td><td>'+res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')+'</td>'
+                    tr.innerHTML = '<td>'+res[i].dia_archivo+'-'+ res[i].mes_archivo + '-' + res[i].ano_archivo +'</td><td>'+res[i].tipo + '-' + res[i].subtipo + '-' + res[i].nro_archivo + '</td><td>'+res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')+'</td>'
                     tr.setAttribute('onclick', 'openPreview("'+ res[i].id_archivo + '", "' + res[i].path_archivo.replaceAll('\\','\\\\') + ' ", "' + res[i].nombre_archivo + '", "' + res[i].tipo +  '", "' + res[i].subtipo + '", "' + res[i].nro_archivo +'")')
                     tr.className= 'hoverable'
                     info.appendChild(tr)
@@ -423,6 +435,8 @@ function abrirEditar(id, fecha, detalle, observacion){
     document.getElementById('btnmodificar').removeAttribute('disabled')
     document.getElementById('btnocultar').removeAttribute('hidden')
     document.getElementById('lbl-modificar').removeAttribute('hidden')
+    document.getElementById('btneliminar').removeAttribute('hidden')
+    document.getElementById('lbl-eliminar').removeAttribute('hidden')
     document.getElementById('fecha').value = fecha.slice(0, 10)
     if(detalle!= 'null'){
        document.getElementById('detalle').value = detalle 
@@ -559,6 +573,65 @@ function modificar(){
             let popEl = document.getElementById('popup')
             document.getElementById('popTitulo').innerHTML = 'Error'
             document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar.</p>'
+            let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+            pop.show()
+            cargarHistorial()
+        }}); 
+}
+
+function ask(tipo){
+    let titulo = document.getElementById('modalTitulo')
+    let body = document.getElementById('modalBody')
+    let boton = document.getElementById('modalBoton')
+    if(tipo == 'eliminar'){
+        let modalEl = document.getElementById('modal')
+        titulo.innerHTML = '¡Advertencia!'
+        console.log(titulo)
+        body.innerHTML = '<p>¿Está seguro que desea eliminar esta novedad? Se eliminarán todas las filas asociadas.</p>'
+        boton.innerHTML = 'Borrar'
+        boton.classList.remove('btn-primary')
+        boton.classList.add('btn-danger')
+        boton.removeAttribute('onclick')
+        boton.setAttribute('onclick', 'eliminar()')
+        let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
+        modal.show()
+    }
+}
+
+function eliminar(){
+    let modalEl = document.getElementById('modal')
+    let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
+        modal.hide()
+    let idhistorial = document.getElementById('idhistorial').innerHTML
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: window.location.origin + '/agente/borrarNovedad',
+        type: 'DELETE',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            idhistorial: idhistorial,
+          
+        }),
+        dataType: 'json',
+        success: function(res) {          
+           console.log(res)
+           let popEl = document.getElementById('popup')
+           document.getElementById('popTitulo').innerHTML = 'Éxito'
+           document.getElementById('popBody').innerHTML = '<p>Se ha borrado correctamente.</p>'
+           let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+            pop.show()
+            cargarHistorial()
+        },
+        error: function(res){
+            console.log(res)
+            let popEl = document.getElementById('popup')
+            document.getElementById('popTitulo').innerHTML = 'Error'
+            document.getElementById('popBody').innerHTML = '<p>No se ha podido borrar.</p>'
             let pop= bootstrap.Modal.getOrCreateInstance(popEl)
             pop.show()
             cargarHistorial()

@@ -381,7 +381,7 @@ public function derivados(Request $request){
 public function buscarArchivosRRHH(Request $request){
 
     $query = "select id_archivo, nro_archivo, t.nombre_corto as tipo, s.dessubtipoarchivo as subtipo, 
-    claves_archivo, i.path_archivo, i.nombre_archivo
+    claves_archivo, i.path_archivo, i.nombre_archivo, dia_archivo, mes_archivo, ano_archivo
     from iprodha.dig_archivos i
     left join iprodha.dig_tipoarchivo t on (i.id_tipoarchivo = t.id_tipoarchivo)
     and (i.id_tipocabecera = t.id_tipocabecera)

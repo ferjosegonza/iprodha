@@ -75,8 +75,10 @@
                                 <label for="btnguardar" class="btn btn-success" id="lbl-guardar">Guardar instancia</label>
                                 <input type="radio" class="btn-check" id="btnmodificar" name="options" onclick="modificar()" disabled>
                                 <label for="btnmodificar" class="btn btn-success" id="lbl-modificar">Modificar instancia</label>
+                                <input type= "radio" class="btn-check" id="btneliminar" onclick="ask('eliminar')" name="options" hidden>
+                                <label for="btneliminar" class="btn btn-danger" id="lbl-eliminar" hidden>Eliminar novedad</label>
                                 <input type= "radio" class="btn-check" id="btndoc" onclick="documento()" name="options">
-                                <label for="btndoc" class="btn btn-primary">Agregar documento avalador</label>
+                                <label for="btndoc" class="btn btn-primary">Agregar documento avalador</label>                                
                                 <div id="documento" hidden>
                                     <br>
                                     <div class="row">
@@ -118,6 +120,7 @@
                                         <div id="elegirArchivo" class="col-lg-12" hidden>
                                             <table id="archivos">
                                                 <thead>
+                                                    <th>Fecha</th>
                                                     <th>Documento</th>
                                                     <th>Claves</th>
                                                 </thead>
@@ -155,6 +158,25 @@
               </div>
             </div>
         </div>
+
+        <div class="modal" tabindex="-1" role="dialog" id="modal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalTitulo"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn" id="modalBoton"></button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
 @include('layouts.favorito.editar', ['modo' => 'Agregar'])
 @include('layouts.modal.confirmation') 
 @endsection
