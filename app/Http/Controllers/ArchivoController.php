@@ -161,6 +161,7 @@ public function check(Request $request){
                 ->where('ano_archivo','=',$fecha[0])
                 ->where('mes_archivo','=',$fecha[1])
                 ->where('dia_archivo','=',$fecha[2])
+                ->where('dia_archivo','=',$request->orden)
                 ->first();
   
     return response()->json(['response' => $archivo]);

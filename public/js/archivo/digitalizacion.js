@@ -138,6 +138,7 @@ function existeCheck(){
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
+    let orden = document.getElementById('orden').value
     //CONSULTA AJAX
 
     let route = '/archivo/check';
@@ -155,7 +156,8 @@ function existeCheck(){
             tipo: tipoId,
             subtipo: subtid,
             fecha: fecha,
-            doc: doc
+            doc: doc,
+            orden: orden
         }),
         dataType: 'json',
         success: function(res) 
