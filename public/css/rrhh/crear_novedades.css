@@ -1,5 +1,9 @@
 table{
     width: 100%;
+    text-align: center;
+}
+th{
+    text-align: center !important;
 }
 #pdfembed{
     height: 400px;
@@ -11,3 +15,4 @@ table{
 #btnocultar{
     float: right;
 }
+
