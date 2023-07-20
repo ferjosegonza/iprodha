@@ -154,22 +154,24 @@ public function digitalizar(){
 public function check(Request $request){
 
     $fecha = explode("-", $request->fecha);
-
-    $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
+    $query = "select * from iprodha.dig_archivos
+    where id_tipoarchivo = $request->tipo
+    and id_subtipoarchivo = $request->subtipo
+    and mes_archivo = $fecha[1]
+    and dia_archivo = $fecha[2]
+    and ano_archivo = $fecha[0]
+    and nro_archivo='$request->doc'
+    and orden = $request->orden";
+    /* $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
                 ->where('id_subtipoarchivo','=', $request->subtipo)
-                ->where('nro_archivo','=', $request->doc)
+                ->where('nro_archivo','=', strval($request->doc))
                 ->where('ano_archivo','=',$fecha[0])
                 ->where('mes_archivo','=',$fecha[1])
                 ->where('dia_archivo','=',$fecha[2])
                 ->where('dia_archivo','=',$request->orden)
-                ->first();
-  
+                ->first(); */
+    $archivo = DB::select( DB::raw($query));
     return response()->json(['response' => $archivo]);
-
-    if($archivo == null){
-        $archivo = 'null';
-    }
-    return response()->json($archivo);
 }
 
 public function getArchivos(Request $request){  

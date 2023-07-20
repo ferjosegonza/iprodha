@@ -141,6 +141,8 @@ function existeCheck(){
     let orden = document.getElementById('orden').value
     //CONSULTA AJAX
 
+    console.log(tipoId, subtid, fecha, doc, orden)
+
     let route = '/archivo/check';
     $.ajaxSetup({
         headers: {
@@ -162,9 +164,10 @@ function existeCheck(){
         dataType: 'json',
         success: function(res) 
         {     
+            console.log(res)
             //La operación es válida
-            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
-            || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+            if(res.response.length > 0 && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
+            || res.response.length == 0 && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);                  
             }
             else{
