@@ -8,6 +8,7 @@ use App\Models\Personal\Agente;
 use App\Models\Personal\Historial;
 use App\Models\Personal\Historial_Archivo;
 use DB;
+use PDF;
 
 class AgenteController extends Controller
 {
@@ -18,7 +19,13 @@ class AgenteController extends Controller
 
     public function buscar(Request $request){
         $dni = $request->dni;
-        $agente = Agente::where('nrodoc', '=', $dni)->first();
+        $query = "select a.idagente, a.nrodoc, l.legajo, a.apellido, a.nombre, l.idcateg, agr.idagrupamiento, agr.agrupamiento 
+        from personal.agente a 
+        inner join personal.agrupamiento agr on agr.idagrupamiento = a.idagrupamiento 
+        inner join personal.legxagente l on a.idagente = l.idagente 
+        where l.fechas is null
+        and nrodoc = $request->dni";
+        $agente = DB::select( DB::raw($query));
         return response()->json($agente);
     }
 
@@ -39,5 +46,16 @@ class AgenteController extends Controller
         $historial = DB::select( DB::raw($query));
         //$historial = Historial::where('idagente', '=', $id)->leftJoin('PERSONAL.HISTORIAL_ARCHIVO', 'PERSONAL.HISTORIAL_ARCHIVO.idhistorial','PERSONAL.HISTORIAL.idhistorial')->orderBy('fecha')->get();
         return response()->json($historial);
+    }
+
+    public function imprimirHistorial(Request $request){
+        $pdf = PDF::loadView('rrhh.pdf',['dni'=>$request->dni, 'nombre'=>$request->nombre, 'apellido'=>$request->apellido, 'agrupamiento'=>$request->agrupamiento, 'categoria'=>$request->categoria, 'historial'=>$request->historial]);
+        $path = public_path('pdf/');
+        $fileName =  time().'.'. 'pdf' ;
+        $pdf->save($path . '/' . $fileName);
+        $pdf = public_path('pdf/'.$fileName);
+        return response()->download($pdf);
+//->setPaper('a4', 'landscape')
+       
     }
 }
