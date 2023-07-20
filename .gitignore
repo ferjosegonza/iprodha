@@ -3,6 +3,7 @@
 /public/storage
 /public/images
 /public/Documentos
+/public/DocumentacionWeb
 /storage/*.key
 /vendor
 .env
