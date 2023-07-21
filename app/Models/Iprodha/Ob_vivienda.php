@@ -61,6 +61,14 @@
             return $this->belongsTo(Ob_entrega::class,'id_ent','id_ent');
         }
 
+        public function getMunicipio(){
+            return $this->belongsTo(Municipios::class,'id_mun', 'id_municipio');
+        }
+
+        public function getLocalidad(){
+            return $this->belongsTo(Localidad::class,'id_loc', 'id_loc');
+        }
+
         protected $casts = [
             'sup_lot' => 'decimal:2',
             'sup_fin' => 'decimal:2',

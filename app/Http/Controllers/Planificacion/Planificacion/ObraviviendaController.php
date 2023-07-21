@@ -215,6 +215,18 @@ class ObraviviendaController extends Controller
         $this->conectar();
         $obra = Ob_obra::find($id);
 
+        if($obra->id_loc != $request->input('idloc')){
+            $viviendas = $this->todasLasViviendasDeUnaObra($obra);
+            $idloc = $request->input('idloc');
+            foreach ($viviendas as $vivienda) {
+                $laViv = Ob_vivienda::find($vivienda->id_viv);
+                $laViv->update([
+                    'id_loc' => $idloc,
+                    'id_mun' => Localidad::where('id_loc', $idloc)->first()->id_mun,
+                ]);
+            }
+        }
+
         // return $obra;
         $obra->update([
             'num_obr' => $request->input('num_obr'),
@@ -277,6 +289,12 @@ class ObraviviendaController extends Controller
         // return collect($viviendasTabla)->sortBy('orden');
         // return $viviendasTabla->sortBy('orden');
         $viviendasTabla = $this->todasLasViviendasDeUnaObra($obra);
+
+        foreach ($viviendasTabla as $viviendass) {
+            $vivs[] = $viviendass->id_viv;
+        }
+
+        $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)->orderBy('orden')->get();
         $viviendas = collect($viviendas);
         return view('Planificacion.Planificacion.Obravivienda.altaviv', compact('obra', 'viviendas', 'viviendasTabla'));
     }

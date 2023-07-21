@@ -57,4 +57,12 @@ class Localidad extends Model
     public function getObras(){
         return $this->hasMany(Ob_obra::class, 'id_loc', 'id_loc');
     }
+
+    public function getViviendas(){
+        return $this->hasMany(Ob_vivienda::class,'id_loc', 'id_loc');
+    }
+
+    public function getMunicipio() {
+        return $this->belongsTo(Municipios::class, 'id_mun', 'id_municipio');
+    }
 }

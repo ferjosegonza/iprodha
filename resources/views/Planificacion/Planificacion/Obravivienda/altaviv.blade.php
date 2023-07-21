@@ -86,6 +86,20 @@
                                         {!! Form::number('can_viv', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
+
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Departamento:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::number('depp', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Municipio:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::number('munn', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!}
+                                    </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -126,6 +140,8 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Parcela</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Finca</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Municipio</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Departamento</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Edif.</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Piso</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Dpto</th>
@@ -136,8 +152,8 @@
                                         @foreach ($viviendasTabla as $vivienda)
                                             <tr>    
                                                 <td class= 'text-center' >{{$vivienda->orden}}</td>                                      
-                                                <td class= 'text-center' >{{$vivienda->etapa}}</td>
-                                                <td class= 'text-center' >{{$vivienda->entrega}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getEntrega->getEtapa->nro_eta}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getEntrega->num_ent}}</td>
                                                 @if ($vivienda->discap == 1)
                                                     <td class= 'text-center' >SI</td>
                                                 @else
@@ -150,6 +166,8 @@
                                                 <td class= 'text-center' >{{$vivienda->manzana}}</td>
                                                 <td class= 'text-center' >{{$vivienda->parcela}}</td>
                                                 <td class= 'text-center' >{{$vivienda->finca}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getMunicipio->nom_municipio}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getMunicipio->getDepartamento->nom_dep}}</td>
                                                 <td class= 'text-center' >{{$vivienda->edificio}}</td>
                                                 <td class= 'text-center' >{{$vivienda->piso}}</td>
                                                 <td class= 'text-center' >{{$vivienda->departamento}}</td>
