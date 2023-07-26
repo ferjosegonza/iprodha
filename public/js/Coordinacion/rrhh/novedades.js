@@ -233,6 +233,7 @@ function buscarDNI(dni){
         },
         error: function(res){
             console.log(res)
+            document.getElementById('dnipdf').setAttribute('hidden','hidden')
         }});
 }
 
