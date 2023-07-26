@@ -394,5 +394,14 @@ public function buscarArchivosRRHH(Request $request){
     $archivos = DB::select( DB::raw($query));
     return response()->json($archivos);
 }
+
+public function buscarDNI(Request $request){
+    $archivo = Dig_archivos::where('id_tipocabecera', '=', '3')
+    ->where('id_tipoarchivo', '=', '18')
+    ->where('id_subtipoarchivo', '=', '1')
+    ->where('nro_archivo', '=', $request->dni)->first();
+    $str=$archivo->path_archivo . $archivo->nombre_archivo;
+    return response()->json($str);    
+}
 }
 
