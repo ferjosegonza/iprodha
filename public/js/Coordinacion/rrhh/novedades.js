@@ -35,6 +35,7 @@ function buscarAgente(){
             if(Object.keys(res).length >0){
                 mostrarAgente(res[0])
                 mostrarHistorial(res[0].idagente)
+                buscarDNI(res[0].nrodoc)
             }
             //else popup
             
@@ -208,4 +209,33 @@ function crearTablaImprimir(){
     console.log(table)
     console.log(str)
     return table
+}
+
+function buscarDNI(dni){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: window.location.origin + '/archivo/dni',
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            dni:dni
+        }),
+        dataType: 'json',
+        success: function(res) {          
+            console.log(res)
+            document.getElementById('dniemb').setAttribute('src', res);
+            document.getElementById('dnipdf').removeAttribute('hidden')
+        },
+        error: function(res){
+            console.log(res)
+        }});
+}
+
+function mostrarDni(){
+    document.getElementById('dniemb').removeAttribute('hidden');
 }

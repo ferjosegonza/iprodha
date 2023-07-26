@@ -23,11 +23,16 @@
                            <div id='buscador'> 
                                 <h5>Buscar por DNI</h5>
                                 {!! Form::number('dni', null, ['id'=>'dni', 'class' => 'form-control']) !!}
-                                <button class="btn btn-success" id="buscar" onclick="buscarAgente()" disabled>Buscar</button>
+                                <button class="btn btn-success" id="buscar" onclick="buscarAgente()" disabled>Buscar</button>                                
                            </div>                          
                            <div id="resultados" hidden>
                                 <hr>
                                 <h4>Información del Agente</h4>
+                                <div id="dnipdf"hidden>
+                                    <button class="btn btn-secondary" onclick="mostrarDni()">Ver DNI del agente</button>
+                                    <br>
+                                    <embed id="dniemb" src="#" type="" width="600" height="300" hidden>
+                                </div>
                                 <div class="row">
                                     <div class=" col-lg-2"> 
                                         <label for="dni2" class="control-label">DNI</label>
