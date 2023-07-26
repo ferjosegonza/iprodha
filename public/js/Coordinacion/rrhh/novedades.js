@@ -237,5 +237,10 @@ function buscarDNI(dni){
 }
 
 function mostrarDni(){
-    document.getElementById('dniemb').removeAttribute('hidden');
+    if($('#dniemb').is(':hidden')){
+        document.getElementById('dniemb').removeAttribute('hidden');
+    }
+    else{
+        document.getElementById('dniemb').setAttribute('hidden', 'hidden');
+    }
 }
