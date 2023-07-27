@@ -120,13 +120,15 @@ class Ofe_cronogramaController extends Controller
         $elItem = Vw_ofe_cronograma::where('iditem', '=', $item)->first();
         // return $elItem;
         $incItem = Ofe_item::where('iditem', $item)->first();
+
+        $avaAcuItem = ofe_cronograma::where('iditem', $item)->sum('porcentaje');
         
         $infoItem = array();
         
         if(!empty($elItem)){
             array_push($infoItem, (object)['por_inc' => $elItem->por_inc,
                                         'avaTotal' => $elItem->poravaacuitem,
-                                        'avaTotalPor' => $elItem->avaitempor
+                                        'avaTotalPor' => $avaAcuItem
                                         ]);
         }else{
             array_push($infoItem, (object)['por_inc' => $incItem->por_inc,
