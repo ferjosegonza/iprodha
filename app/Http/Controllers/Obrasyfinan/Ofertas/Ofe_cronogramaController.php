@@ -86,18 +86,10 @@ class Ofe_cronogramaController extends Controller
         return $unItem;
     }
 
-    public function guardarCrono($mes, $item, $avance)
+    public function guardarCrono($mes, $item, $avance, $porc)
     {
-        $nuevoCrono = Ofe_cronograma::create(['iditem' => $item, 'mes' => $mes, 'avance' => $avance]);
-        // $unItem = Ofe_item::where('iditem', "=", $item)->where('idobra', '=', $obra)->get();
-        // return $unItem;
-        // $idCrono = Ofe_cronograma::orderBy('idcrono', 'desc')->first()->idcrono;
-        // return $idCrono;
-        // $nuevoCrono = new Ofe_cronograma();
-        // $nuevoCrono->iditem = $item;
-        // $nuevoCrono->mes = $mes;
-        // $nuevoCrono->avance = $avance;
-        // $nuevoCrono->save();
+        // return $porc;
+        $nuevoCrono = Ofe_cronograma::create(['iditem' => $item, 'mes' => $mes, 'avance' => $avance, 'porcentaje' => $porc]);
         return $nuevoCrono;
     }
 

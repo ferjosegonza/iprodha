@@ -8,6 +8,7 @@ $(function(){
 function nuevoCrono(){
   let mes = $("#mes").val();
   let avance = $("#avance").val();
+//   let avancepp = $("#avance").val();
   let porc = Number($("#avance").val());
   let porcIA = Number($("#inc_i_p").val());
   let item = $("#item").val();
@@ -34,10 +35,16 @@ function nuevoCrono(){
                 success: function (response) {
                     let totalAv = parseFloat(response) + parseFloat(avance);
                     let dife = totalAv - inc;
-                    if(totalAv <= inc){
+                    avance = avance.toFixed(4); //lo agregue por ultimo
+
+                    if ((porc + porcIA) == 100) {
+
+                        avance = Number(avance).toFixed(4) - Number(dife).toFixed(4);
+                        avance = avance.toFixed(4);
+
                         $.when($.ajax({
                             type: "post",
-                            url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/nuevo',
+                            url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/'+porc+'/nuevo',
                             data: {
                                 item: item,
                             },
@@ -48,18 +55,12 @@ function nuevoCrono(){
                             console.log(error);
                         }
                         }));
-                    }else{
-                        // console.log(porc + porcIA);
-                        // console.log(Number(totalAv) - Number(dife));
 
-                        if ((porc + porcIA) == 100) {
-
-                            avance = Number(avance).toFixed(4) - Number(dife).toFixed(4);
-                            avance = avance.toFixed(4);
-
+                    } else if(totalAv <= inc){
+                        
                             $.when($.ajax({
                                 type: "post",
-                                url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/nuevo',
+                                url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/'+porc+'/nuevo',
                                 data: {
                                     item: item,
                                 },
@@ -70,11 +71,11 @@ function nuevoCrono(){
                                 console.log(error);
                             }
                             }));
-
-                        } else {
+                        }else{
                             alert('El item supera el avance del 100%');
-                        } 
-                    }
+                             
+                        }
+                
                     },
                 error: function (error) {
                     console.log(error);
