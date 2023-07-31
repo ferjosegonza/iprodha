@@ -56,7 +56,7 @@ class Camxagente extends Model{
         $detalle->valoranterior = $old;
         $detalle->valoractual = $new;
         $detalle->feccambio = date('Y-m-d');
-        $detalle->idquecambia = 40;
+        $detalle->idquecambia = 39;
         $detalle->obs = 'REGISTRO EL CAMBIO: ' . auth()->user()->name . ' - ' .  date("Y-m-d h:i:sa");        
         return $detalle;
     }
@@ -69,7 +69,7 @@ class Camxagente extends Model{
         $detalle->valoranterior = $old;
         $detalle->valoractual = $new;
         $detalle->feccambio = date('Y-m-d');
-        $detalle->idquecambia = 40;
+        $detalle->idquecambia = 38;
         $detalle->obs = 'REGISTRO EL CAMBIO: ' . auth()->user()->name . ' - ' .  date("Y-m-d h:i:sa");        
         return $detalle;
     }
