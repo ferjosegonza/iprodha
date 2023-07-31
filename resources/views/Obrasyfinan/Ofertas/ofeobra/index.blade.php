@@ -71,7 +71,7 @@
                                                             {!! Form::close() !!}
                                                         @endcan --}}
 
-                                                        @can('BORRAR-OFEOBRA')
+                                                        @can('VER-OFEOBRA')
                                                             {!! Form::open([
                                                             'method' => 'GET','route' => ['ofeobra.show', base64url_encode($unaOferta->idobra)],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Ver', ['class' => 'btn btn-primary m-1']) !!}
