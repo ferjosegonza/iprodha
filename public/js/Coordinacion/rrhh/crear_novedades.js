@@ -538,6 +538,7 @@ function modificar(){
         avalatorios[i-1]= row.children.item(2).innerHTML
     }
 
+    console.log(idagente)
 
    $.ajaxSetup({
         headers: {
