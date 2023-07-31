@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEOBRA']], 
     Route::get('estadosxobra/index', [ofe_obraController::class, 'indexEstado'])->name('estadosxobra.index');
     Route::get('estadosxobra/buscar/index', [ofe_obraController::class, 'indexEstadoBuscar'])->name('estadosxobra.buscar');
     Route::get('estadosxobra/{idobra}/estados', [ofe_obraController::class, 'verEstados'])->name('estadosxobra.verestados');
+    Route::get('ofeobra/{idobra}/anticipo', [ofe_obraController::class, 'verAnticipo'])->name('ofeobra.anticipo');
+    Route::post('ofeobra/{idobra}/modf/anticipo', [ofe_obraController::class, 'updateAnticipo'])->name('ofeobra.modfanticipo');
     Route::resource('ofeobra', ofe_obraController::class);
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMOBRA']], function () {
