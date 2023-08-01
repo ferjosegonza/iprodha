@@ -21,7 +21,8 @@ class Camxagente extends Model{
         ->where('idcambio','=',$this->getAttribute('idcambio'));
         return $query;
     }     
-    public function asentarNovedadDetalle($old, $new, $id){        
+    public function asentarNovedadDetalle($old, $new, $id){       
+        date_default_timezone_set('America/Argentina/Buenos_Aires'); 
         $detalle = new Camxagente;
         $query = "select max(idcambio) as id from PERSONAL.CAMXAGENTE where idagente= $id";
         $cambio = DB::select( DB::raw($query));
@@ -35,6 +36,7 @@ class Camxagente extends Model{
         return $detalle;
     }
     public function asentarNovedadFecha($old, $new, $id){        
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
         $detalle = new Camxagente;
         $query = "select max(idcambio) as id from PERSONAL.CAMXAGENTE where idagente= $id";
         $cambio = DB::select( DB::raw($query));
@@ -47,7 +49,8 @@ class Camxagente extends Model{
         $detalle->obs = 'REGISTRO EL CAMBIO: ' . auth()->user()->name . ' - ' .  date("Y-m-d h:i:sa");    
         return $detalle;
     }
-    public function asentarNovedadOBS($old, $new, $id){        
+    public function asentarNovedadOBS($old, $new, $id){    
+        date_default_timezone_set('America/Argentina/Buenos_Aires');    
         $detalle = new Camxagente;
         $query = "select max(idcambio) as id from PERSONAL.CAMXAGENTE where idagente= $id";
         $cambio = DB::select( DB::raw($query));
@@ -60,7 +63,8 @@ class Camxagente extends Model{
         $detalle->obs = 'REGISTRO EL CAMBIO: ' . auth()->user()->name . ' - ' .  date("Y-m-d h:i:sa");        
         return $detalle;
     }
-    public function asentarArchivos($old, $new, $id){        
+    public function asentarArchivos($old, $new, $id){     
+        date_default_timezone_set('America/Argentina/Buenos_Aires');   
         $detalle = new Camxagente;
         $query = "select max(idcambio) as id from PERSONAL.CAMXAGENTE where idagente= $id";
         $cambio = DB::select( DB::raw($query));
