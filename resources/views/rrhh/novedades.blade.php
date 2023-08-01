@@ -4,6 +4,11 @@
 <head>
     <link rel="stylesheet" href="{{asset('css/rrhh/novedades.css')}}">
     <script src="{{ asset('js/Coordinacion/rrhh/novedades.js') }}"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.5.22/dist/jspdf.plugin.autotable.js"></script>
+
+
 </head>
     <section class="section">
         <div class="section-header">
@@ -18,23 +23,42 @@
                            <div id='buscador'> 
                                 <h5>Buscar por DNI</h5>
                                 {!! Form::number('dni', null, ['id'=>'dni', 'class' => 'form-control']) !!}
-                                <button class="btn btn-success" id="buscar" onclick="buscarAgente()" disabled>Buscar</button>
+                                <button class="btn btn-success" id="buscar" onclick="buscarAgente()" disabled>Buscar</button>                                
                            </div>                          
                            <div id="resultados" hidden>
                                 <hr>
                                 <h4>Información del Agente</h4>
+                                <div id="dnipdf"hidden>
+                                    <button class="btn btn-secondary" onclick="mostrarDni()">Ver DNI del agente</button>
+                                    <br>
+                                    <embed id="dniemb" src="#" type="" width="600" height="300" hidden>
+                                </div>
                                 <div class="row">
-                                    <div class=" col-lg-4"> 
+                                    <div class=" col-lg-2"> 
+                                        <label for="dni2" class="control-label">DNI</label>
+                                        <input type="text" id="dni2" class="form-control" disabled>                              
+                                    </div>
+                                    <div class=" col-lg-2"> 
                                         <label for="nombre" class="control-label">Nombre</label>
                                         <input type="text" name="nombre" id="nombre" class="form-control" disabled>                              
                                     </div>
-                                    <div class=" col-lg-4"> 
+                                    <div class=" col-lg-2"> 
                                         <label for="apellido" class="control-label">Apellido</label>
                                         <input type="text" name="apellido" id="apellido" class="form-control" disabled>       
                                     </div>
+                                    <div class="col-lg-2">
+                                        <label for="agrupamiento" class="control-label">Agrupamiento</label>
+                                        <input type="text" id="agrupamiento" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label for="categoria" class="control-label">Categoria</label>
+                                        <input type="text" id="categoria" class="form-control" disabled>
+                                    </div>
                                 </div>    
                                 <hr>
-                                <h5>Historial del Agente</h5>
+                                <h5>Historial del Agente</h5>                                
+                                <i onclick="excel('xlsx')" class="fa fa-file-excel fa-2x" style="color: #008a09;"></i>
+                                <i onclick="exportPDF()" class="fa fa-file-pdf fa-2x" style="color: #ff0000;"></i>
                                 <table id="historial"> 
                                     <thead>
                                         <th>Fecha</th>
@@ -76,4 +100,4 @@
     <div hidden id="url"></div>
     @include('layouts.favorito.editar', ['modo' => 'Agregar'])
     @include('layouts.modal.confirmation') 
-@endsection
+    @endsection
