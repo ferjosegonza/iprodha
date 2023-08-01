@@ -238,7 +238,7 @@ class ofe_obraController extends Controller
         $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
         $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
         $obra = Ofe_obra::where('idobra','=', $idobra)->first();
-        $desembolsosPorMes = Vw_ofe_crono_desem::where('idobra','=', $idobra)->orderBy('mes')->get();
+        $desembolsosPorMes = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
         // $desembolsosPorMes = $this->desembolsoPorMes($idobra);
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
             ->with('data', $data)
