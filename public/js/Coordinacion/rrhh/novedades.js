@@ -228,7 +228,7 @@ function buscarDNI(dni){
         dataType: 'json',
         success: function(res) {          
             console.log(res)
-            document.getElementById('dniemb').setAttribute('src', res.slice(14));
+            document.getElementById('dniemb').setAttribute('src', res);
             document.getElementById('dnipdf').removeAttribute('hidden')
         },
         error: function(res){
