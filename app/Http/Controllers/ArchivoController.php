@@ -379,10 +379,29 @@ public function derivados(Request $request){
 }
 
 public function buscarArchivosRRHH(Request $request){
-    $archivos = Dig_archivos::where('id_tipoarchivo','=',$request->tipo)
-    ->where('id_subtipoarchivo', '=', $request->subtipo)
-    ->where('nro_archivo', '=', $request->nro)->get();
+
+    $query = "select id_archivo, nro_archivo, t.nombre_corto as tipo, s.dessubtipoarchivo as subtipo, 
+    claves_archivo, i.path_archivo, i.nombre_archivo, dia_archivo, mes_archivo, ano_archivo
+    from iprodha.dig_archivos i
+    left join iprodha.dig_tipoarchivo t on (i.id_tipoarchivo = t.id_tipoarchivo)
+    and (i.id_tipocabecera = t.id_tipocabecera)
+    left join iprodha.dig_subtipoarchivo s on (i.id_subtipoarchivo = s.id_subtipoarchivo) 
+    and (s.id_tipoarchivo = t.id_tipoarchivo)
+    and (i.id_tipocabecera = s.id_tipocabecera)
+    where i.id_tipoarchivo = $request->tipo and 
+    i.id_subtipoarchivo = $request->subtipo and
+    i.nro_archivo = '$request->nro'";
+    $archivos = DB::select( DB::raw($query));
     return response()->json($archivos);
+}
+
+public function buscarDNI(Request $request){
+    $archivo = Dig_archivos::where('id_tipocabecera', '=', '3')
+    ->where('id_tipoarchivo', '=', '18')
+    ->where('id_subtipoarchivo', '=', '1')
+    ->where('nro_archivo', '=', $request->dni)->first();
+    $str=$archivo->path_archivo . $archivo->nombre_archivo;
+    return response()->json($str);    
 }
 }
 
