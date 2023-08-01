@@ -196,6 +196,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
 });
 
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|RRHH']], function () {
+    Route::get('archivo/rrhh', [ArchivoController::class, 'buscarArchivosRRHH'])->name('archivos.rrhh');
+    Route::get('archivo/dni', [ArchivoController::class, 'buscarDNI'])->name('archivos.dni');
+});
+
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|CREAR-ARCHIVOS|DIGITALIZADOR']], function () {
     Route::get('archivo/digitalizar', [ArchivoController::class, 'digitalizar'])->name('archivos.digitalizar');
     Route::post('archivo/crear', [ArchivoController::class, 'crear'])->name('archivos.crear');

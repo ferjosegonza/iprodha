@@ -1,0 +1,18 @@
+table{
+    width: 100%;
+    text-align: center;
+}
+th{
+    text-align: center !important;
+}
+#pdfembed{
+    height: 400px;
+    width: 100%;
+}
+.hoverable:hover{
+    background-color: rgba(129, 129, 129, 0.123);
+}
+#btnocultar{
+    float: right;
+}
+
