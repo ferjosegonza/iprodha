@@ -9,6 +9,7 @@
                 <div class="">
                     @include('layouts.favorito.fav', ['modo' => 'Agregar'])
                 </div>
+                
                 <div class="ms-auto">
                     @can('CREAR-OFEOBRA')
                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.create']]) !!}
@@ -18,6 +19,7 @@
                 </div>
         </div>
         <div class="section-body">
+            
             <div class="row">
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -137,6 +139,13 @@
                     </div>
                 </div>             
             </div>
+        </div>
+        <div class="">
+            <strong>
+                <h7>
+                    ¿Dudas? <a href="{{ asset('storage/gdu/OfertaObraEmp.pdf') }}" style="color: rgb(30, 67, 233)" target="_blank">Descargue un instructivo aqui.</a> 
+                </h7>
+            </strong>
         </div>
     </section>
     {{-- @include('layouts.modal.confirmation')  --}}

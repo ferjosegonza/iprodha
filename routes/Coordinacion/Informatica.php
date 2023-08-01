@@ -24,7 +24,7 @@ use App\Http\Controllers\Auth\LoginController;
 //use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
 
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\DownloadController;
 //--
 
 /*
@@ -47,6 +47,8 @@ Route::resource('home', HomeController::class);
 
 Route::post('login', [LoginController::class, 'authenticate']);
 
+	
+// Route::get('/downloadfile/{opt}', [DownloadController::class, 'downloadfile'])->name('download.archive');
 
 
 
