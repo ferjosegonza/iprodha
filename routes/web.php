@@ -194,6 +194,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('archivo/getArchivos', [ArchivoController::class, 'getArchivos'])->name('archivos.getArchivos');
     Route::get('archivo/pdf', [ArchivoController::class, 'getpdf'])->name('archivos.getpdf');
     Route::get('archivo/buscar', [ArchivoController::class, 'buscar'])->name('archivos.buscar');
+    Route::get('archivo/buscarID', [ArchivoController::class, 'buscarPorId'])->name('archivos.buscarID');
 });
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|RRHH']], function () {
