@@ -285,6 +285,7 @@
                                         </strong>
                                     </td>
                                 </tr>
+                                
                                 @php
                                     $flete = $sombreros->where('idconceptosombrero', '=', 10)->first()->valor ?? 0;
                                     $somfleteviv = $data->tot1viv * ($flete/100);
@@ -469,6 +470,7 @@
                             TOTAL:
                             <strong>
                                 $ {{number_format($totalDef, 2, ',', '.')}}
+                                {{-- $ {{$totalDef}} --}}
                             </strong>
                         </p>                       
                        </div>
@@ -540,8 +542,75 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
-                        <br>
-                        <div class="text-center"><h5>Cronograma de desembolso</h5></div>                        
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <h5 class="ml-4">Anticipo: {{$obra->anticipo}} %</h5>
+                            </div>
+                            <div class="col-4 text-center">
+                                <h5>Cronograma de desembolso</h5>
+                                
+                            </div>
+                            <div class="col-4">
+                                <div class="float-end">
+                                    @can('VALIDAR-OFEOBRA')
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                        {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 float-right mr-4']) !!}
+                                        {!! Form::close() !!}
+                                    @endcan
+                                </div>
+                            </div>
+                            {{-- <div class="col-5 text-right">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="text-right">Anticipo: {{$obra->anticipo}} %</h5>
+                                    </div>
+                                    <div class="col-3">
+                                        @can('VALIDAR-OFEOBRA')
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                        {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 mr-4']) !!}
+                                        {!! Form::close() !!}
+                                        @endcan
+                                    </div>
+                                </div>
+                            </div> --}}
+                            {{-- <div class="col-1 align-items-right">
+                                @can('VALIDAR-OFEOBRA')
+                                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                    {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 float-right mr-4']) !!}
+                                    {!! Form::close() !!}
+                                @endcan
+                            </div> --}}
+                            
+                        </div>
+                        
+                        {{-- <br>
+                        <div class="row my-auto">
+                            <div class="col-lg-4">
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="text-center">
+                                    <h5>Cronograma de desembolso</h5>
+                                </div> 
+                            </div>
+                            <div class="col-lg-4 my-auto">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="text-center">
+                                            <h6 class= 'm-0'>Anticipo: {{$obra->anticipo}} %</h6>
+                                        </div> 
+                                    </div>
+                                    <div class="col-4">
+                                        @can('VALIDAR-OFEOBRA')
+                                            {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                            {!! Form::submit('Editar anticipo', ['class' => 'btn btn-warning w-100']) !!}
+                                            {!! Form::close() !!}
+                                        @endcan
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
+                        {{-- <div class="text-center"><h5>Cronograma de desembolso</h5></div>                         --}}
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -624,7 +693,7 @@
     contadorMes = {{$cronograma->last()->mes}};
     meses = [];
     let acu = 0;
-    monto = [0];
+    monto = [];
     var app = @json($desembolsos);
     
     app.forEach(element => {

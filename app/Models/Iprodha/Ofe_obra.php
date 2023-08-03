@@ -35,6 +35,7 @@ class Ofe_obra extends Model
         'mescotizacion',
         'publica', 
         'id_situacion',
+        'anticipo'
     ];
     protected $attributes = [
         'idobra' => false,

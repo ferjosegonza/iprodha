@@ -32,9 +32,12 @@ class Ofe_cronogramaController extends Controller
     public function indexPorc(Request $request, $id)
     {     
         $id = base64url_decode($id);
-        $losItems = DB::select('select orden, nom_item, por_inc, round((iprodha.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) AvaItemPor, CASE WHEN round((IPRODHA.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item where idobra = ? order by orden', [$id]);
+        // $losItems = DB::select('select orden, nom_item, por_inc, round((iprodha.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) AvaItemPor, CASE WHEN round((IPRODHA.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item where idobra = ? order by orden', [$id]);
+
+        $losItems = DB::select('select i.idobra, i.iditem, i.orden, i.nom_item, i.por_inc, NVL(a.AvaItemPor, 0) AvaItemPor, CASE WHEN a.AvaItemPor >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item i left join (select iditem, sum(porcentaje) AvaItemPor from iprodha.ofe_cronograma group by iditem) a on a.iditem = i.iditem where idobra = ? order by orden', [$id]);
         // $losItems = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
         // return $losItems;
+
         $items = Ofe_item::where('idobra', '=', $id)->orderBy('iditem')->pluck('nom_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
         $plazo = Ofe_obra::where('idobra', $id)->first()->plazo;
         return view('Obrasyfinan.Ofertas.ofecrono.indexPorc', compact('losItems', 'plazo', 'items', 'id'));
@@ -86,18 +89,10 @@ class Ofe_cronogramaController extends Controller
         return $unItem;
     }
 
-    public function guardarCrono($mes, $item, $avance)
+    public function guardarCrono($mes, $item, $avance, $porc)
     {
-        $nuevoCrono = Ofe_cronograma::create(['iditem' => $item, 'mes' => $mes, 'avance' => $avance]);
-        // $unItem = Ofe_item::where('iditem', "=", $item)->where('idobra', '=', $obra)->get();
-        // return $unItem;
-        // $idCrono = Ofe_cronograma::orderBy('idcrono', 'desc')->first()->idcrono;
-        // return $idCrono;
-        // $nuevoCrono = new Ofe_cronograma();
-        // $nuevoCrono->iditem = $item;
-        // $nuevoCrono->mes = $mes;
-        // $nuevoCrono->avance = $avance;
-        // $nuevoCrono->save();
+        // return $porc;
+        $nuevoCrono = Ofe_cronograma::create(['iditem' => $item, 'mes' => $mes, 'avance' => $avance, 'porcentaje' => $porc]);
         return $nuevoCrono;
     }
 
@@ -128,13 +123,15 @@ class Ofe_cronogramaController extends Controller
         $elItem = Vw_ofe_cronograma::where('iditem', '=', $item)->first();
         // return $elItem;
         $incItem = Ofe_item::where('iditem', $item)->first();
+
+        $avaAcuItem = ofe_cronograma::where('iditem', $item)->sum('porcentaje');
         
         $infoItem = array();
         
         if(!empty($elItem)){
             array_push($infoItem, (object)['por_inc' => $elItem->por_inc,
                                         'avaTotal' => $elItem->poravaacuitem,
-                                        'avaTotalPor' => $elItem->avaitempor
+                                        'avaTotalPor' => $avaAcuItem
                                         ]);
         }else{
             array_push($infoItem, (object)['por_inc' => $incItem->por_inc,

@@ -763,8 +763,17 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
-                        <br>
-                        <div class="text-center"><h5>Cronograma de desembolso</h5></div>                        
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <h5 class="ml-4">Anticipo: {{$obra->anticipo}} %</h5>
+                            </div>
+                            <div class="col-4 text-center">
+                                <h5>Cronograma de desembolso</h5>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>          
+                        </div>                        
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -857,7 +866,7 @@
     contadorMes = {{$cronograma->last()->mes}};
     meses = [];
     let acu = 0;
-    monto = [0];
+    monto = [];
     var app = @json($desembolsos);
     
     app.forEach(element => {

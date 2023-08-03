@@ -138,7 +138,10 @@ function existeCheck(){
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
+    let orden = document.getElementById('orden').value
     //CONSULTA AJAX
+
+    console.log(tipoId, subtid, fecha, doc, orden)
 
     let route = '/archivo/check';
     $.ajaxSetup({
@@ -155,14 +158,16 @@ function existeCheck(){
             tipo: tipoId,
             subtipo: subtid,
             fecha: fecha,
-            doc: doc
+            doc: doc,
+            orden: orden
         }),
         dataType: 'json',
         success: function(res) 
         {     
+            console.log(res)
             //La operación es válida
-            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
-            || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+            if(res.response.length > 0 && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
+            || res.response.length == 0 && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);                  
             }
             else{

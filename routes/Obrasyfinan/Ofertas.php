@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEOBRA']], 
     Route::get('estadosxobra/index', [ofe_obraController::class, 'indexEstado'])->name('estadosxobra.index');
     Route::get('estadosxobra/buscar/index', [ofe_obraController::class, 'indexEstadoBuscar'])->name('estadosxobra.buscar');
     Route::get('estadosxobra/{idobra}/estados', [ofe_obraController::class, 'verEstados'])->name('estadosxobra.verestados');
+    Route::get('ofeobra/{idobra}/anticipo', [ofe_obraController::class, 'verAnticipo'])->name('ofeobra.anticipo');
+    Route::post('ofeobra/{idobra}/modf/anticipo', [ofe_obraController::class, 'updateAnticipo'])->name('ofeobra.modfanticipo');
     Route::resource('ofeobra', ofe_obraController::class);
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMOBRA']], function () {
@@ -53,7 +55,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOB
 });
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFECRONO']], function () {
-    Route::post('/ofecrono/{mes}/{item}/{avance}/nuevo', [Ofe_cronogramaController::class, 'guardarCrono']);
+    Route::post('/ofecrono/{mes}/{item}/{avance}/{porc}/nuevo', [Ofe_cronogramaController::class, 'guardarCrono']);
     Route::post('/ofecrono/{item}/comprobar', [Ofe_cronogramaController::class, 'comprobarAvance']);
     Route::post('/ofecrono/{item}/infoitem', [Ofe_cronogramaController::class, 'infoItem']);
     Route::post('/ofecrono/{id}/{mes}/items', [Ofe_cronogramaController::class, 'losItems']);

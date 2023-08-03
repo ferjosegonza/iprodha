@@ -120,22 +120,6 @@ function year(){
     
 }
 
-function filtrar(){
-    if(document.getElementById('busq').value == ""){
-        // $( "#archivos" ).DataTable().ajax.reload()
-        var table = $('#archivos').DataTable()
-        table
-        .columns( '.asun' ).search("").draw();
-     }
-     else{
-         var asunto = document.getElementById('busq').value; 
-         console.log(asunto);
-         var table = $('#archivos').DataTable()
-         table
-             .columns( '.asun' ).search(asunto).draw();
-     }
-}
-
 function subtipos(){
     if(document.getElementById('subtipo').value == 'sel'){
         var table = $('#archivos').DataTable()
@@ -460,7 +444,7 @@ $(document).ready(function () {
         table.columns( '.nro' ).search(data[4]).draw();
         table.columns( '.fecha' ).search(data[3]).draw();
         table.columns( '.orden' ).search(data[7]).draw();
-        table.columns( '.asun' ).search(data[5].replaceAll('&lt;','<').replaceAll('&gt;','>')).draw();
+        //table.columns( '.asun' ).search(data[5].replaceAll('&lt;','<').replaceAll('&gt;','>')).draw();
 
         document.getElementById('preview').hidden = false
         document.getElementById('pdfver').setAttribute('data', data[6])
@@ -604,13 +588,13 @@ function cancelarbusqueda(){
         console.log(year)
         table.columns( '.fecha' ).search(year).draw();
     }  
-    if(document.getElementById('busq').value == ""){
+    /* if(document.getElementById('busq').value == ""){
         table.columns( '.asun' ).search("").draw();
     }
     else{
         let asun = document.getElementById('busq').value; 
         table.columns( '.asun' ).search(asun).draw();
-    }   
+    }    */
     document.getElementById('preview').hidden = true
 }
 
@@ -904,6 +888,13 @@ function buscarArchivos(){
             console.log(res.length)
             for(let i=0; i<res.length; i++){
                 console.log(res[i])
+                let claves 
+                if(res[i].claves_archivo == null){
+                    claves='-'
+                }
+                else{
+                    claves=res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')
+                }
                 //console.log(res[i].nombre_corto, '', res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo, res[i].nro_archivo, res[i].claves_archivo, '', res[i].orden)
                 //table.rows.add([0,1,2,3,4,5,6.7]).draw(true);
                 
@@ -913,7 +904,7 @@ function buscarArchivos(){
                    2 : res[i].dessubtipoarchivo,
                    3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
                    4 : res[i].nro_archivo,
-                   5 : res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;'),
+                   5 : claves,
                    6 : res[i].path_archivo + res[i].nombre_archivo,
                    7 : res[i].orden,
                    8: res[i].id_archivo
@@ -950,8 +941,16 @@ function cargarBoletin(){
         success: function(res){  
             let table = $('#archivos').DataTable()
             table.clear()
-            console.log(res.length)
-            for(let i=0; i<res.length; i++){
+            console.log(res.length)            
+            for(let i=0; i<res.length; i++){               
+                let claves 
+                if(res[i].claves_archivo == null){
+                    claves='-'
+                }
+                else{
+                    claves=res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')
+                }
+               
                 console.log(res[i])
                 table.row.add({
                    0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
@@ -959,7 +958,7 @@ function cargarBoletin(){
                    2 : res[i].dessubtipoarchivo,
                    3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
                    4 : res[i].nro_archivo,
-                   5 : res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;'),
+                   5 : claves,
                    6 : res[i].path_archivo + res[i].nombre_archivo,
                    7 : res[i].orden,
                    8 : res[i].id_archivo

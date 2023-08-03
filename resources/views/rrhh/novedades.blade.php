@@ -22,7 +22,7 @@
                         <div class="card-body"> 
                            <div id='buscador'> 
                                 <h5>Buscar por DNI</h5>
-                                {!! Form::number('dni', null, ['id'=>'dni', 'class' => 'form-control']) !!}
+                                {!! Form::number('dni', null, ['id'=>'dni', 'class' => 'form-control', 'min' => '0']) !!}
                                 <button class="btn btn-success" id="buscar" onclick="buscarAgente()" disabled>Buscar</button>                                
                            </div>                          
                            <div id="resultados" hidden>

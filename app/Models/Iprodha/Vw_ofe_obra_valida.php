@@ -30,8 +30,8 @@ class vw_ofe_obra_valida extends Model
         'tot1inf'=> true
     ];
 
-    protected $casts = [
-        'tot1viv' => 'decimal:2',
-        'tot1inf' => 'decimal:2'
-    ];
+    // protected $casts = [
+    //     'tot1viv' => 'decimal:2',
+    //     'tot1inf' => 'decimal:2'
+    // ];
 }
