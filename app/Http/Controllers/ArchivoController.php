@@ -406,5 +406,10 @@ public function buscarDNI(Request $request){
     $str=$archivo->path_archivo . $archivo->nombre_archivo;
     return response()->json($str);    
 }
+
+public function buscarPorId(Request $request){
+    $archivo = Dig_archivos::where('id_archivo', '=', $request->id)->first();
+    return response()->json($archivo);
+}
 }
 
