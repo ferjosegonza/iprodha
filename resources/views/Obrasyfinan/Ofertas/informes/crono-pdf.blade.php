@@ -104,6 +104,7 @@
                     <th class="width: 10%">Denominacion</th>
                     <th class="width: 5%">Monto</th>
                     <th class="width: 5%">Inc</th>
+                    <th class="width: 1%">0</th>
                     @for ($i = 1; $i <= $obra->plazo; $i++)
                         <th class="width: 1%">{{$i}}</th>
                     @endfor
@@ -137,6 +138,7 @@
                             <td class= 'text-center' style="vertical-align: middle; font-size:80%">{{$item->nom_item}}</td>
                             <td class= 'text-center' style="vertical-align: middle;">$ {{number_format($item->monto, 2, ',','.')}}</td>
                             <td class= 'text-center' style="vertical-align: middle;">{{number_format($item->por_inc, 4, ',', '.')}}</td>
+                            <td class= 'text-center' style="vertical-align: middle;"></td>
                             @while ($contador <= $obra->plazo)
                                 @if (is_null($cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()))
                                     <td class= 'text-center' style="vertical-align: middle;"></td>
@@ -163,6 +165,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             @for ($i = 1; $i <= $obra->plazo; $i++)
                                 <td></td>
                             @endfor
@@ -184,6 +187,7 @@
                             <td>Totales</td>
                             <td>$ {{number_format($montoAcu, 2, ',','.')}}</td>
                             <td>{{number_format($totalInc,4, ',', '.')}}</td>
+                            <td></td>
                             @for ($i = 0; $i < $obra->plazo; $i++)
                                 <td>{{$cronoMen[$i]}}</td>
                             @endfor
@@ -197,6 +201,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             @for ($i = 1; $i <= $obra->plazo; $i++)
                                 <td></td>
                             @endfor
@@ -207,6 +212,7 @@
                             <td>Inc. Acumulado</td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             @for ($i = 0; $i < $obra->plazo; $i++)
                                 <td>{{$acuMen[$i]}}</td>
                             @endfor
@@ -214,6 +220,7 @@
 
                         <tr style="background-color: rgb(141, 141, 141)">
                             <td style="color: rgb(141, 141, 141)">1</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -237,7 +244,7 @@
                             <td>Monto Acumulado</td>
                             <td></td>
                             <td></td>
-                            @for ($i = 0; $i < $obra->plazo; $i++)
+                            @for ($i = 0; $i < $obra->plazo+1; $i++)
                                 <td>$ {{number_format($acuMenMon[$i], 2, ',','.')}}</td>
                             @endfor
                         </tr>
