@@ -26,9 +26,11 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-
+#main{
+    margin-left: -0.5%;
+}
 #preview{
-    margin-left: 2.5%;
+    margin-left: 0.5%;
 }
 #pdf{
     width: 100%;

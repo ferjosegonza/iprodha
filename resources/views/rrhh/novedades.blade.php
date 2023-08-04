@@ -76,7 +76,7 @@
                             </div>
                             </div>
                         </div>
-                        <div class="card col-lg-5" id="preview" hidden> 
+                        <div class="card col-lg-6" id="preview" hidden> 
                             <div class="card-head"><br><h5>PDF</h5><button class="btn btn-danger" id="btnCerrar" onclick="cerrarPDF()">X</button></div>
                             <div class="card-body" style="display: contents">
                                 <embed src="#" id="pdf">
