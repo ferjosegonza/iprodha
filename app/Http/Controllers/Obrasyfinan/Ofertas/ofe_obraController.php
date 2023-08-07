@@ -262,7 +262,7 @@ class ofe_obraController extends Controller
         $cronograma = Vw_ofe_cronograma::where('idobra', $idobra)->orderBy('mes')->get();
         $sombreros = Ofe_sombrero::where('idobra', $idobra)->get();
         $items = Vw_ofe_items::where('idobra', $idobra)->get();
-        $desembolsos = Vw_ofe_crono_desem::where('idobra','=', $idobra)->orderBy('mes')->get();
+        $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
         return view('Obrasyfinan.Ofertas.ofeobra.validar',compact('obra','data', 'cronograma', 'sombreros', 'items', 'desembolsos'));
     }
 
