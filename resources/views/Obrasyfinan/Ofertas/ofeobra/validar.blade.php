@@ -609,13 +609,29 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card border border-3 border-success" id="crono-desem-card">
                     <div class="card-head">
-                        <br>
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <h5 class="ml-4">Anticipo: {{$obra->anticipo}} %</h5>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="form-check text-center">
+                                    <input class="form-check-input fs-5" type="checkbox" value="crono-desem-card" id="info-crono-desem" checked>
+                                    <strong>
+                                    {!! Form::label('Cronograma de desembolso', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
+                                    </strong>
+                                </div>     
+                            </div>
+                            <div class="col-4">
+                            </div>         
+                        </div>
+
+                        {{-- <br>
                         <div class="form-check text-center">
                             <input class="form-check-input fs-5" type="checkbox" value="crono-desem-card" id="info-crono-desem" checked>
                             <strong>
                             {!! Form::label('Cronograma de desembolso', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
                             </strong>
-                        </div>                        
+                        </div>                         --}}
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -747,7 +763,7 @@
     contadorMes = {{$cronograma->last()->mes}};
     meses = [];
     let acu = 0;
-    monto = [0];
+    monto = [];
     var app = @json($desembolsos);
     
     app.forEach(element => {
