@@ -37,7 +37,7 @@
                         <hr>
                         <h4>Datos del trámite</h4>                        
                         {!! Form::label('Tipo de trámite:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                        <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
+                        <select class="form-select" id="tipo" name="tipo">
                             <option value="sel" selected>Seleccionar</option>
                             @foreach ($tipos as $tipo)                            
                                 <option value="{{$tipo->id_tipo}}">{{$tipo->descripcion}}</option>

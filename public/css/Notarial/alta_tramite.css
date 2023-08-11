@@ -2,7 +2,9 @@ table{
     width: 100%;
 }
 .tablita{
-    width: 50%;
+    width: 90%;
+    font-size: medium;
+    margin-left: 4%;
 }
 .hoverable:hover{
     background-color: rgba(129, 129, 129, 0.123);
