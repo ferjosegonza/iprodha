@@ -83,6 +83,9 @@ function buscarEscribano(){
             console.log(res)
             if(res.length>0){
                 let body = document.getElementById('bodyesc')
+                while(body.hasChildNodes()){
+                    body.removeChild(body.lastChild)
+                }
                 for(let i=0; i<res.length; i++){
                     let email
                     if(res[i].email == null){
@@ -114,6 +117,7 @@ function seleccionarEscribano(mat, nom){
     document.getElementById('matEsc').innerHTML = mat
     document.getElementById('EscSeleccionado').removeAttribute('hidden')
     document.getElementById('resultadoEsc').setAttribute('hidden', 'hidden')
+    document.getElementById('btnsaveesc').removeAttribute('disabled')
 }
 
 function saveEscribano(){
@@ -148,6 +152,9 @@ function buscarBeneficiario(){
             console.log(res)
             if(res.length>0){
                 let body = document.getElementById('bodybenef')
+                while(body.hasChildNodes()){
+                    body.removeChild(body.lastChild)
+                }
                 for(let i=0; i<res.length; i++){                    
                     let tr=document.createElement('tr')
                     tr.innerHTML='<td>'+res[i].ope+'</td><td>'+res[i].barrio+'</td><td>'+res[i].adju+'</td><td>'+res[i].apyna+'</td>'
@@ -175,6 +182,7 @@ function seleccionarBeneficiario(ope, barrio, adju, apyna, doc){
     document.getElementById('apynaBef').innerHTML = apyna
     document.getElementById('BenefSeleccionado').removeAttribute('hidden')
     document.getElementById('resultadoBen').setAttribute('hidden','hidden')
+    document.getElementById('btnbenefsave').removeAttribute('disabled')
 }
 
 function saveBeneficiario(){
@@ -215,6 +223,9 @@ function buscarDocumento(){
                 console.log(res)
                 if(res.length>0){
                     let body = document.getElementById('bodydoc')
+                    while(body.hasChildNodes()){
+                        body.removeChild(body.lastChild)
+                    }
                     for(let i=0; i<res.length; i++){                    
                         let tr=document.createElement('tr')
                         if(tipo == 'exp'){
@@ -251,6 +262,7 @@ function seleccionarDocumento(id, nro, asun){
     document.getElementById('asuDoc').innerHTML = asun
     document.getElementById('DocSeleccionado').removeAttribute('hidden')
     document.getElementById('resultadoDoc').setAttribute('hidden','hidden')
+    document.getElementById('btndocguardar').removeAttribute('disabled')
 }
 
 function saveDocumento(){
@@ -264,4 +276,61 @@ function saveDocumento(){
     let modalEl = document.getElementById('modalDoc')
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
     modal.hide();
+}
+
+function checkDocBuscar(){
+    let btn = document.getElementById('btndocbuscar')
+    let nrodoc = document.getElementById('nrodoc')
+    let select = document.getElementById('tipodoc')
+    if(nrodoc.value != '' && select.value != 'sel'){
+        btn.removeAttribute('disabled')
+    }
+    else{
+        btn.setAttribute('disabled', 'disabled')
+    }
+}
+
+function checkProf(){
+    let pro = document.getElementById('profesional')
+    let car = document.getElementById('caracter')
+    let btn = document.getElementById('btnprof')
+    if(pro.value!='sel' && car.value!='sel'){
+        btn.removeAttribute('disabled')
+    }
+    else{
+        btn.setAttribute('disabled', 'disabled')
+    }
+}
+
+function checkFunc(){
+    let btn = document.getElementById('btnfunc')
+    let select = document.getElementById('funcionario')
+    if(select.value != 'sel'){
+        btn.removeAttribute('disabled')
+    }
+    else{
+        btn.setAttribute('disabled', 'disabled')
+    }
+}
+
+function checkBuscarBenef(){
+    let btn = document.getElementById('btnbuscarbenef')
+    let input = document.getElementById('dnibenef')
+    if(input.value != ''){
+        btn.removeAttribute('disabled')
+    }
+    else{
+        btn.setAttribute('disabled', 'disabled')
+    }
+}
+
+function checkbuscaresc(){
+    let btn = document.getElementById('btnbuscesc')
+    let input = document.getElementById('nomes')
+    if(input.value != ''){
+        btn.removeAttribute('disabled')
+    }
+    else{
+        btn.setAttribute('disabled', 'disabled')
+    }
 }
