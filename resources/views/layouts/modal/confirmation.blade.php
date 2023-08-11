@@ -38,7 +38,7 @@
         </div>
         <div class="modal-footer">
             {!! Form::open(['id'=>'validar', 'method' => 'POST', 'style' => 'display:inline']) !!}
-                    {!! Form::submit('Validar', ['onclick' => '','class' => 'btn btn-success']) !!}
+                    {!! Form::submit('Validar', ['onclick' => '','class' => 'btn btn-success', 'id' => 'btnAceptar']) !!}
             {!! Form::close() !!}
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
