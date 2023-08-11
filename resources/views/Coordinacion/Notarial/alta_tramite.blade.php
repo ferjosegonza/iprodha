@@ -130,8 +130,9 @@
         <div class="modal-body" id="modalBody">
            <h5>Buscar escribano</h5>
             {!! Form::label('Apellido y nombre:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            {!! Form::text('nomes', null, ['id' => 'nomes', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100']) !!}
-            <button class="btn btn-primary" onclick="buscarEscribano()">Buscar</button>
+            {!! Form::text('nomes', null, ['id' => 'nomes', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100', 'onkeyup' => 'checkbuscaresc()']) !!}
+            <br>
+            <button class="btn btn-primary" onclick="buscarEscribano()" id="btnbuscesc" disabled>Buscar</button>
             <div id="resultadoEsc" hidden>
                 <br>
                 <h5>Seleccionar un escribano: </h5>
@@ -154,7 +155,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="saveEscribano()">Guardar</button>
+          <button type="button" class="btn btn-primary" onclick="saveEscribano()" disabled id="btnsaveesc">Guardar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
@@ -171,7 +172,7 @@
         </div>
         <div class="modal-body" id="modalBody">
             {!! Form::label('Tipo de profesional', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            <select class="form-select" id="profesional" name="profesional">
+            <select class="form-select" id="profesional" name="profesional" onchange="checkProf()">
                 <option value="sel" selected>Seleccionar</option>
                 @foreach ($profesional as $p)                            
                     <option value="{{$p->id_profesional}}">{{$p->descripcion}}</option>
@@ -179,7 +180,7 @@
             </select>
             <br>
             {!! Form::label('Caracter del profesional:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            <select class="form-select" id="caracter" name="caracter">
+            <select class="form-select" id="caracter" name="caracter" onchange="checkProf()">
                 <option value="sel" selected>Seleccionar</option>
                 @foreach ($caracter as $c)                            
                     <option value="{{$c->id_caracter}}">{{$c->descripcion}}</option>
@@ -187,7 +188,7 @@
             </select>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="saveProfesional()">Guardar</button>
+          <button type="button" class="btn btn-primary" onclick="saveProfesional()" disabled id="btnprof">Guardar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
@@ -204,7 +205,7 @@
         </div>
         <div class="modal-body" id="modalBody">
             {!! Form::label('Funcionario:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            <select class="form-select" id="funcionario" name="funcionario">
+            <select class="form-select" id="funcionario" name="funcionario" onchange="checkFunc()">
                 <option value="sel" selected>Seleccionar</option>
                 @foreach ($funcionario as $f)                            
                     <option value="{{$f->id_tipo}}">{{$f->descripcion}}</option>
@@ -215,7 +216,7 @@
             {!! Form::text('obs', null, ['id' => 'obsFunc', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100']) !!}
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="saveFuncionario()">Guardar</button>
+          <button type="button" class="btn btn-primary" onclick="saveFuncionario()" disabled id="btnfunc">Guardar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
@@ -233,8 +234,9 @@
         <div class="modal-body" id="modalBody">
             <h5>Buscar beneficiario</h5>
             {!! Form::label('DNI:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            {!! Form::text('dnibenef', null, ['id' => 'dnibenef', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100']) !!}
-            <button class="btn btn-primary" onclick="buscarBeneficiario()">Buscar</button>
+            {!! Form::text('dnibenef', null, ['id' => 'dnibenef', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100', 'onkeyup'=>'checkBuscarBenef()']) !!}
+            <br>
+            <button class="btn btn-primary" onclick="buscarBeneficiario()" id="btnbuscarbenef" disabled>Buscar</button>
             <div id="resultadoBen" hidden>
                 <br>
                 <h5>Seleccionar un beneficiario: </h5>
@@ -259,14 +261,14 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="saveBeneficiario()">Guardar</button>
+          <button type="button" class="btn btn-primary" onclick="saveBeneficiario()" disabled id="btnbenefsave">Guardar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
 </div>
-<div class="modal" tabindex="-1" role="dialog" id="modalDoc">
-    <div class="modal-dialog" role="document">
+<div class="modal bd-example-modal-lg" tabindex="-1" role="dialog" id="modalDoc">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalTitulo">Agregar un beneficiario</h5>
@@ -277,14 +279,15 @@
         <div class="modal-body" id="modalBody">
             <h5>Buscar documento</h5>
             {!! Form::label('Número de Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            {!! Form::text('nrodoc', null, ['id' => 'nrodoc', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100']) !!}
+            {!! Form::text('nrodoc', null, ['id' => 'nrodoc', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100', 'onkeyup' => 'checkDoc()']) !!}
             {!! Form::label('Tipo de Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            <select class="form-select" id="tipodoc" name="tipodoc">
+            <select class="form-select" id="tipodoc" name="tipodoc" onchange="checkDocBuscar()">
                 <option value="sel" selected>Seleccionar</option>
                 <option value="nota">Nota</option>
                 <option value="exp">Expendiente</option>
             </select>
-            <button class="btn btn-primary" onclick="buscarDocumento()">Buscar</button>
+            <br>
+            <button class="btn btn-primary" onclick="buscarDocumento()" disabled id="btndocbuscar">Buscar</button>
             <div id="resultadoDoc" hidden>
                 <br>
                 <h5 id="titulodoc"></h5>
@@ -306,7 +309,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="saveDocumento()">Guardar</button>
+          <button type="button" class="btn btn-primary" onclick="saveDocumento()" id="btndocguardar" disabled>Guardar</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
