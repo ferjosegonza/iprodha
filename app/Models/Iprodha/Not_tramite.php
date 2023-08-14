@@ -19,4 +19,20 @@ class Not_tramite extends Model
         'fecha', 'usuario', 'id_tipo', 'celular_contacto', 'mail_contacto', 'estado', 'nombre_comitente', 'dni_comitente'
     ];
 
+    public function crearTramite($tipo, $cel, $mail, $nombre, $dni){
+        $this->fecha = date('d-m-Y');
+        $this->usuario = auth()->user()->name;
+        $this->id_tipo = $tipo;
+        if($cel != null){
+            $this->celular_contacto = $cel;
+        }
+        if($mail != null){
+            $this->mail_contacto = $mail;
+        }
+        $this->estado = 1;
+        $this->nombre_comitente = $nombre;
+        $this->dni_comitente = $dni;
+        return $this->save();
+        
+    }
 }
