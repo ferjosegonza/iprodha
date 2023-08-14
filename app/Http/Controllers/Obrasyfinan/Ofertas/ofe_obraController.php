@@ -6,6 +6,8 @@ use App\Models\Iprodha\Localidad;
 use App\Models\Me\Expediente;
 use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\Ob_situacion;
+use App\Models\Iprodha\Ob_tip_obr;
+use App\Models\Iprodha\ob_operatoria;
 use App\Models\Iprodha\Ofe_tipocontratoferta;
 use App\Models\Iprodha\Ofe_estadoxobra;
 use App\Models\Iprodha\Ofe_obraestado;
@@ -57,27 +59,22 @@ class ofe_obraController extends Controller
         
         return view('Obrasyfinan.Ofertas.ofeobra.index',compact('Ofertas'));
     }
-  /*  public function sombrerosxoferta ($idobra){
-        $laObra = Ofe_obra::find($idobra);
-        $sombrerosxobra =  $laObra->getConceptoSombrero ;
-        return $sombrerosxobra ;
-        return view('Obrasyfinan.Ofertas.ofesombrero.index',compact('laObra','sombrerosxobra'));
-    } */
+  
     public function create(Request $request)
     {
-        $input = $request->all();
-        // $Localidad = Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc');
         $Localidad = Localidad::orderBy('nom_loc')->get();
-        // if(Auth::user()->hasRole('EMPRESA')){
-        //     $Empresa= Empresa::where('iduserweb' ,Auth::user()->id)->orderBy('nom_emp')->pluck('nom_emp','id_emp');
-        // }else{
-        //     $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
-        // }
-        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+
+        $TipoObra = Ob_tip_obr::pluck('tipo_obra','id_tip_obr');
+
         $Empresa= Empresa::orderBy('nom_emp')->get();
+
         $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 
+
         $TipoSituacion = Ob_situacion::pluck('descripcion', 'id_situacion');
-        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato', 'TipoSituacion'));
+
+        $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
+
+        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe'));
     }
 
    public function store(Request $request)
@@ -92,6 +89,9 @@ class ofe_obraController extends Controller
             'publica' => 'required',
             'anioymes' => 'required',
             'plazo' => 'required|min:1|max:999|numeric',
+            'idope' => 'required',
+            'idtipobr' => 'required',
+            'numlic' => 'required',
         ], [
             'publica.required' => 'La fecha de publicacion no puede estar vacio.'
         ]);
@@ -122,6 +122,9 @@ class ofe_obraController extends Controller
             'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
             'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
             'numofer' => 1,
+            'id_ope' => $request->input('idope'),
+            'id_tip_obr' => $request->input('idtipobr'),
+            'num_lic' => $request->input('numlic'),
         ]);
 
         if($request->input('idsituacion')){
@@ -145,6 +148,11 @@ class ofe_obraController extends Controller
     
     public function edit( $idobra)
     {
+
+        $TipoObra = Ob_tip_obr::pluck('tipo_obra','id_tip_obr');
+
+        $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
+
         $unaOferta = Ofe_obra::find(base64url_decode($idobra));
         // $Localidad= Localidad::pluck('nom_loc','id_loc');
         $Localidad= Localidad::orderBy('nom_loc')->get();
@@ -157,7 +165,7 @@ class ofe_obraController extends Controller
             $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
         }
             
-        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato', 'TipoSituacion'));
+        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe'));
     }
 
     public function show($idobra)
@@ -198,9 +206,15 @@ class ofe_obraController extends Controller
                 'anioymes' => 'required',
                 'publica' => 'required',
                 'plazo' => 'required|min:1|max:999|numeric',
+                'idope' => 'required',
+                'idtipobr' => 'required',
+                'numlic' => 'required',
             ]);
+
             $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
+
             $laOferta = Ofe_obra::find(base64url_decode($idobra));
+
             $laOferta->update([
                 'nomobra' => strtoupper($request->input('nomobra')),
                 'idexpediente' => $request->input('idexpediente'),
@@ -213,6 +227,9 @@ class ofe_obraController extends Controller
                 'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
                 'montotope' => $montotope,
                 'id_situacion' => $request->input('idsituacion'),
+                'id_ope' => $request->input('idope'),
+                'id_tip_obr' => $request->input('idtipobr'),
+                'num_lic' => $request->input('numlic'),
             ]);
 
         }
@@ -292,10 +309,10 @@ class ofe_obraController extends Controller
             // } catch (Throwable $e) {
             //     return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result)->with('error', 'No se puedo enviar el email');
             // } 
-            return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
+            return redirect()->route('ofeobra.vervalidar', base64url_encode($idobra))->with('mensaje', $result);
         }
         else {
-            return redirect()->route('ofeobra.vervalidar', $idobra)->with('error','Problemas con el procedimiento.');
+            return redirect()->route('ofeobra.vervalidar',  base64url_encode($idobra))->with('error','Problemas con el procedimiento.');
         }
     }
 
