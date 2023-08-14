@@ -117,6 +117,53 @@
                                 
                             </div>
                             <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+                                    
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idope', $TipoOpe, $unaOferta->id_ope ?? null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
+                                            $editaTodo
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idtipobr', $TipoObra, $unaOferta->id_tip_obr ?? null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
+                                            $editaTodo
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Numero de Licitacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::text('numlic', $unaOferta->num_lic ?? null, [
+                                            'class' => 'form-control',
+                                            'required' => 'required',
+                                            'data-type' => 'numlic',
+                                            'style' => 'text-transform:uppercase',
+                                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase()',
+                                            $editaTodo
+                                        ]) !!}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
@@ -224,5 +271,6 @@
         </div>
     <script src="{{ asset('js/Obrasyfinan/Ofertas/crear_oferta.js') }}"></script>
     <script src="{{ asset('js/input-format-dinero.js') }}"></script>
+    <script src="{{ asset('js/formato/input-format-num-lic.js') }}"></script>
 @endsection
 

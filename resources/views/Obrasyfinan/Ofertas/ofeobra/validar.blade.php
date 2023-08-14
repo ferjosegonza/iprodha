@@ -17,10 +17,10 @@
                             <div class="text-center"><h5>Información de la Obra</h5></div>                        
                         </div>
                         <div class="card-body">
-                            <div hidden>
+                            {{-- <div hidden>
                                 {!! Form::label('Id Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                 {!! Form::text($data->idobra, null, ['style' => 'disabled;' ]) !!}
-                            </div>
+                            </div> --}}
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9">
                                     <div class="form-group">
@@ -726,11 +726,11 @@
                                             'style' => 'display:inline',
                                             'files'=>'true']) !!}
                                         
-                                        {!! Form::submit('VALIDAR', ['class' => 'btn btn-success mr-2', 'style' => 'width: 40%; display: ;', 'id'=>'btnValidar']) !!}
-                                        <div hidden>
-                                            {!! Form::text('nombobra', $data->nomobra, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id' => 'info-obra-input']) !!}
-                                            {!! Form::text('nom_emp', $data->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id'=>'empresa']) !!}
-                                        </div>
+                                            {!! Form::submit('VALIDAR', ['class' => 'btn btn-success mr-2', 'style' => 'width: 40%; display: ;', 'id'=>'btnValidar']) !!}
+                                            <div hidden>
+                                                {!! Form::text('nombobra', $data->nomobra, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id' => 'info-obra-input']) !!}
+                                                {!! Form::text('nom_emp', $data->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id'=>'empresa']) !!}
+                                            </div>
                                         {!! Form::close() !!}
                                     @endif
                                 </div>
