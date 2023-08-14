@@ -203,7 +203,7 @@ function saveBeneficiario(){
 function buscarDocumento(){    
     if(document.getElementById('tipodoc').value != 'sel'){
         let tipo = document.getElementById('tipodoc').value
-        let nro = document.getElementById('nrodoc').value
+        let nro = document.getElementById('nrodocB').value
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -236,10 +236,10 @@ function buscarDocumento(){
                         }
                         tr.className= 'hoverable'
                         if(tipo == 'exp'){
-                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].exp_doc_id+'","'+res[i].exp_numero+'","'+res[i].exp_asunto+'")')
+                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].exp_doc_id+'", "' + res[i].exp_numero + '", "'+res[i].exp_asunto+'")')
                         }
                         else{
-                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].not_doc_id+'","'+res[i].not_numero+'","'+res[i].not_asunto+'")')
+                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].not_doc_id+'", "' + res[i].not_numero +'", "'+res[i].not_asunto+'")')
                         }
                         
                         body.appendChild(tr)
@@ -257,8 +257,9 @@ function buscarDocumento(){
     }
 }
 function seleccionarDocumento(id, nro, asun){
+    console.log(nro)
     document.getElementById('idDoc').innerHTML = id
-    document.getElementById('nroDoc').innerHTML = nro
+    document.getElementById('nroDocu').innerHTML = nro
     document.getElementById('asuDoc').innerHTML = asun
     document.getElementById('DocSeleccionado').removeAttribute('hidden')
     document.getElementById('resultadoDoc').setAttribute('hidden','hidden')
@@ -267,7 +268,7 @@ function seleccionarDocumento(id, nro, asun){
 
 function saveDocumento(){
     let id = document.getElementById('idDoc').innerHTML
-    let nro = document.getElementById('nroDoc').innerHTML
+    let nro = document.getElementById('nroDocu').innerHTML
     let asun = document.getElementById('asuDoc').innerHTML
     let tr = document.createElement('tr')
     tr.innerHTML = '<td hidden>'+ id +'</td>' + '<td>'+ nro +'</td>' + '<td>'+ asun +'</td>'
@@ -280,7 +281,7 @@ function saveDocumento(){
 
 function checkDocBuscar(){
     let btn = document.getElementById('btndocbuscar')
-    let nrodoc = document.getElementById('nrodoc')
+    let nrodoc = document.getElementById('nrodocB')
     let select = document.getElementById('tipodoc')
     if(nrodoc.value != '' && select.value != 'sel'){
         btn.removeAttribute('disabled')
@@ -333,4 +334,97 @@ function checkbuscaresc(){
     else{
         btn.setAttribute('disabled', 'disabled')
     }
+}
+
+window.addEventListener("DOMContentLoaded", (event) => {
+    let btn = document.getElementById('btnguardar')
+    let doc = document.getElementById('nroDoc')
+    let nombre = document.getElementById('nombreCom')
+    let email = document.getElementById('email')
+    let cel = document.getElementById('celular')
+    let tramite = document.getElementById('tipo')
+
+    const checkGuardar = () => {
+        if(doc.value != '' && nombre.value != '' && (email.value != '' || cel.value != '') && tramite.value != 'sel'){
+            btn.removeAttribute('disabled')
+        }
+        else{
+            btn.setAttribute('disabled', 'disabled')
+        }
+    }
+   
+    doc.addEventListener('keyup', checkGuardar)
+    nombre.addEventListener('keyup', checkGuardar)
+    email.addEventListener('keyup', checkGuardar)
+    cel.addEventListener('keyup', checkGuardar)
+    tramite.addEventListener('change', checkGuardar)
+});
+
+function guardar(){
+    let doc = document.getElementById('nroDoc').value
+    let nombre = document.getElementById('nombreCom').value
+    let email = document.getElementById('email').value
+    let cel = document.getElementById('celular').value
+    let tipo = document.getElementById('tipo').value
+    let tramite = {'documento' : 0, 'documento_id': null, 'profesional' : 0, 'profesional_id':null, 
+    'profesional_car' : null, 'funcionario': 0,'funcionario_id' : null, 'funcionario_obs' : null, 
+    'beneficiario' : 0, 'beneficiario_dni' : null, 'beneficiario_ope' : null, 'beneficiario_bar' : null,
+    'beneficiario_adj' : null, 'escribano' : 0, 'escribano_mat' : null}
+   
+    if(! $('#tabledoc').is(':hidden')){
+        tramite['documento'] = 1
+        tramite['documento_id'] = document.getElementById('tdoc').rows[1].cells[0].innerHTML
+    }
+    if(! $('#tableprof').is(':hidden')){
+        tramite['profesional'] = 1
+        tramite['profesional_id']= document.getElementById('tprof').rows[1].cells[0].innerHTML
+        tramite['profesional_car'] = document.getElementById('tprof').rows[1].cells[2].innerHTML
+    }
+    if(! $('#tablefunc').is(':hidden')){
+        tramite['funcionario']= 1
+        tramite['funcionario_id']= document.getElementById('tfunc').rows[1].cells[0].innerHTML
+        tramite['funcionario_obs']= document.getElementById('tfunc').rows[1].cells[2].innerHTML
+    }
+    if(! $('#tablebenef').is(':hidden')){
+        tramite['beneficiario']= 1
+        tramite['beneficiario_dni']= document.getElementById('tbenef').rows[1].cells[0].innerHTML
+        tramite['beneficiario_ope']= document.getElementById('tbenef').rows[1].cells[1].innerHTML
+        tramite['beneficiario_bar']= document.getElementById('tbenef').rows[1].cells[2].innerHTML
+        tramite['beneficiario_adj']= document.getElementById('tbenef').rows[1].cells[3].innerHTML
+    }
+    if(! $('#tableesc').is(':hidden')){
+        tramite['escribano']= 1
+        tramite['escribano_mat']= document.getElementById('tesc').rows[1].cells[1].innerHTML
+    }
+
+    console.log(tramite)
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: '/tramite/crear',
+        type: 'PUT',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            doc: doc,
+            nombre: nombre,
+            email:email,
+            cel:cel,
+            tipo:tipo,
+            tramite: JSON.stringify(tramite)
+        }),
+        dataType: 'json',
+        success: function(res){          
+            alert('Tramite creado con éxito.')    
+            window.location.href = "/notarial/bandeja";
+        },
+        error: function(res){
+            console.log(res)
+        }
+    }); 
+
 }

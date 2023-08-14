@@ -9,3 +9,11 @@ table{
 .hoverable:hover{
     background-color: rgba(129, 129, 129, 0.123);
 }
+.grid{
+    display: block;
+    text-align: center; 
+}
+.btnGuardar{
+    justify-self: center;
+    width: 20%;
+}

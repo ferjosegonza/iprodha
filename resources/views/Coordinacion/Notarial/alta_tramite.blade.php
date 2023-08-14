@@ -18,20 +18,20 @@
                         <h4>Datos del comitente</h4>
                         <div class="row">
                             <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 flex" >
-                                <label for="nro" class="control-label">Número de Documento</label> 
-                                <input type="number" id="nro" class="form-control" min="0">   
+                                <label for="nroDoc" class="control-label">Número de Documento</label> 
+                                <input type="number" id="nroDoc" class="form-control" min="0">   
                             </div>   
                             <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 flex" >
-                                <label for="nro" class="control-label">Nombre Completo</label> 
-                                <input type="text" id="nro" class="form-control">   
+                                <label for="nombreCom" class="control-label">Nombre Completo</label> 
+                                <input type="text" id="nombreCom" class="form-control">   
                             </div>   
                             <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 flex" >
-                                <label for="nro" class="control-label">Email</label> 
-                                <input type="email" id="nro" class="form-control">   
+                                <label for="email" class="control-label">Email</label> 
+                                <input type="email" id="email" class="form-control">   
                             </div>   
                             <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 flex" >
-                                <label for="nro" class="control-label">Celular</label> 
-                                <input type="tel" id="nro" class="form-control">   
+                                <label for="celular" class="control-label">Celular</label> 
+                                <input type="tel" id="celular" class="form-control">   
                             </div>   
                         </div>
                         <hr>
@@ -52,7 +52,7 @@
                         <hr>
                         <div id="tabledoc" hidden>
                             <h5>Documento</h5>
-                            <table class="tablita">
+                            <table class="tablita" id="tdoc">
                                 <thead>
                                     <th hidden>iddoc</th>
                                     <th>Número de Documento</th>
@@ -61,10 +61,11 @@
                                 <tbody id="docbody"></tbody>
                             </table>
                             <hr>
+
                         </div>
                         <div id="tableprof" hidden>
                             <h5>Profesional</h5>
-                            <table class="tablita">
+                            <table class="tablita" id="tprof">
                                 <thead>
                                     <th hidden>idtipo</th>
                                     <th>Tipo</th>
@@ -77,7 +78,7 @@
                         </div>
                         <div id="tablefunc" hidden>
                             <h5>Funcionario</h5>
-                            <table class="tablita">
+                            <table class="tablita" id="tfunc">
                                 <thead>
                                     <th hidden>idtipo</th>
                                     <th>Tipo</th>
@@ -89,7 +90,7 @@
                         </div>
                         <div id="tablebenef" hidden>
                             <h5>Beneficiario</h5>
-                            <table class="tablita">
+                            <table class="tablita" id="tbenef">
                                 <thead>
                                     <th>DNI</th>
                                     <th>OPE</th>
@@ -103,7 +104,7 @@
                         </div>
                         <div id="tableesc" hidden>
                             <h5>Escribano</h5>
-                            <table class="tablita">
+                            <table class="tablita" id="tesc">
                                 <thead>
                                     <th>Nombre</th>
                                     <th>Matrícula</th>
@@ -112,6 +113,10 @@
                             </table>
                             <hr>
                         </div>
+                        <div class="grid">
+                            <button class="btn btn-primary btnGuardar" disabled id="btnguardar" onclick="guardar()">Guardar</button>
+                            <a class="btn btn-secondary btnGuardar" href="/notarial/bandeja">Volver atrás</a>
+                        </div>                   
                     </div>
                 </div>
             </div>
@@ -279,7 +284,7 @@
         <div class="modal-body" id="modalBody">
             <h5>Buscar documento</h5>
             {!! Form::label('Número de Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            {!! Form::text('nrodoc', null, ['id' => 'nrodoc', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100', 'onkeyup' => 'checkDoc()']) !!}
+            {!! Form::text('nrodocB', null, ['id' => 'nrodocB', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100', 'onkeyup' => 'checkDocBuscar()']) !!}
             {!! Form::label('Tipo de Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
             <select class="form-select" id="tipodoc" name="tipodoc" onchange="checkDocBuscar()">
                 <option value="sel" selected>Seleccionar</option>
@@ -304,7 +309,7 @@
                 <br>    
                 <h5>Documento seleccionado:</h5>
                 <label hidden id="idDoc"></label>
-                <b style="font-size: 15px">Número de Documento: </b><label id="nroDoc"></label> 
+                <b style="font-size: 15px">Número de Documento: </b><label id="nroDocu"></label> 
                 <b style="font-size: 15px">Asunto: </b><label id="asuDoc"></label> 
             </div>
         </div>
