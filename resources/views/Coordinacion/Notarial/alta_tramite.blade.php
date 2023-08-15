@@ -50,7 +50,7 @@
                         <button class="btn btn-outline-dark" style="width: 19%" onclick="beneficiario()">Beneficiario</button>
                         <button class="btn btn-outline-dark" style="width: 19%" onclick="escribano()">Escribano</button>
                         <hr>
-                        <div id="tabledoc" hidden>
+                        <div id="tabledoc" hidden class="tableDis">
                             <h5>Documento</h5>
                             <table class="tablita" id="tdoc">
                                 <thead>
@@ -60,10 +60,11 @@
                                 </thead>
                                 <tbody id="docbody"></tbody>
                             </table>
+                            <button class="btn btn-outline-danger btn-sm btncerrar" onclick="deleteado('tabledoc')">X</button>
                             <hr>
 
                         </div>
-                        <div id="tableprof" hidden>
+                        <div id="tableprof" hidden class="tableDis">
                             <h5>Profesional</h5>
                             <table class="tablita" id="tprof">
                                 <thead>
@@ -74,9 +75,10 @@
                                 </thead>
                                 <tbody id="profbody"></tbody>
                             </table>
+                            <button class="btn btn-outline-danger btn-sm btncerrar" onclick="deleteado('tableprof')">X</button>
                             <hr>
                         </div>
-                        <div id="tablefunc" hidden>
+                        <div id="tablefunc" hidden class="tableDis">
                             <h5>Funcionario</h5>
                             <table class="tablita" id="tfunc">
                                 <thead>
@@ -86,9 +88,10 @@
                                 </thead>
                                 <tbody id="funcbody"></tbody>
                             </table>
+                            <button class="btn btn-outline-danger btn-sm btncerrar" onclick="deleteado('tablefunc')">X</button>
                             <hr>
                         </div>
-                        <div id="tablebenef" hidden>
+                        <div id="tablebenef" hidden class="tableDis">
                             <h5>Beneficiario</h5>
                             <table class="tablita" id="tbenef">
                                 <thead>
@@ -100,9 +103,10 @@
                                 </thead>
                                 <tbody id="benefbody"></tbody>
                             </table>
+                            <button class="btn btn-outline-danger btn-sm btncerrar" onclick="deleteado('tablebenef')">X</button>
                             <hr>
                         </div>
-                        <div id="tableesc" hidden>
+                        <div id="tableesc" hidden class="tableDis">
                             <h5>Escribano</h5>
                             <table class="tablita" id="tesc">
                                 <thead>
@@ -110,7 +114,8 @@
                                     <th>Matrícula</th>
                                 </thead>
                                 <tbody id="escbody"></tbody>
-                            </table>
+                            </table>                            
+                            <button class="btn btn-outline-danger btn-sm btncerrar" onclick="deleteado('tableesc')">X</button>
                             <hr>
                         </div>
                         <div class="grid">
