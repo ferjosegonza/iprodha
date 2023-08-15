@@ -20,7 +20,8 @@ class Not_tramite extends Model
     ];
 
     public function crearTramite($tipo, $cel, $mail, $nombre, $dni){
-        $this->fecha = date('d-m-Y');
+        date_default_timezone_set('America/Argentina/Buenos_Aires'); 
+        $this->fecha = date("Y-m-d h:i:s");
         $this->usuario = auth()->user()->name;
         $this->id_tipo = $tipo;
         if($cel != null){
@@ -32,7 +33,6 @@ class Not_tramite extends Model
         $this->estado = 1;
         $this->nombre_comitente = $nombre;
         $this->dni_comitente = $dni;
-        return $this->save();
-        
+        return $this->save();        
     }
 }

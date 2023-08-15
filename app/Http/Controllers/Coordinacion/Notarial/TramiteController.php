@@ -10,6 +10,7 @@ use App\Models\Iprodha\Not_tramite_profesional;
 use App\Models\Iprodha\Not_tramite_funcionario;
 use App\Models\Iprodha\Not_tramite_beneficiario;
 use App\Models\Iprodha\Not_tramite_escribano;
+use App\Models\Iprodha\Not_tramite_movimiento;
 
 
 class TramiteController extends Controller
@@ -58,4 +59,25 @@ class TramiteController extends Controller
         return response()->json($res);        
     }
     
+    public function movimiento(Request $request){
+        $mov = new Not_tramite_movimiento;
+        $res = $mov->crear($request->id, $request->obs, $request->medio);
+        return response()->json($res);
+    }
+
+    public function getMovimientos(Request $request){
+        $movimientos = Not_tramite_movimiento::join('iprodha.not_tramite_medio', 'iprodha.not_tramite_medio.id_medio', 'iprodha.not_tramite_movimiento.id_medio')->where('id_tramite', '=', $request->id)->get();
+        return response()->json($movimientos);
+    }
+
+    public function cerrar($id){
+        $tramite = Not_tramite::where('id_tramite','=', $id)->first();
+        $res = $tramite->update(['estado'=>'0']);
+        return response()->json($tramite);
+    }
+
+    public function getTramites(){
+        $tramites = Not_tramite::where('estado', '=', '1')->get();
+        return response()->json($tramites);
+    }
 }
