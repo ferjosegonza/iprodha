@@ -26,15 +26,17 @@
                                 <th>Dni del Comitente</th>
                                 <th></th>
                             </thead>
-                            <tbody>
+                            <tbody id="bodyTramite">
                                 @foreach ($tramites as $t)
                                     <tr>
                                         <td>{{$t->descripcion}}</td>
                                         <td>{{$t->fecha}}</td>
                                         <td>{{$t->nombre_comitente}}</td>
                                         <td>{{$t->dni_comitente}}</td>
-                                        <td><button class="btn btn-outline-primary btn-sm">+ Movimiento</button>
-                                            <button class="btn btn-outline-danger btn-sm">Cerrar trámite</button></td>
+                                        <td>
+                                            <a href="/tramite/{{$t->id_tramite}}/movimientos" class="btn btn-outline-primary btn-sm">Movimientos</a>
+                                            <button onclick="cerrar('{{$t->id_tramite}}')" class="btn btn-outline-danger btn-sm">Cerrar trámite</button>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

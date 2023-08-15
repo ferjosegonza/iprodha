@@ -4,7 +4,8 @@ table{
 .tablita{
     width: 90%;
     font-size: medium;
-    margin-left: 4%;
+    margin-top: 3%;
+    margin-left: -8%;
 }
 .hoverable:hover{
     background-color: rgba(129, 129, 129, 0.123);
@@ -16,4 +17,12 @@ table{
 .btnGuardar{
     justify-self: center;
     width: 20%;
+}
+.btncerrar{
+    width: 4%;
+    margin-left: 1%;
+    align-self: center;
+}
+.tableDis{
+    display: flex;
 }

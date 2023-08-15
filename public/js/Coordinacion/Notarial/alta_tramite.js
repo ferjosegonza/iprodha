@@ -34,7 +34,11 @@ function saveProfesional(){
     if(pro.value != 'sel' && car.value != 'sel'){
         let tr = document.createElement('tr')
         tr.innerHTML = '<td hidden>'+ pro.value +'</td>' +'<td>'+ pro.options[pro.selectedIndex].text +'</td>' + '<td hidden>'+ car.value +'</td>'+ '<td>'+ car.options[car.selectedIndex].text +'</td>'
-        document.getElementById('profbody').appendChild(tr)
+        let body = document.getElementById('profbody')
+        while(body.hasChildNodes()){
+            body.removeChild(body.lastChild)
+        }
+        body.appendChild(tr)
         document.getElementById('tableprof').removeAttribute('hidden')
         let modalEl = document.getElementById('modalProf')
         let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
@@ -52,7 +56,11 @@ function saveFuncionario(){
     if(fun.value != 'sel'){
         let tr = document.createElement('tr')
         tr.innerHTML = '<td hidden>'+ fun.value +'</td>' +'<td>'+ fun.options[fun.selectedIndex].text +'</td>' + '<td>'+ obs +'</td>'
-        document.getElementById('funcbody').appendChild(tr)
+        let body = document.getElementById('funcbody')
+        while(body.hasChildNodes()){
+            body.removeChild(body.lastChild)
+        }
+        body.appendChild(tr)
         document.getElementById('tablefunc').removeAttribute('hidden')
         let modalEl = document.getElementById('modalFunc')
         let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
@@ -125,7 +133,11 @@ function saveEscribano(){
     let mat = document.getElementById('matEsc').innerHTML
     let tr = document.createElement('tr')
     tr.innerHTML = '<td>'+ nom +'</td>' + '<td>'+ mat +'</td>'
-    document.getElementById('escbody').appendChild(tr)
+    let body = document.getElementById('escbody')
+        while(body.hasChildNodes()){
+            body.removeChild(body.lastChild)
+        }
+        body.appendChild(tr)
     document.getElementById('tableesc').removeAttribute('hidden')
     let modalEl = document.getElementById('modalEsc')
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
@@ -193,7 +205,11 @@ function saveBeneficiario(){
     let apyna = document.getElementById('apynaBef').innerHTML
     let tr = document.createElement('tr')
     tr.innerHTML = '<td>'+ doc +'</td>' + '<td>'+ ope +'</td>' + '<td>'+ barrio +'</td>' + '<td>'+ adju +'</td>' + '<td>'+ apyna +'</td>'
-    document.getElementById('benefbody').appendChild(tr)
+    let body = document.getElementById('benefbody')
+        while(body.hasChildNodes()){
+            body.removeChild(body.lastChild)
+        }
+        body.appendChild(tr)
     document.getElementById('tablebenef').removeAttribute('hidden')
     let modalEl = document.getElementById('modalBenef')
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
@@ -272,7 +288,11 @@ function saveDocumento(){
     let asun = document.getElementById('asuDoc').innerHTML
     let tr = document.createElement('tr')
     tr.innerHTML = '<td hidden>'+ id +'</td>' + '<td>'+ nro +'</td>' + '<td>'+ asun +'</td>'
-    document.getElementById('docbody').appendChild(tr)
+    let body = document.getElementById('docbody')
+        while(body.hasChildNodes()){
+            body.removeChild(body.lastChild)
+        }
+        body.appendChild(tr)
     document.getElementById('tabledoc').removeAttribute('hidden')
     let modalEl = document.getElementById('modalDoc')
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
@@ -427,4 +447,8 @@ function guardar(){
         }
     }); 
 
+}
+
+function deleteado(table){
+    document.getElementById(table).setAttribute('hidden', 'hidden')
 }

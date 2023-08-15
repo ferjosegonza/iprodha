@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Iprodha\Not_tramite;
 use App\Models\Iprodha\Not_tramite_tipo;
+use App\Models\Iprodha\Not_tramite_movimiento;
+use App\Models\Iprodha\Not_tramite_medio;
 use App\Models\Iprodha\Not_profesional;
 use App\Models\Iprodha\Not_profesional_caracter;
 use App\Models\Iprodha\Not_funcionario_tipo;
@@ -63,5 +65,15 @@ class NotarialController extends Controller
         }        
         $documentos = DB::select( DB::raw($query));
         return response()->json($documentos);
+    }
+
+    public function movimientos($id){
+        $tramite = Not_tramite::find($id)->join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->first();
+        $movimientos = Not_tramite_movimiento::join('iprodha.not_tramite_medio', 'iprodha.not_tramite_medio.id_medio', 'iprodha.not_tramite_movimiento.id_medio')->where('id_tramite', '=', $id)->get();
+        $medios = Not_tramite_medio::get();
+        return view('Coordinacion.Notarial.movimientos')
+        ->with('tramite', $tramite)
+        ->with('movimientos', $movimientos)
+        ->with('medio', $medios);
     }
 }
