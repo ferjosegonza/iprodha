@@ -206,10 +206,10 @@ function saveBeneficiario(){
     let tr = document.createElement('tr')
     tr.innerHTML = '<td>'+ doc +'</td>' + '<td>'+ ope +'</td>' + '<td>'+ barrio +'</td>' + '<td>'+ adju +'</td>' + '<td>'+ apyna +'</td>'
     let body = document.getElementById('benefbody')
-        while(body.hasChildNodes()){
-            body.removeChild(body.lastChild)
-        }
-        body.appendChild(tr)
+    while(body.hasChildNodes()){
+        body.removeChild(body.lastChild)
+    }
+    body.appendChild(tr)
     document.getElementById('tablebenef').removeAttribute('hidden')
     let modalEl = document.getElementById('modalBenef')
     let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
