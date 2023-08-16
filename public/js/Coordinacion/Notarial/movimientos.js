@@ -64,7 +64,6 @@ function guardarMovimiento(){
 }
 
 function actualizarTabla(){
-    let body = document.getElementById('bodyMovimientos')
     let id = document.getElementById('id').innerHTML
     $.ajaxSetup({
         headers: {
@@ -81,6 +80,7 @@ function actualizarTabla(){
         }),
         dataType: 'json',
         success: function(res){    
+            console.log(res)
             $('#modal').modal('show'); 
             $('#modal').modal('hide'); 
             //hide the modal
@@ -89,16 +89,20 @@ function actualizarTabla(){
             //modal-open class is added on body so it has to be removed
 
             $('.modal-backdrop').remove();
-            //need to remove div with modal-backdrop class
-            while(body.hasChildNodes()){
-                body.removeChild(body.lastChild)
+            //need to remove div with modal-backdrop class            
+            
+            location.reload() 
+            /* let body = document.getElementById('bodyMovimientos')
+            console.log(body.childNodes)
+            while (body.firstChild) {
+                body.removeChild(body.firstChild);
             }
             for(let i = 0; i<res.length; i++){
                 let tr = document.createElement('tr')
                 tr.innerHTML = '<td>'+res[i].fecha+'</td>' + '<td>'+res[i].observacion+'</td>'+'<td>'+res[i].descripcion+'</td>'
                 body.appendChild(tr)
             }
-            $('#tableMovimientos').DataTable().draw();
+            $('#tableMovimientos').DataTable().draw(); */
                    
         },
         error: function(res){
