@@ -67,8 +67,8 @@ class NotarialController extends Controller
         return response()->json($documentos);
     }
 
-    public function movimientos($id){
-        $tramite = Not_tramite::find($id)->join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->first();
+    public function movimientos($id){    
+        $tramite = Not_tramite::where('id_tramite', '=',$id)->join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->first();
         $movimientos = Not_tramite_movimiento::join('iprodha.not_tramite_medio', 'iprodha.not_tramite_medio.id_medio', 'iprodha.not_tramite_movimiento.id_medio')->where('id_tramite', '=', $id)->get();
         $medios = Not_tramite_medio::get();
         return view('Coordinacion.Notarial.movimientos')
