@@ -9,6 +9,11 @@ use App\Models\Iprodha\Not_tramite;
 use App\Models\Iprodha\Not_tramite_tipo;
 use App\Models\Iprodha\Not_tramite_movimiento;
 use App\Models\Iprodha\Not_tramite_medio;
+use App\Models\Iprodha\Not_tramite_profesional;
+use App\Models\Iprodha\Not_tramite_funcionario;
+use App\Models\Iprodha\Not_tramite_beneficiario;
+use App\Models\Iprodha\Not_tramite_escribano;
+use App\Models\Iprodha\Not_tramite_documento;
 use App\Models\Iprodha\Not_profesional;
 use App\Models\Iprodha\Not_profesional_caracter;
 use App\Models\Iprodha\Not_funcionario_tipo;
@@ -71,9 +76,35 @@ class NotarialController extends Controller
         $tramite = Not_tramite::where('id_tramite', '=',$id)->join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->first();
         $movimientos = Not_tramite_movimiento::join('iprodha.not_tramite_medio', 'iprodha.not_tramite_medio.id_medio', 'iprodha.not_tramite_movimiento.id_medio')->where('id_tramite', '=', $id)->get();
         $medios = Not_tramite_medio::get();
+        $tipos = Not_tramite_tipo::get();
+        $profesional = Not_profesional::get();
+        $caracter = Not_profesional_caracter::get();
+        $funcionario = Not_funcionario_tipo::get();
+        $asuntos = array('profesional' => 0, 'funcionario' => 0, 'escribano' => 0, 'beneficiario' => 0, 'documento' => 0);
+        if(sizeof(Not_tramite_profesional::where('id_tramite', '=', $tramite->id_tramite)->get()) > 0){
+            $asuntos['profesional'] = 1;
+        }
+        if(sizeof(Not_tramite_escribano::where('id_tramite', '=', $tramite->id_tramite)->get()) > 0){
+            $asuntos['escribano'] = 1;
+        }
+        if(sizeof(Not_tramite_beneficiario::where('id_tramite', '=', $tramite->id_tramite)->get()) > 0){
+            $asuntos['beneficiario'] = 1;
+        }
+        if(sizeof(Not_tramite_funcionario::where('id_tramite', '=', $tramite->id_tramite)->get()) > 0){
+            $asuntos['funcionario'] = 1;
+        }
+        if(sizeof(Not_tramite_documento::where('id_tramite', '=', $tramite->id_tramite)->get()) > 0){
+            $asuntos['documento'] = 1;
+        }
+        
         return view('Coordinacion.Notarial.movimientos')
+        ->with('tipos', $tipos)
         ->with('tramite', $tramite)
         ->with('movimientos', $movimientos)
-        ->with('medio', $medios);
+        ->with('profesional', $profesional)
+        ->with('caracter', $caracter)
+        ->with('funcionario', $funcionario)
+        ->with('medio', $medios)
+        ->with('asuntos', $asuntos);
     }
 }

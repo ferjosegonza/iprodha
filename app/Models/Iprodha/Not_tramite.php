@@ -4,7 +4,7 @@ namespace App\Models\Iprodha;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use DB;
 
 class Not_tramite extends Model
 {
@@ -29,6 +29,26 @@ class Not_tramite extends Model
         }
         if($mail != null){
             $this->mail_contacto = $mail;
+        }
+        $this->estado = 1;
+        $this->nombre_comitente = $nombre;
+        $this->dni_comitente = $dni;
+        return $this->save();        
+    }
+
+    public function modificarTramite($tipo, $cel, $mail, $nombre, $dni){
+        $this->id_tipo = $tipo;
+        if($cel != null){
+            $this->celular_contacto = $cel;
+        }
+        else{
+            $this->celular_contacto = null;
+        }
+        if($mail != null){
+            $this->mail_contacto = $mail;
+        }
+        else{
+            $this->mail_contacto = null;
         }
         $this->estado = 1;
         $this->nombre_comitente = $nombre;
