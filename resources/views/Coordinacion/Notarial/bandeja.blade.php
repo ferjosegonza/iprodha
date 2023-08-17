@@ -34,7 +34,7 @@
                                         <td>{{$t->nombre_comitente}}</td>
                                         <td>{{$t->dni_comitente}}</td>
                                         <td>
-                                            <a href="/tramite/{{$t->id_tramite}}/movimientos" class="btn btn-outline-primary btn-sm">Movimientos</a>
+                                            <a href="/tramite/{{$t->id_tramite}}/movimientos" class="btn btn-outline-primary btn-sm">Acceder al Trámite</a>
                                             <button onclick="cerrar('{{$t->id_tramite}}')" class="btn btn-outline-danger btn-sm">Cerrar trámite</button>
                                         </td>
                                     </tr>
