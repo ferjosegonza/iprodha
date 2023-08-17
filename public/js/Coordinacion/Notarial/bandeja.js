@@ -62,9 +62,7 @@ function actualizarTabla(){
         }),
         dataType: 'json',
         success: function(res){ 
-            console.log(res)   
-            console.log(body)
-            while(body.hasChildNodes()){
+            /* while(body.hasChildNodes()){
                 body.removeChild(body.lastChild)
             }
             if(res.length>0){
@@ -79,8 +77,8 @@ function actualizarTabla(){
                 let tr = document.createElement('tr')
                 tr.innerHTML = '<td colspan="5">No se han encontrado registros</td>'
                 body.appendChild(tr)
-            }
-            
+            } */
+            location.reload() 
                    
         },
         error: function(res){
