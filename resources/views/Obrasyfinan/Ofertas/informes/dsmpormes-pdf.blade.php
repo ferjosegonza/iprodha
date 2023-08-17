@@ -50,7 +50,7 @@
                         <label><b>Código de barra del expediente:<b></label>
                         <label>{{$obra->idexpediente}}</label> 
                     </div>                     --}}
-                    <div class="column-3 form-group"> 
+                    <div class="column-4 form-group"> 
                         <label><b>Expediente Número:<b></label>
                         <label>{{$obra->getExpediente->exp_numero}}</label>
                     </div>
@@ -63,7 +63,7 @@
                 </div> --}}
                 <div class="row">
                     <div class="column-4 form-group"> 
-                        <label><b>Vivienta:<b></label><br>
+                        <label><b>Vivienda:<b></label><br>
                         <label>${{number_format($obra->monviv,2, ',', '.')}}</label>
                     </div>
                     <div class="column-4 form-group"> 
