@@ -622,7 +622,7 @@ function deleteado(table){
 }
 
 function saveProfesional(){    
-    let pro = document.getElementById('profesional')
+    let pro = document.getElementById('profS')
     let car = document.getElementById('caracter')
     if(pro.value != 'sel' && car.value != 'sel'){
         let tr = document.createElement('tr')
@@ -644,7 +644,7 @@ function saveProfesional(){
 }
 
 function saveFuncionario(){    
-    let fun = document.getElementById('funcionario')
+    let fun = document.getElementById('funcS')
     let obs = document.getElementById('obsFunc').value
     if(fun.value != 'sel'){
         let tr = document.createElement('tr')
