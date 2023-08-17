@@ -50,7 +50,7 @@
                         <label><b>Código de barra del expediente:<b></label>
                         <label>{{$obra->idexpediente}}</label> 
                     </div>                     --}}
-                    <div class="column-3 form-group"> 
+                    <div class="column-4 form-group"> 
                         <label><b>Expediente Número:<b></label>
                         <label>{{$obra->getExpediente->exp_numero}}</label>
                     </div>
@@ -63,7 +63,7 @@
                 </div> --}}
                 <div class="row">
                     <div class="column-4 form-group"> 
-                        <label><b>Vivienta:<b></label><br>
+                        <label><b>Vivienda:<b></label><br>
                         <label>${{number_format($obra->monviv,2, ',', '.')}}</label>
                     </div>
                     <div class="column-4 form-group"> 
@@ -93,9 +93,10 @@
         </div>
     </section>    
     
+    @if($tieneInfra)
     <section style="margin-top: 10px">
         <div class="section-header">
-            <h4 class="m-auto">ITEMS DE LA OFERTA DE OBRA - {{$tipo}}</h4>
+            <h4 class="m-auto">ITEMS DE LA OFERTA DE OBRA - INFRAESTRUCTURA</h4>
         </div>
         <div class="section-body">
             <table class="table">
@@ -111,23 +112,18 @@
                         $total = 0;
                         $totalinc = 0;
                     @endphp
-                    @foreach ($items as $item)
+                    @foreach ($itemsInfra as $item)
                         <tr>
                             <td>{{$item->orden}}</td>
                             <td>{{$item->nom_item}}</td>
                             <td>{{$item->iditem}}</td>
 
-                            @if ($opc == 1)
-                                <td>$ {{number_format($item->vivienda,2, ',', '.')}}</td>
-                                @php
-                                    $total += $item->vivienda;
-                                @endphp
-                            @else
-                                <td>$ {{number_format($item->infra,2, ',', '.')}}</td>
-                                @php
-                                    $total += $item->infra;
-                                @endphp
-                            @endif
+                            
+                            <td>$ {{number_format($item->infra,2, ',', '.')}}</td>
+                            @php
+                                $total += $item->infra;
+                            @endphp
+                            
                             <td>{{number_format($item->por_inc,4, ',', '.')}}</td> 
                             @php
                                 $totalinc += $item->por_inc;
@@ -162,6 +158,7 @@
                 $subtotal = $total;
             @endphp
             @foreach ($conceptos as $concepto)
+            @if ($concepto->idconceptosombrero < 40)
                 <table class="table" style="margin-top: 30px">
                     <thead>
                         <th>Concepto</th>
@@ -184,7 +181,32 @@
                     $contador += 1;
                     $subtotal += $subtotal*($concepto->valor/100);
                 @endphp
-            @endforeach
+            @elseif($concepto->idconceptosombrero == 50)
+                <table class="table" style="margin-top: 30px">
+                    <thead>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                        <th>Monto</th>
+                        <th>SubTotal {{$contador}}</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$concepto->conceptosombrero}}</td>
+                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
+                            <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                            <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
+                        </tr>
+                        <tr style="background-color: rgb(190, 190, 190)">
+                        </tr>
+                    </tbody>
+                </table>
+                @php
+                    $contador += 1;
+                    $subtotal += $subtotal*($concepto->valor/100);
+                    $totalInfra = $subtotal;
+                @endphp
+            @endif
+        @endforeach
                 <table class="table" style="margin-top: 30px">
                     <tbody>
                         <tr>
@@ -194,6 +216,173 @@
                     </tbody>
                 </table>
         </div>
-    </section>  
+    </section>
+    @endif
+
+    @if(1)
+    <section style="margin-top: 10px">
+        <div class="section-header">
+            <h4 class="m-auto">ITEMS DE LA OFERTA DE OBRA - VIVIENDA</h4>
+        </div>
+        <div class="section-body">
+            <table class="table">
+                <thead>
+                    <th>Orden</th>
+                    <th>Denominacion</th>
+                    <th>Codigo</th>
+                    <th>Monto</th>
+                    <th>% costo</th>
+                </thead>
+                <tbody>
+                    @php
+                        $total = 0;
+                        $totalinc = 0;
+                    @endphp
+                    @foreach ($itemsViv as $item)
+                        <tr>
+                            <td>{{$item->orden}}</td>
+                            <td>{{$item->nom_item}}</td>
+                            <td>{{$item->iditem}}</td>
+
+                            
+                            <td>$ {{number_format($item->infra,2, ',', '.')}}</td>
+                            @php
+                                $total += $item->infra;
+                            @endphp
+                            
+                            <td>{{number_format($item->por_inc,4, ',', '.')}}</td> 
+                            @php
+                                $totalinc += $item->por_inc;
+                            @endphp
+                            {{-- <td>${{number_format($data->tot1viv,2, ',', '.')}}</td>
+                            <td>${{number_format($data->tot1inf,2, ',', '.')}}</td> --}}
+                        </tr>
+                    @endforeach
+                    <tr style="background-color: rgb(190, 190, 190)">
+                        <td></td>
+                        <td></td>
+                        <td>Sub total 1:</td>
+                        <td>
+                            ${{number_format($total,2, ',', '.')}}
+                        </td>
+                        <td>
+                            {{number_format($totalinc,4, ',', '.')}}
+                        </td>
+                    </tr>      
+                </tbody>
+            </table>
+        </div>
+    </section>
+    
+    <section style="margin-top: 10px">
+        <div class="section-header">
+            <h4 class="m-auto">TOTALES CON SOMBRERO</h4>
+        </div>
+        <div class="section-body">
+            @php
+                $contador = 2;
+                $subtotal = $total;
+            @endphp
+            @foreach ($conceptos as $concepto)
+            @if ($concepto->idconceptosombrero < 40)
+                <table class="table" style="margin-top: 30px">
+                    <thead>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                        <th>Monto</th>
+                        <th>SubTotal {{$contador}}</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$concepto->conceptosombrero}}</td>
+                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
+                            <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                            <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
+                        </tr>
+                        <tr style="background-color: rgb(190, 190, 190)">
+                        </tr>
+                    </tbody>
+                </table>
+                @php
+                    $contador += 1;
+                    $subtotal += $subtotal*($concepto->valor/100);
+                @endphp
+            @elseif($concepto->idconceptosombrero == 40)
+                <table class="table" style="margin-top: 30px">
+                    <thead>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                        <th>Monto</th>
+                        <th>SubTotal {{$contador}}</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$concepto->conceptosombrero}}</td>
+                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
+                            <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                            <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
+                        </tr>
+                        <tr style="background-color: rgb(190, 190, 190)">
+                        </tr>
+                    </tbody>
+                </table>
+                @php
+                    $contador += 1;
+                    $subtotal += $subtotal*($concepto->valor/100);
+                    $totalViv = $subtotal;
+                @endphp
+            @endif
+        @endforeach
+                <table class="table" style="margin-top: 30px">
+                    <tbody>
+                        <tr>
+                            <th>MONTO TOTAL</th>
+                            <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </section>
+    @endif
+    {{-- <section style="margin-top: 10px">
+        <div class="section-body">
+            <table class="table" style="margin-top: 30px">
+                <tbody>
+                    <tr>
+                        <th>MONTO INFRAESTRUCTURA</th>
+                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <table class="table" style="margin-top: 30px">
+                <tbody>
+                    <tr>
+                        <th>MONTO VIVIENDA</th>
+                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <table class="table" style="margin-top: 30px">
+                <tbody>
+                    <tr>
+                        <th>MONTO NEXO</th>
+                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table" style="margin-top: 30px">
+                <tbody>
+                    <tr>
+                        <th>MONTO TOTAL</th>
+                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>   --}}
+    
 </body>
 </html>

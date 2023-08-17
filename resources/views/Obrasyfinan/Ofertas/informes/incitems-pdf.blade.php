@@ -63,7 +63,7 @@
                 </div> --}}
                 <div class="row">
                     <div class="column-4 form-group"> 
-                        <label><b>Vivienta:<b></label><br>
+                        <label><b>Vivienda:<b></label><br>
                         <label>${{number_format($obra->monviv,2, ',', '.')}}</label>
                     </div>
                     <div class="column-4 form-group"> 

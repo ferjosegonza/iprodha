@@ -51,7 +51,18 @@ class ofe_obraController extends Controller
         $LaEmpresa = Empresa::where('iduserweb','=',Auth::user()->id)->first();
         if(empty($LaEmpresa)) {
             $Ofertas = Ofe_obra::orderBy('idobra', 'desc')->get();
-            $modifica=true;
+
+            // $Ofertas = Ofe_obra::join('iprodha.ofe_estadoxobra', 'iprodha.ofe_estadoxobra.idobra', '=', 'Ofe_obra.idobra')
+                      
+            //           // ->orderBy('iprodha.ofe_estadoxobra.')
+            //           //see PS:
+            //           ->where("actual", 1)
+            //           // ->select('iprodha.ofe_estadoxobra.*') 
+            //           ->orderBy('iprodha.ofe_estadoxobra.idestado')
+            //           ->get(['iprodha.ofe_estadoxobra.idestado']);
+
+            // return $Ofertas;
+            $modifica = true;
         }else{
             $Ofertas = Ofe_obra::where('idempresa','=' ,$LaEmpresa->id_emp)->orderBy('idobra', 'desc')->get();
             $modifica =false;
@@ -91,7 +102,7 @@ class ofe_obraController extends Controller
             'plazo' => 'required|min:1|max:999|numeric',
             'idope' => 'required',
             'idtipobr' => 'required',
-            'numlic' => 'required',
+            'numlic' => 'required|string|min:9|max:9',
         ], [
             'publica.required' => 'La fecha de publicacion no puede estar vacio.'
         ]);
@@ -443,16 +454,19 @@ class ofe_obraController extends Controller
         switch ($opc) {
             case 1:
                 $tipo = 'VIVIENDA';
+                $tipoItm = 40;
                 $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 1)->orderBy('orden')->get();
                 break;
             case 2:
                 $tipo = 'INFRAESTRUCTURA';
+                $tipoItm = 50;
                 $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 2)->orderBy('orden')->get();
                 break;
 
             case 3:
-                $tipo = 'GENERAL';
-                $items = Vw_ofe_items::where('idobra', $id)->orderBy('orden')->get();
+                $tipo = 'NEXO';
+                $tipoItm = 60;
+                $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 3)->orderBy('orden')->get();
                 break;
 
             default:
@@ -463,6 +477,7 @@ class ofe_obraController extends Controller
         return $pdf->loadView('Obrasyfinan.Ofertas.informes.items-pdf',[
                     'obra' => $ofeobra,
                     'tipo' => $tipo, 
+                    'tipoItm' => $tipoItm,
                     'items' => $items,
                     'opc'=> $opc, 
                     'conceptos'=> $conceptos,
@@ -472,6 +487,62 @@ class ofe_obraController extends Controller
                     'texto'=>$texto])->setPaper('legal', 'portrait')
                                     ->stream('ItemsDeLaObra.pdf');
     } 
+
+    public function pdfItemsGral($id){
+      $pdf = app('dompdf.wrapper');
+
+      $id = base64url_decode($id);
+      $ofeobra = Ofe_obra::find($id);
+      $vw = Vw_ofe_items::where('idobra', $id)->get();
+      $cronograma = Vw_ofe_cronograma::where('idobra', $id)->orderBy('mes')->get();
+      $sombreros = Ofe_sombrero::where('idobra', $id)->get();
+
+      $conceptos = Ofe_sombrero::select('iprodha.ofe_sombrero.idobra', 'iprodha.ofe_sombrero.valor', 'iprodha.ofe_conceptosombrero.idconceptosombrero', 'iprodha.ofe_conceptosombrero.conceptosombrero' )
+                      ->join('iprodha.ofe_conceptosombrero', 'iprodha.ofe_sombrero.idconceptosombrero', '=', 'iprodha.ofe_conceptosombrero.idconceptosombrero')
+                      ->where('idobra', $id)
+                      ->get();
+      // return $conceptos;
+      $tieneInfra = 0;
+      $tieneViv = 0;
+      $tieneNex = 0;
+      $itemsViv = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 1)->orderBy('orden')->get();
+      $itemsInfra = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 2)->orderBy('orden')->get();
+      $itemsNex = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 3)->orderBy('orden')->get();
+
+      $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+      $texto = Membrete::select('texto_1')->get();
+      $texto = json_decode($texto);
+
+      
+      if(count($itemsInfra) != 0){
+        $tieneInfra = 1;
+      }
+
+      if(count($itemsViv) != 0){
+        $tieneViv = 1;
+      }
+
+      if(count($itemsNex) != 0){
+        $tieneNex = 1;
+      }
+
+      
+      
+      return $pdf->loadView('Obrasyfinan.Ofertas.informes.items-general-pdf',[
+                  'obra' => $ofeobra,
+                  'tieneInfra' => $tieneInfra,
+                  'tieneViv' => $tieneViv,
+                  'tieneNex' => $tieneNex,
+                  'itemsInfra' => $itemsInfra,
+                  'itemsViv' => $itemsViv,
+                  'itemsNex' => $itemsNex,
+                  'conceptos'=> $conceptos,
+                  'data'=>$data, 
+                  'sombreros'=>$sombreros, 
+                  'cronograma'=>$cronograma, 
+                  'texto'=>$texto])->setPaper('legal', 'portrait')
+                                  ->stream('ItemsDeLaObra.pdf');
+    }
 
     public function pdfDsmxmes($id){
         $pdf = app('dompdf.wrapper');
