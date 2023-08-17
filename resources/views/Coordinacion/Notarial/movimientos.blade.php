@@ -229,7 +229,7 @@
         </div>
         <div class="modal-body" id="modalBody">
             {!! Form::label('Tipo de profesional', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            <select class="form-select" id="profesional" name="profesional" onchange="checkProf()">
+            <select class="form-select" id="profS" name="profesional" onchange="checkProf()">
                 <option value="sel" selected>Seleccionar</option>
                 @foreach ($profesional as $p)                            
                     <option value="{{$p->id_profesional}}">{{$p->descripcion}}</option>
@@ -262,7 +262,7 @@
         </div>
         <div class="modal-body" id="modalBody">
             {!! Form::label('Funcionario:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            <select class="form-select" id="funcionario" name="funcionario" onchange="checkFunc()">
+            <select class="form-select" id="funcS" name="funcionario" onchange="checkFunc()">
                 <option value="sel" selected>Seleccionar</option>
                 @foreach ($funcionario as $f)                            
                     <option value="{{$f->id_tipo}}">{{$f->descripcion}}</option>
