@@ -28,8 +28,10 @@
                         <div hidden id="prevBeneficiario"></div>
                         <div hidden id="prevEscribano"></div>
                         <hr>
+                        @if($tramite->estado == 1)
                         <button class="btn btn-success" onclick="abrirTramite('{{$tramite->id_tramite}}')">Editar información del trámite  </button>
                         <button class="btn btn-primary" data-toggle="modal" data-target=".mov">+ Agregar movimiento</button>
+                        @endif
                     </div>
                 </div>
                 <div class="card col-lg-12" id="preview" hidden>
