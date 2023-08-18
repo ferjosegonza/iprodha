@@ -34,14 +34,16 @@ class NotarialController extends Controller
     }
 
     public function alta_tramite(){      
-        $tipos = Not_tramite_tipo::get();
-        $profesional = Not_profesional::get();
-        $caracter = Not_profesional_caracter::get();
-        $funcionario = Not_funcionario_tipo::get();
+        $tipos = Not_tramite_tipo::orderBy('descripcion')->get();
+        $profesional = Not_profesional::orderBy('descripcion')->get();
+        $caracter = Not_profesional_caracter::orderBy('descripcion')->get();
+        $funcionario = Not_funcionario_tipo::orderBy('descripcion')->get();
+        $escribanos = Fescrib::select('nombre', 'telef1', 'cuit', 'matricula', 'email')->where('activo', '=', '1')->orderBy('nombre')->get();
         return view('Coordinacion.Notarial.alta_tramite')
         ->with('tipos', $tipos)
         ->with('profesional', $profesional)
         ->with('caracter', $caracter)
+        ->with('escribanos', $escribanos)
         ->with('funcionario', $funcionario);       
     }
     
@@ -73,13 +75,15 @@ class NotarialController extends Controller
     }
 
     public function movimientos($id){    
-        $tramite = Not_tramite::where('id_tramite', '=',$id)->join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->first();
-        $movimientos = Not_tramite_movimiento::join('iprodha.not_tramite_medio', 'iprodha.not_tramite_medio.id_medio', 'iprodha.not_tramite_movimiento.id_medio')->where('id_tramite', '=', $id)->get();
-        $medios = Not_tramite_medio::get();
-        $tipos = Not_tramite_tipo::get();
-        $profesional = Not_profesional::get();
-        $caracter = Not_profesional_caracter::get();
-        $funcionario = Not_funcionario_tipo::get();
+        $tramite = Not_tramite::where('id_tramite', '=',$id)->join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->orderBy('fecha')->first();
+        $movimientos = Not_tramite_movimiento::join('iprodha.not_tramite_medio', 'iprodha.not_tramite_medio.id_medio', 'iprodha.not_tramite_movimiento.id_medio')->where('id_tramite', '=', $id)->orderBy('fecha')->get();
+        $medios = Not_tramite_medio::orderBy('descripcion')->get();
+        $tipos = Not_tramite_tipo::orderBy('descripcion')->get();
+        $profesional = Not_profesional::orderBy('descripcion')->get();
+        $caracter = Not_profesional_caracter::orderBy('descripcion')->get();
+        $funcionario = Not_funcionario_tipo::orderBy('descripcion')->get();
+        $escribanos = Fescrib::select('nombre', 'telef1', 'cuit', 'matricula', 'email')->where('activo', '=', '1')->orderBy('nombre')->get();
+
         $asuntos = array('profesional' => 0, 'funcionario' => 0, 'escribano' => 0, 'beneficiario' => 0, 'documento' => 0);
         if(sizeof(Not_tramite_profesional::where('id_tramite', '=', $tramite->id_tramite)->get()) > 0){
             $asuntos['profesional'] = 1;
@@ -105,6 +109,7 @@ class NotarialController extends Controller
         ->with('caracter', $caracter)
         ->with('funcionario', $funcionario)
         ->with('medio', $medios)
+        ->with('escribanos', $escribanos)
         ->with('asuntos', $asuntos);
     }
 }
