@@ -5,3 +5,6 @@ table{
 th{
     text-align: center !important;
 }
+.btn-outline-secondary{
+    margin-bottom: 9px;
+}

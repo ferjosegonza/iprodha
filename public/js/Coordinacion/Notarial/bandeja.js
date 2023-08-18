@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#pendientes').DataTable({
+    let table = $('#pendientes').DataTable({
         orderCellsTop: true,
         fixedHeader: true,
         "bSort":false,
@@ -19,6 +19,7 @@ $(document).ready(function () {
         },
         order: [[ 1, 'asc' ]]
     });
+    table.columns(4).search('Pendiente').draw();
 });
 
 function cerrar(id){
@@ -62,22 +63,6 @@ function actualizarTabla(){
         }),
         dataType: 'json',
         success: function(res){ 
-            /* while(body.hasChildNodes()){
-                body.removeChild(body.lastChild)
-            }
-            if(res.length>0){
-              for(let i = 0; i<res.length; i++){
-                let tr = document.createElement('tr')
-                tr.innerHTML = '<td>'+res[i].descripcion+'</td>' + '<td>'+res[i].fecha+'</td>'+'<td>'+res[i].nombre_comitente+'</td>'+'<td>'+res[i].dni_comitente+'</td>'+'<td> <a href="/tramite/\''+res[i].id_tramite+'\'/movimientos" class="btn btn-outline-primary btn-sm">Movimientos</a><button onclick="cerrar(\''+res[i].id_tramite+'\')" class="btn btn-outline-danger btn-sm">Cerrar trámite</button></td>'
-                body.appendChild(tr)
-                }
-                $('#pendientes').DataTable().draw();  
-            }
-            else{
-                let tr = document.createElement('tr')
-                tr.innerHTML = '<td colspan="5">No se han encontrado registros</td>'
-                body.appendChild(tr)
-            } */
             location.reload() 
                    
         },
@@ -85,4 +70,17 @@ function actualizarTabla(){
             console.log(res)
         }
     }); 
+}
+
+function filter(tipo){
+    let table = $('#pendientes').DataTable()
+    if(tipo == 't'){
+        table.columns(4).search('').draw();
+    }
+    if(tipo == 'c'){
+        table.columns(4).search('Cerrado').draw();
+    }
+    if(tipo == 'p'){
+        table.columns(4).search('Pendiente').draw();
+    }
 }
