@@ -139,10 +139,14 @@
         </div>
         <div class="modal-body" id="modalBody">
            <h5>Buscar escribano</h5>
-            {!! Form::label('Apellido y nombre:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-            {!! Form::text('nomes', null, ['id' => 'nomes', 'class' => 'form-control', 'style' => 'text-transform:uppercase', 'maxlenght'=>'100', 'onkeyup' => 'checkbuscaresc()']) !!}
-            <br>
-            <button class="btn btn-primary" onclick="buscarEscribano()" id="btnbuscesc" disabled>Buscar</button>
+           <select name="" id="escS" onchange="checkEscribano()" class="form-select">
+            <option value="sel">Seleccionar</option>
+            @foreach ($escribanos as $e)
+                <option value="{{$e->matricula}}">{{$e->nombre}}</option>
+            @endforeach
+        </select>
+        <br>
+        <button class="btn btn-primary" onclick="seleccionarEscribano()" id="btnbuscesc" disabled>Seleccionar</button>
             <div id="resultadoEsc" hidden>
                 <br>
                 <h5>Seleccionar un escribano: </h5>

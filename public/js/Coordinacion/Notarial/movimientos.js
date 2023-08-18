@@ -378,10 +378,10 @@ function checkBuscarBenef(){
     }
 }
 
-function checkbuscaresc(){
+function checkEscribano(){
     let btn = document.getElementById('btnbuscesc')
-    let input = document.getElementById('nomes')
-    if(input.value != ''){
+    let input = document.getElementById('escS')
+    if(input.value != 'sel'){
         btn.removeAttribute('disabled')
     }
     else{
@@ -389,58 +389,10 @@ function checkbuscaresc(){
     }
 }
 
-function buscarEscribano(){  
-    let nom = document.getElementById('nomes').value
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $.ajax({
-        url: '/notarial/escribano',
-        type: 'GET',
-        cache: false,
-        data: ({
-            _token: $('#signup-token').val(),
-            nom:nom
-        }),
-        dataType: 'json',
-        success: function(res){              
-            console.log(res)
-            if(res.length>0){
-                let body = document.getElementById('bodyesc')
-                while(body.hasChildNodes()){
-                    body.removeChild(body.lastChild)
-                }
-                for(let i=0; i<res.length; i++){
-                    let email
-                    if(res[i].email == null){
-                        email = '-'
-                    } 
-                    else{
-                        email= res[i].email
-                    }
-                    let tr=document.createElement('tr')
-                    tr.innerHTML='<td>'+res[i].nombre+'</td><td>'+res[i].matricula+'</td><td>'+res[i].cuit+'</td><td>'+res[i].telef1+'</td><td>'+email+'</td>'
-                    tr.className= 'hoverable'
-                    tr.setAttribute('onclick', 'seleccionarEscribano("'+res[i].matricula+'","'+res[i].nombre+'")')
-                    body.appendChild(tr)
-                }
-                document.getElementById('resultadoEsc').removeAttribute('hidden')
-            }
-            else{
-                alert('No se encontraron resultados')
-            }
-        },
-        error: function(res){
-            console.log(res)
-        }
-    }); 
-}
-
-function seleccionarEscribano(mat, nom){  
-    document.getElementById('nomEsc').innerHTML = nom 
-    document.getElementById('matEsc').innerHTML = mat
+function seleccionarEscribano(){      
+    let sel = document.getElementById('escS')
+    document.getElementById('nomEsc').innerHTML = sel.options[sel.selectedIndex].text
+    document.getElementById('matEsc').innerHTML = sel.value
     document.getElementById('EscSeleccionado').removeAttribute('hidden')
     document.getElementById('resultadoEsc').setAttribute('hidden', 'hidden')
     document.getElementById('btnsaveesc').removeAttribute('disabled')
