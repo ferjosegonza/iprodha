@@ -29,7 +29,7 @@
                         <div hidden id="prevEscribano"></div>
                         <hr>
                         <button class="btn btn-success" onclick="abrirTramite('{{$tramite->id_tramite}}')">Editar información del trámite  </button>
-                        <button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">+ Agregar movimiento</button>
+                        <button class="btn btn-primary" data-toggle="modal" data-target=".mov">+ Agregar movimiento</button>
                     </div>
                 </div>
                 <div class="card col-lg-12" id="preview" hidden>
@@ -372,7 +372,7 @@
       </div>
     </div>
 </div>
-<div class="modal bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modal">
+<div class="modal bd-example-modal-lg mov" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
