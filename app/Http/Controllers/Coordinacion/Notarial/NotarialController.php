@@ -28,7 +28,7 @@ class NotarialController extends Controller
     }
 
     public function bandeja(){      
-        $tramites = Not_tramite::join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->where('estado', '=', '1')->get();
+        $tramites = Not_tramite::join('iprodha.not_tramite_tipo', 'iprodha.not_tramite_tipo.id_tipo', 'iprodha.not_tramite.id_tipo')->get();
         return view('Coordinacion.Notarial.bandeja')
         ->with('tramites',$tramites);       
     }
