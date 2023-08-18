@@ -19,11 +19,15 @@
                         <hr>
                         <h6>Trámites Pendientes</h6>
                         <table id="pendientes">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="filter('t')">Ver todos los trámites</button>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="filter('c')">Ver los trámites cerrados</button>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="filter('p')">Ver los trámites pendientes</button>
                             <thead>
                                 <th>Tipo de Trámite</th>
                                 <th>Fecha</th>
                                 <th>Nombre del Comitente</th>
                                 <th>Dni del Comitente</th>
+                                <th>Estado</th>
                                 <th></th>
                             </thead>
                             <tbody id="bodyTramite">
@@ -33,6 +37,11 @@
                                         <td>{{$t->fecha}}</td>
                                         <td>{{$t->nombre_comitente}}</td>
                                         <td>{{$t->dni_comitente}}</td>
+                                        @if($t->estado == 1)
+                                            <td>Pendiente</td>
+                                        @else                                        
+                                            <td>Cerrado</td>
+                                        @endif
                                         <td>
                                             <a href="/tramite/{{$t->id_tramite}}/movimientos" class="btn btn-outline-primary btn-sm">Acceder al Trámite</a>
                                             <button onclick="cerrar('{{$t->id_tramite}}')" class="btn btn-outline-danger btn-sm">Cerrar trámite</button>
