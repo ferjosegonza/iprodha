@@ -42,9 +42,11 @@
                                         @else                                        
                                             <td>Cerrado</td>
                                         @endif
-                                        <td>
+                                        <td>                                            
                                             <a href="/tramite/{{$t->id_tramite}}/movimientos" class="btn btn-outline-primary btn-sm">Acceder al Trámite</a>
+                                            @if($t->estado == 1)
                                             <button onclick="cerrar('{{$t->id_tramite}}')" class="btn btn-outline-danger btn-sm">Cerrar trámite</button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
