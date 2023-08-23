@@ -61,7 +61,15 @@ function recuperarEscribano(){
         success: function(res){    
             console.log(res)       
             let prev = document.getElementById('prevEscribano')
-            prev.innerHTML = '<hr><h6>Escribano/a:</h6><table><tr><th>Nombre</th><td>'+res.nombre+'</td><th>Matricula</th><td>'+res.matricula+'</td><th>CUIT</th><td>'+res.cuit+'</td></tr><tr><th>Email</th><td>'+res.email+'</td><th>Teléfono</th><td>'+res.telef1+'</td></tr></table>'         
+            let email = res.email
+            if(res.email == null){
+                email = '-'
+            }
+            let tel = res.telef1
+            if(res.telef1 == null){
+                tel = '-'
+            }
+            prev.innerHTML = '<hr><h6>Escribano/a:</h6><table><tr><th>Nombre</th><td>'+res.nombre+'</td><th>Matricula</th><td>'+res.matricula+'</td><th>CUIT</th><td>'+res.cuit+'</td></tr><tr><th>Email</th><td>'+email+'</td><th>Teléfono</th><td>'+tel+'</td></tr></table>'         
             prev.removeAttribute('hidden') 
             let body = document.getElementById('escbody')
             let tr = document.createElement('tr')
