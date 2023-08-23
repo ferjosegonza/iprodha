@@ -125,7 +125,7 @@ class TramiteController extends Controller
         else{
             $documento = array('id' => $resultado[0]->doc_id, 'nro' => $resultado[0]->numero, 'asun' => $resultado[0]->exp_asunto);
         }
-        return response()->json($documento);      
+        return response()->json($resultado);      
     }
 
     public function modificar(Request $request){
