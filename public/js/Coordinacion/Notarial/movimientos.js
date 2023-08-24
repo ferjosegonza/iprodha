@@ -202,11 +202,18 @@ function recuperarDocumento(){
         success: function(res){    
             console.log(res)   
             let prev = document.getElementById('prevDocumento')
-            prev.innerHTML = '<hr><h6>Documento:</h6><table><tr><th>Número de Documento</th><td>'+res['nro']+'</td><th>Asunto</th><td>'+res['asun']+'</td></tr></table>'         
+            let asun
+            if(res[0].tipo == 'NOTA'){
+                asun = res[0].not_asunto
+            }
+            else{
+                asun = res[0].exp_asunto
+            }
+            prev.innerHTML = '<hr><h6>Documento:</h6><table><tr><th>Número de Documento</th><td>'+res[0].numero+'</td><th>Asunto</th><td>'+asun+'</td></tr></table>'         
             prev.removeAttribute('hidden')        
             let body = document.getElementById('docbody')
             let tr = document.createElement('tr')
-            tr.innerHTML= '<td hidden>'+ res['id'] +'</td>' + '<td>'+ res['nro'] +'</td>' + '<td>'+ res['asun'] +'</td>'
+            tr.innerHTML= '<td hidden>'+ res[0].doc_id +'</td>' + '<td>'+ res[0].numero +'</td>' + '<td>'+ asun +'</td>'
             body.append(tr)
             document.getElementById('tabledoc').removeAttribute('hidden')             
         },
