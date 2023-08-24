@@ -159,7 +159,6 @@
                                 <th>Fecha</th>
                                 <th>Observación</th>
                                 <th>Medio</th>
-                                <th></th>
                             </thead>
                             <tbody id="bodyMovimientos">
                                 @foreach ($movimientos as $m)
@@ -167,7 +166,6 @@
                                         <td>{{$m->fecha}}</td>
                                         <td>{{$m->observacion}}</td>
                                         <td>{{$m->descripcion}}</td>
-                                        <td><button class="btn btn-outline-primary" onclick="abrirModificarMovimiento('{{$m->id_movimiento}}','{{$m->observacion}}','{{$m->id_medio}}')">Modificar</button></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -391,9 +389,9 @@
         </div>
         <div class="modal-body">
             <label for="obs">Observación:</label>
-            <input type="text" id="obs" class="form-control" onkeyup="checkGuardar('1')">
+            <input type="text" id="obs" class="form-control" onkeyup="checkGuardar()">
             <label for="medio">Medio:</label>
-            <select name="medio" id="medio" class="form-control" onchange="checkGuardar('1')">
+            <select name="medio" id="medio" class="form-control" onchange="checkGuardar()">
                 <option value="sel">Seleccionar</option>
                 @foreach ($medio as $m)
                     <option value="{{$m->id_medio}}">{{$m->descripcion}}</option>
@@ -406,34 +404,6 @@
         </div>
     </div>
   </div>
-</div>
-<div class="modal bd-example-modal-lg mov" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalMov">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modificar Movimiento</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-            <div hidden id="idmov"></div>
-              <label for="obs">Observación:</label>
-              <input type="text" id="obs2" class="form-control" onkeyup="checkGuardar('2')">
-              <label for="medio">Medio:</label>
-              <select name="medio" id="medio2" class="form-control" onchange="checkGuardar('2')">
-                  <option value="sel">Seleccionar</option>
-                  @foreach ($medio as $m)
-                      <option value="{{$m->id_medio}}">{{$m->descripcion}}</option>
-                  @endforeach
-              </select>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-primary" disabled id="btnSave2" onclick="modificarMovimiento()">Guardar</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          </div>
-      </div>
-    </div>
 </div>
 @include('layouts.favorito.editar', ['modo' => 'Agregar'])
 @include('layouts.modal.confirmation') 
