@@ -223,10 +223,21 @@ function recuperarDocumento(){
     }); 
 }
 
-function checkGuardar(){
-    let btn = document.getElementById('btnSave')
-    let sel = document.getElementById('medio')
-    let inp = document.getElementById('obs')
+function checkGuardar(tipo){
+    let btn
+    let sel
+    let inp
+    if(tipo == '1'){
+        btn = document.getElementById('btnSave')
+        sel = document.getElementById('medio')
+        inp = document.getElementById('obs')
+    }
+    else{
+        btn = document.getElementById('btnSave2')
+        sel = document.getElementById('medio2')
+        inp = document.getElementById('obs2')
+    }
+    
     if(sel.value != 'sel' && inp.value != ''){
         btn.removeAttribute('disabled')
     }
@@ -780,4 +791,45 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 function cancelar(){
     document.getElementById('preview').setAttribute('hidden', 'hidden')
+}
+
+function abrirModificarMovimiento(id, obs, med){
+    let modalEl = document.getElementById('modalMov')
+    let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
+    modal.show();
+    document.getElementById('obs2').value = obs
+    document.getElementById('medio2').value = med
+    document.getElementById('idmov').innerHTML = id;
+} 
+
+function modificarMovimiento(){
+    let obs = document.getElementById('obs2').value
+    let medio = document.getElementById('medio2').value
+    let id = document.getElementById('id').innerHTML
+    let idmov=document.getElementById('idmov').innerHTML
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: '/tramite/modificarMovimiento',
+        type: 'POST',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            obs:obs,
+            medio:medio,
+            id:id,
+            idmov:idmov
+        }),
+        dataType: 'json',
+        success: function(res){              
+            console.log(res)            
+            actualizarTabla()
+        },
+        error: function(res){
+            console.log(res)
+        }
+    }); 
 }
