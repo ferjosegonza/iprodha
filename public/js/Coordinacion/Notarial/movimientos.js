@@ -103,11 +103,15 @@ function recuperarFuncionario(){
         success: function(res){    
             console.log(res)      
             let prev = document.getElementById('prevFuncionario')
-            prev.innerHTML = '<hr><h6>Funcionario/a:</h6><table><tr><th>Descripción</th><td>'+res.descripcion+'</td><th>Observación</th><td>'+res.observacion+'</td></tr></table>'         
+            let obs = res.observacion
+            if(res.observacion == null){
+                obs = '-'
+            }
+            prev.innerHTML = '<hr><h6>Funcionario/a:</h6><table><tr><th>Descripción</th><td>'+res.descripcion+'</td><th>Observación</th><td>'+obs+'</td></tr></table>'         
             prev.removeAttribute('hidden')         
             let body = document.getElementById('funcbody')
             let tr = document.createElement('tr')
-            tr.innerHTML = '<td hidden>'+ res.id_tipo+'</td>' +'<td>'+ res.descripcion +'</td>' + '<td>'+ res.observacion +'</td>'  
+            tr.innerHTML = '<td hidden>'+ res.id_tipo+'</td>' +'<td>'+ res.descripcion +'</td>' + '<td>'+ obs +'</td>'  
             body.appendChild(tr)
             document.getElementById('tablefunc').removeAttribute('hidden')       
         },
