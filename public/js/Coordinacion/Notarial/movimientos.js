@@ -824,7 +824,8 @@ function modificarMovimiento(){
             idmov:idmov
         }),
         dataType: 'json',
-        success: function(res){              
+        success: function(res){   
+            alert('El movimiento se actualizó con éxito')           
             console.log(res)            
             actualizarTabla()
         },
