@@ -19,6 +19,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|NOTARIAL']], fun
     Route::get('tramite/gettramites', [TramiteController::class, 'getTramites'])->name('notarial.gettramites');
     Route::get('tramite/getmovimientos', [TramiteController::class, 'getMovimientos'])->name('notarial.getmovimientos');
     Route::put('tramite/nuevoMovimiento',[TramiteController::class, 'movimiento'])->name('tramite.movimiento');
+    Route::post('tramite/modificarMovimiento',[TramiteController::class, 'updateMovimiento'])->name('tramite.updateMovimiento');
     Route::get('tramite/getEscribano', [TramiteController::class, 'getEscribano'])->name('tramite.getEscribano');
     Route::get('tramite/getFuncionario', [TramiteController::class, 'getFuncionario'])->name('tramite.getFuncionario');
     Route::get('tramite/getBeneficiario', [TramiteController::class, 'getBeneficiario'])->name('tramite.getBeneficiario');

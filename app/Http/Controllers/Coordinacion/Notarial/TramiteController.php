@@ -245,4 +245,11 @@ class TramiteController extends Controller
 
         return response()->json($res);        
     }
+
+    public function updateMovimiento(Request $request){
+        $mov = Not_tramite_movimiento::where('id_movimiento', '=', $request->idmov)
+        ->where('id_tramite', '=', $request->id)->first();
+        $res = $mov->modificar($request->obs, $request->medio);
+        return response()->json($res);
+    }
 }
