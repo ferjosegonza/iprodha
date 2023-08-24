@@ -799,8 +799,8 @@ function abrirModificarMovimiento(id, obs, med){
     modal.show();
     document.getElementById('obs2').value = obs
     document.getElementById('medio2').value = med
-    document.getElementById('idmov').innerHTML = id
-}
+    document.getElementById('idmov').innerHTML = id;
+} 
 
 function modificarMovimiento(){
     let obs = document.getElementById('obs2').value
