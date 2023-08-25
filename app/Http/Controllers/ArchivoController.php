@@ -205,7 +205,7 @@ public function tags(Request $request){
     on dxt.id_tag = dt.id_tag
     where id_tipoarchivo = '$request->tipo' 
     and id_subtipoarchivo = '$request->subtipo'
-    and id_tipocabecera = 1";
+    and id_tipocabecera = $request->cabecera";
     $tags = DB::select( DB::raw($query));
 
     return response()->json($tags);
