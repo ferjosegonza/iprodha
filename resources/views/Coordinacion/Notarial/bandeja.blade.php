@@ -24,7 +24,6 @@
                             <button class="btn btn-outline-secondary btn-sm" onclick="filter('p')">Ver los trámites pendientes</button>
                             <thead>
                                 <th>Tipo de Trámite</th>
-                                <th>Nota/Expediente</th>
                                 <th>Fecha</th>
                                 <th>Nombre del Comitente</th>
                                 <th>Dni del Comitente</th>
@@ -35,11 +34,6 @@
                                 @foreach ($tramites as $t)
                                     <tr>
                                         <td>{{$t->descripcion}}</td>
-                                        @if($t->tipo != null)
-                                            <td>{{$t->tipo}}: {{$t->numero}}</td>                                        
-                                        @else
-                                            <td>-</td>
-                                        @endif
                                         <td>{{$t->fecha}}</td>
                                         <td>{{$t->nombre_comitente}}</td>
                                         <td>{{$t->dni_comitente}}</td>
