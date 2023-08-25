@@ -635,6 +635,7 @@ function cargarClaves(claves_archivo){
 function recuperarTags(tipo, sub){    
     //recuperamos los tags a mostrar segun tipo de documento
     let route = '/archivo/tags';
+    let cab = document.getElementById('encabezado').value
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -648,7 +649,8 @@ function recuperarTags(tipo, sub){
         data: ({
             _token: $('#signup-token').val(),
             tipo: tipo,
-            subtipo: sub
+            subtipo: sub,
+            cabecera: cab
         }),
         dataType: 'json',
         success: function(res){
