@@ -301,7 +301,7 @@ public function crear(Request $request){
     $archivo->nombre_archivo = $fileName;
     $res = $archivo->save();
     //
-    $query = Dig_archivos::where('id_tipocabecera', '=', 1)
+    $query = Dig_archivos::where('id_tipocabecera', '=', $request->cabecera)
     ->where('id_tipoarchivo', '=', $archivo->id_tipoarchivo)
     ->where('id_subtipoarchivo', '=', $archivo->id_subtipoarchivo)
     ->where('nro_archivo', '=', $archivo->nro_archivo)
