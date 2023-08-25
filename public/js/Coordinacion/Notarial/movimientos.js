@@ -552,10 +552,10 @@ function buscarDocumento(){
                         }
                         tr.className= 'hoverable'
                         if(tipo == 'exp'){
-                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].exp_doc_id+'", "' + res[i].exp_numero + '", "'+res[i].exp_asunto+'")')
+                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].exp_doc_id+'", "' + res[i].exp_numero + '", "'+res[i].exp_asunto.replaceAll('"', '\"')+'")')
                         }
                         else{
-                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].not_doc_id+'", "' + res[i].not_numero +'", "'+res[i].not_asunto+'")')
+                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].not_doc_id+'", "' + res[i].not_numero +'", "'+res[i].not_asunto.replaceAll('"', '\"')+'")')
                         }
                         
                         body.appendChild(tr)
