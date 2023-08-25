@@ -19,7 +19,7 @@ $(document).ready(function () {
         },
         order: [[ 1, 'asc' ]]
     });
-    table.columns(5).search('Pendiente').draw();
+    table.columns(4).search('Pendiente').draw();
 });
 
 function cerrar(id){
@@ -75,12 +75,12 @@ function actualizarTabla(){
 function filter(tipo){
     let table = $('#pendientes').DataTable()
     if(tipo == 't'){
-        table.columns(5).search('').draw();
+        table.columns(4).search('').draw();
     }
     if(tipo == 'c'){
-        table.columns(5).search('Cerrado').draw();
+        table.columns(4).search('Cerrado').draw();
     }
     if(tipo == 'p'){
-        table.columns(5).search('Pendiente').draw();
+        table.columns(4).search('Pendiente').draw();
     }
 }
