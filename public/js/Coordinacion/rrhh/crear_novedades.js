@@ -1,127 +1,126 @@
-function tipos(){
+function encabezados(){
+    encabezado = document.getElementById('encabezado').value
+    let tipo = document.getElementById('tipo')
+    for(let i=1; i<tipo.options.length; i++){
+        if(tipo.options[i].value != null){
+           if(tipo.options[i].value[0] == encabezado){
+                tipo.options[i].hidden = false
+           }
+           else{
+                tipo.options[i].hidden = true
+           }
+        }
+    }
+}
+
+function tipos(){ //Esta funcion maneja la selección de un tipo de archivo y sus subtipos
     if(document.getElementById('tipo').value == 'sel'){
-        document.getElementById('subtipo').hidden = true;
-        document.getElementById('placeholder').hidden = false;        
+        //Si no se selecciona un tipo se ocultan los subtipos y se pone un placeholder
+        document.getElementById('subtipo').hidden = true
+        document.getElementById('placeholder').hidden = false       
         document.getElementById('subtipo').value = "sel"
     }  
-    else{
-        let tipo = document.getElementById('tipo').value;
-        let tipoId = document.getElementById('tipo').value[0];     
-        document.getElementById('subtipo').value = "sel"
-        let tipoNombre;
-        let bandera= 0;       
-        console.log(tipo)
-        for(i = 1; i < tipo.length; i++){ 
-            if (bandera==0)
-            {
-                if(isNaN(document.getElementById('tipo').value[i]))
-                {                    
-                    if(document.getElementById('tipo').value[i] != '|')
-                    {
-                        tipoNombre = document.getElementById('tipo').value[i];
-                        bandera =1;
-                    }      
-                }
-                else{
-                    tipoId = tipoId + document.getElementById('tipo').value[i].toString(); 
-                }
-            }
-            else{
-                tipoNombre = tipoNombre + document.getElementById('tipo').value[i];}  
-            }
-              
-        
-        console.log(tipoId);
-        console.log(tipoNombre);
-        
-        let subtipo = document.getElementById('subtipo')
-        let subtid
-        console.log(subtipo.options.length)
-        if (subtipo.options.length != 0){
-            document.getElementById('subtipo').removeAttribute("hidden");
-            document.getElementById('placeholder').hidden = true;
-            for(i=1; i<subtipo.options.length; i++){
-                if(subtipo.options[i].value != null){                    
-                    bandera=0;
-                    for(j=0; j<subtipo.options[i].value.length; j++){           
-                        if (bandera==0){
-                            if(j==0){               
-                                subtid = subtipo.options[i].value[j].toString();
-                            }
-                            else{
-                                if(isNaN(subtipo.options[i].value[j])){
-                                    bandera=1;
-                                    if(subtid == tipoId)
-                                    {
-                                        subtipo.options[i].hidden = false
-                                    }
-                                    else{
-                                        subtipo.options[i].hidden = true                                    
-                                    }
-                                    subtid=""
-                                }
-                                else{
-                                    subtid = subtid + subtipo.options[i].value[j].toString();
-                                }
-                            }
-                        }
-                        else{
-                            j=subtipo.options[i].value.length
-                        }
-                    }
-                }
-            }
-        }
-        else{
-            document.getElementById('subtipo').hidden = true;
-            document.getElementById('placeholder').removeAttribute("hidden");
-        }    
+    else{   
+        //Si se selecciona un tipo se filtran los subtipos correspondientes y se oculta el placeholder
+        let tipo =  document.getElementById('tipo').value   
+        let tipoId = getTipoId()
+        let cabecera = tipo.slice(0,1)
+        document.getElementById('subtipo').hidden = false
+        document.getElementById('placeholder').hidden = true
+        console.log(tipoId, cabecera)
+        filtrarSubtipos(tipoId, cabecera)        
     }
 }    
 
-function subtipos(){
-    if(document.getElementById('subtipo').value == 'sel'){
-    }
-    else{
-    var subtipo = document.getElementById('subtipo').value; 
-    var subtipoNombre;
-    var bandera= 0; 
-    var bandera2 = 0;      
-    for(i = 0; i < subtipo.length; i++){ 
-        if (bandera==0)
-        {
-            if(isNaN(document.getElementById('subtipo').value[i]))
-            {               
-                if(document.getElementById('subtipo').value[i] != '|')
-                {subtipoNombre = document.getElementById('subtipo').value[i];  bandera =1; }
-                else{
-                    if(bandera2==0)
-                    {
-                        bandera2=1;
+function filtrarSubtipos(tipoId, cabecera){ //filtra los subtipos según el id del tipo de archivo
+    //los value de cada subtipo están conformados por el idtipo y el idsubtipo 
+    //cumplen con la forma value = 17|25, siendo el primer valor el idtipo
+    let subtipo = document.getElementById('subtipo')   
+    subtipo.value = "sel"
+    let bandera= 0; 
+    let subtid
+    for(let i=1; i<subtipo.options.length; i++){
+        //Por cada subtipo que existe
+        if(subtipo.options[i].value != null){
+            //La bandera nos indica si ya terminamos de procesar el idtipo
+            bandera=0;
+            for(j=0; j<subtipo.options[i].value.length; j++){ //Por cada caracter del subtipo.value
+                if (bandera==0){  //Si se sigue procesando el id                   
+                    if(j==0){ //Si es el primer caracter (siempre numérico)    
+                        subtid = subtipo.options[i].value[j].toString();
                     }
-                    else{
-                        i=subtipo.length;
+                    else{ //Si es el caracter != 0
+                        if(isNaN(subtipo.options[i].value[j])){ //Si no es un numero, es decir |                        
+                            bandera=1; //terminamos de procesar el id
+                            if(subtid == tipoId) //si coincide con el idtipo se muestra
+                            {
+                                let bandCabecera = 0
+                                let cabeceraSubt = ''
+                                for(const element of subtipo.options[i].value){
+                                    if(bandCabecera == 1){
+                                        cabeceraSubt = cabeceraSubt + element.toString();
+                                    }
+                                    else{
+                                        if(element == '_'){
+                                            bandCabecera = 1
+                                        }
+                                    }
+                                }
+                                if(cabeceraSubt == cabecera){
+                                    subtipo.options[i].hidden = false
+                                }
+                                else{
+                                    subtipo.options[i].hidden = true
+                                }                               
+                            }
+                            else{ //si no coincide se oculta
+                                subtipo.options[i].hidden = true                                    
+                            } 
+                            subtid="" //reinciamos el idsubtipo para la siguiente iteración
+                        }
+                        else{ //Es un número, seguimos procesando el id
+                            subtid = subtid + subtipo.options[i].value[j].toString();
+                        }
                     }
+                } 
+                else{ //Si terminamos de procesar cerramos el bucle y vamos al siguiente.
+                    j=subtipo.options[i].value.length
                 }
-                
-               
             }
         }
-        else{
-            if(document.getElementById('subtipo').value[i] != '|')
-                {subtipoNombre = subtipoNombre + document.getElementById('subtipo').value[i];  }
-                else{
-                    if(bandera2==0)
-                    {
-                        bandera2=1;
-                    }
-                    else{
-                        i=subtipo.length;
-                    }
-                }}  
+    }        
+}
+
+function getTipoId(){
+    let tipo =  document.getElementById('tipo').value
+    let tid =  tipo.slice(2)
+    return tid;
+}
+
+function getSubtipoId(){
+    //Recumeramos el subtipoId del subtipo seleccionado
+    //Es decir el segundo valor en subtipo.value = 17|25 
+    let bandera=0
+    let subtid = ''
+    for(i=0; i<subtipo.value.length; i++){
+        //Por cada caracter
+        if (bandera==1){ //Una vez que encontramos el | podemos empezar a guardar el id
+            if(subtipo.value[i]=='_'){
+                bandera=2
+            }
+            else{
+               subtid= subtid + subtipo.value[i] 
+            }
+            
         }
-    var table = $('#archivos').DataTable()
+        else{
+            if(subtipo.value[i]=='|')
+            {
+                bandera=1 //Encontramos el |
+            }
+        }
     }
+    return subtid;
 }
 
 function documento(){
@@ -183,6 +182,7 @@ $(document).ready(function () {
     });
 
     cargarHistorial()
+    encabezados()
 });
 
 function cargarHistorial(){
@@ -249,9 +249,11 @@ function cargarHistorial(){
 }
 
 function buscarArchivos(){
-    let tipo= document.getElementById('tipo').value
-    let subtipo = getSubtipoId()
+    let tipo= getTipoId()
+    let subtipo = getSubtipoId().slice(0, -2)
+    console.log(subtipo)
     let nro = document.getElementById('nro').value
+    let cabecera = document.getElementById('encabezado').value
     console.log(tipo)
     console.log(subtipo)
     console.log(nro)
@@ -269,7 +271,8 @@ function buscarArchivos(){
             _token: $('#signup-token').val(),
            tipo: tipo,
            subtipo: subtipo,
-           nro: nro
+           nro: nro,
+           cabecera:cabecera
         }),
         dataType: 'json',
         success: function(res) {          

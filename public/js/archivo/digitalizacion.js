@@ -1716,11 +1716,11 @@ function modificar() {
 }
 
 function guardar(){
-    let pdf
+    let pdf = 'off'
     let pdfFile = document.getElementById('pdf')
-    let pdfName
-    if(pdfFile!=undefined){
-       pdf = pdfFile.files[0] 
+    let pdfName = ''
+    if(pdfFile!=undefined){ 
+        pdf = 'on'
        pdfName = document.getElementById('pdfname').innerHTML
     }        
     let tipo = getTipoId()
@@ -1731,22 +1731,7 @@ function guardar(){
     let orden = document.getElementById('orden').value
     let asunto = document.getElementById('asunto').value
     let cabecera = document.getElementById('encabezado').value
-
-    let dataForm = new FormData();
-    
-    if(pdfFile!=undefined){
-        dataForm.append('pdf', pdf);
-        dataForm.append('pdfname', pdfName);
-    }      
-    dataForm.append('tipo', tipo);
-    dataForm.append('subtipo', subtipo);
-    dataForm.append('doc', doc);
-    dataForm.append('fecha', fecha);
-    dataForm.append('claves', claves);
-    dataForm.append('orden', orden);
-    dataForm.append('asunto', asunto);
-    dataForm.append('cabecera', cabecera);
-
+    console.log(subtipo)
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
@@ -1758,11 +1743,20 @@ function guardar(){
         url: route,
         type: 'POST',
         cache: false,
-        data: dataForm,
-        processData: false,
-        contentType: false,
+        data: ({_token: $('#signup-token').val(), 
+        tipo: tipo,
+        subtipo: subtipo,
+        doc: doc,
+        fecha: fecha,
+        claves: claves,
+        orden: orden,
+        asunto: asunto,
+        pdf: pdf,
+        pdfname: pdfName,
+        cabecera: cabecera}),
         //dataType: 'json',
         success: function(res) {
+            console.log(res)
             popup(1, res)
         },
         error: function(res){
@@ -1770,6 +1764,7 @@ function guardar(){
             popup(1, false)
     }});
 } 
+
 
 function modalPdf(){
     let modalEl = document.getElementById('modal')
