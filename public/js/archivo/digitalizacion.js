@@ -18,21 +18,6 @@ var complejos = []
 
 var archivoid
 
-function encabezados(){
-    encabezado = document.getElementById('encabezado').value
-    let tipo = document.getElementById('tipo')
-    for(let i=1; i<tipo.options.length; i++){
-        if(tipo.options[i].value != null){
-           if(tipo.options[i].value[0] == encabezado){
-                tipo.options[i].hidden = false
-           }
-           else{
-                tipo.options[i].hidden = true
-           }
-        }
-    }
-}
-
 function tipos(){ //Esta funcion maneja la selección de un tipo de archivo y sus subtipos
     if(document.getElementById('tipo').value == 'sel'){
         //Si no se selecciona un tipo se ocultan los subtipos y se pone un placeholder
@@ -42,17 +27,14 @@ function tipos(){ //Esta funcion maneja la selección de un tipo de archivo y su
     }  
     else{   
         //Si se selecciona un tipo se filtran los subtipos correspondientes y se oculta el placeholder
-        let tipo =  document.getElementById('tipo').value   
-        let tipoId = getTipoId()
-        let cabecera = tipo.slice(0,1)
+        let tipoId =  document.getElementById('tipo').value   
         document.getElementById('subtipo').hidden = false
         document.getElementById('placeholder').hidden = true
-        console.log(tipoId, cabecera)
-        filtrarSubtipos(tipoId, cabecera)        
+        filtrarSubtipos(tipoId)        
     }
 }    
 
-function filtrarSubtipos(tipoId, cabecera){ //filtra los subtipos según el id del tipo de archivo
+function filtrarSubtipos(tipoId){ //filtra los subtipos según el id del tipo de archivo
     //los value de cada subtipo están conformados por el idtipo y el idsubtipo 
     //cumplen con la forma value = 17|25, siendo el primer valor el idtipo
     let subtipo = document.getElementById('subtipo')   
@@ -74,24 +56,7 @@ function filtrarSubtipos(tipoId, cabecera){ //filtra los subtipos según el id d
                             bandera=1; //terminamos de procesar el id
                             if(subtid == tipoId) //si coincide con el idtipo se muestra
                             {
-                                let bandCabecera = 0
-                                let cabeceraSubt = ''
-                                for(const element of subtipo.options[i].value){
-                                    if(bandCabecera == 1){
-                                        cabeceraSubt = cabeceraSubt + element.toString();
-                                    }
-                                    else{
-                                        if(element == '_'){
-                                            bandCabecera = 1
-                                        }
-                                    }
-                                }
-                                if(cabeceraSubt == cabecera){
-                                    subtipo.options[i].hidden = false
-                                }
-                                else{
-                                    subtipo.options[i].hidden = true
-                                }                               
+                                subtipo.options[i].hidden = false
                             }
                             else{ //si no coincide se oculta
                                 subtipo.options[i].hidden = true                                    
@@ -111,12 +76,6 @@ function filtrarSubtipos(tipoId, cabecera){ //filtra los subtipos según el id d
     }        
 }
 
-function getTipoId(){
-    let tipo =  document.getElementById('tipo').value
-    let tid =  tipo.slice(2)
-    return tid;
-}
-
 function getSubtipoId(){
     //Recumeramos el subtipoId del subtipo seleccionado
     //Es decir el segundo valor en subtipo.value = 17|25 
@@ -125,13 +84,7 @@ function getSubtipoId(){
     for(i=0; i<subtipo.value.length; i++){
         //Por cada caracter
         if (bandera==1){ //Una vez que encontramos el | podemos empezar a guardar el id
-            if(subtipo.value[i]=='_'){
-                bandera=2
-            }
-            else{
-               subtid= subtid + subtipo.value[i] 
-            }
-            
+            subtid= subtid + subtipo.value[i]
         }
         else{
             if(subtipo.value[i]=='|')
@@ -181,11 +134,14 @@ function existeCheck(){
     //que coincida con los parámetros mencionados.
     //PARÁMETROS
     ocultarPagina()
-    let tipoId = getTipoId()
+    let tipoId = document.getElementById('tipo').value
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
     let subtid = getSubtipoId()
+    let orden = document.getElementById('orden').value
     //CONSULTA AJAX
+
+    console.log(tipoId, subtid, fecha, doc, orden)
 
     let route = '/archivo/check';
     $.ajaxSetup({
@@ -202,14 +158,16 @@ function existeCheck(){
             tipo: tipoId,
             subtipo: subtid,
             fecha: fecha,
-            doc: doc
+            doc: doc,
+            orden: orden
         }),
         dataType: 'json',
         success: function(res) 
         {     
+            console.log(res)
             //La operación es válida
-            if(res.response != null && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
-            || res.response == null && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
+            if(res.response.length > 0 && !(document.getElementById('guardar').checked) //se quiere modificar algo que existe
+            || res.response.length == 0 && (document.getElementById('guardar').checked)){ //se quiere guardar y todavia no existe
                 mostrarPagina(res);                  
             }
             else{
@@ -254,7 +212,7 @@ function checkArchivos(){
     taggeo.classList.add('col-lg-9')
     padre.appendChild(archivos)
     //
-    let tipo= getTipoId()
+    let tipo=document.getElementById('tipo').value
     let sub = getSubtipoId()
     let fecha = document.getElementById('fecha').value
     let doc = document.getElementById('doc').value
@@ -635,7 +593,6 @@ function cargarClaves(claves_archivo){
 function recuperarTags(tipo, sub){    
     //recuperamos los tags a mostrar segun tipo de documento
     let route = '/archivo/tags';
-    let cab = document.getElementById('encabezado').value
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -649,8 +606,7 @@ function recuperarTags(tipo, sub){
         data: ({
             _token: $('#signup-token').val(),
             tipo: tipo,
-            subtipo: sub,
-            cabecera: cab
+            subtipo: sub
         }),
         dataType: 'json',
         success: function(res){
@@ -767,9 +723,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
     let containerRe =  document.getElementById('comp-recomendado'); //aca van los tags recomendados
     let containerOp =  document.getElementById('comp-opcional'); //aca van los tags opcionales
     //
-    let x = 0;
-    let k = 0;
-    let bandera = 0;
+    let x = 0
+    //k= son los contadores para las filas de complejos
+    let k1 = 0
+    let k2 = 0
+    let k3= 0
+    let bandera = 0
     let tag1
     let tag2
     let row
@@ -786,12 +745,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j] 
                     x++;
-                    if(k % 2  == 0){
+                    if(k1 % 2  == 0){
                         row = document.createElement('div')
                         row.className = 'row'
-                    }                    
+                    }  
                     insertarInputComplejo(tag1, tag2, x, containerOb, row)                     
-                    k++
+                    k1++
                 }                
             }
         }
@@ -808,12 +767,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    if(k % 2  == 0){
+                    if(k2 % 2  == 0){
                         row = document.createElement('div')
                         row.className = 'row'
                     }                    
                     insertarInputComplejo(tag1, tag2, x, containerRe, row)                     
-                    k++
+                    k2++
                 }                
             }
         }
@@ -830,12 +789,12 @@ function cargarTagsComplejos(complejos, tagcomplejoOb, tagcomplejoRe, tagcomplej
                     bandera = 0
                     tag2 = complejos[j]
                     x++;
-                    if(k % 2  == 0){
+                    if(k3 % 2  == 0){
                         row = document.createElement('div')
                         row.className = 'row'
                     }                    
                     insertarInputComplejo(tag1, tag2, x, containerOp, row)                     
-                    k++
+                    k3++
                 }                
             }
         }
@@ -889,7 +848,7 @@ function mostrarPagina(archivo){
         containerOp.removeChild(containerOp.lastChild);
     }  
     //RECUPERAMOS LOS TAGS PARA CREAR LA PÁGINA    
-    let tip= getTipoId()
+    let tip= document.getElementById('tipo').value
     let subt = getSubtipoId()
     recuperarTags(tip, subt)
     //
@@ -974,6 +933,9 @@ function insertarInputSimple(divmayor, tag, i){
 
 function insertarInputComplejo(tag1, tag2, i, container, divmayor){
     //Titulo del padre
+    console.log(container)
+    console.log(divmayor)
+
     let texto = document.createElement("p");
     texto.innerHTML=tag1.descripcion
     texto.className = 'complejos';                            
@@ -1665,20 +1627,25 @@ function popup(tipo, estado){
             document.getElementById('popBody').innerHTML = '<p>No se ha podido modificar el archivo.</p>'
         }
     }    
+    document.getElementById('tipo').value = 'sel'
+    document.getElementById('subtipo').value = 'sel'
+    document.getElementById('fecha').value = 'dd/mm/aaaa'
+    document.getElementById('orden').value = 1
+    document.getElementById('doc').value = ''
+    document.getElementById('asunto').value= ''
     let pop= bootstrap.Modal.getOrCreateInstance(popEl)
     pop.show()
 }
 
 function modificar() {
     let pdf = $("input[name=pdf]").val(); 
-    let tipo = getTipoId()
-    let subtipo = getSubtipoId();
+    let tipo = document.getElementById('tipo').value;
+    let subtipo = document.getElementById('subtipo').value;
     let doc = document.getElementById('doc').value;
     let fecha = document.getElementById('fecha').value;
     let claves = document.getElementById('claves').value;
     let orden = document.getElementById('orden').value;
     let asunto = document.getElementById('asunto').value
-    let cabecera = document.getElementById('encabezado').value
 
 
     let route = '/archivo/modificar';    
@@ -1701,8 +1668,7 @@ function modificar() {
             orden: orden, 
             pdf: pdf,
             asunto: asunto,
-            id: archivoid,
-            cabecera: cabecera
+            id: archivoid
         }),
         dataType: 'json',
         success: function(res) {
@@ -1723,14 +1689,13 @@ function guardar(){
         pdf = 'on'
        pdfName = document.getElementById('pdfname').innerHTML
     }        
-    let tipo = getTipoId()
-    let subtipo =  getSubtipoId()
+    let tipo = document.getElementById('tipo').value
+    let subtipo =  document.getElementById('subtipo').value
     let doc = document.getElementById('doc').value
     let fecha = document.getElementById('fecha').value
     let claves = document.getElementById('claves').value
     let orden = document.getElementById('orden').value
     let asunto = document.getElementById('asunto').value
-    let cabecera = document.getElementById('encabezado').value
     console.log(subtipo)
     //
     let route = '/archivo/crear'  
@@ -1752,8 +1717,7 @@ function guardar(){
         orden: orden,
         asunto: asunto,
         pdf: pdf,
-        pdfname: pdfName,
-        cabecera: cabecera}),
+        pdfname: pdfName}),
         //dataType: 'json',
         success: function(res) {
             console.log(res)
@@ -1764,7 +1728,6 @@ function guardar(){
             popup(1, false)
     }});
 } 
-
 
 function modalPdf(){
     let modalEl = document.getElementById('modal')
@@ -1935,7 +1898,3 @@ function getUser(){
     }});
 
 }
-
-$(document).ready(function () {
-    encabezados()
-});
