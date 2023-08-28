@@ -82,30 +82,37 @@
                                 <div id="documento" hidden>
                                     <br>
                                     <div class="row">
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 flex">
+                                        <div class="col-lg-3">
+                                            {!! Form::label('*Visibilidad del documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                                            <select class="form-select" id="encabezado" name="enc" onchange="encabezados()">
+                                                <option value="1" selected>Público</option>
+                                                <option value="3">Privado</option>                       
+                                            </select>   
+                                        </div>
+                                        <div class="col-xs-3 col-sm-4 col-md-3 col-lg-3 flex">
                                             {!! Form::label('Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                                             <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
                                                 <option value="sel" selected>Seleccionar</option>
-                                                @foreach ($tipos as $tipo)                            
-                                                    <option value="{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
+                                                @foreach ($tipos as $tipo)                           
+                                                    <option value="{{$tipo->id_tipocabecera}}|{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
                                                 @endforeach                        
                                             </select>   
                                         </div>    
-                                        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 flex" >
+                                        <div class="col-xs-3 col-sm-4 col-md-3 col-lg-3 flex" >
                                             {!! Form::label('Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                            <select class="form-select" id="subtipo" onchange="subtipos()" name="subtipo" hidden>
+                                            <select class="form-select" id="subtipo" name="subtipo" hidden>
                                                 <option value="sel" selected>Seleccionar</option>
                                                 @php
                                                 $i=0; 
                                                 @endphp
                                                 @foreach ($subtipos as $subtipo)
-                                                    <option value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
+                                                    <option id= "sub{{$i}}" value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}_{{$subtipo->id_tipocabecera}}">{{$subtipo->dessubtipoarchivo}}</option>
                                                     @php
                                                         $i++;
                                                     @endphp
                                                 @endforeach                        
                                             </select>                 
-                                            <P id="placeholder">---</P>    
+                                            <P id="placeholder">---</P>     
                                         </div>
                                         <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 flex" >
                                             <label for="nro" class="control-label">Número de Documento</label> 
