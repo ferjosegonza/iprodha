@@ -92,7 +92,11 @@
             </div>
         </div>
     </section>    
-    
+    @php
+        $totalInfra = 0;
+        $totalViv = 0;
+        $totalNex = 0;
+    @endphp
     @if($tieneInfra)
     <section style="margin-top: 10px">
         <div class="section-header">
@@ -210,7 +214,7 @@
                 <table class="table" style="margin-top: 30px">
                     <tbody>
                         <tr>
-                            <th>MONTO TOTAL</th>
+                            <th>MONTO INFRAESTRUCTURA</th>
                             <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
                         </tr>
                     </tbody>
@@ -219,7 +223,7 @@
     </section>
     @endif
 
-    @if(1)
+    @if($tieneViv)
     <section style="margin-top: 10px">
         <div class="section-header">
             <h4 class="m-auto">ITEMS DE LA OFERTA DE OBRA - VIVIENDA</h4>
@@ -245,9 +249,9 @@
                             <td>{{$item->iditem}}</td>
 
                             
-                            <td>$ {{number_format($item->infra,2, ',', '.')}}</td>
+                            <td>$ {{number_format($item->vivienda,2, ',', '.')}}</td>
                             @php
-                                $total += $item->infra;
+                                $total += $item->vivienda;
                             @endphp
                             
                             <td>{{number_format($item->por_inc,4, ',', '.')}}</td> 
@@ -336,7 +340,7 @@
                 <table class="table" style="margin-top: 30px">
                     <tbody>
                         <tr>
-                            <th>MONTO TOTAL</th>
+                            <th>MONTO TOTAL VIVIENDA</th>
                             <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
                         </tr>
                     </tbody>
@@ -344,6 +348,171 @@
         </div>
     </section>
     @endif
+
+    @if($tieneNex)
+    <section style="margin-top: 10px">
+        <div class="section-header">
+            <h4 class="m-auto">ITEMS DE LA OFERTA DE OBRA - NEXO</h4>
+        </div>
+        <div class="section-body">
+            <table class="table">
+                <thead>
+                    <th>Orden</th>
+                    <th>Denominacion</th>
+                    <th>Codigo</th>
+                    <th>Monto</th>
+                    <th>% costo</th>
+                </thead>
+                <tbody>
+                    @php
+                        $total = 0;
+                        $totalinc = 0;
+                    @endphp
+                    @foreach ($itemsNex as $item)
+                        <tr>
+                            <td>{{$item->orden}}</td>
+                            <td>{{$item->nom_item}}</td>
+                            <td>{{$item->iditem}}</td>
+
+                            
+                            <td>$ {{number_format($item->infra,2, ',', '.')}}</td>
+                            @php
+                                $total += $item->infra;
+                            @endphp
+                            
+                            <td>{{number_format($item->por_inc,4, ',', '.')}}</td> 
+                            @php
+                                $totalinc += $item->por_inc;
+                            @endphp
+                            {{-- <td>${{number_format($data->tot1viv,2, ',', '.')}}</td>
+                            <td>${{number_format($data->tot1inf,2, ',', '.')}}</td> --}}
+                        </tr>
+                    @endforeach
+                    <tr style="background-color: rgb(190, 190, 190)">
+                        <td></td>
+                        <td></td>
+                        <td>Sub total 1:</td>
+                        <td>
+                            ${{number_format($total,2, ',', '.')}}
+                        </td>
+                        <td>
+                            {{number_format($totalinc,4, ',', '.')}}
+                        </td>
+                    </tr>      
+                </tbody>
+            </table>
+        </div>
+    </section>
+    
+    <section style="margin-top: 10px">
+        <div class="section-header">
+            <h4 class="m-auto">TOTALES CON SOMBRERO</h4>
+        </div>
+        <div class="section-body">
+            @php
+                $contador = 2;
+                $subtotal = $total;
+            @endphp
+            @foreach ($conceptos as $concepto)
+            @if ($concepto->idconceptosombrero < 40)
+                <table class="table" style="margin-top: 30px">
+                    <thead>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                        <th>Monto</th>
+                        <th>SubTotal {{$contador}}</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$concepto->conceptosombrero}}</td>
+                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
+                            <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                            <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
+                        </tr>
+                        <tr style="background-color: rgb(190, 190, 190)">
+                        </tr>
+                    </tbody>
+                </table>
+                @php
+                    $contador += 1;
+                    $subtotal += $subtotal*($concepto->valor/100);
+                @endphp
+            @elseif($concepto->idconceptosombrero == 50)
+                <table class="table" style="margin-top: 30px">
+                    <thead>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                        <th>Monto</th>
+                        <th>SubTotal {{$contador}}</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$concepto->conceptosombrero}}</td>
+                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
+                            <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                            <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
+                        </tr>
+                        <tr style="background-color: rgb(190, 190, 190)">
+                        </tr>
+                    </tbody>
+                </table>
+                @php
+                    $contador += 1;
+                    $subtotal += $subtotal*($concepto->valor/100);
+                    $totalNex = $subtotal;
+                @endphp
+            @endif
+        @endforeach
+                <table class="table" style="margin-top: 30px; margin-bottom: 30px;">
+                    <tbody>
+                        <tr>
+                            <th>MONTO TOTAL NEXO</th>
+                            <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </section>
+    @endif
+
+    <table class="table" style="margin-top: 30px">
+        <thead>
+            <th>Concepto</th>
+            <th>Valor</th>
+        </thead>
+        <tbody>
+            @if ($tieneInfra)
+                <tr>
+                    <td>MONTO INFRAESTRUCTURA</td>
+                    <td>$ {{number_format($totalInfra, 2, ',', '.')}}</td>
+                </tr>
+            @endif
+
+            @if ($tieneViv)
+                <tr>
+                    <td>MONTO VIVIENDA</td>
+                    <td>$ {{number_format($totalViv, 2, ',', '.')}}</td>
+                </tr>
+            @endif
+
+            @if ($tieneNex)
+                <tr>
+                    <td>MONTO NEXO</td>
+                    <td>$ {{number_format($totalNex, 2, ',', '.')}}</td>
+                </tr>
+            @endif
+        </tbody>
+        <tfoot>
+            @php
+                $totalFinal = $totalInfra + $totalViv + $totalNex;
+            @endphp
+            <tr>
+                <td>MONTO TOTAL</td>
+                <td>$ {{number_format($totalFinal, 2, ',', '.')}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
     {{-- <section style="margin-top: 10px">
         <div class="section-body">
             <table class="table" style="margin-top: 30px">
