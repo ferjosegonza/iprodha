@@ -81,6 +81,7 @@ function mostrarHistorial(id){
             }
             for(let i=0; i<res.length; i++){
                 tr = document.createElement('tr')
+                tr.className = 'hoverable'
                 let str, str2
                 if(res[i].observacion==null){
                     str='-'
@@ -101,12 +102,45 @@ function mostrarHistorial(id){
                     }
                 }
                 tr.innerHTML = '<td>'+res[i].fecha.slice(0, 10)+'</td>'+'<td>'+res[i].detalle+'</td>'+'<td>'+str2+'</td>'+'<td>'+str+'</td>'
+                tr.setAttribute('onclick', 'abrirPDF('+res[i].idarchivo+')')
                 info.appendChild(tr)
             }
         },
         error: function(res){
             console.log(res)
         }});
+}
+
+function abrirPDF(id){
+    console.log(id)
+
+    if(id != null){
+        $.ajax({
+            url: window.location.origin + '/archivo/buscarID',
+            type: 'GET',
+            cache: false,
+            data: ({
+                _token: $('#signup-token').val(),
+                id:id
+            }),
+            dataType: 'json',
+            success: function(res){    
+                console.log(res)
+                document.getElementById('main').classList.remove('col-lg-12')
+                document.getElementById('main').classList.add('col-lg-6')
+                document.getElementById('preview').removeAttribute('hidden')
+                document.getElementById('pdf').setAttribute('src', res.path_archivo.slice(14) + res.nombre_archivo)
+                document.getElementById('btnvermas').setAttribute('href', res.path_archivo.slice(14) + res.nombre_archivo)
+            },
+            error: function(res){}
+        });
+    }
+}
+
+function cerrarPDF(){
+    document.getElementById('main').classList.add('col-lg-12')
+    document.getElementById('main').classList.remove('col-lg-6')
+    document.getElementById('preview').setAttribute('hidden', 'hidden')
 }
 
 $(document).ready(function () {
