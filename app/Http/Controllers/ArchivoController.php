@@ -157,6 +157,7 @@ public function check(Request $request){
 
     $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
                 ->where('id_subtipoarchivo','=', $request->subtipo)
+                ->where('orden', '=', $request->orden)
                 ->where('nro_archivo','=', $request->doc)
                 ->where('ano_archivo','=',$fecha[0])
                 ->where('mes_archivo','=',$fecha[1])
