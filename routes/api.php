@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Coordinacion\Informatica\Ju001Controller;
-
+use App\Http\Controllers\Coordinacion\Informatica\Re003Controller;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [AuthController::class, 'login']);
+//Route::post('/login', [AuthController::class, 'login']);
 
 Route::apiResource('/recaudacion', Ju001Controller::class)->middleware('auth:api');
 
@@ -37,5 +37,15 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/ju001/detallebajas', [Ju001Controller::class, 'detallebajas']);
     Route::get('/ju001/detallealtas', [Ju001Controller::class, 'detallealtas']);
     Route::get('/ju001/efectividad', [Ju001Controller::class, 'efectividad']);
+});
+
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/re003/indice', [Re003Controller::class, 'indice']);
+    Route::get('/re003/comparativointerior', [Re003Controller::class, 'comparativointerior']);
+    Route::get('/re003/ultimoindicador', [Re003Controller::class, 'ultimoindicador']);
+    Route::get('/re003/indicadorportipologia', [Re003Controller::class, 'indicadorportipologia']);
+    Route::get('/re003/rangos', [Re003Controller::class, 'rangos']);
+    Route::get('/re003/vigentedetalle', [Re003Controller::class, 'vigentedetalle']);
+    Route::get('/re003/vigente', [Re003Controller::class, 'vigente']);
 });
 
