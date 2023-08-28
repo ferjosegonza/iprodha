@@ -283,10 +283,17 @@ function buscarArchivos(){
                 while(info.hasChildNodes()){
                     info.removeChild(info.lastChild)
                 }
-                for(let i=0; i<res.length; i++){
-                    tr=document.createElement('tr')                    
-                    tr.innerHTML = '<td>'+res[i].dia_archivo+'-'+ res[i].mes_archivo + '-' + res[i].ano_archivo +'</td><td>'+res[i].tipo + '-' + res[i].subtipo + '-' + res[i].nro_archivo + '</td><td>'+res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')+'</td>'
-                    tr.setAttribute('onclick', 'openPreview("'+ res[i].id_archivo + '", "' + res[i].path_archivo.replaceAll('\\','\\\\') + ' ", "' + res[i].nombre_archivo + '", "' + res[i].tipo +  '", "' + res[i].subtipo + '", "' + res[i].nro_archivo +'")')
+                for(const element of res){
+                    tr=document.createElement('tr')         
+                    let claves
+                    if(element.claves_archivo == null){
+                        claves = '-'
+                    }
+                    else{
+                        claves= element.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')
+                    }
+                    tr.innerHTML = '<td>'+element.dia_archivo+'-'+ element.mes_archivo + '-' + element.ano_archivo +'</td><td>'+element.tipo + '-' + element.subtipo + '-' + element.nro_archivo + '</td><td>'+ claves+'</td>'
+                    tr.setAttribute('onclick', 'openPreview("'+ element.id_archivo + '", "' + element.path_archivo.replaceAll('\\','\\\\') + ' ", "' + element.nombre_archivo + '", "' + element.tipo +  '", "' + element.subtipo + '", "' + element.nro_archivo +'")')
                     tr.className= 'hoverable'
                     info.appendChild(tr)
                 }
