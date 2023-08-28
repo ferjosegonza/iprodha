@@ -1731,7 +1731,7 @@ function guardar(){
     let orden = document.getElementById('orden').value
     let asunto = document.getElementById('asunto').value
     let cabecera = document.getElementById('encabezado').value
-    console.log(subtipo)
+    console.log(pdfName)
     //
     let route = '/archivo/crear'  
     $.ajaxSetup({
