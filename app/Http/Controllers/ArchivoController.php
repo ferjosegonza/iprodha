@@ -284,13 +284,12 @@ public function crear(Request $request){
     $archivo->id_tipocabecera = $request->cabecera;
 
     $path = Dig_subtipoarchivo::where('id_tipocabecera', '=', $request->cabecera)
-    ->where('id_tipoarchivo', '=', $archivo->id_tipoarchivo)
-    ->where('id_subtipoarchivo', '=', $archivo->id_subtipoarchivo)
+    ->where('id_tipoarchivo', '=', $request->tipo)
+    ->where('id_subtipoarchivo', '=', $request->subtipo)
     ->first();
     if($path != null){
         $archivo->path_archivo = $path->path_archivo;
     }
-
     //guardar los archivos
     if($request->pdf == 'on'){
         $fileName = $request->pdfname;
@@ -384,7 +383,8 @@ public function buscarArchivosRRHH(Request $request){
     and (i.id_tipocabecera = s.id_tipocabecera)
     where i.id_tipoarchivo = $request->tipo and 
     i.id_subtipoarchivo = $request->subtipo and
-    i.nro_archivo = '$request->nro'";
+    i.nro_archivo = '$request->nro'
+    and i.id_tipocabecera = $request->cabecera";
     $archivos = DB::select( DB::raw($query));
     return response()->json($archivos);
 }

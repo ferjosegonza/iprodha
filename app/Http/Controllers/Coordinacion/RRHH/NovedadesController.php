@@ -25,8 +25,8 @@ class NovedadesController extends Controller
 
     public function crear_novedad(Request $request, $id){
         $agente = Agente::where('idagente', '=', $id)->first();
-        $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
-        $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
+        $TipoDocumento = Dig_tipoarchivo::orderBy('nombre_corto')->get();
+        $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
         return view('rrhh.crear_novedad')
         ->with('tipos',$TipoDocumento)
         ->with('subtipos',$SubTipoDocumento)
