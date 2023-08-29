@@ -1,18 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .obligatorio {
-        color: red;
-    }
-</style>
     <section class="section">
         <div class="section-header">
             <div class="titulo py-1">Nueva vivienda para la obra</div>
         </div>
         <div class="section-body">
             <div class="row">
-                {!! Form::open(['route' => ['obravivienda.guardarnuevaviv', $obra->id_obr], 'method' => 'POST']) !!}
+                {!! Form::open(['route' => ['obravivienda.guardarnuevavivalt', $obra->id_obr], 'method' => 'POST']) !!}
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-12 col-md-12" id="carga-individual">
                     <div class="card">
@@ -34,8 +29,8 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('N° Orden:', null, ['class' => 'control-label fs-6', 'style' => '']) !!}
-                                        <span class="obligatorio">*</span>
-                                        {!! Form::number('orden', $ultimoOrden ?? 0, ['class' => 'form-control', 'id' => 'idorden', 'required']) !!}
+
+                                        {!! Form::number('orden', $ultimoOrden ?? 0, ['class' => 'form-control', 'id' => 'idorden']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -225,7 +220,7 @@
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">
-                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.etapas', $obra->id_obr], 'style' => '']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas', $obra->id_obr], 'style' => '']) !!}
                                         {!! Form::submit('Volver', ['class' => 'btn btn-primary']) !!}
                                         {!! Form::close() !!}
                                     </div>

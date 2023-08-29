@@ -53,7 +53,12 @@
                                         {{-- {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!} --}}
                                         <select name="idempresa" class="selectpicker w-100 form-select"  placeholder="Seleccionar" required>
                                             @foreach ($Empresa as $unaEmpresa)
-                                                <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
+                                                @if ($unaEmpresa->id_emp == 0)
+                                                    <option value="{{$unaEmpresa->id_emp}}" selected>{{$unaEmpresa->nom_emp}}</option>
+                                                @else
+                                                    <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
+                                                @endif
+                                                {{-- <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option> --}}
                                             @endforeach
                                         </select>
                                         {{-- {!! Form::select('idempresa', $Empresa, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!} --}}
@@ -65,7 +70,12 @@
                                         {{-- {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!} --}}
                                         <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
                                             @foreach ($Localidad as $unaLocalidad)
-                                                <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
+                                            @if ($unaLocalidad->id_loc == 00)
+                                                    <option value="{{$unaLocalidad->id_loc}}" selected>{{$unaLocalidad->nom_loc}}</option>
+                                                @else
+                                                    <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
+                                                @endif
+                                                {{-- <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option> --}}
                                             @endforeach
                                         </select>
                                         {{-- {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!} --}}
@@ -147,7 +157,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                                             <div class="form-group">
                                                 <label for="Cantidad de viviendas:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Cantidad de Viviendas: <span class="obligatorio">*</span></label>
-                                                {!! Form::number('can_viv', null, ['class' => 'form-control', 'required', 'id'=>'can_viv']) !!} 
+                                                {!! Form::number('can_viv', 0, ['class' => 'form-control', 'required', 'id'=>'can_viv']) !!} 
                                             </div>
                                         </div>  
                                     </div>

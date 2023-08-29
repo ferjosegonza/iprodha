@@ -60,7 +60,7 @@ function onBuscarVivienda(){
             numFinca.value = response.sup_fin;
             supLote.value = response.sup_lot;
             deslinde.value = response.deslinde;
-            console.log(response);
+            // console.log(response);
          },
          error: function (error) {
              console.log(error);
