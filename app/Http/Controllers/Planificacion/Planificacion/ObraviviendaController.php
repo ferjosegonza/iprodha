@@ -293,8 +293,10 @@ class ObraviviendaController extends Controller
         foreach ($viviendasTabla as $viviendass) {
             $vivs[] = $viviendass->id_viv;
         }
-
-        $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)->orderBy('orden')->get();
+        if(count($viviendasTabla) != 0){
+            $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)->orderBy('orden')->get();
+        }
+        
         $viviendas = collect($viviendas);
         return view('Planificacion.Planificacion.Obravivienda.altaviv', compact('obra', 'viviendas', 'viviendasTabla'));
     }
