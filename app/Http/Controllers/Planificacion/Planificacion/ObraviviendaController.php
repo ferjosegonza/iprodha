@@ -180,7 +180,7 @@ class ObraviviendaController extends Controller
         // $user->syncPermissions(["VER-TICKET", "CREAR-TICKET", "EDITAR-TICKET", "VER-ARCHIVOS", "VER-OBRAVIVIENDA", "CREAR-OBRAVIVIENDA", "EDITAR-OBRAVIVIENDA", "CARGAR-VIVIENDAS"]);
         $obra = Ob_obra::find($id);
         $viviendas = $this->todasLasViviendasDeUnaObra($obra);
-
+        $viviendasTabla = [];
         foreach ($viviendas as $vivienda) {
             $vivs[] = $vivienda->id_viv;
         }
