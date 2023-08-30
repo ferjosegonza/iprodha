@@ -180,7 +180,16 @@ class ObraviviendaController extends Controller
         // $user->syncPermissions(["VER-TICKET", "CREAR-TICKET", "EDITAR-TICKET", "VER-ARCHIVOS", "VER-OBRAVIVIENDA", "CREAR-OBRAVIVIENDA", "EDITAR-OBRAVIVIENDA", "CARGAR-VIVIENDAS"]);
         $obra = Ob_obra::find($id);
         $viviendas = $this->todasLasViviendasDeUnaObra($obra);
-        return view('Planificacion.Planificacion.Obravivienda.show', compact('obra', 'viviendas'));
+
+        foreach ($viviendas as $vivienda) {
+            $vivs[] = $vivienda->id_viv;
+        }
+
+        if(count($viviendas) != 0){
+            $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)->orderBy('orden')->get();
+        }
+
+        return view('Planificacion.Planificacion.Obravivienda.show', compact('obra', 'viviendas', 'viviendasTabla'));
     }
    
     public function edit(Request $request, $id)

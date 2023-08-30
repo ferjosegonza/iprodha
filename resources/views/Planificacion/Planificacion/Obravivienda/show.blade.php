@@ -188,6 +188,8 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Sup. Lote</th>
                                         <th class="text-center" scope="col" style="color:#fff;">N° Calle</th>
                                         <th class="text-center" scope="col" style="color:#fff;">Calle</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">Municipio</th>
+                                        <th class="text-center" scope="col" style="color:#fff;">Departamento</th>
                                         <th class="text-center" scope="col" style="color:#fff; width:15%">Longitud</th>
                                         <th class="text-center" scope="col" style="color:#fff; width:15%">Latitud</th>
                                         <th class="text-center" scope="col" style="color:#fff;">Edif.</th>
@@ -195,11 +197,11 @@
                                         <th class="text-center" scope="col" style="color:#fff;">Dpto</th>
                                         <th class="text-center" scope="col" style="color:#fff;">Escalera</th>
                                     <tbody>
-                                        @foreach ($viviendas as $vivienda)
+                                        @foreach ($viviendasTabla as $vivienda)
                                             <tr>    
                                                 <td class= 'text-center' >{{$vivienda->orden}}</td>                                      
-                                                <td class= 'text-center' >{{$vivienda->etapa}}</td>
-                                                <td class= 'text-center' >{{$vivienda->entrega}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getEntrega->getEtapa->nro_eta}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getEntrega->num_ent}}</td>
                                                 @if ($vivienda->discap == 1)
                                                     <td class= 'text-center' >SI</td>
                                                 @else
@@ -216,6 +218,8 @@
                                                 <td class= 'text-center' >{{$vivienda->sup_lot}}</td>
                                                 <td class= 'text-center' >{{$vivienda->num_cal}}</td>
                                                 <td class= 'text-center' >{{$vivienda->nom_cal}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getMunicipio->nom_municipio}}</td>
+                                                <td class= 'text-center' >{{$vivienda->getMunicipio->getDepartamento->nom_dep}}</td>
                                                 <td class= 'text-center' >{{$vivienda->latitud}}</td>
                                                 <td class= 'text-center' >{{$vivienda->longitud}}</td>
                                                 <td class= 'text-center' >{{$vivienda->edificio}}</td>
