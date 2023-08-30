@@ -18,6 +18,16 @@
                                             @csrf
                                             @method('POST')
                                             <div style="width:10%;float:left;margin-left:1%;">
+                                                {!!Form::label('Plazo:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}                                                
+                                                <select name="plazo" 
+                                                @if(count($BarrioXOrg)>0)                                                    
+                                                    disabled>
+                                                        @foreach($BarrioXOrg as $unBarrioXOrg)<option>{{$unBarrioXOrg->plazo}}</option>@endforeach  
+                                                @else                                              
+                                                    >
+                                                        <option>90</option><option>360</option>
+                                                @endif
+                                                </select>
                                                 {!!Form::label('Dormitorios:',null,['class'=>'control-label','style'=>'white-space:nowrap'])!!}
                                                 @foreach($Barrio as $unBarrio)@endforeach
                                                 @php $cadena='';@endphp
