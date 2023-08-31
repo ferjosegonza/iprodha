@@ -15,7 +15,7 @@ use App\Models\Iprodha\Ob_entrega;
 use App\Models\Iprodha\Ob_etapa;
 use App\Models\Iprodha\Localidad;
 use App\Models\Iprodha\Empresa;
-
+use App\Models\Iprodha\ob_operatoria;
 //Gestion de usuario oracle
 use App\Traits\ConectarUserDB;
 
@@ -70,9 +70,10 @@ class ObraviviendaController extends Controller
     {
         // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
+        $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
         $Localidad = Localidad::orderBy('nom_loc')->get();
         $Empresa = Empresa::orderBy('nom_emp')->get();
-        return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa'));
+        return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa', 'TipoOpe'));
     }
 
     public function store(Request $request)
@@ -108,6 +109,12 @@ class ObraviviendaController extends Controller
             if($request->input('plazo')){
                 $obra->update([
                     'plazo' => $request->input('plazo')
+                ]);
+            }
+
+            if($request->input('idope')){
+                $obra->update([
+                    'id_ope' => $request->input('idope')
                 ]);
             }
 
@@ -200,7 +207,8 @@ class ObraviviendaController extends Controller
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
         $Localidad = Localidad::orderBy('nom_loc')->get();
         $Empresa = Empresa::orderBy('nom_emp')->get(); 
-        return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa'));
+        $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
+        return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa', 'TipoOpe'));
     }
     
     public function update(Request $request, $id)
@@ -248,6 +256,12 @@ class ObraviviendaController extends Controller
         if($request->input('plazo')){
             $obra->update([
                 'plazo' => $request->input('plazo')
+            ]);
+        }
+
+        if($request->input('idope')){
+            $obra->update([
+                'id_ope' => $request->input('idope')
             ]);
         }
 
@@ -1553,4 +1567,6 @@ class ObraviviendaController extends Controller
         }
         return $listaNumEntrega;
     }
+
+
 }

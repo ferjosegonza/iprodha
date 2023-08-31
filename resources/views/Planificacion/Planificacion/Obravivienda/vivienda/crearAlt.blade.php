@@ -42,13 +42,13 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Partida:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        {!! Form::number('partida', null, ['class' => 'form-control', 'id' => 'idpartida']) !!}
+                                        {!! Form::text('partida', null, ['class' => 'form-control', 'id' => 'idpartida']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Partida UCAC:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        {!! Form::number('partidaucac', null, ['class' => 'form-control', 'id' => 'idpartidaucac']) !!}
+                                        {!! Form::text('partidaucac', null, ['class' => 'form-control', 'id' => 'idpartidaucac']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -69,13 +69,13 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Sección:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('seccion', null, ['class' => 'form-control', 'id' => 'idseccion']) !!}
+                                                {!! Form::text('seccion', null, ['class' => 'form-control', 'id' => 'idseccion']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Chacra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('chacra', null, ['class' => 'form-control', 'id' => 'idchacra']) !!}
+                                                {!! Form::text('chacra', null, ['class' => 'form-control', 'id' => 'idchacra']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -87,7 +87,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Parcela:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('parcela', null, ['class' => 'form-control', 'id' => 'idparcela']) !!}
+                                                {!! Form::text('parcela', null, ['class' => 'form-control', 'id' => 'idparcela']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -125,7 +125,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Unidad funcional:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('unfun', null, ['class' => 'form-control', 'id' => 'idunfun']) !!}
+                                                {!! Form::text('unfun', null, ['class' => 'form-control', 'id' => 'idunfun']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +147,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                             <div class="form-group">
                                                 {!! Form::label('Lote:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('lote', null, ['class' => 'form-control', 'id' => 'idlote']) !!}
+                                                {!! Form::text('lote', null, ['class' => 'form-control', 'id' => 'idlote']) !!}
                                             </div>
                                         </div>
                                     </div> 
@@ -160,7 +160,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('N° Calle:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('numcalle', null, ['class' => 'form-control', 'id' => 'idnumcalle']) !!}
+                                                {!! Form::text('numcalle', null, ['class' => 'form-control', 'id' => 'idnumcalle']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
