@@ -21,4 +21,9 @@
             'OPERATORIA','ABR_OPE','DEN_INSC','VER_INSC','ID_OPEINSC','CERTIFICA',
             'ADMINISTRACION','CUENTA','BANCO','CARACTER','OPERAT_ADM','APICOFOM','VER_INSWEB'            
         ];        
+
+        public function getOfeObras()
+        {
+            return $this->hasMany(Ofe_obra::class, 'id_ope', 'id_ope');
+        }
     }

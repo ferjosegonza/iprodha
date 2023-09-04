@@ -188,6 +188,11 @@ class ofe_obraController extends Controller
         $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
         $obra = Ofe_obra::find($idobra);
         $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+        
+        if(is_null($data)){
+          return view('Obrasyfinan.Ofertas.ofeobra.clon_obra',compact('obra'));
+        }
+
         return view('Obrasyfinan.Ofertas.ofeobra.show',compact('data','items','cronograma', 'obra', 'sombreros', 'desembolsos'));
     }   
 
@@ -1008,5 +1013,54 @@ class ofe_obraController extends Controller
       ]);
 
       return redirect()->route('ofeobra.anticipo', $laObra->idobra)->with('mensaje','El anticipo fue modificado con exito.');
+    }
+
+    public function verclonarObra(Request $request, $idobrad){
+
+        $idobrao = $request->input('num_obr_o');
+
+        $data = Vw_ofe_obra_valida::where('idobra', $idobrao)->first();
+        $items = Vw_ofe_items::where('idobra', $idobrao)->get();
+        $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobrao)->orderBy('mes')->get();
+        $sombreros = Ofe_sombrero::where('idobra', '=', $idobrao)->get();
+        $obra = Ofe_obra::find($idobrao);
+        $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobrao)->orderBy('mes')->get();
+
+        return view('Obrasyfinan.Ofertas.ofeobra.clon_obrasgte',compact('data','items','cronograma', 'obra', 'sombreros', 'desembolsos', 'idobrad'));
+    }
+
+    public function clonarObra($idobra_o, $idobra_d){
+
+      //Limpiar la oferta de obra
+      $procedureNameClean = 'iprodha.sp_ofe_limpiar';
+ 
+      $bindingss = [
+          'el_idoferta'  => $idobra_d,
+      ];
+      
+      DB::executeProcedure($procedureNameClean, $bindingss);
+      //----------------------------------------------
+      return 1;
+      $result = null;
+
+      $procedureName = 'iprodha.sp_ofe_clonar';
+
+      $bindings = [
+          'el_idobra_origen'  => $idobra_o,
+          'el_idobra_destino' => $idobra_d,
+          'result' => [
+              'value' => &$result,
+              'length' => 1000,
+          ],
+      ];
+        
+      $succeeded = DB::executeProcedure($procedureName, $bindings);
+
+      if($succeeded) {
+          return redirect()->route('ofeobra.index')->with('mensaje', $result);
+      }
+      else {
+          return redirect()->route('ofeobra.index')->with('error','Problemas con el procedimiento.');
+      }
     }
 }  
