@@ -95,4 +95,8 @@ class Ofe_obra extends Model
     {
         return $this->belongsTo(Ofe_tipocontratoferta::class,'idtipocontratofer','IDTIPOCONTRATOFER');
     }
+
+    public function getOperatoria(){
+        return $this->belongsTo(ob_operatoria::class,'id_ope','id_ope');
+    }
 }

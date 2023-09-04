@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA|OFEOBRA'
     Route::get('/ofeobra/{idobra}/pdfincitems', [ofe_obraController::class, 'pdfIncItems'])->name('ofeobraIncItems.pdf');
     Route::get('/ofeobra/{idobra}/pdfcurvades', [ofe_obraController::class, 'pdfCurvaDes'])->name('ofeobraCurvaDes.pdf');
     Route::get('/ofeobra/{idobra}/pdfcrono', [ofe_obraController::class, 'pdfCrono'])->name('ofeobraCrono.pdf');
+    Route::get('/ofeobra/verclonar/{idobrad}', [ofe_obraController::class, 'verclonarObra'])->name('ofeobra.verclonar');
+    Route::post('/ofeobra/{idobra_d}/clonar/{idobra_o}', [ofe_obraController::class, 'clonarObra'])->name('ofeobra.clonarobra');
     Route::get('/ofeobraprueba', [ofe_obraController::class, 'prueba']);
 });
 

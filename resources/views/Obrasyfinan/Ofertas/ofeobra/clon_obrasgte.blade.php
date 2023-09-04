@@ -7,42 +7,12 @@
 <section class="section">
     <div class="section-header d-flex">
         <div class="">
-            <div class="titulo page__heading">Ver la oferta de obra</div>
+            <div class="titulo page__heading py-1 fs-5">Ver para clonar la oferta de obra</div>
         </div>
         <div class="ms-auto">
-            <div class="dropdown">
-                <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Informes <i class="fas fa-print" style="color: #ffffff;"></i>
-                </a>
-              
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{route('ofeobraItemsGral.pdf', base64url_encode($data->idobra))}}" target="_blank">Item General</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Item Infraestructura</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Item Vivienda</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Item Nexo</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraIncItems.pdf', base64url_encode($data->idobra))}}" target="_blank">Item Incidencia</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraCrono.pdf', base64url_encode($data->idobra))}}" target="_blank">Cronograma</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraDesmes.pdf', base64url_encode($data->idobra))}}" target="_blank">Desembolsos</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraCurvaDes.pdf', base64url_encode($data->idobra))}}" target="_blank">Curva</a></li>
-                </ul>
-              </div> 
+             
         </div>
     </div>
-    {{-- <div class="section-header">
-        <div class="titulo page__heading" style="padding:10px">
-            <h6>Ver la oferta de obra</h6>
-        </div>       
-        <div class="dropdown" style="float:right;">
-            <button class="dropbtn">
-                <i class="fas fa-print" style="color: #ffffff;"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href={{route('archivo.consultar')}} target="_blank">Imprimir Todo</a>
-                <a href={{route('ofeobra.pdf2', $data->idobra)}} target="_blank">Informacion de obra y sombrero</a>
-                <a href={{route('ofeobra.pdf1', $data->idobra)}} target="_blank">Items y cronograma</a>
-            </div>
-        </div>
-    </div>     --}}
     
     <div class="section-body">
         <div class="row">
@@ -686,6 +656,55 @@
                 </div>
             </div>
             
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-head">
+                        <br>
+                        <div class="text-center"><h5>Detalle a clonar</h5></div>                        
+                    </div>
+                    <div class="card-body">
+                        {!! Form::open(['route' => ['ofeobra.clonarobra', $obra->idobra, base64url_decode($idobrad)], 'method' => 'POST', 'class' => 'form-prevent-multiple-submits']) !!}
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="form-group">
+                                    {!! Form::label('Obra N° DESTINO:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                    {!! Form::text('num_obr_d', base64url_decode($idobrad), ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}        
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="form-group">
+                                    {!! Form::label('Obra N° ORIGEN:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                    {!! Form::text('num_obr_o', $obra->idobra, ['style' => 'disabled;', 'class' => 'form-control', 'required', 'readonly' => 'true']) !!}        
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="form-group">
+                                    {!! Form::label('Acciones:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                    <br>
+                                    <div class="row">
+                                        <div class="col">
+                                            {{-- <a href="{{ route('ofeobra.index') }}"class="btn btn-primary fo">Preparar</a> --}}
+                                            {!! Form::submit('Clonar', ['class' => 'btn btn-success']) !!}
+                                        </div>
+                                        {{-- <div class="col">
+                                            <a href="{{ route('ofeobra.index') }}"class="btn btn-success fo">Clonar</a>  
+                                        </div> --}}
+                                    </div>     
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
