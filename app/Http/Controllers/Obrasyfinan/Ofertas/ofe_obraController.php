@@ -1040,7 +1040,7 @@ class ofe_obraController extends Controller
       
       DB::executeProcedure($procedureNameClean, $bindingss);
       //----------------------------------------------
-      return 1;
+  
       $result = null;
 
       $procedureName = 'iprodha.sp_ofe_clonar';
