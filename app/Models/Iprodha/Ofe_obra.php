@@ -38,7 +38,8 @@ class Ofe_obra extends Model
         'anticipo',
         'id_ope',
         'id_tip_obr',
-        'num_lic'
+        'num_lic',
+        'id_tipo_anticipo'
     ];
     protected $attributes = [
         'idobra' => false,
