@@ -40,7 +40,7 @@
                                     <div class="form-group">
                                         {!! Form::label('Descripcion anticipo:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
                                         {{-- <span class="obligatorio">*</span> --}}
-                                        {!! Form::text('descrip_ant', $laObra->getAnticipo->descripcion, ['class' => 'form-control', 'data-type' => 'porc', 'readonly' => true, 'id' => 'descripcion_ant' ]) !!}
+                                        {!! Form::text('descrip_ant', $laObra->getAnticipo->descripcion ?? '-', ['class' => 'form-control', 'data-type' => 'porc', 'readonly' => true, 'id' => 'descripcion_ant' ]) !!}
                                     </div>        
                                 </div>
                             </div>
