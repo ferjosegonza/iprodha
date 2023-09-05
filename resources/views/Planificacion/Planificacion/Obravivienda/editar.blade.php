@@ -121,7 +121,19 @@
                                 </div>
                                 
                             </div>
-                            
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idope', $TipoOpe, $obra->id_ope ?? null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
+                                    </div>
+                                </div>
+                            </div>
                     
                             <div class="row pt-3">
                                 <div class="d-flex">

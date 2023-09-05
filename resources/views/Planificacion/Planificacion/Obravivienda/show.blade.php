@@ -23,9 +23,22 @@
       } 
 </style>
     <section class="section">
-        <div class="section-header">
-            <div class="titulo py-1">Ver Obra</div>
-        </div>    
+        <div class="section-header d-flex">
+            <div class="">
+                <div class="titulo page__heading py-1">Ver Obra</div>
+            </div>
+            <div class="ms-auto">
+                <div class="dropdown">
+                    <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Informes <i class="fas fa-print" style="color: #ffffff;"></i>
+                    </a>
+                  
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{route('infovivienda.pdf', base64url_encode($obra->id_obr))}}" target="_blank">Datos viviendas</a></li>
+                    </ul>
+                  </div> 
+            </div>
+        </div>
         <div class="section-body">
             <div class="row">
                 @include('layouts.modal.mensajes')

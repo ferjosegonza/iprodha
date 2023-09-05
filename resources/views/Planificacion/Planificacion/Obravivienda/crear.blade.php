@@ -89,6 +89,16 @@
                                         {!! Form::text('expediente', null, ['class' => 'form-control']) !!} 
                                     </div>
                                 </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idope', $TipoOpe, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
+                                    </div>
+                                </div>
                                 {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         <label for="Cantidad de viviendas:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Cant. Viviendas: <span class="obligatorio">*</span></label>
@@ -123,13 +133,13 @@
                                             ]) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
                                     <div class="form-group">
                                         {!! Form::label('Plazo:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         {!! Form::number('plazo', null, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
-                                
+
                             </div>
                             
                             <div class="row">
