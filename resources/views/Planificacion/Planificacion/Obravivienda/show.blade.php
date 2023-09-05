@@ -33,10 +33,10 @@
                       Informes <i class="fas fa-print" style="color: #ffffff;"></i>
                     </a>
                   
-                    <ul class="dropdown-menu">
+                    {{-- <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{route('infovivienda.pdf', base64url_encode($obra->id_obr))}}" target="_blank">Datos viviendas</a></li>
-                    </ul>
-                  </div> 
+                    </ul> --}}
+                </div> 
             </div>
         </div>
         <div class="section-body">
