@@ -16,9 +16,10 @@
                 </a>
               
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Item General</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItemsGral.pdf', base64url_encode($data->idobra))}}" target="_blank">Item General</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Item Infraestructura</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Item Vivienda</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Item Nexo</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraIncItems.pdf', base64url_encode($data->idobra))}}" target="_blank">Item Incidencia</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraCrono.pdf', base64url_encode($data->idobra))}}" target="_blank">Cronograma</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraDesmes.pdf', base64url_encode($data->idobra))}}" target="_blank">Desembolsos</a></li>
@@ -151,7 +152,38 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="d-flex">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Total de obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::text('totaldobra',"$0.00", ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id' => 'totalobr']) !!}         
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
+                                    <div class="form-group">
+                                        {!! Form::label('Plazo:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::text('plazo',$obra->plazo, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Año y Mes de Cotización:', null, [
+                                            'class' => 'control-label',
+                                            'style' => 'white-space: nowrap;'
+                                        ]) !!}
+                                        @if ($obra->mescotizacion !=null and $obra->aniocotizacion !=null)
+                                        
+                                        {!! Form::month('anioymes', $obra->aniocotizacion. '-' .$obra->mescotizacion, [
+                                            'class' => 'form-control',
+                                            'readonly'=> 'true'
+                                        ]) !!}                                       
+                                        @else
+                                        {!! Form::text('cotizacion', 'No se ha definido una fecha' , ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true' ]) !!}
+                                        @endif                                            
+                                    </div>
+                                </div>
+                                {{-- <div class="d-flex">
                                     <div class="me-auto p-2"></div>
                                     <div class="p-2">
                                         <div class="form-group">
@@ -173,18 +205,16 @@
                                             ]) !!}                                       
                                             @else
                                             {!! Form::text('cotizacion', 'No se ha definido una fecha' , ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true' ]) !!}
-                                            @endif
-                                            {{-- <input min="2022-01-01" max="{{\Carbon\Carbon::now()->year . '-12'}}" id="periodo" class="form-control" name="anioymes" type="month" value="{{$unaOferta->aniocotizacion. '-' .$unaOferta->mescotizacion}}"> --}}
-                                            
+                                            @endif                                            
                                         </div>
                                     </div>
-                                </div>                     
+                                </div>                      --}}
                             </div>
                             
                         </div>
                     </div>
                 </div>
-
+            </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
@@ -285,6 +315,7 @@
                                         </strong>
                                     </td>
                                 </tr>
+                                
                                 @php
                                     $flete = $sombreros->where('idconceptosombrero', '=', 10)->first()->valor ?? 0;
                                     $somfleteviv = $data->tot1viv * ($flete/100);
@@ -469,6 +500,7 @@
                             TOTAL:
                             <strong>
                                 $ {{number_format($totalDef, 2, ',', '.')}}
+                                {{-- $ {{$totalDef}} --}}
                             </strong>
                         </p>                       
                        </div>
@@ -540,8 +572,75 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
-                        <br>
-                        <div class="text-center"><h5>Cronograma de desembolso</h5></div>                        
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <h5 class="ml-4">Anticipo: {{$obra->anticipo}} %  {{$obra->getAnticipo->nom_tipo_anticipo ?? null}}</h5>
+                            </div>
+                            <div class="col-4 text-center">
+                                <h5>Cronograma de desembolso</h5>
+                                
+                            </div>
+                            <div class="col-4">
+                                <div class="float-end">
+                                    @can('VALIDAR-OFEOBRA')
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                        {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 float-right mr-4']) !!}
+                                        {!! Form::close() !!}
+                                    @endcan
+                                </div>
+                            </div>
+                            {{-- <div class="col-5 text-right">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="text-right">Anticipo: {{$obra->anticipo}} %</h5>
+                                    </div>
+                                    <div class="col-3">
+                                        @can('VALIDAR-OFEOBRA')
+                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                        {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 mr-4']) !!}
+                                        {!! Form::close() !!}
+                                        @endcan
+                                    </div>
+                                </div>
+                            </div> --}}
+                            {{-- <div class="col-1 align-items-right">
+                                @can('VALIDAR-OFEOBRA')
+                                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                    {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 float-right mr-4']) !!}
+                                    {!! Form::close() !!}
+                                @endcan
+                            </div> --}}
+                            
+                        </div>
+                        
+                        {{-- <br>
+                        <div class="row my-auto">
+                            <div class="col-lg-4">
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="text-center">
+                                    <h5>Cronograma de desembolso</h5>
+                                </div> 
+                            </div>
+                            <div class="col-lg-4 my-auto">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="text-center">
+                                            <h6 class= 'm-0'>Anticipo: {{$obra->anticipo}} %</h6>
+                                        </div> 
+                                    </div>
+                                    <div class="col-4">
+                                        @can('VALIDAR-OFEOBRA')
+                                            {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
+                                            {!! Form::submit('Editar anticipo', ['class' => 'btn btn-warning w-100']) !!}
+                                            {!! Form::close() !!}
+                                        @endcan
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
+                        {{-- <div class="text-center"><h5>Cronograma de desembolso</h5></div>                         --}}
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -606,6 +705,7 @@
     </div>
 </section>
 <input id="signup-token" name="_token" type="hidden" value="{{csrf_token()}}">
+
 @include('layouts.modal.confirmation') 
 @endsection
 
@@ -619,12 +719,20 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
-  
+<script>
+    window.onload = function() {
+        var to = document.getElementById("totalobr");
+        total = {{$totalDef}};
+        total.toFixed(2);
+        to.value = '$' + ' ' + new Intl.NumberFormat('de-DE').format(total.toFixed(2));
+    };
+</script>
+
 <script>
     contadorMes = {{$cronograma->last()->mes}};
     meses = [];
     let acu = 0;
-    monto = [0];
+    monto = [];
     var app = @json($desembolsos);
     
     app.forEach(element => {

@@ -7,14 +7,14 @@
                 <div class="titulo">Conceptos Sombrero - Obra: <strong>{{$unaObra->nomobra}}</strong></div>
             </div>
             <div class="px-1">
-                @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                @if ($unaObra->getEstados->where('actual', 1)->first()->getEstado->idestado < 2)
                     {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.editar', base64url_encode($unaObra->idobra)]]) !!}
                     {!! Form::submit('Edición de Conceptos', ['class' => 'btn  btn-warning mt-2 ']) !!}
                     {!! Form::close() !!}
                 @endif
             </div>
             <div class="px-1">
-                @if ($unaObra->getEstados->sortByDesc('idestado')->first()->getEstado->idestado < 2)
+                @if ($unaObra->getEstados->where('actual', 1)->first()->getEstado->idestado < 2)
                     {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.crear', base64url_encode($unaObra->idobra)]]) !!}
                     {!! Form::submit('Asignar Conceptos', ['class' => 'btn  btn-success mt-2']) !!}
                     {!! Form::close() !!}

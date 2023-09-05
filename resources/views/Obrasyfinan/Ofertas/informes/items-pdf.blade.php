@@ -50,7 +50,7 @@
                         <label><b>Código de barra del expediente:<b></label>
                         <label>{{$obra->idexpediente}}</label> 
                     </div>                     --}}
-                    <div class="column-3 form-group"> 
+                    <div class="column-4 form-group"> 
                         <label><b>Expediente Número:<b></label>
                         <label>{{$obra->getExpediente->exp_numero}}</label>
                     </div>
@@ -63,7 +63,7 @@
                 </div> --}}
                 <div class="row">
                     <div class="column-4 form-group"> 
-                        <label><b>Vivienta:<b></label><br>
+                        <label><b>Vivienda:<b></label><br>
                         <label>${{number_format($obra->monviv,2, ',', '.')}}</label>
                     </div>
                     <div class="column-4 form-group"> 
@@ -162,28 +162,53 @@
                 $subtotal = $total;
             @endphp
             @foreach ($conceptos as $concepto)
-                <table class="table" style="margin-top: 30px">
-                    <thead>
-                        <th>Concepto</th>
-                        <th>Valor</th>
-                        <th>Monto</th>
-                        <th>SubTotal {{$contador}}</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{$concepto->conceptosombrero}}</td>
-                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
-                            <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
-                            <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
-                        </tr>
-                        <tr style="background-color: rgb(190, 190, 190)">
-                        </tr>
-                    </tbody>
-                </table>
-                @php
-                    $contador += 1;
-                    $subtotal += $subtotal*($concepto->valor/100);
-                @endphp
+                @if ($concepto->idconceptosombrero < 40)
+                    <table class="table" style="margin-top: 30px">
+                        <thead>
+                            <th>Concepto</th>
+                            <th>Valor</th>
+                            <th>Monto</th>
+                            <th>SubTotal {{$contador}}</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{$concepto->conceptosombrero}}</td>
+                                <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
+                                <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                                <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
+                            </tr>
+                            <tr style="background-color: rgb(190, 190, 190)">
+                            </tr>
+                        </tbody>
+                    </table>
+                    @php
+                        $contador += 1;
+                        $subtotal += $subtotal*($concepto->valor/100);
+                    @endphp
+                @elseif($concepto->idconceptosombrero == $tipoItm)
+                    <table class="table" style="margin-top: 30px">
+                        <thead>
+                            <th>Concepto</th>
+                            <th>Valor</th>
+                            <th>Monto</th>
+                            <th>SubTotal {{$contador}}</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{$concepto->conceptosombrero}}</td>
+                                <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
+                                <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
+                                <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
+                            </tr>
+                            <tr style="background-color: rgb(190, 190, 190)">
+                            </tr>
+                        </tbody>
+                    </table>
+                    @php
+                        $contador += 1;
+                        $subtotal += $subtotal*($concepto->valor/100);
+                    @endphp
+                @endif
             @endforeach
                 <table class="table" style="margin-top: 30px">
                     <tbody>
@@ -193,110 +218,6 @@
                         </tr>
                     </tbody>
                 </table>
-            {{-- @php
-                $total = ($total*$concepto->valor)/100;
-            @endphp
-            <table class="table" style="margin-top: 30px">
-                <thead>
-                    <th>Concepto</th>
-                    <th>Valor</th>
-                    <th>Monto</th>
-                    <th>SubTotal 3</th>
-                </thead>
-                <tbody>
-                    @foreach ($conceptos->where('idconceptosombrero', 20) as $concepto)
-                        <tr>
-                            <td>{{$concepto->conceptosombrero}}</td>
-                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
-                            <td>$ {{number_format((($total*$concepto->valor)/100),2, ',', '.')}}</td>
-                            <td>$ {{number_format(((($total*$concepto->valor)/100)+$total),2, ',', '.')}}</td>
-                        </tr>
-                        <tr style="background-color: rgb(190, 190, 190)">
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table> --}}
-
-            {{-- @php
-                $total3 = (($total2*$concepto->valor)/100)+$total;
-            @endphp
-            <table class="table" style="margin-top: 30px">
-                <thead>
-                    <th>Concepto</th>
-                    <th>Valor</th>
-                    <th>Monto</th>
-                    <th>SubTotal 4</th>
-                </thead>
-                <tbody>
-                    @foreach ($conceptos->where('idconceptosombrero', 30) as $concepto)
-                        <tr>
-                            <td>{{$concepto->conceptosombrero}}</td>
-                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
-                            <td>$ {{number_format((($total2*$concepto->valor)/100),2, ',', '.')}}</td>
-                            <td>$ {{number_format(((($total2*$concepto->valor)/100)+$total2),2, ',', '.')}}</td>
-                        </tr>
-                        <tr style="background-color: rgb(190, 190, 190)">
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            @php
-                $total3 = (($total2*$concepto->valor)/100)+$total;
-            @endphp
-            <table class="table" style="margin-top: 30px">
-                <thead>
-                    <th>Concepto</th>
-                    <th>Valor</th>
-                    <th>Monto</th>
-                    <th>SubTotal 4</th>
-                </thead>
-                <tbody>
-                    @foreach ($conceptos->where('idconceptosombrero', 30) as $concepto)
-                        <tr>
-                            <td>{{$concepto->conceptosombrero}}</td>
-                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
-                            <td>$ {{number_format((($total2*$concepto->valor)/100),2, ',', '.')}}</td>
-                            <td>$ {{number_format(((($total2*$concepto->valor)/100)+$total2),2, ',', '.')}}</td>
-                        </tr>
-                        <tr style="background-color: rgb(190, 190, 190)">
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            @php
-                $total3 = (($total2*$concepto->valor)/100)+$total;
-            @endphp
-            <table class="table" style="margin-top: 30px">
-                <thead>
-                    <th>Concepto</th>
-                    <th>Valor</th>
-                    <th>Monto</th>
-                    <th>SubTotal 4</th>
-                </thead>
-                <tbody>
-                    @foreach ($conceptos->where('idconceptosombrero', 30) as $concepto)
-                        <tr>
-                            <td>{{$concepto->conceptosombrero}}</td>
-                            <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
-                            <td>$ {{number_format((($total2*$concepto->valor)/100),2, ',', '.')}}</td>
-                            <td>$ {{number_format(((($total2*$concepto->valor)/100)+$total2),2, ',', '.')}}</td>
-                        </tr>
-                        <tr style="background-color: rgb(190, 190, 190)">
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <table class="table" style="margin-top: 30px">
-                <tbody>
-                    <tr>
-                        <th>MONTO TOTAL</th>
-                        <th>$ 0.00</th>
-                    </tr>
-                </tbody>
-            </table> --}}
         </div>
     </section>  
 </body>

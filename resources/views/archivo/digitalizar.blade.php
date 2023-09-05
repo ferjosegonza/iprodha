@@ -23,12 +23,19 @@
                     <h5>Cabecera</h5>
                     <hr>
                     <div class="row rowtag">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
+                            {!! Form::label('*Visibilidad del documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                            <select class="form-select" id="encabezado" name="enc" onchange="encabezados()">
+                                <option value="1" selected>Público</option>
+                                <option value="3">Privado</option>                       
+                            </select>   
+                        </div>
+                        <div class="col-lg-3">
                             {!! Form::label('*Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                             <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
                                 <option value="sel" selected>Seleccionar</option>
                                 @foreach ($TipoDocumento as $tipo)                           
-                                    <option value="{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
+                                    <option value="{{$tipo->id_tipocabecera}}|{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
                                 @endforeach                        
                             </select>   
                         </div>
@@ -40,7 +47,7 @@
                                 $i=0; 
                                 @endphp
                                 @foreach ($SubTipoDocumento as $subtipo)
-                                    <option id= "sub{{$i}}" value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
+                                    <option id= "sub{{$i}}" value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}_{{$subtipo->id_tipocabecera}}">{{$subtipo->dessubtipoarchivo}}</option>
                                     @php
                                         $i++;
                                     @endphp
@@ -57,12 +64,13 @@
                                 'class' => 'form-control']) !!}
                             <span id="avisofecha" hidden>¡Cuidado! Se excede la fecha de hoy</span>
                         </div>                
+                               
+                    </div>
+                    <div class="row rowtag">   
                         <div class="col-lg-1 ">
                             {!! Form::label('*Orden:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                             {!! Form::number('orden', 1, ['class' => 'form-control', 'id'=>'orden', 'min'=>'1', 'max'=>'5']) !!}
-                        </div>          
-                    </div>
-                    <div class="row rowtag">                       
+                        </div>                       
                         <div class="col-lg-3">
                             {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             {!! Form::number('doc', null, ['class' => 'form-control no-spin', 'id'=>'doc', 'min'=>'0']) !!}

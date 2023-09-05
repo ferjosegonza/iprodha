@@ -8,6 +8,9 @@ $(function(){
 function nuevoCrono(){
   let mes = $("#mes").val();
   let avance = $("#avance").val();
+//   let avancepp = $("#avance").val();
+  let porc = Number($("#avance").val());
+  let porcIA = Number($("#inc_i_p").val());
   let item = $("#item").val();
   let inc = $("#inc_i").val();
       avance = (avance * inc)/100;
@@ -32,14 +35,16 @@ function nuevoCrono(){
                 success: function (response) {
                     let totalAv = parseFloat(response) + parseFloat(avance);
                     let dife = totalAv - inc;
-                    // console.log(response);
-                    // console.log(totalAv);
+                    avance = avance.toFixed(4); //lo agregue por ultimo
 
-                    // console.log(dife.toFixed(4) < 0.0010);
-                    if(totalAv <= inc || dife.toFixed(4) < 0.0010){
+                    if ((porc + porcIA) == 100) {
+
+                        avance = Number(avance).toFixed(4) - Number(dife).toFixed(4);
+                        avance = avance.toFixed(4);
+
                         $.when($.ajax({
                             type: "post",
-                            url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/nuevo',
+                            url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/'+porc+'/nuevo',
                             data: {
                                 item: item,
                             },
@@ -50,9 +55,27 @@ function nuevoCrono(){
                             console.log(error);
                         }
                         }));
-                    }else{
-                        alert('El item supera el avance del 100%');
-                    }
+
+                    } else if(totalAv <= inc){
+                        
+                            $.when($.ajax({
+                                type: "post",
+                                url: '/ofecrono/'+mes+'/'+item+'/'+avance+'/'+porc+'/nuevo',
+                                data: {
+                                    item: item,
+                                },
+                            success: function (response) {
+                                onSelectMesChange();
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                            }));
+                        }else{
+                            alert('El item supera el avance del 100%');
+                             
+                        }
+                
                     },
                 error: function (error) {
                     console.log(error);
@@ -85,9 +108,9 @@ function mostrarAcumulado(){
         },
     success: function (response) {
         // console.log(response);
-        acu.value = response[0].avaTotal;
-        incI.value = response[0].por_inc;
-        incIP.value = response[0].avaTotalPor;
+        acu.value = Number(response[0].avaTotal).toFixed(4);
+        incI.value = Number(response[0].por_inc).toFixed(4);
+        incIP.value = Number(response[0].avaTotalPor);
         // if(response != 0){
         //     acu.value = response;
         // }else{

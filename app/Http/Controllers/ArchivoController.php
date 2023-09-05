@@ -137,8 +137,8 @@ public function obtenerTagFormato(Request $request){
 }
 
 public function digitalizar(){
-    $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
-    $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
+    $TipoDocumento = Dig_tipoarchivo::orderBy('nombre_corto')->get();
+    $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Empresas = Empresa::orderBy('nom_emp','asc')->get();
     $Localidades = Localidad::select('nom_loc','id_loc')->get();
     $Tags = Dig_tags::where('estructura', '=', 1)->orderBy('descripcion','asc')->get();
@@ -157,6 +157,7 @@ public function check(Request $request){
 
     $archivo = Dig_archivos::where('id_tipoarchivo','=', $request->tipo)
                 ->where('id_subtipoarchivo','=', $request->subtipo)
+                ->where('orden', '=', $request->orden)
                 ->where('nro_archivo','=', $request->doc)
                 ->where('ano_archivo','=',$fecha[0])
                 ->where('mes_archivo','=',$fecha[1])
@@ -164,11 +165,6 @@ public function check(Request $request){
                 ->first();
   
     return response()->json(['response' => $archivo]);
-
-    if($archivo == null){
-        $archivo = 'null';
-    }
-    return response()->json($archivo);
 }
 
 public function getArchivos(Request $request){  
@@ -205,7 +201,7 @@ public function tags(Request $request){
     on dxt.id_tag = dt.id_tag
     where id_tipoarchivo = '$request->tipo' 
     and id_subtipoarchivo = '$request->subtipo'
-    and id_tipocabecera = 1";
+    and id_tipocabecera = $request->cabecera";
     $tags = DB::select( DB::raw($query));
 
     return response()->json($tags);
@@ -271,43 +267,36 @@ public function busquedaDirigida(Request $request){
 public function crear(Request $request){   
     //
     $fecha = explode("-", $request->fecha);
-    $subtipo = explode("|", $request->subtipo);
     //
     $archivo = new Dig_archivos;
     $archivo->id_tipoarchivo = $request->tipo;
-    $archivo->id_subtipoarchivo = $subtipo[1];
+    $archivo->id_subtipoarchivo = $request->subtipo;
     $archivo->nro_archivo = $request->doc;
     $archivo->ano_archivo = $fecha[0];
     $archivo->mes_archivo = $fecha[1];
     $archivo->dia_archivo = $fecha[2];
     $archivo->claves_archivo = $request->claves;
     $archivo->orden = $request->orden;
-    $archivo->id_tipocabecera = 1;  
+    $archivo->id_tipocabecera = $request->cabecera;
 
-    $path = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)
-    ->where('id_tipoarchivo', '=', $archivo->id_tipoarchivo)
-    ->where('id_subtipoarchivo', '=', $archivo->id_subtipoarchivo)
+    $path = Dig_subtipoarchivo::where('id_tipocabecera', '=', $request->cabecera)
+    ->where('id_tipoarchivo', '=', $request->tipo)
+    ->where('id_subtipoarchivo', '=', $request->subtipo)
     ->first();
-    $ruta = $path->path_archivo;
-    $archivo->path_archivo = $ruta;
-
+    if($path != null){
+        $archivo->path_archivo = $path->path_archivo;
+    }
     //guardar los archivos
     if($request->pdf == 'on'){
         $fileName = $request->pdfname;
-        //$ruta = substr($path->path_archivo, 14);
-        //$request->file('pdf')->storeAs($ruta, $fileName, 'Documentos');
-    }   
+    }
     else{
         $fileName = 'No se ha cargado un archivo';
     }
-    //
-    $archivo->nombre_archivo = $fileName;   
-    //
-    //$file->storeAs($ruta, $fileName);
-    // 
+    $archivo->nombre_archivo = $fileName;
     $res = $archivo->save();
     //
-    $query = Dig_archivos::where('id_tipocabecera', '=', 1)
+    $query = Dig_archivos::where('id_tipocabecera', '=', $request->cabecera)
     ->where('id_tipoarchivo', '=', $archivo->id_tipoarchivo)
     ->where('id_subtipoarchivo', '=', $archivo->id_subtipoarchivo)
     ->where('nro_archivo', '=', $archivo->nro_archivo)
@@ -330,7 +319,6 @@ public function crear(Request $request){
 public function modificar(Request $request){
     //return $request;
     $fecha = is_string($request->fecha) ? explode("-", $request->fecha) : null;
-    $subtipo = explode("|", $request->subtipo);
     //
     $archivo = Dig_archivos::where('id_archivo','=', $request->id)
                 ->first();
@@ -341,7 +329,8 @@ public function modificar(Request $request){
     $archivo->mes_archivo = $fecha[1];
     $archivo->dia_archivo = $fecha[2];
     $archivo->id_tipoarchivo = $request->tipo;
-    $archivo->id_subtipoarchivo = $subtipo[1];
+    $archivo->id_subtipoarchivo = $request->subtipo;
+    $archivo->id_tipocabecera = $request->cabecera;
     $res = $archivo->save();
     //
      $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
@@ -376,6 +365,38 @@ public function derivados(Request $request){
 
     $datos = DB::select( DB::raw($query));
     return response()->json($datos);
+}
+
+public function buscarArchivosRRHH(Request $request){
+
+    $query = "SELECT id_archivo, nro_archivo, t.nombre_corto as tipo, s.dessubtipoarchivo as subtipo, 
+    claves_archivo, i.path_archivo, i.nombre_archivo, dia_archivo, mes_archivo, ano_archivo
+    from iprodha.dig_archivos i
+    left join iprodha.dig_tipoarchivo t on (i.id_tipoarchivo = t.id_tipoarchivo)
+    and (i.id_tipocabecera = t.id_tipocabecera)
+    left join iprodha.dig_subtipoarchivo s on (i.id_subtipoarchivo = s.id_subtipoarchivo) 
+    and (s.id_tipoarchivo = t.id_tipoarchivo)
+    and (i.id_tipocabecera = s.id_tipocabecera)
+    where i.id_tipoarchivo = $request->tipo and 
+    i.id_subtipoarchivo = $request->subtipo and
+    i.nro_archivo = '$request->nro'
+    and i.id_tipocabecera = $request->cabecera";
+    $archivos = DB::select( DB::raw($query));
+    return response()->json($archivos);
+}
+
+public function buscarDNI(Request $request){
+    $archivo = Dig_archivos::where('id_tipocabecera', '=', '3')
+    ->where('id_tipoarchivo', '=', '18')
+    ->where('id_subtipoarchivo', '=', '1')
+    ->where('nro_archivo', '=', $request->dni)->first();
+    $str=$archivo->path_archivo . $archivo->nombre_archivo;
+    return response()->json($str);    
+}
+
+public function buscarPorId(Request $request){
+    $archivo = Dig_archivos::where('id_archivo', '=', $request->id)->first();
+    return response()->json($archivo);
 }
 }
 

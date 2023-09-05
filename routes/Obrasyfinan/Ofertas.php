@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEOBRA']], 
     Route::get('estadosxobra/index', [ofe_obraController::class, 'indexEstado'])->name('estadosxobra.index');
     Route::get('estadosxobra/buscar/index', [ofe_obraController::class, 'indexEstadoBuscar'])->name('estadosxobra.buscar');
     Route::get('estadosxobra/{idobra}/estados', [ofe_obraController::class, 'verEstados'])->name('estadosxobra.verestados');
+    Route::get('ofeobra/{idobra}/anticipo', [ofe_obraController::class, 'verAnticipo'])->name('ofeobra.anticipo');
+    Route::post('ofeobra/{idobra}/modf/anticipo', [ofe_obraController::class, 'updateAnticipo'])->name('ofeobra.modfanticipo');
     Route::resource('ofeobra', ofe_obraController::class);
 });
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMOBRA']], function () {
@@ -53,7 +55,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFEITEMDETOB
 });
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OFECRONO']], function () {
-    Route::post('/ofecrono/{mes}/{item}/{avance}/nuevo', [Ofe_cronogramaController::class, 'guardarCrono']);
+    Route::post('/ofecrono/{mes}/{item}/{avance}/{porc}/nuevo', [Ofe_cronogramaController::class, 'guardarCrono']);
     Route::post('/ofecrono/{item}/comprobar', [Ofe_cronogramaController::class, 'comprobarAvance']);
     Route::post('/ofecrono/{item}/infoitem', [Ofe_cronogramaController::class, 'infoItem']);
     Route::post('/ofecrono/{id}/{mes}/items', [Ofe_cronogramaController::class, 'losItems']);
@@ -72,11 +74,15 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA|OFEOBRA'
     Route::get('/ofeobra/{idobra}/pdf1', [ofe_obraController::class, 'pdf1'])->name('ofeobra.pdf1'); 
     Route::get('/ofeobra/{idobra}/pdf2', [ofe_obraController::class, 'pdf2'])->name('ofeobra.pdf2'); 
     Route::get('/ofeobra/{idobra}/pdf', [ofe_obraController::class, 'pdf'])->name('ofeobra.pdf'); 
-    Route::get('/ofeobra/{idobra}/{opc}/pdfitems', [ofe_obraController::class, 'pdfItems'])->name('ofeobraItems.pdf'); 
+    Route::get('/ofeobra/{idobra}/{opc}/pdfitems', [ofe_obraController::class, 'pdfItems'])->name('ofeobraItems.pdf');
+    Route::get('/ofeobra/{idobra}/pdfitemsgral', [ofe_obraController::class, 'pdfItemsGral'])->name('ofeobraItemsGral.pdf');
     Route::get('/ofeobra/{idobra}/pdfdsmxmes', [ofe_obraController::class, 'pdfDsmxmes'])->name('ofeobraDesmes.pdf');
     Route::get('/ofeobra/{idobra}/pdfincitems', [ofe_obraController::class, 'pdfIncItems'])->name('ofeobraIncItems.pdf');
     Route::get('/ofeobra/{idobra}/pdfcurvades', [ofe_obraController::class, 'pdfCurvaDes'])->name('ofeobraCurvaDes.pdf');
     Route::get('/ofeobra/{idobra}/pdfcrono', [ofe_obraController::class, 'pdfCrono'])->name('ofeobraCrono.pdf');
+    Route::get('/ofeobra/verclonar/{idobrad}', [ofe_obraController::class, 'verclonarObra'])->name('ofeobra.verclonar');
+    Route::post('/ofeobra/{idobra_d}/clonar/{idobra_o}', [ofe_obraController::class, 'clonarObra'])->name('ofeobra.clonarobra');
+    Route::post('/ofeobra/{idant}/anticipo', [Ofe_obraController::class, 'descripAnt']);
     Route::get('/ofeobraprueba', [ofe_obraController::class, 'prueba']);
 });
 
