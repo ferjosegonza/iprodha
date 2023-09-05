@@ -9,6 +9,7 @@ use App\Models\Iprodha\Ob_situacion;
 use App\Models\Iprodha\Ob_tip_obr;
 use App\Models\Iprodha\ob_operatoria;
 use App\Models\Iprodha\Ofe_tipocontratoferta;
+use App\Models\Iprodha\Ofe_tipo_anticipo;
 use App\Models\Iprodha\Ofe_estadoxobra;
 use App\Models\Iprodha\Ofe_obraestado;
 use App\Models\Iprodha\Ofe_sombrero;
@@ -19,6 +20,7 @@ use App\Models\Iprodha\Vw_ofe_items;
 use App\Models\Iprodha\Vw_ofe_cronograma;
 use App\Models\Iprodha\Vw_ofe_crono_desem;
 use App\Models\Iprodha\Vw_ofe_crono_desem_ant;
+use App\Models\Iprodha\Vw_ofe_crono_desem_ant2;
 use App\Models\Iprodha\Membrete;
 use App\Http\Controllers\Obrasyfinan\Ofertas\ofe_obraController;
 use Illuminate\Support\Facades\Auth;
@@ -187,7 +189,12 @@ class ofe_obraController extends Controller
         $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
         $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
         $obra = Ofe_obra::find($idobra);
-        $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+
+        if ($obra->id_tipo_anticipo == 2) {
+          $desembolsos = Vw_ofe_crono_desem_ant2::where('idobra','=', $idobra)->orderBy('mes')->get();
+        } else {
+          $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+        }
         
         if(is_null($data)){
           return view('Obrasyfinan.Ofertas.ofeobra.clon_obra',compact('obra'));
@@ -991,7 +998,8 @@ class ofe_obraController extends Controller
 
     public function verAnticipo($idobra){
         $laObra = Ofe_obra::find($idobra);
-        return view('Obrasyfinan.Ofertas.anticipo.index',compact('laObra')); 
+        $tipoAnticipo = Ofe_tipo_anticipo::pluck('nom_tipo_anticipo', 'id_tipo_anticipo');
+        return view('Obrasyfinan.Ofertas.anticipo.index',compact('laObra', 'tipoAnticipo')); 
     }
 
     public function updateAnticipo(Request $request, $idobra){
@@ -1010,6 +1018,7 @@ class ofe_obraController extends Controller
 
       $laObra->update([
         'anticipo' => $ant,
+        'id_tipo_anticipo' => $request->input('idtipoanticipo')
       ]);
 
       return redirect()->route('ofeobra.anticipo', $laObra->idobra)->with('mensaje','El anticipo fue modificado con exito.');
@@ -1062,5 +1071,9 @@ class ofe_obraController extends Controller
       else {
           return redirect()->route('ofeobra.index')->with('error','Problemas con el procedimiento.');
       }
+    }
+
+    public function descripAnt($idant){
+      return Ofe_tipo_anticipo::where('id_tipo_anticipo', $idant)->first()->descripcion;
     }
 }  

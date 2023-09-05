@@ -15,11 +15,32 @@
                             {{-- {!! Form::open(['route' => ['ofeobra.modfanticipo', $laObra->idobra], 'method' => 'POST']) !!} --}}
 
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                     <div class="form-group">
                                         {!! Form::label('Valor anticipo (Porcentaje):', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::text('anticipo', $laObra->anticipo, ['class' => 'form-control', 'data-type' => 'porc' ]) !!}
+                                    </div>        
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo anticipo:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idtipoanticipo', $tipoAnticipo, $laObra->id_tipo_anticipo, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'id' => 'id_tip_ant',
+                                            'required'
+                                        ]) !!}
+                                    </div>        
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="form-group">
+                                        {!! Form::label('Descripcion anticipo:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::text('descrip_ant', $laObra->getAnticipo->descripcion, ['class' => 'form-control', 'data-type' => 'porc', 'readonly' => true, 'id' => 'descripcion_ant' ]) !!}
                                     </div>        
                                 </div>
                             </div>
@@ -48,4 +69,5 @@
             </div>
         </div>
     </section>
+    <script src="{{ asset('js/Obrasyfinan/Ofertas/anticipo_oferta.js') }}"></script>
 @endsection

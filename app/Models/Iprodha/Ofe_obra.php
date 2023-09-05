@@ -58,22 +58,27 @@ class Ofe_obra extends Model
     {
         return $this->hasOne(Expediente::class,'exp_doc_id','idexpediente');
     }
+
     public function getItems()
     {            
         return $this->hasMany(Ofe_item::class,'idobra','idobra');
     }
+
     public function getSombrero()
     {
         return $this->hasMany(Ofe_sombrero::class,'idobra','idobra');
     }
+
     public function getEmpresa()
     {
         return $this->belongsTo(Empresa::class,'idempresa','id_emp');
     }
+
     public function getLocalidad()
     {
         return $this->belongsTo(Localidad::class,'idloc','id_loc');
     }
+
     public function getmoninf()
     {
         return number_format($this->moninf, 2, ',', '.');
@@ -99,5 +104,10 @@ class Ofe_obra extends Model
 
     public function getOperatoria(){
         return $this->belongsTo(ob_operatoria::class,'id_ope','id_ope');
+    }
+
+    public function getAnticipo()
+    {
+        return $this->belongsTo(Ofe_tipo_anticipo::class,'id_tipo_anticipo','id_tipo_anticipo');
     }
 }
