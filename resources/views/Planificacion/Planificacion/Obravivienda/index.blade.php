@@ -7,10 +7,25 @@
 
 
     <section class="section">
-        <div class="section-header">
+        <div class="section-header d-flex">
+            <div class="">
+                <h4 class="titulo page__heading my-auto">Obras y Viviendas</h4>
+            </div>
+            <div class="">
+                @include('layouts.favorito.fav', ['modo' => 'Agregar'])
+            </div>
+            <div class="ms-auto">
+                @can('CREAR-OBRAVIVIENDA')
+                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.create'], 'class' => 'd-flex justify-content-end']) !!}
+                        {!! Form::submit('Nueva Obra', ['class' => 'btn btn-success my-1']) !!}
+                    {!! Form::close() !!}
+                @endcan
+            </div>
+        </div>
+        {{-- <div class="section-header">
             <h3 class="page__heading">Obras y Viviendas</h3>
             @include('layouts.favorito.fav', ['modo' => 'Agregar'])
-        </div>
+        </div> --}}
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
         <div class="section-body">
             <div class="row">
@@ -35,8 +50,8 @@
                                 
                                 <div class="col-lg-2">
                                     @can('CREAR-OBRAVIVIENDA')
-                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.create'], 'class' => 'd-flex justify-content-end']) !!}
-                                            {!! Form::submit('Nueva Obra', ['class' => 'btn btn-success my-1']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.indexconvenio'], 'class' => 'd-flex justify-content-end']) !!}
+                                            {!! Form::submit('Convenios 2000', ['class' => 'btn btn-info my-1']) !!}
                                         {!! Form::close() !!}
                                     @endcan
                                 </div>

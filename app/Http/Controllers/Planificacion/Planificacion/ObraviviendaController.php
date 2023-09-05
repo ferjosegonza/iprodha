@@ -16,6 +16,7 @@ use App\Models\Iprodha\Ob_etapa;
 use App\Models\Iprodha\Localidad;
 use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\ob_operatoria;
+use App\Models\Iprodha\Membrete;
 //Gestion de usuario oracle
 use App\Traits\ConectarUserDB;
 
@@ -66,6 +67,25 @@ class ObraviviendaController extends Controller
         return view('Planificacion.Planificacion.Obravivienda.index', compact('obras'));
     }
     
+    public function indexConvenios(Request $request)
+    {
+        $this->conectar();
+        $obras = [];
+
+        // if(isset($name)){
+        //     $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')
+        //                     ->orWhere('nom_obr', 'like', '%' . strtoupper($name) . '%')
+        //                     ->orWhere('expedte', 'like', '%' . strtoupper($name) . '%')
+        //                     ->orderBy('num_obr','asc')->take(300)
+        //                     ->get();
+        // }else{
+        //     $obras = Ob_obra::orderBy('id_obr', 'desc')->limit(5)->get();
+        // }
+
+        $obras = Ob_obra::whereBetween('num_obr', ['20000', '20499'])->orderBy('num_obr', 'desc')->get();
+        return view('Planificacion.Planificacion.Obravivienda.index', compact('obras'));
+    }
+
     public function create(Request $request)
     {
         // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
@@ -1568,5 +1588,27 @@ class ObraviviendaController extends Controller
         return $listaNumEntrega;
     }
 
+    public function pdfViviendas($id){
+        $this->conectar();
+        $pdf = app('dompdf.wrapper');
+        $id = base64url_decode($id);
 
+        $obra = Ob_obra::find($id);
+
+        // $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
+        // $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+        // $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
+        // $cronograma = Vw_ofe_cronograma::where('idobra', $id)->get();
+        
+        $texto = Membrete::select('texto_1')->get();
+        $texto = json_decode($texto);
+        
+        // $items = $this->itemsConSombrero($id);
+
+        return $pdf->loadView('Planificacion.Planificacion.Obravivienda.informes.info-viviendas-pdf',[
+                    'obra' => $obra,
+                    'texto'=> $texto,
+                    ])  ->setPaper('legal', 'landscape')
+                        ->stream('Info-viviendas.pdf');
+    }
 }
