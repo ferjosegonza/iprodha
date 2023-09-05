@@ -574,7 +574,7 @@
                     <div class="card-head">
                         <div class="row mt-3">
                             <div class="col-4">
-                                <h5 class="ml-4">Anticipo: {{$obra->anticipo}} %</h5>
+                                <h5 class="ml-4">Anticipo: {{$obra->anticipo}} %  {{$obra->getAnticipo->nom_tipo_anticipo ?? null}}</h5>
                             </div>
                             <div class="col-4 text-center">
                                 <h5>Cronograma de desembolso</h5>
