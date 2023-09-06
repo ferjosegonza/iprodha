@@ -82,7 +82,7 @@ class ObraviviendaController extends Controller
         //     $obras = Ob_obra::orderBy('id_obr', 'desc')->limit(5)->get();
         // }
 
-        $obras = Ob_obra::whereBetween('num_obr', ['20000', '20499'])->orderBy('num_obr', 'desc')->get();
+        $obras = Ob_obra::whereBetween('num_obr', ['20000', '30000'])->orderBy('num_obr', 'desc')->get();
         return view('Planificacion.Planificacion.Obravivienda.index', compact('obras'));
     }
 
