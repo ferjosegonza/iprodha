@@ -110,4 +110,9 @@ class Ofe_obra extends Model
     {
         return $this->belongsTo(Ofe_tipo_anticipo::class,'id_tipo_anticipo','id_tipo_anticipo');
     }
+
+    public function getCronogramaDesem()
+    {
+        return $this->hasMany(Vw_ofe_crono_desem::class, 'idobra');
+    }
 }

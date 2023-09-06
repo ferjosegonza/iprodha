@@ -588,60 +588,10 @@
                                         {!! Form::close() !!}
                                     @endcan
                                 </div>
-                            </div>
-                            {{-- <div class="col-5 text-right">
-                                <div class="row">
-                                    <div class="col-9">
-                                        <h5 class="text-right">Anticipo: {{$obra->anticipo}} %</h5>
-                                    </div>
-                                    <div class="col-3">
-                                        @can('VALIDAR-OFEOBRA')
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
-                                        {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 mr-4']) !!}
-                                        {!! Form::close() !!}
-                                        @endcan
-                                    </div>
-                                </div>
-                            </div> --}}
-                            {{-- <div class="col-1 align-items-right">
-                                @can('VALIDAR-OFEOBRA')
-                                    {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
-                                    {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 float-right mr-4']) !!}
-                                    {!! Form::close() !!}
-                                @endcan
-                            </div> --}}
-                            
+                            </div>           
                         </div>
-                        
-                        {{-- <br>
-                        <div class="row my-auto">
-                            <div class="col-lg-4">
-
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="text-center">
-                                    <h5>Cronograma de desembolso</h5>
-                                </div> 
-                            </div>
-                            <div class="col-lg-4 my-auto">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <div class="text-center">
-                                            <h6 class= 'm-0'>Anticipo: {{$obra->anticipo}} %</h6>
-                                        </div> 
-                                    </div>
-                                    <div class="col-4">
-                                        @can('VALIDAR-OFEOBRA')
-                                            {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
-                                            {!! Form::submit('Editar anticipo', ['class' => 'btn btn-warning w-100']) !!}
-                                            {!! Form::close() !!}
-                                        @endcan
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-                        {{-- <div class="text-center"><h5>Cronograma de desembolso</h5></div>                         --}}
                     </div>
+                    
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover mt-2">
