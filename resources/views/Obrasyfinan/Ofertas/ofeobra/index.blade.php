@@ -53,7 +53,13 @@
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->getExpediente->exp_numero }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ substr($unaOferta->getEmpresa->nom_emp, 0, 20) }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">
-                                                    @money($unaOferta->monviv+$unaOferta->montotope+$unaOferta->moninf+ $unaOferta->monnex+$unaOferta->monterr)
+                                                    @php
+                                                        $costoAcu = 0;
+                                                        foreach ($unaOferta->getCronogramaDesem as $desembolso) {
+                                                            $costoAcu += $desembolso->costo;
+                                                        }
+                                                    @endphp
+                                                    @money($costoAcu)
                                                 </td>
                                                 
                                                 <td class='text-center' style="vertical-align: middle;">
