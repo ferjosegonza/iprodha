@@ -560,7 +560,13 @@ class ofe_obraController extends Controller
         $pdf = app('dompdf.wrapper');
         $id = base64url_decode($id);
         $ofeobra = Ofe_obra::find($id);
-        $desembolsos = vw_ofe_crono_desem_ant::where('idobra', $id)->orderBy('mes')->get();
+        
+        if ($obra->id_tipo_anticipo == 2) {
+          $desembolsos = Vw_ofe_crono_desem_ant2::where('idobra','=', $idobra)->orderBy('mes')->get();
+        } else {
+          $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+        }
+        // $desembolsos = vw_ofe_crono_desem_ant::where('idobra', $id)->orderBy('mes')->get();
         $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
         // return $this->deseAcuPormes($id);
         $texto = Membrete::select('texto_1')->get();
