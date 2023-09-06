@@ -609,7 +609,14 @@ class ofe_obraController extends Controller
         $acu = 0;
 
         $ofeobra = Ofe_obra::find($id);
-        $desembolsos = vw_ofe_crono_desem_ant::where('idobra', $id)->orderBy('mes')->get();
+
+        if ($ofeobra->id_tipo_anticipo == 2) {
+          $desembolsos = Vw_ofe_crono_desem_ant2::where('idobra','=', $id)->orderBy('mes')->get();
+        } else {
+          $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $id)->orderBy('mes')->get();
+        }
+
+        // $desembolsos = vw_ofe_crono_desem_ant::where('idobra', $id)->orderBy('mes')->get();
 
         for ($i=0; $i <= $ofeobra->plazo; $i++) { 
             array_push($meses, $i);
