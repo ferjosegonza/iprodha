@@ -37,7 +37,17 @@
                                     <div class="row justify-content-evenly align-items-evenly">
                                         <form method="GET" action="{{route('obravivienda.index')}}">
                                             <div class="input-group mb-3">
-                                                <input name="name" type="text" class="form-control" placeholder="Buscar Obra por [Numero, Nombre o Expediente]" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                <input name="name" type="text" class="form-control" placeholder="Buscar Obra por " aria-label="Recipient's username" aria-describedby="button-addon2">
+
+                                                <select name="opcionbusq" class="form-select" aria-label="Default select example">
+                                                    <option value=0 selected>General</option>
+                                                    <option value=1>Numero</option>
+                                                    <option value=2>Nombre</option>
+                                                    <option value=3>Expediente</option>
+                                                    <option value=4>Plano</option>
+                                                    {{-- <option value=5>Empresa</option> --}}
+                                                </select>
+
                                                 <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                                             </div>
                                         </form>
