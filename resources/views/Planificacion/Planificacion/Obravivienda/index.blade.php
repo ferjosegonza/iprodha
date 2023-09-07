@@ -41,11 +41,12 @@
 
                                                 <select name="opcionbusq" class="form-select" aria-label="Default select example">
                                                     <option value=0 selected>General</option>
-                                                    <option value=1>Numero</option>
-                                                    <option value=2>Nombre</option>
-                                                    <option value=3>Expediente</option>
-                                                    <option value=4>Plano</option>
-                                                    {{-- <option value=5>Empresa</option> --}}
+                                                    <option value=1>Numero de obra</option>
+                                                    <option value=2>Nombre de obra</option>
+                                                    <option value=3>Expediente de obra</option>
+                                                    <option value=4>Plano de obra</option>
+                                                    <option value=5>Empresa</option>
+                                                    {{-- <option value=6>Localidad</option> --}}
                                                 </select>
 
                                                 <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
