@@ -517,7 +517,7 @@
                     <div class="card-body">
                         @php
                             $contador = 1;
-                            $contadorMes = $cronograma->last()->mes;
+                            $contadorMes = $cronograma->last()->mes ?? 0;
                         @endphp
                         <div class="table-responsive">
                             <table class="table table-hover mt-2" id='cronogramaa'>
@@ -663,7 +663,7 @@
 <script src="{{ asset('js/Obrasyfinan/Ofertas/presentacion.js') }}"></script>
 
 <script>
-    contadorMes = {{$cronograma->last()->mes;}}
+    contadorMes = {{$cronograma->last()->mes ?? 0}}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -679,7 +679,7 @@
 </script>
 
 <script>
-    contadorMes = {{$cronograma->last()->mes}};
+    contadorMes = {{$cronograma->last()->mes ?? 0}};
     meses = [];
     let acu = 0;
     monto = [];
