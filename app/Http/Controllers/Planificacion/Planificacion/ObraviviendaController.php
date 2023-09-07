@@ -44,26 +44,96 @@ class ObraviviendaController extends Controller
         $this->conectar();
         $name = $request->query->get('name');
         $page = $request->query->get('page');
+        $opcion = $request->input('opcionbusq');
         $obras = [];
-
+        // return $request;
         if(isset($name)){
-            // $idemp = Empresa::where('nom_emp', 'like', '%'.strtoupper($name).'%')->select('id_emp')->first();
-            // return $idemp;
-            // $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')->orWhere('nom_obr', 'like', '%' . strtoupper($name) . '%')->orderBy('num_obr','asc')->take(300)->get();
-            $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')
+
+            switch ($opcion) {
+                case 0:
+                    $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')
                             ->orWhere('nom_obr', 'like', '%' . strtoupper($name) . '%')
                             ->orWhere('expedte', 'like', '%' . strtoupper($name) . '%')
-                            ->orderBy('num_obr','asc')->take(300)
+                            ->orderBy('num_obr','asc')->take(100)
                             ->get();
+                    break;
 
-            // $obras = $obras->whereHas('empresas', function ($query) use ($name) { 
-            //     $query->where('nom_emp', 'like', '%'.strtoupper($name).'%'); 
-            // });
-           
+                case 1:
+                    $obras = Ob_obra::where('num_obr', $name)
+                                    ->take(100)
+                                    ->get();
+                    break;
+                
+                case 2:
+                    $obras = Ob_obra::where('nom_obr', 'like', '%' . strtoupper($name) . '%')
+                                    ->orderBy('num_obr', 'desc')
+                                    ->take(100)
+                                    ->get();
+                    break;
+
+                case 3:
+                    $obras = Ob_obra::where('expedte', 'like', '%' . strtoupper($name) . '%')
+                                    ->take(100)
+                                    ->get();
+                    break;
+
+                case 4:
+                    // $vivienda = Ob_vivienda::where('plano', $name)->first();
+                    // if(!is_null($vivienda)){
+                    //     $idobr = $vivienda->getEntrega->getEtapa->id_obr;
+                    //     $obras = Ob_obra::where('id_obr', $idobr)->get();
+                    // }
+
+                    $viviendas = Ob_vivienda::where('plano', $name)->get();
+
+                    foreach ($viviendas as $vivienda) {
+                        $vivs[] = $vivienda->getEntrega->getEtapa->id_obr;
+                    }
+
+                    if(count($viviendas) != 0){
+                        $vivs = array_unique($vivs);
+                        $obras = Ob_obra::whereIn('id_obr', $vivs)->orderBy('num_obr', 'desc')->take(100)->get();
+                    }
+
+                    break;
+
+                case 5:
+                    $empresas = Empresa::where('nom_emp', 'like', '%' . strtoupper($name) . '%')->get();
+                    foreach ($empresas as $empresa) {
+                        $empid[] = $empresa->id_emp;
+                    }
+
+                    if (count($empresas) != 0) {
+                        $obras = Ob_obra::whereIn('id_emp', $empid)
+                                        ->orderBy('num_obr', 'desc')
+                                        ->take(100)
+                                        ->get();
+                    }
+                    break;
+
+                case 6:
+                    $localidades = Localidad::where('nom_loc', 'like', '%' . strtoupper($name) . '%')->get();
+                    foreach ($localidades as $localidad) {
+                        $locid[] = $localidad->id_loc;
+                    }
+                    
+                    if (count($localidades) != 0) {
+                        $obras = Ob_obra::whereIn('id_loc', $locid)
+                                                ->orderBy('num_obr', 'asc')
+                                                ->take(100)
+                                                ->get();
+                    }
+                    break;
+
+                default:
+                    $obras = Ob_obra::orderBy('id_obr', 'desc')->limit(5)->get();
+                    break;
+            }
+             
         }else{
             $obras = Ob_obra::orderBy('id_obr', 'desc')->limit(5)->get();
         }
-        // return count($obras);
+
         return view('Planificacion.Planificacion.Obravivienda.index', compact('obras'));
     }
     
@@ -71,18 +141,8 @@ class ObraviviendaController extends Controller
     {
         $this->conectar();
         $obras = [];
-
-        // if(isset($name)){
-        //     $obras = Ob_obra::where('num_obr', 'like', '%'.$name.'%')
-        //                     ->orWhere('nom_obr', 'like', '%' . strtoupper($name) . '%')
-        //                     ->orWhere('expedte', 'like', '%' . strtoupper($name) . '%')
-        //                     ->orderBy('num_obr','asc')->take(300)
-        //                     ->get();
-        // }else{
-        //     $obras = Ob_obra::orderBy('id_obr', 'desc')->limit(5)->get();
-        // }
-
         $obras = Ob_obra::whereBetween('num_obr', ['20000', '30000'])->orderBy('num_obr', 'desc')->get();
+
         return view('Planificacion.Planificacion.Obravivienda.index', compact('obras'));
     }
 
