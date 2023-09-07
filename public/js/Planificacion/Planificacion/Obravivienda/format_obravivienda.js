@@ -1,48 +1,48 @@
 $("input[data-type='limitcarac10']").on({
     keyup: function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
       formatInputViv($(this), 10);
     }
 });
 
 $("input[data-type='limitcarac12']").on({
     keyup: function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
       formatInputViv($(this), 12);
     }
 });
 
 $("input[data-type='limitcarac2']").on({
     keyup: function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
       formatInputViv($(this), 2);
     }
 });
 
 $("input[data-type='limitcarac3']").on({
     keyup: function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
       formatInputViv($(this), 3);
     }
 });
 
 $("input[data-type='limitcarac4']").on({
     keyup: function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
       formatInputViv($(this), 4);
     }
 });
 
 $("input[data-type='limitcarac5']").on({
     keyup: function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
       formatInputViv($(this), 5);
     }
 });
 
 $("input[data-type='limitcarac6']").on({
     keyup: function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
       formatInputViv($(this), 6);
     }
 });

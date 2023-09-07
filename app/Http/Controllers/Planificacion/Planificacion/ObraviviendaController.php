@@ -396,12 +396,19 @@ class ObraviviendaController extends Controller
         foreach ($viviendasTabla as $viviendass) {
             $vivs[] = $viviendass->id_viv;
         }
+        
         if(count($viviendasTabla) != 0){
-            $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)->orderBy('orden')->get();
+            $totalDeVivReal = count($vivs);
+            $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)
+                                         ->orderBy('orden', 'asc')
+                                         ->orderBy('partida', 'asc')
+                                        //  ->orderBy('plano', 'asc')
+                                        //  ->take(10)
+                                         ->get();
         }
         
         $viviendas = collect($viviendas);
-        return view('Planificacion.Planificacion.Obravivienda.altaviv', compact('obra', 'viviendas', 'viviendasTabla'));
+        return view('Planificacion.Planificacion.Obravivienda.altaviv', compact('obra', 'viviendas', 'viviendasTabla', 'totalDeVivReal'));
     }
 
     public function viviendaDeObra($id){
@@ -1619,7 +1626,8 @@ class ObraviviendaController extends Controller
                         'edificio' => $vivienda->edificio,
                         'piso' => $vivienda->piso,
                         'departamento' => $vivienda->departamento,
-                        'escalera' => $vivienda->escalera]);
+                        'escalera' => $vivienda->escalera,
+                        'uni_fun' => $vivienda->uni_fun]);
                 }
             }
         }

@@ -4,7 +4,7 @@
 <style>
     .tableFixHead {
        overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-       height: 400px; /* gives an initial height of 200px to the table */
+       height: 500px; /* gives an initial height of 200px to the table */
      }
      .tableFixHead thead th {
        position: sticky; /* make the table heads sticky */
@@ -83,7 +83,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Cantidad de Viviendas:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::number('can_viv', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!}
+                                        {!! Form::number('can_viv', $totalDeVivReal ?? 0, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
 
@@ -127,7 +127,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div class="tableFixHead">
-                                <table id="viv" class="table table-hover mt-2" class="display">
+                                <table id="example" class="table table-hover mt-2" class="display">
                                     <thead style="">
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
@@ -146,6 +146,7 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Piso</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Dpto</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Unidad fun</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Acciones</th>
                                     </thead>
                                     <tbody>
@@ -172,6 +173,7 @@
                                                 <td class= 'text-center' >{{$vivienda->piso}}</td>
                                                 <td class= 'text-center' >{{$vivienda->departamento}}</td>
                                                 <td class= 'text-center' >{{$vivienda->escalera}}</td>
+                                                <td class= 'text-center' >{{$vivienda->uni_fun}}</td>
                                                 <td class= 'text-center' >
                                                     @can('EDITAR-OBRAVIVIENDA')
                                                         {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.editarviv', $vivienda->id_viv, $obra->id_obr], 'style' => 'display:inline']) !!}
@@ -441,5 +443,68 @@
     <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/format_obravivienda.js') }}"></script>
     <script>
         obra = {{$obra->id_obr}}
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Setup - add a text input to each footer cell
+            $('#example thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('#example thead');
+        
+            var table = $('#example').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
+                initComplete: function () {
+                    var api = this.api();
+        
+                    // For each column
+                    api
+                        .columns()
+                        .eq(0)
+                        .each(function (colIdx) {
+                            // Set the header cell to contain the input element
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            $(cell).html('<input type="text" placeholder="' + title + '" />');
+        
+                            // On every keypress in this input
+                            $(
+                                'input',
+                                $('.filters th').eq($(api.column(colIdx).header()).index())
+                            )
+                                .off('keyup change')
+                                .on('change', function (e) {
+                                    // Get the search value
+                                    $(this).attr('title', $(this).val());
+                                    var regexr = '({search})'; //$(this).parents('th').find('select').val();
+        
+                                    var cursorPosition = this.selectionStart;
+                                    // Search the column for that value
+                                    api
+                                        .column(colIdx)
+                                        .search(
+                                            this.value != ''
+                                                ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                                : '',
+                                            this.value != '',
+                                            this.value == ''
+                                        )
+                                        .draw();
+                                })
+                                .on('keyup', function (e) {
+                                    e.stopPropagation();
+        
+                                    $(this).trigger('change');
+                                    $(this)
+                                        .focus()[0]
+                                        .setSelectionRange(cursorPosition, cursorPosition);
+                                });
+                        });
+                },
+            });
+        });
     </script>
 @endsection
