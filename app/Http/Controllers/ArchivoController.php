@@ -109,9 +109,6 @@ public function buscar(Request $request){
 
 
     $archivos = DB::select( DB::raw($query));
-    $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
-    $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
-    $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
 
     return response()->json($archivos);
 } 
@@ -331,6 +328,13 @@ public function modificar(Request $request){
     $archivo->id_tipoarchivo = $request->tipo;
     $archivo->id_subtipoarchivo = $request->subtipo;
     $archivo->id_tipocabecera = $request->cabecera;
+    $path = Dig_subtipoarchivo::where('id_tipocabecera', '=', $request->cabecera)
+    ->where('id_tipoarchivo', '=', $request->tipo)
+    ->where('id_subtipoarchivo', '=', $request->subtipo)
+    ->first();
+    if($path != null){
+        $archivo->path_archivo = $path->path_archivo;
+    }
     $res = $archivo->save();
     //
      $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
