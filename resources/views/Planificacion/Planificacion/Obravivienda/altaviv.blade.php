@@ -26,7 +26,7 @@
     <section class="section">
         <div class="section-header d-flex">
                 <div class="flex-grow-1">
-                    <div class="titulo page__heading">Gestion de Viviendas de la Obra</div>
+                    <div class="titulo page__heading fs-5">Gestion de Viviendas de la Obra</div>
                 </div>
                 <div class="px-1">
                     <a href=#carga-individual class="btn btn-primary">Carga Individual</a>
@@ -35,6 +35,23 @@
                     {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.cargamasiva', $obra->id_obr], 'style' => '', 'target' => '_blank']) !!}
                     {!! Form::submit('Carga Masiva', ['class' => 'btn btn-primary', 'target' => '_blank']) !!}
                     {!! Form::close() !!}
+                </div>
+                <div class="px-1">
+                    <div class="dropdown">
+                        <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Informes <i class="fas fa-print" style="color: #ffffff;"></i>
+                        </a>
+                        @if (count($obra->getEtapas) != 0)
+                            <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{route('infovivienda.pdf', [base64url_encode($obra->id_obr), 1, 0, 0])}}" target="_blank">Todas las viviendas</a></li>
+                            @foreach ($obra->getEtapas->sortBy('nro_eta') as $etapa)
+                                @foreach ($etapa->getEntregas->sortBy('num_ent') as $entrega)
+                                    <li><a class="dropdown-item" href="{{route('infovivienda.pdf', [base64url_encode($obra->id_obr), 0, base64url_encode($entrega->id_ent), base64url_encode($etapa->id_etapa)])}}" target="_blank">Viviendas Etapa {{$etapa->nro_eta}} Entrega {{$entrega->num_ent}}</a></li>
+                                @endforeach
+                            @endforeach
+                            </ul>
+                        @endif
+                    </div>
                 </div>
     </div>
         <div class="section-body">
