@@ -34,6 +34,12 @@ body{
     float: left;
     width: 9.9%;
 }
+
+.column-10r{
+    float: right;
+    width: 9.9%;
+}
+
 .row:after {
     content: "";
     display: table;

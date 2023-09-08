@@ -23,22 +23,29 @@
         <div class="section-body">
             <div class="section-border">    
                 <div class="row">
-                    <div class="form-group column-2">
-                        <label><b>Departamento: <b></label> 
-                        <label>{{$obra->nom_obr}}</label>
+                    <div class="form-group column-10">
+                        <label><b>Numero: <b></label> 
+                        <label>{{$obra->num_obr}}</label>
                     </div>
-                    <div class="form-group column-2">
-                        <label><b>Municipio: <b></label> 
-                        <label>{{$obra->nom_obr}}</label>
-                    </div>
-                </div>  
-                <div class="row">         
                     <div class="form-group">
                         <label><b>Obra: <b></label> 
                         <label>{{$obra->nom_obr}}</label>
-                    </div>             
-                </div>
-                <div class="row">
+                    </div>
+                    {{-- <div class="form-group column-4">
+                        <label><b>Localidad: <b></label> 
+                        <label>{{$obra->getLocalidad->nom_loc}}</label>
+                    </div>
+                    <div class="form-group column-4">
+                        <label><b>Departamento: <b></label> 
+                        <label>{{$obra->getLocalidad->getMunicipio->getDepartamento->nom_dep}}</label>
+                    </div>
+                    <div class="form-group column-4">
+                        <label><b>Municipio: <b></label> 
+                        <label>{{$obra->getLocalidad->getMunicipio->nom_municipio}}</label>
+                    </div> --}}
+                </div>  
+                
+                {{-- <div class="row">
                     <div class="column-3 form-group">
                         <label><b>Localidad: <b></label>
                         <label>{{$obra->getLocalidad->nom_loc}}</label>                    
@@ -47,32 +54,41 @@
                         <label><b>Empresa:<b></label>
                         <label>{{$obra->getEmpresa->nom_emp}}</label>
                     </div>
-                    {{-- <div class="column-3 form-group">
+                    <div class="column-3 form-group">
                         <label><b>Tipo de Contrato: <b></label>
                         <label>{{$obra->getTipoOferta->tipocontratofer}}</label>
-                    </div> --}}
-                </div>
-                <div class="row">                          
+                    </div>
+                </div> --}}
+                {{-- <div class="row">                          
                     <div class="column-4 form-group">                        
                         <label><b>Fecha de publicación:<b></label>
                         <label>{{$obra->publica}}</label>
                         </div>
-                    {{-- <div class="column-3 form-group"> 
+                    <div class="column-3 form-group"> 
                         <label><b>Código de barra del expediente:<b></label>
                         <label>{{$obra->idexpediente}}</label> 
-                    </div>                     --}}
+                    </div>                     
                     <div class="column-3 form-group"> 
                         <label><b>Expediente Número:<b></label>
                         <label>{{$obra->expedte}}</label>
                     </div>
                 </div>
-                {{-- <div class="row">        
+                <div class="row">        
                     <div class="form-group">             
                         <label><b>Asunto del Expediente:<b></label>
                         <label>{{$obra->getExpediente->exp_asunto}}</label>
                     </div>
                 </div> --}}
-                
+                <div class="row">
+                    <div class="form-group column-2">
+                        <label><b>Entrega: <b></label> 
+                        <label>---</label>
+                    </div>
+                    <div class="form-group column-2">
+                        <label><b>Operatoria: <b></label> 
+                        <label>{{$obra->getOperatoria->operat_adm}}</label>
+                    </div>
+                </div>  
             </div>
         </div>
     </section>    

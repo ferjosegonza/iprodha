@@ -20,7 +20,7 @@
       }*/
       #viv th {
         background: #ee9b27;
-      } 
+      }
 </style>
     <section class="section">
         <div class="section-header d-flex">
@@ -32,11 +32,11 @@
                     <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Informes <i class="fas fa-print" style="color: #ffffff;"></i>
                     </a>
-                  
-                    {{-- <ul class="dropdown-menu">
+
+                    <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{route('infovivienda.pdf', base64url_encode($obra->id_obr))}}" target="_blank">Datos viviendas</a></li>
-                    </ul> --}}
-                </div> 
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="section-body">
@@ -47,7 +47,7 @@
                     <div class="card">
                         <div class="card-head">
                             <br>
-                            <div class="text-center"><h5>Información de la Obra</h5></div>                        
+                            <div class="text-center"><h5>Información de la Obra</h5></div>
                         </div>
                         <div class="card-body">
                             <div hidden>
@@ -81,7 +81,7 @@
                                         {!! Form::text('nom_emp', $obra->getEmpresa->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
                                     </div>
                                 </div>
-                            </div>                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,13 +92,13 @@
                     <div class="card">
                         <div class="card-head">
                             <br>
-                            <div class="text-center"><h5>Etapas</h5></div>                        
+                            <div class="text-center"><h5>Etapas</h5></div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="items" class="table table-hover mt-2" class="display">
                                     <thead>
-                                        <th class="text-center" scope="col" style="color:#fff;width:15%;">Etapa</th>                                    
+                                        <th class="text-center" scope="col" style="color:#fff;width:15%;">Etapa</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:55%;">Descripcion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:20%;">Cant. Viviendas</th>
                                         {{-- <th class="text-center" scope="col" style="color:#fff;width:10%;">0 Dormitorios</th>
@@ -109,10 +109,10 @@
                                     <tbody>
                                         @foreach ($obra->getEtapas as $etapa)
                                             <tr>
-                                                <td class= 'text-center' style="vertical-align: middle;">{{$etapa->nro_eta}}</td>                                            
+                                                <td class= 'text-center' style="vertical-align: middle;">{{$etapa->nro_eta}}</td>
                                                 <td class= 'text-center align-middle'>{{$etapa->descripcion}}</td>
                                                 <td class= 'text-center'>{{$etapa->cant_viv}}</td>
-                                                {{-- <td class= 'text-center'>0</td>                                            
+                                                {{-- <td class= 'text-center'>0</td>
                                                 <td class= 'text-center'>{{$etapa->can_viv_2}}</td>
                                                 <td class= 'text-center'>{{$etapa->can_viv_3}}</td>
                                                 <td class= 'text-center'>{{$etapa->can_viv_4}}</td> --}}
@@ -131,14 +131,14 @@
                     <div class="card">
                         <div class="card-head">
                             <br>
-                            <div class="text-center"><h5>Entregas</h5></div>                        
+                            <div class="text-center"><h5>Entregas</h5></div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="items" class="table table-hover mt-2" class="display">
                                     <thead>
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Etapa</th> 
-                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Entrega</th>                                    
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Etapa</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Entrega</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:50%;">Descripcion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:20%;">Fecha</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Cant. Viviendas</th>
@@ -148,14 +148,14 @@
                                             @foreach ($etapa->getEntregas as $entrega)
                                                 <tr>
                                                     <td class= 'text-center align-middle'>{{$etapa->nro_eta}}</td>
-                                                    <td class= 'text-center' style="vertical-align: middle;">{{$entrega->num_ent}}</td>                                            
+                                                    <td class= 'text-center' style="vertical-align: middle;">{{$entrega->num_ent}}</td>
                                                     <td class= 'text-center align-middle'>{{$entrega->descripcion}}</td>
                                                     @if (is_null($entrega->fec_ent))
                                                         <td class= 'text-center'>SIN FECHA</td>
                                                     @else
                                                         <td class= 'text-center'>{{Carbon\Carbon::parse($entrega->fec_ent)->format('d-m-Y')}}</td>
-                                                    @endif                                           
-                                                    
+                                                    @endif
+
                                                     <td class= 'text-center'>{{$entrega->cant_viv}}</td>
                                                 </tr>
                                             @endforeach
@@ -165,7 +165,7 @@
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
                 {{-- ------------- --}}
 
                 {{-- Viviendas de la obra --}}
@@ -179,7 +179,7 @@
                                     <h5>Viviendas</h5>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    
+
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -191,7 +191,7 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Viv. Adaptada</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Partida</th>
-                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>                                                            
+                                        <th class="text-center" scope="col" style="color:#fff;width:5%;">Plano</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
@@ -211,8 +211,8 @@
                                         <th class="text-center" scope="col" style="color:#fff;">Escalera</th>
                                     <tbody>
                                         @foreach ($viviendasTabla as $vivienda)
-                                            <tr>    
-                                                <td class= 'text-center' >{{$vivienda->orden}}</td>                                      
+                                            <tr>
+                                                <td class= 'text-center' >{{$vivienda->orden}}</td>
                                                 <td class= 'text-center' >{{$vivienda->getEntrega->getEtapa->nro_eta}}</td>
                                                 <td class= 'text-center' >{{$vivienda->getEntrega->num_ent}}</td>
                                                 @if ($vivienda->discap == 1)
@@ -269,11 +269,11 @@
                             </div>
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </section>
-@include('layouts.modal.confirmation') 
+@include('layouts.modal.confirmation')
 @endsection
 
 @section('js')
