@@ -104,4 +104,8 @@
         public function getEtapas(){
             return $this->hasMany(Ob_etapa::class, 'id_obr', 'id_obr');
         }
+
+        public function getOperatoria(){
+            return $this->belongsTo(ob_operatoria::class,'id_ope','id_ope');
+        }
     }

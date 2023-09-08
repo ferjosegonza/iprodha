@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAVIVIENDA
     Route::post('/obravivienda/cargamasi/guardar/{id}', [ObraviviendaController::class, 'guardarCargaMasiva'])->name('obravivienda.guardarcargamasiva');
     Route::post('/obravivienda/viv/guardar/', [ObraviviendaController::class, 'guardarVivienda'])->name('obravivienda.guardarvivienda');
     Route::get('/obravivienda/convenios20k', [ObraviviendaController::class, 'indexConvenios'])->name('obravivienda.indexconvenio');
-    Route::get('/obravivienda/{idobra}/infovivienda', [ObraviviendaController::class, 'pdfViviendas'])->name('infovivienda.pdf');
+    Route::get('/obravivienda/{idobra}/{opcion}/{ident}/{ideta}/pdfinfovivienda', [ObraviviendaController::class, 'pdfViviendas'])->name('infovivienda.pdf');
+    // Route::get('/obravivienda/{idobra}/{opcion}/pdfviviendaetyen', [ObraviviendaController::class, 'pdfViviendas'])->name('infovivienda.pdf');
     Route::resource('obravivienda', ObraviviendaController::class);
 });

@@ -396,7 +396,7 @@ class ObraviviendaController extends Controller
         foreach ($viviendasTabla as $viviendass) {
             $vivs[] = $viviendass->id_viv;
         }
-        
+        $totalDeVivReal = 0;
         if(count($viviendasTabla) != 0){
             $totalDeVivReal = count($vivs);
             $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)
@@ -1656,26 +1656,44 @@ class ObraviviendaController extends Controller
         return $listaNumEntrega;
     }
 
-    public function pdfViviendas($id){
+    public function pdfViviendas($id, $opcion, $ident, $ideta){
         $this->conectar();
         $pdf = app('dompdf.wrapper');
         $id = base64url_decode($id);
 
         $obra = Ob_obra::find($id);
-
-        // $desembolsos = vw_ofe_crono_desem::where('idobra', $id)->orderBy('mes')->get();
-        // $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
-        // $items = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
-        // $cronograma = Vw_ofe_cronograma::where('idobra', $id)->get();
-        
         $texto = Membrete::select('texto_1')->get();
         $texto = json_decode($texto);
         
-        // $items = $this->itemsConSombrero($id);
+        $viviendasTabla = [];
+        $etapa = null;
+        $entrega = null;
+
+        if($opcion){
+            $viviendas = $this->todasLasViviendasDeUnaObra($obra);
+
+            foreach ($viviendas as $vivienda) {
+                $vivs[] = $vivienda->id_viv;
+            }
+    
+            if(count($viviendas) != 0){
+                $viviendasTabla = Ob_vivienda::whereIn('id_viv', $vivs)->orderBy('orden')->orderBy('partida')->get();
+            }
+        }else{
+            $ident = base64url_decode($ident);
+            $ideta = base64url_decode($ideta);
+            
+            $viviendasTabla = Ob_vivienda::where('id_ent', $ident)->orderBy('orden')->get();
+            $etapa = Ob_etapa::find($ideta);
+            $entrega = Ob_entrega::find($ident);
+        }
 
         return $pdf->loadView('Planificacion.Planificacion.Obravivienda.informes.info-viviendas-pdf',[
                     'obra' => $obra,
                     'texto'=> $texto,
+                    'viviendas' => $viviendasTabla,
+                    'etapa' => $etapa,
+                    'entrega' => $entrega
                     ])  ->setPaper('legal', 'landscape')
                         ->stream('Info-viviendas.pdf');
     }

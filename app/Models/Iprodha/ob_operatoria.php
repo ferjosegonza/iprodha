@@ -28,4 +28,9 @@
         {
             return $this->hasMany(Ofe_obra::class, 'id_ope', 'id_ope');
         }
+
+        public function getObras()
+        {
+            return $this->hasMany(Ob_obra::class, 'id_ope', 'id_ope');
+        }
     }
