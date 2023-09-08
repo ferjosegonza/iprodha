@@ -867,7 +867,7 @@ function mostrarPagina(archivo){
     else{
         cargarClaves(archivo.claves_archivo)
         document.getElementById('sec-pdf').removeAttribute("hidden")
-        document.getElementById('pdfguar').hidden = true   //hay que mostrar un pdf
+        document.getElementById('pdfguar').removeAttribute("hidden")   //hay que mostrar un pdf
         document.getElementById('previewpdf').removeAttribute("hidden")
         cargarPDF(archivo.path_archivo, archivo.nombre_archivo);
        /*  if(tipo == 3){
@@ -1672,7 +1672,7 @@ function popup(tipo, estado){
 }
 
 function modificar() {
-    let pdf = $("input[name=pdf]").val(); 
+    let pdfName = document.getElementById('pdfname').innerHTML
     let tipo = getTipoId()
     let subtipo = getSubtipoId();
     let doc = document.getElementById('doc').value;
@@ -1681,7 +1681,7 @@ function modificar() {
     let orden = document.getElementById('orden').value;
     let asunto = document.getElementById('asunto').value
     let cabecera = document.getElementById('encabezado').value
-
+    console.log(archivoid)
 
     let route = '/archivo/modificar';    
     $.ajaxSetup({
@@ -1701,7 +1701,7 @@ function modificar() {
             fecha: fecha,
             claves: claves,
             orden: orden, 
-            pdf: pdf,
+            pdfname: pdfName,
             asunto: asunto,
             id: archivoid,
             cabecera: cabecera
