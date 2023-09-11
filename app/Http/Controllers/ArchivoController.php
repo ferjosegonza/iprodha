@@ -336,6 +336,7 @@ public function modificar(Request $request){
     $archivo->id_tipoarchivo = $request->tipo;
     $archivo->id_subtipoarchivo = $request->subtipo;
     $archivo->id_tipocabecera = $request->cabecera;
+    $archivo->nro_archivo = $request->doc;
     $res = $archivo->save();
     //
      $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
