@@ -35,6 +35,7 @@ use App\Http\Controllers\sectorController;
 use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
+use App\Http\Controllers\App\AuthAppController;
 
 /*
 |--------------------------------------------------------------------------
