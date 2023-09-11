@@ -477,7 +477,7 @@ class ofe_obraController extends Controller
 
             case 3:
                 $tipo = 'NEXO';
-                $tipoItm = 60;
+                $tipoItm = 50;
                 $items = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 3)->orderBy('orden')->get();
                 break;
 
