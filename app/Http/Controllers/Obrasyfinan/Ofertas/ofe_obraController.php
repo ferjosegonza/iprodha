@@ -581,6 +581,25 @@ class ofe_obraController extends Controller
                         ->stream('ItemsDeLaObra.pdf');
     } 
 
+    public function pdfItemsSubitems($id){
+      $pdf = app('dompdf.wrapper');
+      $id = base64url_decode($id);
+      $ofeobra = Ofe_obra::find($id);
+      $items = Ofe_item::where('idobra', $id)->get();
+      $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
+      
+      $texto = Membrete::select('texto_1')->get();
+      $texto = json_decode($texto);
+      
+      return $pdf->loadView('Obrasyfinan.Ofertas.informes.items-subitems-pdf',[
+                  'obra' => $ofeobra,
+                  'data' => $data,
+                  'texto' => $texto,
+                  'items'=> $items
+                  ])  ->setPaper('legal', 'landscape')
+                      ->stream('ItemsySubItemsDeLaObra.pdf');
+    } 
+
     public function pdfIncItems($id){
         $pdf = app('dompdf.wrapper');
         $id = base64url_decode($id);

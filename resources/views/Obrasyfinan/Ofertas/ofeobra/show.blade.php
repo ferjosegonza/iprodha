@@ -1,6 +1,30 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    /* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+	.dropdown-menu li{ position: relative; 	}
+	.nav-item .submenu{ 
+		display: none;
+		position: absolute;
+		left:100%; top:-7px;
+	}
+	.nav-item .submenu-left{ 
+		right:100%; left:auto;
+	}
+	.dropdown-menu > li:hover{ background-color: #f1f1f1 }
+	.dropdown-menu > li:hover > .submenu{ display: block; }
+}	
+/* ============ desktop view .end// ============ */
 
+/* ============ small devices ============ */
+@media (max-width: 991px) {
+  .dropdown-menu .dropdown-menu{
+      margin-left:0.7rem; margin-right:0.7rem; margin-bottom: .5rem;
+  }
+}	
+/* ============ small devices .end// ============ */
+</style>
 <head><link rel="stylesheet" href="{{asset('css/ofeobra/presentar.css')}}">
 </head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -10,13 +34,13 @@
             <div class="titulo page__heading">Ver la oferta de obra</div>
         </div>
         <div class="ms-auto">
-            <div class="dropdown">
+            <div class="dropdown nav-item">
                 <a class="btn btn-info dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Informes <i class="fas fa-print" style="color: #ffffff;"></i>
                 </a>
-              
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="{{route('ofeobraItemsGral.pdf', base64url_encode($data->idobra))}}" target="_blank">Item General</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItemsSubitems.pdf', base64url_encode($data->idobra))}}" target="_blank">Item y sub-item</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Item Infraestructura</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Item Vivienda</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Item Nexo</a></li>
@@ -24,8 +48,16 @@
                   <li><a class="dropdown-item" href="{{route('ofeobraCrono.pdf', base64url_encode($data->idobra))}}" target="_blank">Cronograma</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraDesmes.pdf', base64url_encode($data->idobra))}}" target="_blank">Desembolsos</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraCurvaDes.pdf', base64url_encode($data->idobra))}}" target="_blank">Curva</a></li>
+                    {{-- <li><a class="dropdown-item" href="#"> Item General &raquo; </a>
+                        <ul class="submenu submenu-left dropdown-menu">
+                            <li><a class="dropdown-item" href="">Submenu item 1</a></li>
+                            <li><a class="dropdown-item" href="">Submenu item 2</a></li>
+                            <li><a class="dropdown-item" href="">Submenu item 3</a></li>
+                            <li><a class="dropdown-item" href="">Submenu item 4</a></li>
+                        </ul>
+                    </li> --}}
                 </ul>
-              </div> 
+            </div> 
         </div>
     </div>
     {{-- <div class="section-header">

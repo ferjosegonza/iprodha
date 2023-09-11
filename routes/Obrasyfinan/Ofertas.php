@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|EMPRESA|OFEOBRA'
     Route::get('/ofeobra/{idobra}/pdf', [ofe_obraController::class, 'pdf'])->name('ofeobra.pdf'); 
     Route::get('/ofeobra/{idobra}/{opc}/pdfitems', [ofe_obraController::class, 'pdfItems'])->name('ofeobraItems.pdf');
     Route::get('/ofeobra/{idobra}/pdfitemsgral', [ofe_obraController::class, 'pdfItemsGral'])->name('ofeobraItemsGral.pdf');
+    Route::get('/ofeobra/{idobra}/pdfitemsubitem', [ofe_obraController::class, 'pdfItemsSubitems'])->name('ofeobraItemsSubitems.pdf');
     Route::get('/ofeobra/{idobra}/pdfdsmxmes', [ofe_obraController::class, 'pdfDsmxmes'])->name('ofeobraDesmes.pdf');
     Route::get('/ofeobra/{idobra}/pdfincitems', [ofe_obraController::class, 'pdfIncItems'])->name('ofeobraIncItems.pdf');
     Route::get('/ofeobra/{idobra}/pdfcurvades', [ofe_obraController::class, 'pdfCurvaDes'])->name('ofeobraCurvaDes.pdf');
