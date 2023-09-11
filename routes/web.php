@@ -51,6 +51,10 @@ use App\Http\Controllers\NotificacionController;
 // });
 Route::get('/ob_lic',[ob_licitacionController::class,'index']);
 
+
+Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
+Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
+
 Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
 
