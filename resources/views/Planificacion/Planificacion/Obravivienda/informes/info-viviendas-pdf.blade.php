@@ -13,7 +13,8 @@
         <img class= "logo column-2" alt="image"  src="{{asset('img/logo_iprodha.jpg') }}">
         <label class="txt column-2"><br>{{$texto[0]->texto_1}}</label>
     </header>
-    <footer style="margin-left: 3cm">   
+    <footer style="border-top: 1px solid;">   
+        {{$fecha}}
     </footer>
 
     <section class="section">

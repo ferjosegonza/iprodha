@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 //agregamos
 // use App\Models\User;
 
@@ -1660,7 +1661,7 @@ class ObraviviendaController extends Controller
         $this->conectar();
         $pdf = app('dompdf.wrapper');
         $id = base64url_decode($id);
-
+        $fecha = Carbon::now()->format('d-m-Y');
         $obra = Ob_obra::find($id);
         $texto = Membrete::select('texto_1')->get();
         $texto = json_decode($texto);
@@ -1682,7 +1683,6 @@ class ObraviviendaController extends Controller
         }else{
             $ident = base64url_decode($ident);
             $ideta = base64url_decode($ideta);
-            
             $viviendasTabla = Ob_vivienda::where('id_ent', $ident)->orderBy('orden')->get();
             $etapa = Ob_etapa::find($ideta);
             $entrega = Ob_entrega::find($ident);
@@ -1693,7 +1693,8 @@ class ObraviviendaController extends Controller
                     'texto'=> $texto,
                     'viviendas' => $viviendasTabla,
                     'etapa' => $etapa,
-                    'entrega' => $entrega
+                    'entrega' => $entrega,
+                    'fecha' => $fecha
                     ])  ->setPaper('legal', 'landscape')
                         ->stream('Info-viviendas.pdf');
     }
