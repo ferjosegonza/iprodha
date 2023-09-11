@@ -167,7 +167,9 @@ public function check(Request $request){
 public function getArchivos(Request $request){  
     if($request->fecha != null){
         $fecha = explode("-", $request->fecha);
-        $query = "select * from iprodha.dig_archivos da 
+        $query = "select da.id_archivo, id_tipoarchivo, id_subtipoarchivo, ano_archivo,
+        mes_archivo, dia_archivo, nro_archivo, claves_archivo, path_archivo,
+        nombre_archivo, fecha_carga, id_tipocabecera, fecha_boletin, orden, asunto from iprodha.dig_archivos da 
         left join iprodha.dig_asunto ds 
         on ds.id_archivo = da.id_archivo 
         where id_tipoarchivo = $request->tipo 
@@ -180,7 +182,9 @@ public function getArchivos(Request $request){
         $archivo = DB::select( DB::raw($query));
     }
     else{
-        $query = "select * from iprodha.dig_archivos da 
+        $query = "select da.id_archivo, id_tipoarchivo, id_subtipoarchivo, ano_archivo,
+        mes_archivo, dia_archivo, nro_archivo, claves_archivo, path_archivo,
+        nombre_archivo, fecha_carga, id_tipocabecera, fecha_boletin, orden, asunto from iprodha.dig_archivos da 
         left join iprodha.dig_asunto ds 
         on ds.id_archivo = da.id_archivo 
         where id_tipoarchivo = $request->tipo 
