@@ -333,6 +333,7 @@ public function modificar(Request $request){
     $archivo->id_subtipoarchivo = $request->subtipo;
     $archivo->id_tipocabecera = $request->cabecera;
     $archivo->nombre_archivo = $request->pdfname;
+    $archivo->nro_archivo = $request->doc;
     $path = Dig_subtipoarchivo::where('id_tipocabecera', '=', $request->cabecera)
     ->where('id_tipoarchivo', '=', $request->tipo)
     ->where('id_subtipoarchivo', '=', $request->subtipo)
