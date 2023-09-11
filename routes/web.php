@@ -17,6 +17,7 @@ use App\Http\Controllers\Barrio\Fc_concosxbarrioController;
 use App\Http\Controllers\Barrio\barrio_terrenoController;
 use App\Http\Controllers\Barrio\BarrioXOrgController;
 use App\Http\Controllers\Barrio\fc_conxbarrioController;
+use App\Http\Controllers\ob_licitacionController;
 
 
 use App\Http\Controllers\CategorialaboralController;
@@ -48,6 +49,7 @@ use App\Http\Controllers\NotificacionController;
 // Route::get('/ipusuario', function(Request $request){
 //     echo request()->ip();
 // });
+Route::get('/ob_lic',[ob_licitacionController::class,'index']);
 
 Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
