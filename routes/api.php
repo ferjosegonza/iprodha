@@ -19,5 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
-Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
+/* Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
+Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login'); */
