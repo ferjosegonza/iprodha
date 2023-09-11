@@ -151,7 +151,8 @@ class ObraviviendaController extends Controller
     {
         // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
-        $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
+        //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->orderBy('operat_adm', 'asc')->pluck('operat_adm', 'id_ope');
+        $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
         $Localidad = Localidad::orderBy('nom_loc')->get();
         $Empresa = Empresa::orderBy('nom_emp')->get();
         return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa', 'TipoOpe'));
