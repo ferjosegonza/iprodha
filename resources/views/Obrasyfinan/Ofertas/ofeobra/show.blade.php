@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<style>
+{{-- <style>
     /* ============ desktop view ============ */
 @media all and (min-width: 992px) {
 	.dropdown-menu li{ position: relative; 	}
@@ -24,7 +24,7 @@
   }
 }	
 /* ============ small devices .end// ============ */
-</style>
+</style> --}}
 <head><link rel="stylesheet" href="{{asset('css/ofeobra/presentar.css')}}">
 </head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
