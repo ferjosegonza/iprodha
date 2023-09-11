@@ -49,6 +49,10 @@ use App\Http\Controllers\NotificacionController;
 //     echo request()->ip();
 // });
 
+
+Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
+Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
+
 Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
 
