@@ -23,7 +23,7 @@ class App_usuario extends Model{
         $this->nombre = $nombre;
         $this->mail = $mail;
         $this->usuario = $usuario;
-        $this->contraseña = password_hash($contra, 'PASSWORD_DEFAULT');
+        $this->contraseña = password_hash($contra, PASSWORD_DEFAULT);
         $this->fecha_creacion = date("Y-m-d h:i:s");
         return $this->save();
     }
