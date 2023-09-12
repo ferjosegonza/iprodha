@@ -695,7 +695,7 @@ class ObraviviendaController extends Controller
                 array_push($todasLasEntregas, $entrega->num_ent);
             }
         }
-        // return $todasLasEntregas;
+        // return count($todasLasEntregas);
         return view('Planificacion.Planificacion.Obravivienda.entrega.crear', compact('etapas', 'obra', 'todasLasEntregas'));
     }
 

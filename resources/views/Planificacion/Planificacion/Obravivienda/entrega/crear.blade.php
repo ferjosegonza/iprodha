@@ -28,7 +28,14 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('N° Entrega:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
-                                        {!! Form::number('num_ent', max($todasLasEntregas) + 1, ['class' => 'form-control']) !!}
+
+                                        @if (count($todasLasEntregas) == 0)
+                                            {!! Form::number('num_ent', 1, ['class' => 'form-control']) !!}
+                                        @else
+                                            {!! Form::number('num_ent', max($todasLasEntregas) + 1, ['class' => 'form-control']) !!}
+                                        @endif
+
+                                        {{-- {!! Form::number('num_ent', if(!empty($todasLasEntregas)) $max = max($$todasLasEntregas) + 1, ['class' => 'form-control']) !!} --}}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
