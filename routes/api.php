@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Coordinacion\Informatica\Ju001Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Re003Controller;
+use App\Http\Controllers\App\AuthAppController;
 
 /*
 |--------------------------------------------------------------------------
