@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/re003/vigente', [Re003Controller::class, 'vigente']);
 });
 
-
-Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
-Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
+    Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
+});
