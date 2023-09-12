@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Coordinacion\Informatica\Ju001Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Re003Controller;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,3 +50,6 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/re003/vigente', [Re003Controller::class, 'vigente']);
 });
 
+
+Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
+Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
