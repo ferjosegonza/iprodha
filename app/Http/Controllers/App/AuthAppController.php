@@ -41,9 +41,7 @@ class AuthAppController extends Controller
         $user = App_usuario::where('mail', '=', $request->email)->first();
         if(password_verify($request->contra, $user->contraseña)){
             $res = true;
-        }
-        
-
-        return response()->json($res);
+        }      
+        return response()->json($user);
     }
 }
