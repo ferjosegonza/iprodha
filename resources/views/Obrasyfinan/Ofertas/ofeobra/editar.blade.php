@@ -166,24 +166,26 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
+                                        {!! Form::label('Numero del exp:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!} --}}
+                                        {!! Form::text('numExp', $unaOferta->getExpediente->exp_numero ?? '', ['class' => 'form-control', $editaTodo]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
                                         {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('idexpediente', $unaOferta->idexpediente, ['class' => 'form-control', $editaTodo]) !!}
+                                        {!! Form::text('idexpediente', $unaOferta->idexpediente ?? '', ['class' => 'form-control', 'readonly' ,$editaTodo]) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Exp.Nro.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {{-- {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!} --}}
-                                        {!! Form::text('exp_numero', $unaOferta->getExpediente->exp_numero, ['class' => 'form-control', $editaTodo]) !!}
-                                    </div>
-                                </div>
+                                
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                                     <div class="form-group">
                                         {!! Form::label('Exp.Asunto::', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}                   
                                         {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::textarea('exp_Asunto', $unaOferta->getExpediente->exp_asunto, ['class'=>'form-control', 'rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 12vh', $editaTodo]) !!}
+                                        {!! Form::textarea('exp_Asunto', $unaOferta->getExpediente->exp_asunto ?? '', ['class'=>'form-control', 'readonly','rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 12vh', $editaTodo]) !!}
 
                                         {{-- {!! Form::textarea('exp_Asunto', $unaOferta->getExpediente->exp_asunto, ['class' => 'form-control', 'required' => 'required']) !!} --}}
                                     </div>

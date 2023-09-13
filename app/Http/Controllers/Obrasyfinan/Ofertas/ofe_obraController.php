@@ -95,7 +95,7 @@ class ofe_obraController extends Controller
         $this->validate($request, [
             'nomobra' => 'required|min:10|max:150|string',
             // 'idexpediente' => 'required|min:0|max:999999|numeric',
-            'numExp' => 'required',
+            // 'numExp' => 'required',
             'idloc' => 'required',
             'idempresa' => 'required',
             'idtipocontrato' => 'required',
@@ -108,37 +108,63 @@ class ofe_obraController extends Controller
         ], [
             'publica.required' => 'La fecha de publicacion no puede estar vacio.'
         ]);
+        $exp = null;
+
+        if($request->input('numExp')){
+          $numExp = $request->input('numExp');
+          $exp = Expediente::where('exp_numero', $numExp.'      ')->first();
+        }
         
-        $numExp = $request->input('numExp');
         // $numExp = str_replace("/", "\/", $numExp);
         // return $exp = Expediente::where('exp_numero', 'like','%'.$numExp.'%')->first();
         // return DB::table('me.expedientes')  
         //         ->where('exp_numero', '=', '01478-K/03      ') 
         //         ->get();
-        $exp = Expediente::where('exp_numero', $numExp.'      ')->first();
-
-        if(is_null($exp)){
-          return redirect()->route('ofeobra.create')->withInput()->with('error','El numero de expediente no se encuentra.');
-        }
-
+        
         $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
 
         $laOferta = Ofe_obra::create([
-            'nomobra' => strtoupper($request->input('nomobra')),
-            'idloc' => $request->input('idloc'),
-            'idempresa' => $request->input('idempresa'),
-            'idtipocontratofer' =>  $request->input('idtipocontrato'),
-            'publica' => $request->input('publica'),
-            'idexpediente' => $exp->exp_doc_id,
-            'montotope' => $montotope,
-            'plazo' => $request->input('plazo'),
-            'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
-            'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
-            'numofer' => 1,
-            'id_ope' => $request->input('idope'),
-            'id_tip_obr' => $request->input('idtipobr'),
-            'num_lic' => $request->input('numlic'),
+          'nomobra' => strtoupper($request->input('nomobra')),
+          'idloc' => $request->input('idloc'),
+          'idempresa' => $request->input('idempresa'),
+          'idtipocontratofer' =>  $request->input('idtipocontrato'),
+          'publica' => $request->input('publica'),
+          // 'idexpediente' => $exp->exp_doc_id,
+          'montotope' => $montotope,
+          'plazo' => $request->input('plazo'),
+          'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+          'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+          'numofer' => 1,
+          'id_ope' => $request->input('idope'),
+          'id_tip_obr' => $request->input('idtipobr'),
+          'num_lic' => $request->input('numlic'),
         ]);
+
+        if(!is_null($exp)){
+          // return redirect()->route('ofeobra.create')->withInput()->with('error','El numero de expediente no se encuentra.');
+          $laOferta->update([
+            'idexpediente' => $exp->exp_doc_id,
+          ]);
+        }
+
+        
+
+        // $laOferta = Ofe_obra::create([
+        //     'nomobra' => strtoupper($request->input('nomobra')),
+        //     'idloc' => $request->input('idloc'),
+        //     'idempresa' => $request->input('idempresa'),
+        //     'idtipocontratofer' =>  $request->input('idtipocontrato'),
+        //     'publica' => $request->input('publica'),
+        //     'idexpediente' => $exp->exp_doc_id,
+        //     'montotope' => $montotope,
+        //     'plazo' => $request->input('plazo'),
+        //     'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
+        //     'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
+        //     'numofer' => 1,
+        //     'id_ope' => $request->input('idope'),
+        //     'id_tip_obr' => $request->input('idtipobr'),
+        //     'num_lic' => $request->input('numlic'),
+        // ]);
 
         if($request->input('idsituacion')){
             $laOferta->update([
@@ -147,8 +173,8 @@ class ofe_obraController extends Controller
         }
 
         Ofe_estadoxobra::create(['idobra' => $laOferta->idobra, 'idestado' => 1]);
-        $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;
-        $datOfe = Ofe_obra::where('idobra', $laOferta->idobra)->first();
+        // $email = Empresa::where('id_emp', $laOferta->idempresa)->first()->email;
+        // $datOfe = Ofe_obra::where('idobra', $laOferta->idobra)->first();
 
         // try {
         //     Mail::to($email)->send(new CrearOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
@@ -222,7 +248,7 @@ class ofe_obraController extends Controller
         }else{
             $this->validate($request, [
                 'nomobra' => 'required|min:10|max:150|string',
-                'idexpediente' => 'required|min:0|max:999999|numeric',
+                // 'idexpediente' => 'required|min:0|max:999999|numeric',
                 'idloc' => 'required',
                 'idempresa' => 'required',
                 'idtipocontrato' => 'required',
@@ -234,13 +260,20 @@ class ofe_obraController extends Controller
                 'numlic' => 'required',
             ]);
 
+            $exp = null;
+
+            if($request->input('numExp')){
+              $numExp = $request->input('numExp');
+              $exp = Expediente::where('exp_numero', $numExp.'      ')->first();
+            }
+
             $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
 
             $laOferta = Ofe_obra::find(base64url_decode($idobra));
 
             $laOferta->update([
                 'nomobra' => strtoupper($request->input('nomobra')),
-                'idexpediente' => $request->input('idexpediente'),
+                // 'idexpediente' => $request->input('idexpediente'),
                 'idloc' => $request->input('idloc'),
                 'idempresa' => $request->input('idempresa'),
                 'plazo' => $request->input('plazo'),
@@ -255,6 +288,11 @@ class ofe_obraController extends Controller
                 'num_lic' => $request->input('numlic'),
             ]);
 
+            if(!is_null($exp)){
+              $laOferta->update([
+                'idexpediente' => $exp->exp_doc_id,
+              ]);
+            }
         }
         return redirect()->route('ofeobra.index')->with('mensaje','La Oferta '.$laOferta->nomobra.' editado con éxito!.');            
     }
