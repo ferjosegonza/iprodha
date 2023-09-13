@@ -50,7 +50,7 @@
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->idobra }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ substr($unaOferta->nomobra, 0, 35) }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->plazo }}</td>
-                                                <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->getExpediente->exp_numero }}</td>
+                                                <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->getExpediente->exp_numero ?? '' }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ substr($unaOferta->getEmpresa->nom_emp, 0, 20) }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">
                                                     @php
