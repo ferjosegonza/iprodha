@@ -35,10 +35,10 @@ class AuthAppController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
-        }
+        }   
 
         $user = App_usuario::where('mail', '=', $request->email)->first();
-        $res = password_verify($request->contra, $user->contraseña);
-        return response()->json($user->contraseÑa);
+        $res = password_verify($request->contra, $user->contraseÑa);
+        return response()->json($res);
     }
 }
