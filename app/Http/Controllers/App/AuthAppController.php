@@ -39,6 +39,6 @@ class AuthAppController extends Controller
 
         $user = App_usuario::where('mail', '=', $request->email)->first();
         $res = password_verify($request->contra, $user->contraseña);
-        return response()->json($res);
+        return response()->json($request);
     }
 }
