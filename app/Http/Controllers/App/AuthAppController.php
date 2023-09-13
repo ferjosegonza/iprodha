@@ -13,7 +13,7 @@ class AuthAppController extends Controller
         //return response()->json($request);
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|string|email',
             'contra' => 'required|string|min:6',
         ]);
 
