@@ -28,21 +28,21 @@
                     </div>             
                 </div>
                 <div class="row">
-                    <div class="column-3 form-group">
-                        <label><b>Localidad: <b></label>
-                        <label>{{$obra->getLocalidad->nom_loc}}</label>                    
-                    </div>   
-                    <div class="column-3 form-group">
+                    <div class="column-2 form-group">
                         <label><b>Empresa:<b></label>
                         <label>{{$obra->getEmpresa->nom_emp}}</label>
                     </div>
+                    <div class="column-2 form-group">
+                        <label><b>Localidad: <b></label>
+                        <label>{{$obra->getLocalidad->nom_loc}}</label>                    
+                    </div>   
                     {{-- <div class="column-3 form-group">
                         <label><b>Tipo de Contrato: <b></label>
                         <label>{{$obra->getTipoOferta->tipocontratofer}}</label>
                     </div> --}}
                 </div>
                 <div class="row">                          
-                    <div class="column-4 form-group">                        
+                    <div class="column-2 form-group">                        
                         <label><b>Fecha de publicación:<b></label>
                         <label>{{$obra->publica}}</label>
                         </div>
@@ -50,9 +50,9 @@
                         <label><b>Código de barra del expediente:<b></label>
                         <label>{{$obra->idexpediente}}</label> 
                     </div>                     --}}
-                    <div class="column-4 form-group"> 
+                    <div class="column-2 form-group"> 
                         <label><b>Expediente Número:<b></label>
-                        <label>{{$obra->getExpediente->exp_numero}}</label>
+                        <label>{{$obra->getExpediente->exp_numero ?? '-'}}</label>
                     </div>
                 </div>
                 {{-- <div class="row">        
@@ -507,7 +507,7 @@
                 $totalFinal = $totalInfra + $totalViv + $totalNex;
             @endphp
             <tr>
-                <td>MONTO TOTAL</td>
+                <td><strong>MONTO TOTAL</strong></td>
                 <td>$ {{number_format($totalFinal, 2, ',', '.')}}</td>
             </tr>
         </tfoot>
