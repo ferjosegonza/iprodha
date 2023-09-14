@@ -28,7 +28,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('N° Etapa:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!} <span class="obligatorio">*</span>
-                                        {!! Form::number('num_eta', $obra->getEtapas->sortBy('nro_eta')->last()->nro_eta + 1, ['class' => 'form-control', 'required']) !!}
+                                        {!! Form::number('num_eta', $obra->getEtapas->sortBy('nro_eta')->last()->nro_eta ?? 0 + 1, ['class' => 'form-control', 'required']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">

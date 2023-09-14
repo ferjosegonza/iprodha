@@ -25,7 +25,7 @@ class TramiteController extends Controller
         $tramites = json_decode($request->tramite);
 
         $this->validate($request, [
-            'doc' => 'required|numeric|max:99999999|min:3000000',
+            'doc' => 'required|numeric|max:99999999|min:1000000',
             'nombre' => 'required',
             'cel' => 'numeric|nullable',
             'tipo' => 'required|numeric'
@@ -133,7 +133,7 @@ class TramiteController extends Controller
         $tramites = json_decode($request->tramite);
 
         $this->validate($request, [
-            'doc' => 'required|numeric|max:99999999|min:3000000',
+            'doc' => 'required|numeric|max:99999999|min:1000000',
             'nombre' => 'required',
             'cel' => 'numeric|nullable',
             'tipo' => 'required|numeric'

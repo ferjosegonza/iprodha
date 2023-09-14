@@ -22,6 +22,10 @@
      #viv th {
        background: #ee9b27;
      } 
+
+    #example thead input {
+        width: 100%;
+    }
 </style>
     <section class="section">
         <div class="section-header d-flex">

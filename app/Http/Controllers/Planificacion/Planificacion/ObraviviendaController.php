@@ -18,6 +18,7 @@ use App\Models\Iprodha\Localidad;
 use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\ob_operatoria;
 use App\Models\Iprodha\Membrete;
+use App\Models\Iprodha\Ob_tip_obr;
 //Gestion de usuario oracle
 use App\Traits\ConectarUserDB;
 
@@ -152,10 +153,11 @@ class ObraviviendaController extends Controller
         // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
         //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->orderBy('operat_adm', 'asc')->pluck('operat_adm', 'id_ope');
+        $TipoObra = Ob_tip_obr::pluck('tipo_obra','id_tip_obr');
         $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
         $Localidad = Localidad::orderBy('nom_loc')->get();
         $Empresa = Empresa::orderBy('nom_emp')->get();
-        return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa', 'TipoOpe'));
+        return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa', 'TipoOpe', 'TipoObra'));
     }
 
     public function store(Request $request)
@@ -187,6 +189,12 @@ class ObraviviendaController extends Controller
                 'id_loc' => $request->input('idloc'),
                 'can_viv' => $request->input('can_viv')
             ]);
+
+            if($request->input('idtipobr')){
+                $obra->update([
+                    'id_tip_obr' => $request->input('idtipobr')
+                ]);
+            }
 
             if($request->input('plazo')){
                 $obra->update([
@@ -288,9 +296,10 @@ class ObraviviendaController extends Controller
         // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
         $Localidad = Localidad::orderBy('nom_loc')->get();
+        $TipoObra = Ob_tip_obr::pluck('tipo_obra','id_tip_obr');
         $Empresa = Empresa::orderBy('nom_emp')->get(); 
         $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
-        return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa', 'TipoOpe'));
+        return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa', 'TipoOpe', 'TipoObra'));
     }
     
     public function update(Request $request, $id)
@@ -338,6 +347,12 @@ class ObraviviendaController extends Controller
         if($request->input('plazo')){
             $obra->update([
                 'plazo' => $request->input('plazo')
+            ]);
+        }
+
+        if($request->input('idtipobr')){
+            $obra->update([
+                'id_tip_obr' => $request->input('idtipobr')
             ]);
         }
 
@@ -695,7 +710,7 @@ class ObraviviendaController extends Controller
                 array_push($todasLasEntregas, $entrega->num_ent);
             }
         }
-        // return $todasLasEntregas;
+        // return count($todasLasEntregas);
         return view('Planificacion.Planificacion.Obravivienda.entrega.crear', compact('etapas', 'obra', 'todasLasEntregas'));
     }
 

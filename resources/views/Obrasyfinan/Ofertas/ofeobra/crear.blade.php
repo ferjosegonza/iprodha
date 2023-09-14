@@ -76,8 +76,8 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Numero del Exp.:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
-                                        <span class="obligatorio">*</span>
-                                        {!! Form::text('numExp', null, ['class' => 'form-control', 'placeholder' => '00000-A/00', 'required','onkeyup' => 'javascript:this.value=this.value.toUpperCase()']) !!} 
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::text('numExp', null, ['class' => 'form-control', 'placeholder' => '00000-A/00','onkeyup' => 'javascript:this.value=this.value.toUpperCase()']) !!} 
                                         {{-- {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!}  --}}
