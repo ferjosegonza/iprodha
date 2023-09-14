@@ -17,7 +17,8 @@
     </footer>
     <section class="section">
         <div class="section-header">
-            <h4 style="">INSTITUTO PROVISIONAL DE DESARROLLO HABITACIONAL</h4>            
+            <h4 style="">INSTITUTO PROVINCIAL DE DESARROLLO HABITACIONAL</h4>  
+            <h4 style="text-align: center;">PLANILLA DE COMPUTO Y PRESUPUESTO</h4>          
         </div>
         <div class="section-body">
             <div class="section-border">      
@@ -45,7 +46,7 @@
                     </div>
                     <div class="form-group column-2">
                         <label><b>Fecha de publicación:<b></label>
-                        <label>{{$obra->publica}}</label>
+                        <label>{{\Carbon\Carbon::parse($obra->publica)->format('d-m-Y')}}</label>
                     </div>
                 </div>       
             </div>
