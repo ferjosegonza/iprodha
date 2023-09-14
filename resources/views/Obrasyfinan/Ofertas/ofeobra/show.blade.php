@@ -39,15 +39,15 @@
                   Informes <i class="fas fa-print" style="color: #ffffff;"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{route('ofeobraItemsGral.pdf', base64url_encode($data->idobra))}}" target="_blank">Item General</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItemsSubitems.pdf', base64url_encode($data->idobra))}}" target="_blank">Item y sub-item</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Item Infraestructura</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Item Vivienda</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Item Nexo</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraIncItems.pdf', base64url_encode($data->idobra))}}" target="_blank">Item Incidencia</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraCrono.pdf', base64url_encode($data->idobra))}}" target="_blank">Cronograma</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraDesmes.pdf', base64url_encode($data->idobra))}}" target="_blank">Desembolsos</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraCurvaDes.pdf', base64url_encode($data->idobra))}}" target="_blank">Curva</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItemsGral.pdf', base64url_encode($data->idobra))}}" target="_blank">Cuadro A y B - General</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItemsSubitems.pdf', base64url_encode($data->idobra))}}" target="_blank">Computo y presupuesto</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Cuadro A y B - Infraestructura</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Cuadro A y B - Vivienda</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Cuadro A y B - Nexo</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraIncItems.pdf', base64url_encode($data->idobra))}}" target="_blank">Incidencia de items</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraCrono.pdf', base64url_encode($data->idobra))}}" target="_blank">Plan de trabajo</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraDesmes.pdf', base64url_encode($data->idobra))}}" target="_blank">Cronograma de desembolso</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraCurvaDes.pdf', base64url_encode($data->idobra))}}" target="_blank">Curva de inversiones</a></li>
                     {{-- <li><a class="dropdown-item" href="#"> Item General &raquo; </a>
                         <ul class="submenu submenu-left dropdown-menu">
                             <li><a class="dropdown-item" href="">Submenu item 1</a></li>
