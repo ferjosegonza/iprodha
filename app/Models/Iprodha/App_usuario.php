@@ -15,7 +15,7 @@ class App_usuario extends Model{
     protected $primaryKey = 'id';
 
     protected $fillable = [ 
-        'nombre', 'mail', 'usuario', 'contraseña', 'fecha_creacion'
+        'nombre', 'mail', 'usuario', 'contraseña', 'fecha_creacion', 'token'
     ];
 
     public function crear($nombre, $mail, $usuario, $contra){

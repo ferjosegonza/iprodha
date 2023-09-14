@@ -38,7 +38,15 @@ class AuthAppController extends Controller
         }   
 
         $user = App_usuario::where('mail', '=', $request->email)->first();
-        $res = password_verify($request->contra, $user->contraseÑa);
-        return response()->json($res);
+        $res = password_verify($request->contra, $user->contraseÑa);        
+        if($res){
+            $user->token = md5(uniqid().rand(1000000, 9999999));
+            $user->save();
+            return response()->json($user->token); 
+        }
+        else{
+           return response()->json($res); 
+        }
+        
     }
 }
