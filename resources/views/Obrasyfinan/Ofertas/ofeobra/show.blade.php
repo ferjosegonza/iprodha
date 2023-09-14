@@ -31,7 +31,7 @@
 <section class="section">
     <div class="section-header d-flex">
         <div class="">
-            <div class="titulo page__heading">Ver la oferta de obra</div>
+            <div class="titulo page__heading fs-5">Ver la oferta de obra n°: {{$data->idobra}}</div>
         </div>
         <div class="ms-auto">
             <div class="dropdown nav-item">
