@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group column-2">
                         <label><b>Expediente N°:<b></label>
-                        <label>{{$obra->getExpediente->exp_numero}}</label>
+                        <label>{{$obra->getExpediente->exp_numero ?? '-'}}</label>
                     </div>
                 </div>
                 
