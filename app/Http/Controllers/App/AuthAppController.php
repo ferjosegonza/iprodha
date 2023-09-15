@@ -42,7 +42,7 @@ class AuthAppController extends Controller
         if($res){
             $user->token = md5(uniqid().rand(1000000, 9999999));
             $user->save();
-            return response()->json($user->token); 
+            return response()->json($user); 
         }
         else{
            return response()->json($res); 
