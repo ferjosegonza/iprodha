@@ -13,9 +13,10 @@ class App_legajos extends Model{
     
     protected $table = 'iprodha.app_legajos';
     protected $primaryKey = ['ope', 'barrio', 'adju'];
-
+    public $incrementing = false;
+    
     protected $fillable = [ 
-        'operatoria', 'barrio', 'adju', 'nombre', 'cuil', 'situacion_habitacional'
+        'operatoria', 'barrio', 'adju', 'nombre', 'cuil', 'situacion_habitacional', 'ope'
     ];
 
     protected function setKeysForSaveQuery($query)
