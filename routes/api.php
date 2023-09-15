@@ -55,5 +55,4 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
     Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
     Route::get('/legajos', [LegajoAppController::class, 'legajos'])->name('app.legajos');
-
 });
