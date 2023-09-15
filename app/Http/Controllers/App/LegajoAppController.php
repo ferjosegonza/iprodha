@@ -10,6 +10,7 @@ use App\Models\Iprodha\App_legajos;
 class AuthAppController extends Controller
 {
     public function legajos(Request $request){
+        return response()->json($request);
         $validator = Validator::make($request->all(), [
             'cuil' => 'numeric',
         ]);
