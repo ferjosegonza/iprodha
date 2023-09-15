@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Incidencia de los items PDF</title>
+    <title>INCIDENCIA DE ITEMS</title>
 </head>
 <body style="margin-left: 3cm">
     <header style="margin-left: 1cm;">
@@ -21,7 +21,7 @@
             <h4 style="text-align: center;">PLANILLA INDICATIVA DE INCIDENCIA DE ITEMS</h4>            
         </div>
         <div class="section-body">
-            <div class="section-border">      
+            <div class="section-border" style="font-size:90%">      
                 <div class="row">         
                     <div class="form-group">
                         <label><b>Obra: <b></label> 
@@ -96,11 +96,11 @@
     </section>    
     
     <section style="margin-top: 10px">
-        <div class="section-header">
+        {{-- <div class="section-header">
             <h4 class="m-auto" >INCIDENCIA POR ITEM</h4>
-        </div>
+        </div> --}}
         <div class="section-body">
-            <table class="table">
+            <table class="table" style="margin-top: 10px; font-size:80%">
                 <thead>
                     <th>Orden</th>
                     <th>Denominacion</th>

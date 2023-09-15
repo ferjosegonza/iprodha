@@ -97,7 +97,7 @@
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-12 col-md-4">
                                                                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.indexx', base64url_encode($unaOferta->idobra)],'style' => '']) !!}
-                                                                        {!! Form::submit('Sombrero', ['class' => 'btn btn-primary']) !!}
+                                                                        {!! Form::submit('Impuesto', ['class' => 'btn btn-primary']) !!}
                                                                         {!! Form::close() !!}
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-12 col-md-5">

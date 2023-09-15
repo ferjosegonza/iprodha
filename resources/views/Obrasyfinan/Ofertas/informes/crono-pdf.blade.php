@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cronograma de avance PDF</title>
+    <title>PLAN DE TRABAJO</title>
 </head>
 <body> {{-- style="margin-left: 3cm" --}} 
     <header> {{-- style="margin-left: 1cm" --}} 
@@ -21,7 +21,7 @@
             <h4 style="text-align: center;">PLAN DE TRABAJO</h4>            
         </div>
         <div class="section-body">
-            <div class="section-border">      
+            <div class="section-border" style="font-size:90%">      
                 <div class="row">         
                     <div class="form-group">
                         <label><b>Obra: <b></label> 
@@ -95,13 +95,13 @@
     </section>    
     
     <section style="margin-top: 10px">
-        <div class="section-header">
+        {{-- <div class="section-header">
             <h4 class="m-auto" >CRONOGRAMA DE AVANCE</h4>
-        </div>
+        </div> --}}
         <div class="section-body">
             <table class="table" style="table-layout:fixed; font-size:70%">
                 <thead>
-                    <th class="width: 1%">Orden</th>
+                    <th style="width: 3%">Orden</th>
                     <th class="width: 10%">Denominacion</th>
                     <th class="width: 5%">Monto</th>
                     <th class="width: 5%">Inc</th>
