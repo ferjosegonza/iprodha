@@ -21,7 +21,7 @@
             <h4 style="text-align: center;">CURVA DE INVERSIONES</h4>             
         </div>
         <div class="section-body">
-            <div class="section-border">      
+            <div class="section-border" style="font-size:90%">      
                 <div class="row">         
                     <div class="form-group">
                         <label><b>Obra: <b></label> 
