@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Desembolsos por mes PDF</title>
+    <title>CRONOGRAMA DE DESEMBOLSO</title>
 </head>
 <body style="margin-left: 3cm">
     <header style="margin-left: 1cm;">
@@ -17,10 +17,12 @@
     </footer>
     <section class="section">
         <div class="section-header">
-            <h4 style="">INSTITUTO PROVISIONAL DE DESARROLLO HABITACIONAL</h4>            
+            <h4 style="">INSTITUTO PROVINCIAL DE DESARROLLO HABITACIONAL</h4>
+            <h4 style="text-align: center;">CRONOGRAMA DE DESEMBOLSO</h4>
+            {{-- <h4 style="text-align: center;">Segun avance fisico</h4>          --}}
         </div>
         <div class="section-body">
-            <div class="section-border">      
+            <div class="section-border" style="font-size:90%">      
                 <div class="row">         
                     <div class="form-group">
                         <label><b>Obra: <b></label> 
@@ -45,7 +47,7 @@
                 <div class="row">                          
                     <div class="column-2 form-group">                        
                         <label><b>Fecha de publicación:<b></label>
-                        <label>{{$obra->publica}}</label>
+                        <label>{{\Carbon\Carbon::parse($obra->publica)->format('d-m-Y')}}</label>
                         </div>
                     {{-- <div class="column-3 form-group"> 
                         <label><b>Código de barra del expediente:<b></label>
@@ -62,7 +64,7 @@
                         <label>{{$obra->getExpediente->exp_asunto}}</label>
                     </div>
                 </div> --}}
-                <div class="row">
+                {{-- <div class="row">
                     <div class="column-4 form-group"> 
                         <label><b>Vivienda:<b></label><br>
                         <label>${{number_format($obra->monviv,2, ',', '.')}}</label>
@@ -79,7 +81,7 @@
                         <label><b>Monto Tope:<b></label><br>
                         <label>${{number_format($obra->montotope,2, ',', '.')}}</label>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row">
                     <div class="column-2 form-group"> 
                     <label><b>Plazo:<b></label>
@@ -95,11 +97,11 @@
     </section>    
     
     <section style="margin-top: 10px">
-        <div class="section-header">
-            <h4 class="m-auto" >CRONOGRAMA DE DESEMBOLSOS</h4>
-        </div>
+        {{-- <div class="section-header">
+            <h4 class="m-auto" >CRONOGRAMA DE DESEMBOLSO</h4>
+        </div> --}}
         <div class="section-body">
-            <table class="table">
+            <table class="table" style="margin-top: 10px; font-size:80%">
                 <thead>
                     <th>Mes</th>
                     <th>Montos mensuales</th>

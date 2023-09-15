@@ -17,7 +17,8 @@
     </footer>
     <section class="section">
         <div class="section-header">
-            <h4 style="">INSTITUTO PROVISIONAL DE DESARROLLO HABITACIONAL</h4>            
+            <h4 style="">INSTITUTO PROVINCIAL DE DESARROLLO HABITACIONAL</h4> 
+            <h4 style="text-align: center;">CUADRO A y B - GENERAL</h4>            
         </div>
         <div class="section-body">
             <div class="section-border">      
@@ -44,7 +45,7 @@
                 <div class="row">                          
                     <div class="column-2 form-group">                        
                         <label><b>Fecha de publicación:<b></label>
-                        <label>{{$obra->publica}}</label>
+                        <label>{{\Carbon\Carbon::parse($obra->publica)->format('d-m-Y')}}</label>
                         </div>
                     {{-- <div class="column-3 form-group"> 
                         <label><b>Código de barra del expediente:<b></label>
@@ -61,7 +62,7 @@
                         <label>{{$obra->getExpediente->exp_asunto}}</label>
                     </div>
                 </div> --}}
-                <div class="row">
+                {{-- <div class="row">
                     <div class="column-4 form-group"> 
                         <label><b>Vivienda:<b></label><br>
                         <label>${{number_format($obra->monviv,2, ',', '.')}}</label>
@@ -78,7 +79,7 @@
                         <label><b>Monto Tope:<b></label><br>
                         <label>${{number_format($obra->montotope,2, ',', '.')}}</label>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row">
                     <div class="column-2 form-group"> 
                     <label><b>Plazo:<b></label>
@@ -153,9 +154,9 @@
     </section>
     
     <section style="margin-top: 10px">
-        <div class="section-header">
+        {{-- <div class="section-header">
             <h4 class="m-auto">TOTALES CON SOMBRERO</h4>
-        </div>
+        </div> --}}
         <div class="section-body">
             @php
                 $contador = 2;
@@ -289,7 +290,7 @@
             @endphp
             @foreach ($conceptos as $concepto)
             @if ($concepto->idconceptosombrero < 40)
-                <table class="table" style="margin-top: 30px">
+                <table class="table" style="margin-top: 30px; table-layout:fixed; font-size:80%">
                     <thead>
                         <th>Concepto</th>
                         <th>Valor</th>
@@ -312,7 +313,7 @@
                     $subtotal += $subtotal*($concepto->valor/100);
                 @endphp
             @elseif($concepto->idconceptosombrero == 40)
-                <table class="table" style="margin-top: 30px">
+                <table class="table" style="margin-top: 30px; table-layout:fixed; font-size:80%">
                     <thead>
                         <th>Concepto</th>
                         <th>Valor</th>
@@ -337,7 +338,7 @@
                 @endphp
             @endif
         @endforeach
-                <table class="table" style="margin-top: 30px">
+                <table class="table" style="margin-top: 30px; table-layout:fixed; font-size:80%">
                     <tbody>
                         <tr>
                             <th>MONTO TOTAL VIVIENDA</th>
@@ -463,7 +464,7 @@
                 @endphp
             @endif
         @endforeach
-                <table class="table" style="margin-top: 30px; margin-bottom: 30px;">
+                <table class="table" style="margin-top: 30px; margin-bottom: 30px; table-layout:fixed; font-size:80%">
                     <tbody>
                         <tr>
                             <th>MONTO TOTAL NEXO</th>
@@ -475,7 +476,7 @@
     </section>
     @endif
 
-    <table class="table" style="margin-top: 30px">
+    <table class="table" style="margin-top: 30px; table-layout:fixed; font-size:80%">
         <thead>
             <th>Concepto</th>
             <th>Valor</th>
@@ -512,46 +513,6 @@
             </tr>
         </tfoot>
     </table>
-
-    {{-- <section style="margin-top: 10px">
-        <div class="section-body">
-            <table class="table" style="margin-top: 30px">
-                <tbody>
-                    <tr>
-                        <th>MONTO INFRAESTRUCTURA</th>
-                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
-                    </tr>
-                </tbody>
-            </table>
-        
-            <table class="table" style="margin-top: 30px">
-                <tbody>
-                    <tr>
-                        <th>MONTO VIVIENDA</th>
-                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
-                    </tr>
-                </tbody>
-            </table>
-        
-            <table class="table" style="margin-top: 30px">
-                <tbody>
-                    <tr>
-                        <th>MONTO NEXO</th>
-                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table class="table" style="margin-top: 30px">
-                <tbody>
-                    <tr>
-                        <th>MONTO TOTAL</th>
-                        <th><strong>$ {{number_format($subtotal, 2, ',', '.')}}</strong></th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>   --}}
     
 </body>
 </html>
