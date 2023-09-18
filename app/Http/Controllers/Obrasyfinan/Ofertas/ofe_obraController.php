@@ -51,19 +51,15 @@ class ofe_obraController extends Controller
     public function index(Request $request)
     {        
         $LaEmpresa = Empresa::where('iduserweb','=',Auth::user()->id)->first();
+
         if(empty($LaEmpresa)) {
+          
+          if(Auth::user()->hasDirectPermission('INTERNO-IPRODHA')){
             $Ofertas = Ofe_obra::orderBy('idobra', 'desc')->get();
+          }else{
+            $Ofertas = [];
+          }
 
-            // $Ofertas = Ofe_obra::join('iprodha.ofe_estadoxobra', 'iprodha.ofe_estadoxobra.idobra', '=', 'Ofe_obra.idobra')
-                      
-            //           // ->orderBy('iprodha.ofe_estadoxobra.')
-            //           //see PS:
-            //           ->where("actual", 1)
-            //           // ->select('iprodha.ofe_estadoxobra.*') 
-            //           ->orderBy('iprodha.ofe_estadoxobra.idestado')
-            //           ->get(['iprodha.ofe_estadoxobra.idestado']);
-
-            // return $Ofertas;
             $modifica = true;
         }else{
             $Ofertas = Ofe_obra::where('idempresa','=' ,$LaEmpresa->id_emp)->orderBy('idobra', 'desc')->get();
