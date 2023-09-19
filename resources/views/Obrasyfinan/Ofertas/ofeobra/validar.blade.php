@@ -314,7 +314,7 @@
                         <div class="form-check text-center">
                             <input class="form-check-input fs-5" type="checkbox" value="info-som-card" id="info-som" checked>
                             <strong>
-                            {!! Form::label('Sombrero', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
+                            {!! Form::label('Impuestos', null, ['class' => 'control-label form-check-label fs-5', 'style' => 'white-space: nowrap;', 'for' => 'flexCheckChecked']) !!}
                             </strong>
                         </div>
                         {{-- <div class="text-center"><h5>Sombrero</h5></div>                         --}}

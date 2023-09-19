@@ -595,24 +595,17 @@ class ofe_obraController extends Controller
 
       $id = base64url_decode($id);
       $ofeobra = Ofe_obra::find($id);
-      $vw = Vw_ofe_items::where('idobra', $id)->get();
-      $cronograma = Vw_ofe_cronograma::where('idobra', $id)->orderBy('mes')->get();
-      $sombreros = Ofe_sombrero::where('idobra', $id)->get();
+      
 
-      $conceptos = Ofe_sombrero::select('iprodha.ofe_sombrero.idobra', 'iprodha.ofe_sombrero.valor', 'iprodha.ofe_conceptosombrero.idconceptosombrero', 'iprodha.ofe_conceptosombrero.conceptosombrero' )
-                      ->join('iprodha.ofe_conceptosombrero', 'iprodha.ofe_sombrero.idconceptosombrero', '=', 'iprodha.ofe_conceptosombrero.idconceptosombrero')
-                      ->where('idobra', $id)
-                      ->get();
-      // return $conceptos;
       $tieneInfra = 0;
       $tieneViv = 0;
       $tieneNex = 0;
+
       $items = Vw_ofe_items::where('idobra', $id)->orderBy('orden')->get();
       $itemsViv = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 1)->orderBy('orden')->get();
       $itemsInfra = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 2)->orderBy('orden')->get();
       $itemsNex = Vw_ofe_items::where('idobra', $id)->where('cod_tipo', 3)->orderBy('orden')->get();
 
-      $data = Vw_ofe_obra_valida::where('idobra', $id)->first();
       $texto = Membrete::select('texto_1')->get();
       $texto = json_decode($texto);
 
@@ -637,15 +630,8 @@ class ofe_obraController extends Controller
                   'items' => $items,
                   'tieneViv' => $tieneViv,
                   'tieneNex' => $tieneNex,
-                  'itemsInfra' => $itemsInfra,
-                  'itemsViv' => $itemsViv,
-                  'itemsNex' => $itemsNex,
-                  'conceptos'=> $conceptos,
-                  'data'=>$data, 
-                  'sombreros'=>$sombreros, 
-                  'cronograma'=>$cronograma, 
-                  'texto'=>$texto])->setPaper('legal', 'portrait')
-                                  ->stream('ItemsDeLaObra.pdf');
+                  'texto' => $texto])->setPaper('legal', 'portrait')
+                                  ->stream('CuadroAyB-General.pdf');
     }
 
     public function pdfDsmxmes($id){

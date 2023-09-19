@@ -409,7 +409,7 @@
                 <div class="card">
                     <div class="card-head">
                         <br>
-                        <div class="text-center"><h5>Sombrero</h5></div>                        
+                        <div class="text-center"><h5>Impuestos</h5></div>                        
                     </div>
                     <div class="card-body">
                        <div class="table-responsive">
