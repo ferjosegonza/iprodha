@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="card-body border border-danger border-3" >
                         <label class="fs-5">
-                            La oferta de obra actual no posee items, sub-items, cronograma y sombrero.
+                            La oferta de obra actual no posee items, sub-items, cronograma y impuestos.
                         </label>
                     </div>
                 </div>
