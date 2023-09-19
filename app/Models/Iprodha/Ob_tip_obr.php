@@ -20,4 +20,7 @@
             'tipo_obra',
         ];
 
+        public function getObras(){
+            return $this->hasMany(Ob_obra::class, 'id_tip_obr', 'id_tip_obr');
+        }
     }

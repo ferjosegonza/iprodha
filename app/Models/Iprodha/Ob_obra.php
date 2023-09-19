@@ -108,4 +108,8 @@
         public function getOperatoria(){
             return $this->belongsTo(ob_operatoria::class,'id_ope','id_ope');
         }
+
+        public function getTipoObra(){
+            return $this->belongsTo(Ob_tip_obr::class, 'id_tip_obr', 'id_tip_obr');
+        }
     }

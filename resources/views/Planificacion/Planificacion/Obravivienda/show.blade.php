@@ -25,7 +25,7 @@
     <section class="section">
         <div class="section-header d-flex">
             <div class="">
-                <div class="titulo page__heading py-1">Ver Obra</div>
+                <div class="titulo page__heading py-1 fs-5">Ver Obra</div>
             </div>
             <div class="ms-auto">
                 <div class="dropdown">
@@ -36,9 +36,9 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{route('infovivienda.pdf', [base64url_encode($obra->id_obr), 1, 0, 0])}}" target="_blank">Todas las viviendas</a></li>
                             @foreach ($obra->getEtapas->sortBy('nro_eta') as $etapa)
-                            @foreach ($etapa->getEntregas->sortBy('num_ent') as $entrega)
-                                <li><a class="dropdown-item" href="{{route('infovivienda.pdf', [base64url_encode($obra->id_obr), 0, base64url_encode($entrega->id_ent), base64url_encode($etapa->id_etapa)])}}" target="_blank">Viviendas Etapa {{$etapa->nro_eta}} Entrega {{$entrega->num_ent}}</a></li>
-                            @endforeach
+                                @foreach ($etapa->getEntregas->sortBy('num_ent') as $entrega)
+                                    <li><a class="dropdown-item" href="{{route('infovivienda.pdf', [base64url_encode($obra->id_obr), 0, base64url_encode($entrega->id_ent), base64url_encode($etapa->id_etapa)])}}" target="_blank">Viviendas Etapa {{$etapa->nro_eta}} Entrega {{$entrega->num_ent}}</a></li>
+                                @endforeach
                             @endforeach
                         </ul>
                     @endif
@@ -86,6 +86,18 @@
                                     <div class="form-group">
                                         {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::text('nom_emp', $obra->getEmpresa->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::text('nom_emp', $obra->getTipoObra->tipo_obra ?? '--', ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::text('nom_emp', $obra->getOperatoria->operatoria ?? '--', ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
                                     </div>
                                 </div>
                             </div>
