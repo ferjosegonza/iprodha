@@ -674,7 +674,7 @@ class ofe_obraController extends Controller
                   'data' => $data,
                   'texto' => $texto,
                   'items'=> $items
-                  ])  ->setPaper('legal', 'landscape')
+                  ])  ->setPaper('legal', 'portrait')
                       ->stream('ComputoyPresupuesto.pdf');
     } 
 

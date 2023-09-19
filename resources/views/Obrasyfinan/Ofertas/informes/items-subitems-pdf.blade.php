@@ -58,7 +58,7 @@
             <h4 class="m-auto" >ITEMS Y SUB-ITEMS</h4>
         </div> --}}
         <div class="section-body">
-            <table class="table" style="margin-top: 10px; font-size:80%">
+            <table class="table" style="margin-top: 10px; font-size:50%">
                 <thead>
                     <th>Orden</th>
                     <th>Denominacion item</th>
@@ -80,7 +80,7 @@
                             $acuInc += $item->por_inc;
                             $totalObra = $totalObra + $item->costo;
                         @endphp
-                        <tr>
+                        <tr style="background-color: rgb(141, 141, 141)">
                             <td>{{$item->orden}} </td>
                             <td>{{$item->nom_item}}</td>
                             <td></td>
@@ -108,7 +108,7 @@
                                 <td></td>
                             </tr>
                         @endforeach
-                        <tr style="background-color: rgb(141, 141, 141)">
+                        {{-- <tr style="background-color: rgb(141, 141, 141)">
                             <td style="color: rgb(141, 141, 141)">1</td>
                             <td></td>
                             <td></td>
@@ -118,7 +118,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                        </tr>
+                        </tr> --}}
                     @endforeach
                         <tr style="">
                             <td></td>
