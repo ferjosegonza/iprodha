@@ -16,12 +16,16 @@
     <footer> {{-- style="margin-left: 3cm" --}} 
     </footer>
     <section class="section">
-        <div class="section-header">
+        {{-- <div class="section-header">
             <h4 style="">INSTITUTO PROVINCIAL DE DESARROLLO HABITACIONAL</h4>
             <h4 style="text-align: center;">PLAN DE TRABAJO</h4>            
+        </div> --}}
+        <div style="text-align: center;">
+            <label style="text-align: center; "><strong>PLAN DE TRABAJO</strong></label>  
         </div>
+        
         <div class="section-body">
-            <div class="section-border" style="font-size:90%">      
+            <div class="section-border" style="font-size:70%">      
                 <div class="row">         
                     <div class="form-group">
                         <label><b>Obra: <b></label> 
@@ -42,20 +46,16 @@
                         <label>{{$obra->getTipoOferta->tipocontratofer}}</label>
                     </div> --}}
                 </div>
-                <div class="row">                          
+                {{-- <div class="row">                          
                     <div class="column-2 form-group">                        
                         <label><b>Fecha de publicación:<b></label>
                         <label>{{\Carbon\Carbon::parse($obra->publica)->format('d-m-Y')}}</label>
                         </div>
-                    {{-- <div class="column-3 form-group"> 
-                        <label><b>Código de barra del expediente:<b></label>
-                        <label>{{$obra->idexpediente}}</label> 
-                    </div>                     --}}
                     <div class="column-2 form-group"> 
                         <label><b>Expediente Número:<b></label>
                         <label>{{$obra->getExpediente->exp_numero ?? '-'}}</label>
                     </div>
-                </div>
+                </div> --}}
                 {{-- <div class="row">        
                     <div class="form-group">             
                         <label><b>Asunto del Expediente:<b></label>
@@ -99,7 +99,7 @@
             <h4 class="m-auto" >CRONOGRAMA DE AVANCE</h4>
         </div> --}}
         <div class="section-body">
-            <table class="table" style="table-layout:fixed; font-size:70%">
+            <table class="table" style="table-layout:fixed; font-size:60%">
                 <thead>
                     <th style="width: 3%">Orden</th>
                     <th class="width: 10%">Denominacion</th>
@@ -161,7 +161,7 @@
                             @endphp
                         </tr>
                     @endforeach
-                        <tr style="background-color: rgb(141, 141, 141)">
+                        {{-- <tr style="background-color: rgb(141, 141, 141)">
                             <td style="color: rgb(141, 141, 141)">1</td>
                             <td></td>
                             <td></td>
@@ -170,7 +170,7 @@
                             @for ($i = 1; $i <= $obra->plazo; $i++)
                                 <td></td>
                             @endfor
-                        </tr>
+                        </tr> --}}
                         @php
                             $ax = 0;
                             for ($i=0; $i < $obra->plazo; $i++) { 
@@ -183,7 +183,7 @@
                                 $ax += $unDesem->costo;
                             }
                         @endphp
-                        <tr>
+                        <tr style="background-color: rgb(141, 141, 141)">
                             <td></td>
                             <td>Totales</td>
                             <td>$ {{number_format($montoAcu, 2, ',','.')}}</td>
@@ -197,7 +197,7 @@
                             @endforeach --}}
                         </tr>
 
-                        <tr style="background-color: rgb(141, 141, 141)">
+                        {{-- <tr style="background-color: rgb(141, 141, 141)">
                             <td style="color: rgb(141, 141, 141)">1</td>
                             <td></td>
                             <td></td>
@@ -206,9 +206,9 @@
                             @for ($i = 1; $i <= $obra->plazo; $i++)
                                 <td></td>
                             @endfor
-                        </tr>
+                        </tr> --}}
 
-                        <tr>
+                        <tr style="background-color: rgb(141, 141, 141)">
                             <td></td>
                             <td>Inc. Acumulado</td>
                             <td></td>
@@ -219,7 +219,7 @@
                             @endfor
                         </tr>
 
-                        <tr style="background-color: rgb(141, 141, 141)">
+                        {{-- <tr style="background-color: rgb(141, 141, 141)">
                             <td style="color: rgb(141, 141, 141)">1</td>
                             <td></td>
                             <td></td>
@@ -228,9 +228,9 @@
                             @for ($i = 1; $i <= $obra->plazo; $i++)
                                 <td></td>
                             @endfor
-                        </tr>
+                        </tr> --}}
 
-                        <tr>
+                        <tr style="background-color: rgb(141, 141, 141)">
                             <td></td>
                             <td>Monto mensual</td>
                             <td></td>
@@ -240,7 +240,7 @@
                             @endforeach
                         </tr>
 
-                        <tr>
+                        <tr style="background-color: rgb(141, 141, 141)">
                             <td></td>
                             <td>Monto Acumulado</td>
                             <td></td>
