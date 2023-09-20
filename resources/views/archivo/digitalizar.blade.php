@@ -58,7 +58,7 @@
                         <div class="col-lg-3">
                             {!! Form::label('*Fecha:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                             {!! Form::date('fecha', null, [
-                                'min' => '1990-01-01',
+                                'min' => '1978-01-01',
                                 'max' => \Carbon\Carbon::now()->year . '-12',
                                 'id' => 'fecha',
                                 'class' => 'form-control',
