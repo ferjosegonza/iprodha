@@ -33,7 +33,7 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        $boletas = App_boletas::where('ope', '=', $request->ope)        
+        $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')        
         ->where('barrio', '=', $request->barrio)
         ->where('adju', '=', $request->adju)
         ->where('nro_cta', '>=', 'ult_fac -12 ')->get();
