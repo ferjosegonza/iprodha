@@ -197,7 +197,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{$concepto->conceptosombrero}}</td>
+                                <td>{{$concepto->conceptosombrero}} e Ingresos Brutos</td>
                                 <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
                                 <td>$ {{number_format((($subtotal*$concepto->valor)/100),2, ',', '.')}}</td>
                                 <td>$ {{number_format(((($subtotal*$concepto->valor)/100)+$subtotal),2, ',', '.')}}</td>
