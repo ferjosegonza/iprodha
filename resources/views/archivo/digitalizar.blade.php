@@ -61,7 +61,8 @@
                                 'min' => '1990-01-01',
                                 'max' => \Carbon\Carbon::now()->year . '-12',
                                 'id' => 'fecha',
-                                'class' => 'form-control']) !!}
+                                'class' => 'form-control',
+                                'onkeydown'=>"return false"]) !!}
                             <span id="avisofecha" hidden>¡Cuidado! Se excede la fecha de hoy</span>
                         </div>                
                                
