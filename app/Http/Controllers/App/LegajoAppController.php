@@ -25,6 +25,7 @@ class LegajoAppController extends Controller
     }
 
     public function boletas(Request $request){
+        return response()->json($request);
         $validator = Validator::make($request->all(), [
             'barrio' => 'required',
             'ope' => 'required',
@@ -36,7 +37,7 @@ class LegajoAppController extends Controller
         $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')
         ->where('barrio', '=', $request->barrio)
         ->where('adju', '=', $request->adju)
-        //->where('nro_cta', '>=', 'ult_fac -12 ')
+        ->where('nro_cta', '>=', 'ult_fac -12 ')
         ->get();
         return response()->json($boletas);
     }
