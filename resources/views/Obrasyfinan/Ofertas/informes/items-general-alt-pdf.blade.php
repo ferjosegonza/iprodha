@@ -187,7 +187,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{$concepto->getConceptoSombrero->conceptosombrero}}</td>
+                                <td>{{$concepto->getConceptoSombrero->conceptosombrero}} e Ingresos Brutos</td>
                                 <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
                                 <td>$ {{number_format($totalViv*($concepto->valor/100),2, ',', '.')}}</td>
                                 @php
@@ -215,7 +215,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{$concepto->getConceptoSombrero->conceptosombrero}}</td>
+                                <td>{{$concepto->getConceptoSombrero->conceptosombrero}} e Ingresos Brutos</td>
                                 <td>% {{number_format($concepto->valor,2, ',', '.')}}</td>
                                 <td>$ {{number_format((($totalInfra*$concepto->valor)/100),2, ',', '.')}}</td>
                                 @php
