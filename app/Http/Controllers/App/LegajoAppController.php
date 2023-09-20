@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Iprodha\App_legajos;
 use App\Models\Iprodha\App_boletas;
-
+use DB;
 
 class LegajoAppController extends Controller
 {
@@ -25,7 +25,6 @@ class LegajoAppController extends Controller
     }
 
     public function boletas(Request $request){
-        return response()->json($request);
         $validator = Validator::make($request->all(), [
             'barrio' => 'required',
             'ope' => 'required',
@@ -34,11 +33,19 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')
+
+        $query = "SELECT * from IPRODHA.APP_BOLETAS 
+        where OPE = '$request->ope' 
+        and BARRIO = $request->barrio 
+        and ADJU = $request->adju 
+        and NRO_CTA >= ult_fac -12";
+        $boletas = DB::select( DB::raw($query));
+
+        /* $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')
         ->where('barrio', '=', $request->barrio)
         ->where('adju', '=', $request->adju)
         ->where('nro_cta', '>=', 'ult_fac -12 ')
-        ->get();
+        ->get(); */
         return response()->json($boletas);
     }
 }
