@@ -171,10 +171,9 @@
                                 <div class="card  border border-3 border-primary border-opacity-75 rounded">
                                     <div>
                                         <div>
-                                            <h5 class="card-header m-0 p-0 ms-4 ">Agregar Permisos </h5>
+                                            <h5 class="card-header m-0 p-0 ms-4 ">Permisos </h5>
                                         </div>
-                                        <div
-                                            class="d-flex flex-row col-xs-12 col-sm-12 col-md-12 align-items-center justify-content-end">
+                                        <div class="d-flex flex-row col-xs-12 col-sm-12 col-md-12 align-items-center justify-content-end">
 
                                             {!! Form::text('name3', old('name'), [
                                                 'placeholder' => 'Buscar',
@@ -191,7 +190,7 @@
                                     <h6 class="ms-3 card-title mb-0">Seleccione los permisos que va a tener la persona:
                                     </h6>
                                     <div class="d-flex flex-row align-items-start justify-content-around mb-3">
-                                        <div class="card-body ms-2 d-flex flex-column" id="lista_roles"style="height: 250px;width:50%">
+                                        <div class="card-body ms-2 d-flex flex-column" id="lista_roles" style="height: 250px;width:50%">
                                             <div class="ms-auto d-flex align-items-center">
                                                 {{ Form::checkbox('checkpermisos', null, false, ['id' => 'checkpermisos','onclick' => 'seleccionarpermisostodos()', 'class' => 'me-2 name']) }}
                                                 <div>Selec All</div></div>
@@ -224,12 +223,11 @@
                                 <div class="card  border border-3 border-success border-opacity-75 rounded" style="height: 600px">
                                     <div>
                                         <div>
-                                            <h5 class="card-header m-0 p-0 ms-4 ">Agregar Grupos </h5>
+                                            <h5 class="card-header m-0 p-0 ms-4 ">Menu</h5>
                                         </div>
                                     </div>
                                     <br>
-                                    <h6 class="ms-3 card-title mb-0">Seleccione los Grupos en los que va a estar la
-                                        persona:
+                                    <h6 class="ms-3 card-title mb-0">Seleccione los sub-menus que va a poder visualizar el usuario:
                                     </h6>
                                     <div class="d-flex flex-row align-items-start justify-content-around ">
                                         
