@@ -21,12 +21,10 @@ class Vw_tc_ju001_comparativo extends Model
     protected $fillable = [ 
         'mes',
         'periodo',
-        'altas_22',   
-        'bajas_22',
-        'altas_23',
-        'bajas_23',
-        'archivo',
-        'fecha_lectura'
+        'altas_ant',   
+        'bajas_ant',
+        'altas_act',
+        'bajas_act'
     ];
 
 }
