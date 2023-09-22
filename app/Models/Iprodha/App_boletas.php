@@ -16,7 +16,7 @@ class App_boletas extends Model{
     public $incrementing = false;
     
     protected $fillable = [ 
-        'ope', 'barrio', 'adju', 'ult_fac', 'fecha_vto', 'nro_cta', 'importe', 'estado'
+        'ope', 'barrio', 'adju', 'ult_fac', 'fecha_vto', 'nro_cta', 'importe', 'estado', 'enlace'
     ];
 
     protected function setKeysForSaveQuery($query)
