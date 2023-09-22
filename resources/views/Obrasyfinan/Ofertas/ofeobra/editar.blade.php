@@ -168,7 +168,7 @@
                                     <div class="form-group">
                                         {!! Form::label('Numero del exp:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         {{-- {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!} --}}
-                                        {!! Form::text('numExp', $unaOferta->getExpediente->exp_numero ?? '', ['class' => 'form-control', $editaTodo]) !!}
+                                        {!! Form::text('numExp', trim($unaOferta->getExpediente->exp_numero, " ") ?? '', ['class' => 'form-control', $editaTodo]) !!}
                                     </div>
                                 </div>
 
