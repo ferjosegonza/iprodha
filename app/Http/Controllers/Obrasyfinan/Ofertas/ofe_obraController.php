@@ -260,6 +260,7 @@ class ofe_obraController extends Controller
 
             if($request->input('numExp')){
               $numExp = $request->input('numExp');
+              $numExp = trim($numExp, " ");
               $exp = Expediente::where('exp_numero', $numExp.'      ')->first();
             }
 
