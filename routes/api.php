@@ -4,8 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\Coordinacion\Informatica\Ju001Controller;
-use App\Http\Controllers\Coordinacion\Informatica\Re003Controller;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\Ju001Controller;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\Re003Controller;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\No001Controller;
 use App\Http\Controllers\App\AuthAppController;
 use App\Http\Controllers\App\LegajoAppController;
 /*
@@ -49,6 +50,13 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/re003/rangos', [Re003Controller::class, 'rangos']);
     Route::get('/re003/vigentedetalle', [Re003Controller::class, 'vigentedetalle']);
     Route::get('/re003/vigente', [Re003Controller::class, 'vigente']);
+});
+
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/no001/comparativo', [No001Controller::class, 'comparativo']);
+    Route::get('/no001/escrituras', [No001Controller::class, 'escrituras']);
+    Route::get('/no001/historico', [No001Controller::class, 'historico']);
+    Route::get('/no001/historicotipo', [No001Controller::class, 'historicotipo']);
 });
 
 Route::group(['middleware' => ['auth:api']], function(){

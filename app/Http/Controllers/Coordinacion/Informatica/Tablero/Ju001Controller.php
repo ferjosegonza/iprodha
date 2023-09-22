@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Coordinacion\Informatica;
+namespace App\Http\Controllers\Coordinacion\Informatica\Tablero;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Iprodha\Vw_tablero_ge_recaudacion;
 
-use App\Models\Iprodha\Vw_tc_re003_indice;
-use App\Models\Iprodha\Vw_tc_re003_comparativointe;
-use App\Models\Iprodha\Vw_tc_re003_ultimoindicador;
-use App\Models\Iprodha\Vw_tc_re003_indicadorportipo;
-use App\Models\Iprodha\Vw_tc_re003_rangos;
-use App\Models\Iprodha\Vw_tc_re003_vigentedetalle;
-use App\Models\Iprodha\Vw_tc_re003_vigente;
+use App\Models\Iprodha\Vw_tc_ju001_juicios;
+use App\Models\Iprodha\Vw_tc_ju001_comparativo;
+use App\Models\Iprodha\Vw_tc_ju001_detallebajas;
+use App\Models\Iprodha\Vw_tc_ju001_detallealtas;
+use App\Models\Iprodha\Vw_tc_ju001_ultimo;
+use App\Models\Iprodha\Vw_tc_ju001_efectividad;
+use App\Models\Iprodha\Vw_prueba;
 
 
 
 
-class Re003Controller extends Controller
+class Ju001Controller extends Controller
 {
     function __construct()
     {
@@ -65,8 +65,8 @@ class Re003Controller extends Controller
     {              
     }
     
-    public function indice(){
-        $data = Vw_tc_re003_indice::all();
+    public function juicios(){
+        $data = Vw_tc_ju001_juicios::all();
 
         return response()->json([
             'status' => true,
@@ -74,8 +74,8 @@ class Re003Controller extends Controller
         ]);
     }
 
-    public function comparativointerior(){
-        $data = Vw_tc_re003_comparativointe::all();
+    public function comparativo(){
+        $data = Vw_tc_ju001_comparativo::all();
 
         return response()->json([
             'status' => true,
@@ -83,8 +83,8 @@ class Re003Controller extends Controller
         ]);
     }
 
-    public function ultimoindicador(){
-        $data = Vw_tc_re003_ultimoindicador::all();
+    public function ultimo(){
+        $data = Vw_tc_ju001_ultimo::all();
 
         return response()->json([
             'status' => true,
@@ -92,8 +92,8 @@ class Re003Controller extends Controller
         ]);
     }
 
-    public function indicadorportipologia(){
-        $data = Vw_tc_re003_indicadorportipo::all();
+    public function detallebajas(){
+        $data = Vw_tc_ju001_detallebajas::all();
 
         return response()->json([
             'status' => true,
@@ -101,8 +101,8 @@ class Re003Controller extends Controller
         ]);
     }
 
-    public function rangos(){
-        $data = Vw_tc_re003_rangos::all();
+    public function detallealtas(){
+        $data = Vw_tc_ju001_detallealtas::all();
 
         return response()->json([
             'status' => true,
@@ -110,17 +110,8 @@ class Re003Controller extends Controller
         ]);
     }
 
-    public function vigentedetalle(){
-        $data = Vw_tc_re003_vigentedetalle::all();
-
-        return response()->json([
-            'status' => true,
-            'data' => $data
-        ]);
-    }
-
-    public function vigente(){
-        $data = Vw_tc_re003_vigente::all();
+    public function efectividad(){
+        $data = Vw_tc_ju001_efectividad::all();
 
         return response()->json([
             'status' => true,
