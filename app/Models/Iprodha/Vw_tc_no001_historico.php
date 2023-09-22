@@ -14,22 +14,22 @@ class Vw_tc_no001_historico extends Model
     
     protected $table = 'iprodha.vw_tc_no001_historico';
 
-    // protected $primaryKey = ['id_emp'];
-
     public $incrementing = false;
 
     protected $fillable = [ 
         'mes',
         'periodo',
-        '2016',   
-        '2017',
-        '2018',
-        '2019',
-        '2020',
-        '2021',
-        '2022',
-        '2023',
-        '2024'
+        'a2016',   
+        'a2017',
+        'a2018',
+        'a2019',
+        'a2020',
+        'a2021',
+        'a2022',
+        'a2023',
+        'a2024'
     ];
+
+    
 
 }
