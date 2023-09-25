@@ -59,18 +59,13 @@ class LegajoAppController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $query = "SELECT count(estado) from IPRODHA.APP_BOLETAS 
+        $query = "SELECT count(estado) as adeuda from IPRODHA.APP_BOLETAS 
         where OPE = '$request->ope' 
         and BARRIO = $request->barrio 
         and ADJU = $request->adju 
         and ESTADO = 'Impago'";
         $boletas = DB::select( DB::raw($query));
 
-        /* $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')
-        ->where('barrio', '=', $request->barrio)
-        ->where('adju', '=', $request->adju)
-        ->where('nro_cta', '>=', 'ult_fac -12 ')
-        ->get(); */
         return response()->json($boletas);
     }
 }
