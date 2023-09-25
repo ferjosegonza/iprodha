@@ -20,15 +20,7 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         } 
-        $query = "SELECT l.operatoria, l.barrio, l.adju, l.nombre_barrio, l.cuil,
-        l.situacion_habitacional, l.ope, l.nombre, B.adeuda FROM IPRODHA.APP_LEGAJOS L
-        INNER JOIN (select adju, ope, barrio,count(estado) as adeuda 
-        from iprodha.app_boletas where estado = 'Impago' 
-        group by adju, ope, barrio) b
-        ON B.adju  = L.adju AND B.ope = L.ope AND L.barrio = B.barrio
-        WHERE CUIL = 20287390557 ";
-        $legajos = DB::select( DB::raw($query));
-        //$legajos = App_legajos::where('cuil', '=', $request->cuil)->get();
+        $legajos = App_legajos::where('cuil', '=', $request->cuil)->get();
         return response()->json($legajos);
     }
 
@@ -48,6 +40,12 @@ class LegajoAppController extends Controller
         and ADJU = $request->adju 
         and NRO_CTA >= ult_fac -12";
         $boletas = DB::select( DB::raw($query));
+
+        /* $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')
+        ->where('barrio', '=', $request->barrio)
+        ->where('adju', '=', $request->adju)
+        ->where('nro_cta', '>=', 'ult_fac -12 ')
+        ->get(); */
         return response()->json($boletas);
     }
 
