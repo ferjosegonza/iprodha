@@ -63,7 +63,7 @@ class LegajoAppController extends Controller
         where OPE = '$request->ope' 
         and BARRIO = $request->barrio 
         and ADJU = $request->adju 
-        and and ESTADO = 'Impago'";
+        and ESTADO = 'Impago'";
         $boletas = DB::select( DB::raw($query));
 
         /* $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')
