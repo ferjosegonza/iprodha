@@ -20,7 +20,7 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         } 
-        $query = "SELECT .adju, l.operatoria, l.ope, l.barrio, l.nombre_barrio,
+        $query = "SELECT l.adju, l.operatoria, l.ope, l.barrio, l.nombre_barrio,
         l.nombre, l.cuil, l.situacion_habitacional, (select count ('estado') 
         from IPRODHA.APP_BOLETAS b where estado= 'Impago' 
         and ope ='CR' and Barrio = 1234  and adju=5 
