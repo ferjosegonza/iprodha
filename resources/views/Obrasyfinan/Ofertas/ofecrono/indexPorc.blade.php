@@ -37,6 +37,7 @@
                                         <th class= 'text-center' style="color:#fff; width:10%;">% Incidencia</th>
                                         <th class= 'text-center' style="color:#fff; width:10%;">% Acumulado</th>
                                         <th class= 'text-center' style="color:#fff; width:10%;">Estado</th>
+                                        <th class= 'text-center' style="color:#fff; width:10%;">Accion</th>
                                     </thead>
                                     <tbody>
                                         @php
@@ -79,6 +80,13 @@
                                                 @php
                                                     $totalInc += $item->por_inc;
                                                 @endphp --}}
+                                                <td class= 'text-center' >
+                                                    {{-- @can('EDITAR-OBRAVIVIENDA') --}}
+                                                        {!! Form::open(['method' => 'GET', 'route' => ['ofecrono.limpiar', $item->iditem], 'style' => 'display:inline']) !!}
+                                                        {!! Form::submit('Limpiar', ['class' => 'btn btn-info', 'onclick' => "return confirm('¿Está seguro que desea limpiar el avance del item?')"]) !!}
+                                                        {!! Form::close() !!}
+                                                    {{-- @endcan --}}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

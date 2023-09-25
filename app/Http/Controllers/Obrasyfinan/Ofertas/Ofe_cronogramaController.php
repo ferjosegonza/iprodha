@@ -32,13 +32,11 @@ class Ofe_cronogramaController extends Controller
     public function indexPorc(Request $request, $id)
     {     
         $id = base64url_decode($id);
-        // $losItems = DB::select('select orden, nom_item, por_inc, round((iprodha.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) AvaItemPor, CASE WHEN round((IPRODHA.fun_PorAcuCronoItem(iditem)*100)/por_inc, 2) >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item where idobra = ? order by orden', [$id]);
 
         $losItems = DB::select('select i.idobra, i.iditem, i.orden, i.nom_item, i.por_inc, NVL(a.AvaItemPor, 0) AvaItemPor, CASE WHEN a.AvaItemPor >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item i left join (select iditem, sum(porcentaje) AvaItemPor from iprodha.ofe_cronograma group by iditem) a on a.iditem = i.iditem where idobra = ? order by orden', [$id]);
-        // $losItems = Ofe_item::where('idobra', $id)->orderBy('orden')->get();
-        // return $losItems;
-
-        $items = Ofe_item::where('idobra', '=', $id)->orderBy('iditem')->pluck('nom_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
+        
+        $items = Ofe_item::all()->where('idobra', '=', $id)->sortBy('orden')->pluck('orden_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
+        // $items = Ofe_item::where('idobra', '=', $id)->orderBy('iditem')->pluck('orden_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
         $plazo = Ofe_obra::where('idobra', $id)->first()->plazo;
         return view('Obrasyfinan.Ofertas.ofecrono.indexPorc', compact('losItems', 'plazo', 'items', 'id'));
     }
@@ -140,5 +138,12 @@ class Ofe_cronogramaController extends Controller
                                         ]);
         }
         return $infoItem;
+    }
+
+    public function limpiarAvanceITem($iditem){
+
+        $cronoItem = ofe_cronograma::where('iditem', $iditem)->get();
+        $cronoItem->each->delete();
+        return back()->with('mensaje','Se limpio el avance del item.');
     }
 }
