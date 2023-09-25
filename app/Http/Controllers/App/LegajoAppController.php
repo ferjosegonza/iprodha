@@ -20,15 +20,7 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         } 
-        $query = "SELECT l.operatoria, l.barrio, l.adju, l.nombre_barrio, l.cuil,
-        l.situacion_habitacional, l.ope, l.nombre, B.adeuda FROM IPRODHA.APP_LEGAJOS L
-        INNER JOIN (select adju, ope, barrio,count(estado) as adeuda 
-        from iprodha.app_boletas where estado = 'Impago' 
-        group by adju, ope, barrio) b
-        ON B.adju  = L.adju AND B.ope = L.ope AND L.barrio = B.barrio
-        WHERE CUIL = 20287390557 ";
-        $legajos = DB::select( DB::raw($query));
-        //$legajos = App_legajos::where('cuil', '=', $request->cuil)->get();
+        $legajos = App_legajos::where('cuil', '=', $request->cuil)->get();
         return response()->json($legajos);
     }
 
@@ -42,11 +34,15 @@ class LegajoAppController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $query = "SELECT * from IPRODHA.APP_BOLETAS 
-        where OPE = '$request->ope' 
-        and BARRIO = $request->barrio 
-        and ADJU = $request->adju 
-        and NRO_CTA >= ult_fac -12";
+        $query = "SELECT b.ope, b.barrio, b.adju, b.ult_fac, b.nro_cta, b.fecha_vto, b.importe,
+        b.estado, b.enlace, (select count ('estado') from IPRODHA.APP_BOLETAS b
+        where estado= 'Impago' and ope = '$request->ope' and Barrio = $request->barrio
+        and adju = $request->adju group by ope, barrio, adju) as adeuda
+        from IPRODHA.APP_BOLETAS b
+                where OPE = '$request->ope' 
+                and BARRIO = $request->barrio
+                and ADJU = $request->adju
+                and NRO_CTA >= ult_fac -12";
         $boletas = DB::select( DB::raw($query));
         return response()->json($boletas);
     }
