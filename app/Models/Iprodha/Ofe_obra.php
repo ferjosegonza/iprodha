@@ -106,6 +106,14 @@ class Ofe_obra extends Model
         return $this->belongsTo(ob_operatoria::class,'id_ope','id_ope');
     }
 
+    public function getTipoObra(){
+        return $this->belongsTo(Ob_tip_obr::class,'id_tip_obr','id_tip_obr');
+    }
+
+    public function getSituacion(){
+        return $this->belongsTo(Ob_situacion::class,'id_situacion','id_situacion');
+    }
+
     public function getAnticipo()
     {
         return $this->belongsTo(Ofe_tipo_anticipo::class,'id_tipo_anticipo','id_tipo_anticipo');

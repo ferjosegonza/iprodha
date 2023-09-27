@@ -18,7 +18,7 @@
     <section class="section">
         <div class="section-header">
             <h4 style="">INSTITUTO PROVINCIAL DE DESARROLLO HABITACIONAL</h4> 
-            <h4 style="text-align: center;">CUADRO A y B - {{$tipo}}</h4>           
+            <h4 style="text-align: center;">CUADRO A y E - {{$tipo}}</h4>           
         </div>
         <div class="section-body" >
             <div class="section-border" style="font-size:90%">      

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CUADRO A y B - GENERAL</title>
+    <title>CUADRO A y E - GENERAL</title>
 </head>
 <body style="margin-left: 3cm">
     <header style="margin-left: 1cm;">
@@ -18,7 +18,7 @@
     <section class="section">
         <div class="section-header">
             <h4 style="">INSTITUTO PROVINCIAL DE DESARROLLO HABITACIONAL</h4> 
-            <h4 style="text-align: center;">CUADRO A y B - GENERAL</h4>            
+            <h4 style="text-align: center;">CUADRO A y E - GENERAL</h4>            
         </div>
         <div class="section-body">
             <div class="section-border" style="font-size:90%">      

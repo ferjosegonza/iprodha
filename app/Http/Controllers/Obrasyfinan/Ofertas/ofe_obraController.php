@@ -81,7 +81,8 @@ class ofe_obraController extends Controller
 
         $TipoSituacion = Ob_situacion::pluck('descripcion', 'id_situacion');
 
-        $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
+        $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
+        //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
 
         return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe'));
     }
@@ -185,8 +186,8 @@ class ofe_obraController extends Controller
     {
 
         $TipoObra = Ob_tip_obr::pluck('tipo_obra','id_tip_obr');
-
-        $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
+        $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
+        //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
 
         $unaOferta = Ofe_obra::find(base64url_decode($idobra));
         // $Localidad= Localidad::pluck('nom_loc','id_loc');
@@ -546,7 +547,7 @@ class ofe_obraController extends Controller
                     'sombreros'=>$sombreros, 
                     'cronograma'=>$cronograma, 
                     'texto'=>$texto])->setPaper('legal', 'portrait')
-                                    ->stream('Cuadro A y B.pdf');
+                                    ->stream('Cuadro A y E.pdf');
     } 
 
     public function pdfItemsGral($id){
@@ -646,7 +647,7 @@ class ofe_obraController extends Controller
                   'tieneViv' => $tieneViv,
                   'tieneNex' => $tieneNex,
                   'texto' => $texto])->setPaper('legal', 'portrait')
-                                  ->stream('CuadroAyB-General.pdf');
+                                  ->stream('CuadroAyE-General.pdf');
     }
 
     public function pdfDsmxmes($id){
