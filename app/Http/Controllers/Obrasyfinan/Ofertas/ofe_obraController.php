@@ -313,7 +313,14 @@ class ofe_obraController extends Controller
         $cronograma = Vw_ofe_cronograma::where('idobra', '=', $idobra)->orderBy('mes')->get();
         $sombreros = Ofe_sombrero::where('idobra', '=', $idobra)->get();
         $obra = Ofe_obra::where('idobra','=', $idobra)->first();
-        $desembolsosPorMes = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+
+        if ($obra->id_tipo_anticipo == 2) {
+          $desembolsos = Vw_ofe_crono_desem_ant2::where('idobra','=', $idobra)->orderBy('mes')->get();
+        } else {
+          $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+        }
+
+        // $desembolsosPorMes = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
         // $desembolsosPorMes = $this->desembolsoPorMes($idobra);
         return view('Obrasyfinan.Ofertas.ofeobra.presentar')
             ->with('data', $data)
@@ -321,7 +328,7 @@ class ofe_obraController extends Controller
             ->with('cronograma', $cronograma)
             ->with('obra', $obra)
             ->with('sombreros', $sombreros)
-            ->with('desembolsos', $desembolsosPorMes);
+            ->with('desembolsos', $desembolsos);
     }
 
     public function presentarSave($idobra){
@@ -337,7 +344,14 @@ class ofe_obraController extends Controller
         $cronograma = Vw_ofe_cronograma::where('idobra', $idobra)->orderBy('mes')->get();
         $sombreros = Ofe_sombrero::where('idobra', $idobra)->get();
         $items = Vw_ofe_items::where('idobra', $idobra)->get();
-        $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+
+        if ($obra->id_tipo_anticipo == 2) {
+          $desembolsos = Vw_ofe_crono_desem_ant2::where('idobra','=', $idobra)->orderBy('mes')->get();
+        } else {
+          $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
+        }
+
+        // $desembolsos = Vw_ofe_crono_desem_ant::where('idobra','=', $idobra)->orderBy('mes')->get();
         return view('Obrasyfinan.Ofertas.ofeobra.validar',compact('obra','data', 'cronograma', 'sombreros', 'items', 'desembolsos'));
     }
 
