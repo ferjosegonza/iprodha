@@ -39,11 +39,11 @@
                   Informes <i class="fas fa-print" style="color: #ffffff;"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{route('ofeobraItemsGral.pdf', base64url_encode($data->idobra))}}" target="_blank">Cuadro A y B - General</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItemsGral.pdf', base64url_encode($data->idobra))}}" target="_blank">Cuadro A y E - General</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraItemsSubitems.pdf', base64url_encode($data->idobra))}}" target="_blank">Computo y presupuesto</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Cuadro A y B - Infraestructura</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Cuadro A y B - Vivienda</a></li>
-                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Cuadro A y B - Nexo</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 2])}}" target="_blank">Cuadro A y E - Infraestructura</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 1])}}" target="_blank">Cuadro A y E - Vivienda</a></li>
+                  <li><a class="dropdown-item" href="{{route('ofeobraItems.pdf', [base64url_encode($data->idobra), 3])}}" target="_blank">Cuadro A y E - Nexo</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraIncItems.pdf', base64url_encode($data->idobra))}}" target="_blank">Incidencia de items</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraCrono.pdf', base64url_encode($data->idobra))}}" target="_blank">Plan de trabajo</a></li>
                   <li><a class="dropdown-item" href="{{route('ofeobraDesmes.pdf', base64url_encode($data->idobra))}}" target="_blank">Cronograma de desembolso</a></li>
@@ -112,10 +112,18 @@
                                         {!! Form::text('nom_emp', $data->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
                                     </div>
                                 </div>
+                                
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Tipo Contrato:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                         {!! Form::text('tipocontrato', $obra->getTipoOferta->tipocontratofer, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}  
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Situacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::text('situacion', $obra->getSituacion->descripcion, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!} 
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -125,6 +133,34 @@
                                     </div>
                                 </div>                                
                             </div>
+
+                            <div class="row">
+                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    
+                                </div> --}}
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+                                    <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::text('ope', $obra->getOperatoria->operatoria, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!} 
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::text('tipoobr', $obra->getTipoObra->tipo_obra ?? null, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}  
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Numero de Licitacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::text('tipoobr', $obra->num_lic ?? null, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}  
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
