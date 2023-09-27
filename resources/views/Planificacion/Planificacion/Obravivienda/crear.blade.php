@@ -167,7 +167,7 @@
                                             <div class="form-group">
                                                 {!! Form::label('Descripcion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                                 <span class="obligatorio">*</span>
-                                                {!! Form::text('descrip', null, ['class' => 'form-control', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'required']) !!}
+                                                {!! Form::text('descrip', null, ['class' => 'form-control', 'style' => 'text-transform:uppercase', 'data-type' => 'limitcarac80', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'required']) !!}
                                             </div>
                                         </div>   
                                     </div>
@@ -243,4 +243,5 @@
     </section>
     @include('Planificacion.Planificacion.Obravivienda.mConfirmStore')
     <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/crear_obravivienda.js') }}"></script>
+    <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/format_obravivienda.js') }}"></script>
 @endsection

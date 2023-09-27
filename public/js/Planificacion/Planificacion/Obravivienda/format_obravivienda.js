@@ -47,6 +47,13 @@ $("input[data-type='limitcarac6']").on({
     }
 });
 
+$("input[data-type='limitcarac80']").on({
+    keyup: function() {
+        // this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+      formatInputViv($(this), 78);
+    }
+});
+
 function limitesCaracter(opc){
     switch (opc) {
         case 1:
