@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1">Nueva Oferta de Obra</div>
+            <div class="titulo py-1 fs-5">Nueva Oferta de Obra</div>
         </div>
         <div class="section-body">
             <div class="row">
@@ -34,7 +34,6 @@
                                                 <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
                                             @endforeach
                                         </select>
-                                        {{-- {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select']) !!} --}}
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +47,6 @@
                                                 <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
                                             @endforeach
                                         </select>
-                                        {{-- {!! Form::select('idempresa', $Empresa, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select selectpicker']) !!}                                        --}}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -76,42 +74,13 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Numero del Exp.:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
-                                        {{-- <span class="obligatorio">*</span> --}}
                                         {!! Form::text('numExp', null, ['class' => 'form-control', 'placeholder' => '00000-A/00','onkeyup' => 'javascript:this.value=this.value.toUpperCase()']) !!} 
-                                        {{-- {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        <span class="obligatorio">*</span>
-                                        {!! Form::text('idexpediente', null, ['class' => 'form-control']) !!}  --}}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
-                                        <span class="obligatorio">*</span>
-                                        {!! Form::date('publica', \Carbon\Carbon::now(), [
-                                            'min' => '2022-01-01',
-                                            'max' => \Carbon\Carbon::now()->year . '-12',
-                                            'id' => 'fec_pub',
-                                            'class' => 'form-control',
-                                            'readonly'
-                                        ]) !!}
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">$</span>
-                                            <input class="form-control" type="text" name="montotope" value = '0.00' data-type="currency">
-                                        </div>
-                                        {{-- {!! Form::number('montotope', null, ['class' => 'form-control']) !!} --}}
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
@@ -125,7 +94,19 @@
 
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::label('Tipo de oferta:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idtipofe', $TipoOferta, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo de obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::select('idtipobr', $TipoObra, null, [
                                             'placeholder' => 'Seleccionar',
@@ -151,18 +132,8 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">$</span>
-                                            <input class="form-control" type="text" name="montotope" value = '0.00' data-type="currency">
-                                        </div>
-                                    </div>
-                                </div> --}}
-
-                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                            {{-- <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
@@ -174,8 +145,74 @@
                                             'readonly'
                                         ]) !!}
                                     </div>
-                                </div> --}}
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">$</span>
+                                            <input class="form-control" type="text" name="montotope" value = '0.00' data-type="currency">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo de oferta:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idtipobr', $TipoObra, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Numero de Licitacion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::text('numlic', null, [
+                                            'class' => 'form-control',
+                                            'required' => 'required',
+                                            'placeholder' => '0000/0000',
+                                            'data-type' => 'numlic',
+                                            'style' => 'text-transform:uppercase',
+                                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase()',
+                                        ]) !!}
+                                    </div>
+                                </div>
+                            </div> --}}
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::date('publica', \Carbon\Carbon::now(), [
+                                            'min' => '2022-01-01',
+                                            'max' => \Carbon\Carbon::now()->year . '-12',
+                                            'id' => 'fec_pub',
+                                            'class' => 'form-control',
+                                            'readonly'
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">$</span>
+                                            <input class="form-control" type="text" name="montotope" value = '0.00' data-type="currency">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                     <div class="d-flex">

@@ -39,7 +39,8 @@ class Ofe_obra extends Model
         'id_ope',
         'id_tip_obr',
         'num_lic',
-        'id_tipo_anticipo'
+        'id_tipo_anticipo',
+        'id_tipo_obra'
     ];
     protected $attributes = [
         'idobra' => false,
@@ -107,6 +108,10 @@ class Ofe_obra extends Model
     }
 
     public function getTipoObra(){
+        return $this->belongsTo(Ob_tipo_obra::class,'id_tipo_obra','id_tipo_obra');
+    }
+
+    public function getTipoOfeObra(){
         return $this->belongsTo(Ob_tip_obr::class,'id_tip_obr','id_tip_obr');
     }
 

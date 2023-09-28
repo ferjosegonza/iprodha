@@ -7,6 +7,7 @@ use App\Models\Me\Expediente;
 use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\Ob_situacion;
 use App\Models\Iprodha\Ob_tip_obr;
+use App\Models\Iprodha\Ob_tipo_obra;
 use App\Models\Iprodha\ob_operatoria;
 use App\Models\Iprodha\Ofe_tipocontratoferta;
 use App\Models\Iprodha\Ofe_tipo_anticipo;
@@ -73,18 +74,20 @@ class ofe_obraController extends Controller
     {
         $Localidad = Localidad::orderBy('nom_loc')->get();
 
-        $TipoObra = Ob_tip_obr::pluck('tipo_obra','id_tip_obr');
+        $TipoOferta = Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
+
+        $TipoObra = Ob_tipo_obra::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
 
         $Empresa= Empresa::orderBy('nom_emp')->get();
 
-        $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer'); 
+        $TipoContrato = Ofe_tipocontratoferta::orderBy('tipocontratofer')->pluck('tipocontratofer','idtipocontratofer'); 
 
-        $TipoSituacion = Ob_situacion::pluck('descripcion', 'id_situacion');
+        $TipoSituacion = Ob_situacion::orderBy('descripcion')->pluck('descripcion', 'id_situacion');
 
         $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
         //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
 
-        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe'));
+        return view('Obrasyfinan.Ofertas.ofeobra.crear',compact('Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe', 'TipoOferta'));
     }
 
    public function store(Request $request)
@@ -101,6 +104,7 @@ class ofe_obraController extends Controller
             'plazo' => 'required|min:1|max:999|numeric',
             'idope' => 'required',
             'idtipobr' => 'required',
+            'idtipofe' => 'required',
             'numlic' => 'required|string|min:9|max:9',
         ], [
             'publica.required' => 'La fecha de publicacion no puede estar vacio.'
@@ -111,12 +115,6 @@ class ofe_obraController extends Controller
           $numExp = $request->input('numExp');
           $exp = Expediente::where('exp_numero', $numExp.'      ')->first();
         }
-        
-        // $numExp = str_replace("/", "\/", $numExp);
-        // return $exp = Expediente::where('exp_numero', 'like','%'.$numExp.'%')->first();
-        // return DB::table('me.expedientes')  
-        //         ->where('exp_numero', '=', '01478-K/03      ') 
-        //         ->get();
         
         $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
 
@@ -133,7 +131,8 @@ class ofe_obraController extends Controller
           'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
           'numofer' => 1,
           'id_ope' => $request->input('idope'),
-          'id_tip_obr' => $request->input('idtipobr'),
+          'id_tip_obr' => $request->input('idtipofe'),
+          'id_tipo_obra' => $request->input('idtipobr'),
           'num_lic' => $request->input('numlic'),
         ]);
 
@@ -143,25 +142,6 @@ class ofe_obraController extends Controller
             'idexpediente' => $exp->exp_doc_id,
           ]);
         }
-
-        
-
-        // $laOferta = Ofe_obra::create([
-        //     'nomobra' => strtoupper($request->input('nomobra')),
-        //     'idloc' => $request->input('idloc'),
-        //     'idempresa' => $request->input('idempresa'),
-        //     'idtipocontratofer' =>  $request->input('idtipocontrato'),
-        //     'publica' => $request->input('publica'),
-        //     'idexpediente' => $exp->exp_doc_id,
-        //     'montotope' => $montotope,
-        //     'plazo' => $request->input('plazo'),
-        //     'aniocotizacion' => date("Y", strtotime($request->input('anioymes'))),
-        //     'mescotizacion' => date("m", strtotime($request->input('anioymes'))),
-        //     'numofer' => 1,
-        //     'id_ope' => $request->input('idope'),
-        //     'id_tip_obr' => $request->input('idtipobr'),
-        //     'num_lic' => $request->input('numlic'),
-        // ]);
 
         if($request->input('idsituacion')){
             $laOferta->update([
@@ -185,14 +165,19 @@ class ofe_obraController extends Controller
     public function edit( $idobra)
     {
 
-        $TipoObra = Ob_tip_obr::pluck('tipo_obra','id_tip_obr');
+        $TipoOferta = Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
+
+        $TipoObra = Ob_tipo_obra::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
+
         $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
         //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
 
         $unaOferta = Ofe_obra::find(base64url_decode($idobra));
         // $Localidad= Localidad::pluck('nom_loc','id_loc');
         $Localidad= Localidad::orderBy('nom_loc')->get();
-        $TipoSituacion = Ob_situacion::pluck('descripcion', 'id_situacion');
+
+        $TipoSituacion = Ob_situacion::orderBy('descripcion')->pluck('descripcion', 'id_situacion');
+
         if(Auth::user()->hasRole('EMPRESA')){
             $Empresa = Empresa::where('iduserweb','=',Auth::user()->id)->get();
             $TipoContrato = Ofe_tipocontratoferta::where('idtipocontratofer', '=', $unaOferta->idtipocontratofer)->pluck('tipocontratofer','idtipocontratofer');
@@ -201,7 +186,7 @@ class ofe_obraController extends Controller
             $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
         }
             
-        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe'));
+        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe', 'TipoOferta'));
     }
 
     public function show($idobra)
@@ -254,6 +239,7 @@ class ofe_obraController extends Controller
                 'plazo' => 'required|min:1|max:999|numeric',
                 'idope' => 'required',
                 'idtipobr' => 'required',
+                'idtipofe' => 'required',
                 'numlic' => 'required',
             ]);
 
@@ -282,7 +268,8 @@ class ofe_obraController extends Controller
                 'montotope' => $montotope,
                 'id_situacion' => $request->input('idsituacion'),
                 'id_ope' => $request->input('idope'),
-                'id_tip_obr' => $request->input('idtipobr'),
+                'id_tip_obr' => $request->input('idtipofe'),
+                'id_tipo_obra' => $request->input('idtipobr'),
                 'num_lic' => $request->input('numlic'),
             ]);
 
