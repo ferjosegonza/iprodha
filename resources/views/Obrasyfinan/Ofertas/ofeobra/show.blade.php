@@ -79,7 +79,8 @@
     <div class="section-body">
         <div class="row">
             @include('layouts.modal.mensajes')
-            <div class="row">                
+            @include('Obrasyfinan.Ofertas.layout.informacion_de_ofeobra')
+            {{-- <div class="row">                
                 <div class="col-xs-12 col-sm-12 col-md-12"">
                     <div class="card">
                         <div class="card-head">
@@ -122,7 +123,6 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Situacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {{-- <span class="obligatorio">*</span> --}}
                                         {!! Form::text('situacion', $obra->getSituacion->descripcion, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!} 
                                     </div>
                                 </div>
@@ -135,9 +135,7 @@
                             </div>
 
                             <div class="row">
-                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    
-                                </div> --}}
+                                
 
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
                                     <div class="form-group">
@@ -188,7 +186,7 @@
                                         @else
                                         {!! Form::text('exp_asunto',"No hay expediente", ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
                                         @endif
-                                        {{-- {!! Form::textarea('exp_Asunto', $unaOferta->getExpediente->exp_asunto, ['class' => 'form-control', 'required' => 'required']) !!} --}}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -251,38 +249,12 @@
                                         @endif                                            
                                     </div>
                                 </div>
-                                {{-- <div class="d-flex">
-                                    <div class="me-auto p-2"></div>
-                                    <div class="p-2">
-                                        <div class="form-group">
-                                            {!! Form::label('Plazo:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!}
-                                            {!! Form::text('plazo',$obra->plazo, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="form-group">
-                                            {!! Form::label('Año y Mes de Cotización:', null, [
-                                                'class' => 'control-label',
-                                                'style' => 'white-space: nowrap;'
-                                            ]) !!}
-                                            @if ($obra->mescotizacion !=null and $obra->aniocotizacion !=null)
-                                            
-                                            {!! Form::month('anioymes', $obra->aniocotizacion. '-' .$obra->mescotizacion, [
-                                                'class' => 'form-control',
-                                                'readonly'=> 'true'
-                                            ]) !!}                                       
-                                            @else
-                                            {!! Form::text('cotizacion', 'No se ha definido una fecha' , ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true' ]) !!}
-                                            @endif                                            
-                                        </div>
-                                    </div>
-                                </div>                      --}}
                             </div>
                             
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="card">
                     <div class="card-head">

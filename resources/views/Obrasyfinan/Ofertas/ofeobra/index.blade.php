@@ -63,7 +63,7 @@
                                                 </td>
                                                 
                                                 <td class='text-center' style="vertical-align: middle;">
-                                                    {{ $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->denestado }}
+                                                    {{ $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->denestado ?? ''}}
                                                 </td>
                                                 <td class='text-center' style="overflow: hidden;">
                                                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
