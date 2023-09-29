@@ -23,9 +23,9 @@ class LegajoAppController extends Controller
         $query = "SELECT l.adju, l.operatoria, l.ope, l.barrio, l.nombre_barrio,
         l.nombre, l.cuil, l.situacion_habitacional, (select count ('estado') 
         from IPRODHA.APP_BOLETAS b where estado= 'Impago' 
-        and ope ='CR' and Barrio = 1234  and adju=5 
+        and ope =l.ope and Barrio = l.barrio  and adju=l.adju 
         group by ope, barrio, adju) as adeuda 
-        from IPRODHA.app_legajos l where cuil = 20287390557";
+        from IPRODHA.app_legajos l where cuil = $request->cuil";
         $legajos = DB::select( DB::raw($query));
         return response()->json($legajos);
     }
