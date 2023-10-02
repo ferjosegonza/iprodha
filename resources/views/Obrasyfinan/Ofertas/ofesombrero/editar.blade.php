@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1">Edicion Concepto Sombrero - Obra: <strong>{{$unaObra->nomobra}}</strong></div>
+            <div class="titulo py-1">Edicion Concepto Impuesto - Obra: <strong>{{$unaObra->nomobra}}</strong></div>
             {{-- <a><strong>Edicion Concepto Sombrero - Obra: {{ $unaObra->nomobra}} </strong></a> --}}
         </div>
         <div class="section-body">
