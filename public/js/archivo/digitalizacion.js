@@ -570,6 +570,40 @@ function derivado(id, idtag){
 
 }
 
+function derivadoAgregar(idtag,des1, des2){
+    let valor = document.getElementById('agregarTag0').value;  
+    let id2= 'agregarTag1';
+    let hijo = document.getElementById(id2)
+
+    console.log(complejos)
+
+    let route = '/archivo/derivados';    
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: route,
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id: idtag,
+            value: valor
+        }),
+        dataType: 'json',
+        success: function(res) {
+            hijo.value=res[0].dato 
+        },
+        error: function(res){
+            console.log(res)
+        }});
+
+}
+
 function cargarPDF(path, nombre){
     let ruta = path.substring(14) + nombre
     document.getElementById('embedpdf').setAttribute('src', ruta)
@@ -1177,8 +1211,11 @@ function completarTag(){
 }
 
 function agregarTag(){
+    while(document.getElementById('tag-agregar').hasChildNodes()){
+        document.getElementById('tag-agregar').removeChild(document.getElementById('tag-agregar').lastChild)
+    }
     let idtag = document.getElementById('tag').value;
-    var tag;
+    let tag;
     let route = '/archivo/tag';   
 
     $.ajaxSetup({
@@ -1195,90 +1232,194 @@ function agregarTag(){
             id: idtag
         }),
         dataType: 'json',
-        success: function(res) {            
+        success: function(res) {      
             tag = res
-            let div = document.getElementById('tag-agregar');
-            let div2 = document.createElement("div");   
-            let lab = document.createElement('label');
-            lab.innerHTML = tag.descripcion;
-            div2.appendChild(lab);
-            if(tag.dato == 1){
-                let input = document.createElement('input')
-                if(tag.dato_tipo == 1){
-                    input.type = "number"
-                    input.className="no-spin"
-                }
-                else{
-                    input.type = "text"
-                }
-                input.id='agregarTag';
-                input.setAttribute('onkeyup','checkGuardarTag()');
-                input.className = 'form-control';
-                div2.className = "col-lg-8";
-                div2.appendChild(input)     
-                div.appendChild(div2);   
-            }
-            if(tag.dato == 2){
-                let input = document.createElement("select");
-                getSelects(input, tag.id_tag);
-                input.id='agregarTag';
-                input.className = 'form-control';
-                input.setAttribute('onchange','checkGuardarTag()');
-                div2.className = "col-lg-8";
-                div2.appendChild(input)     
-                div.appendChild(div2);   
-            }
-            if(tag.dato == 3){
-                let input = document.createElement("input");
-                if(tag.dato_tipo == 1){                               
-                input.type = "number";
-                input.className="no-spin"
-                }
-                else{
-                    input.type = "text";
-                }                      
-                input.setAttribute('list', "opciones-"+tag.id_tag);
-                input.addEventListener('keypress', function (e) {
-                    if (e.key === 'Enter') {
-                    findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+            console.log(res)
+            let div = document.getElementById('tag-agregar');           
+            if(res.length > 1){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-                input.id='agregarTag';
-                input.className = 'form-control';
-                input.setAttribute('onkeyup','checkGuardarTag()');
-                div2.className = "col-lg-8";                
-                div2.appendChild(input)     
-                div.appendChild(div2);   
-                
-            }
-            let div3 = document.createElement('div')
-            let btn = document.createElement('button')
-            btn.type = 'button'
-            btn.innerHTML = 'Agregar'               
-            btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ',' + 0 + ',' + 0 +')');
-            btn.className = 'btn btn-success';               
-            btn.id= 'btnTagAgregar' 
-            div3.className = 'col-lg-2';
-            btn.setAttribute('disabled','disabled')
-            div3.appendChild(document.createElement('br'))
-            div3.appendChild(btn)
-            div.appendChild(div3)            
+                $.ajax({
+                    url: '/archivo/complejos',
+                    type: 'GET',
+                    cache: false,
+                    data: ({
+                        _token: $('#signup-token').val(),
+                        tags: [res[0].id_tag]
+                    }),
+                    dataType: 'json',
+                    success: function(res){  
+                        let div2 = document.createElement("div");  
+                        for(let i=0; i<2; i++){
+                            let lab = document.createElement('label');
+                            lab.innerHTML = res[i].deschijo;
+                            div2.appendChild(lab);
+                            if(res[i].dato == 1){
+                                let input = document.createElement('input')
+                                if(res[i].dato_tipo == 1){
+                                    input.type = "number"
+                                    input.className="no-spin"
+                                }
+                                else{
+                                    input.type = "text"
+                                }
+                                input.id='agregarTag'+i;
+                                input.setAttribute('onkeyup','checkGuardarTag()');
+                                input.className = 'form-control';
+                                div2.className = "col-lg-8";
+                                div2.appendChild(input)     
+                                div.appendChild(div2);   
+                            }
+                            if(res[i].dato == 2){
+                                let input = document.createElement("select");
+                                getSelects(input, res[i].id_tag);
+                                input.id='agregarTag'+i;
+                                input.className = 'form-control';
+                                input.setAttribute('onchange','checkGuardarTag()');
+                                div2.className = "col-lg-8";
+                                div2.appendChild(input)     
+                                div.appendChild(div2);   
+                            }
+                            if(res[i].dato == 3){
+                                let input = document.createElement("input");
+                                if(res[i].dato_tipo == 1){                               
+                                    input.type = "number";
+                                    input.className="no-spin"
+                                    }
+                                    else{
+                                        input.type = "text";
+                                    }                      
+                                    input.setAttribute('list', "opcionesA-"+res[i].id_tag);
+                                    input.addEventListener('keypress', function (e) {
+                                        if (e.key === 'Enter') {
+                                        findTexto(input.value, res[i].id_tag_hijo, input, "opcionesA-"+res[i].id_tag);
+                                        }
+                                    });
+                                    input.id='agregarTag'+i;
+                                    input.className = 'form-control';
+                                    input.setAttribute('onkeyup','checkGuardarTag()');
+                                    div2.className = "col-lg-8";                
+                                    div2.appendChild(input)     
+                                    div.appendChild(div2);       
+                                    input.setAttribute('onchange', 'derivadoAgregar(\''+res[0].id_tag_hijo+'\',\'' + res[0].deschijo + '\',\'' + res[1].deschijo + '\')');
+                            }
+                        }
+                        let div3 = document.createElement('div')
+                        let btn = document.createElement('button')
+                        btn.type = 'button'
+                        btn.innerHTML = 'Agregar'               
+                        btn.setAttribute('onclick','guardarExtraComplejo(\'' + res[0].deschijo + '\',\'' + res[1].deschijo + '\')');
+                        btn.className = 'btn btn-success';               
+                        btn.id= 'btnTagAgregar' 
+                        div3.className = 'col-lg-2';
+                        btn.setAttribute('disabled','disabled')
+                        div3.appendChild(document.createElement('br'))
+                        div3.appendChild(btn)
+                        div.appendChild(div3)        
+                    },
+                    error:{}
+                })                
+            }   
+            else{
+                let div2 = document.createElement("div");  
+                let lab = document.createElement('label');
+                lab.innerHTML = tag.descripcion;
+                div2.appendChild(lab);
+                if(tag.dato == 1){
+                    let input = document.createElement('input')
+                    if(tag.dato_tipo == 1){
+                        input.type = "number"
+                        input.className="no-spin"
+                    }
+                    else{
+                        input.type = "text"
+                    }
+                    input.id='agregarTag';
+                    input.setAttribute('onkeyup','checkGuardarTag()');
+                    input.className = 'form-control';
+                    div2.className = "col-lg-8";
+                    div2.appendChild(input)     
+                    div.appendChild(div2);   
+                }
+                if(tag.dato == 2){
+                    let input = document.createElement("select");
+                    getSelects(input, tag.id_tag);
+                    input.id='agregarTag';
+                    input.className = 'form-control';
+                    input.setAttribute('onchange','checkGuardarTag()');
+                    div2.className = "col-lg-8";
+                    div2.appendChild(input)     
+                    div.appendChild(div2);   
+                }
+                if(tag.dato == 3){
+                    let input = document.createElement("input");
+                    if(tag.dato_tipo == 1){                               
+                        input.type = "number";
+                        input.className="no-spin"
+                        }
+                        else{
+                            input.type = "text";
+                        }                      
+                        input.setAttribute('list', "opciones-"+tag.id_tag);
+                        input.addEventListener('keypress', function (e) {
+                            if (e.key === 'Enter') {
+                            findTexto(input.value, tag.id_tag, input, "opciones"+tag.id_tag);
+                            }
+                        });
+                        input.id='agregarTag';
+                        input.className = 'form-control';
+                        input.setAttribute('onkeyup','checkGuardarTag()');
+                        div2.className = "col-lg-8";                
+                        div2.appendChild(input)     
+                        div.appendChild(div2);                   
+                    }
+                let div3 = document.createElement('div')
+                let btn = document.createElement('button')
+                btn.type = 'button'
+                btn.innerHTML = 'Agregar'               
+                btn.setAttribute('onclick','guardarTag(\'' + 'agregarTag' + '\',\'' + tag.descripcion + '\',' + 2 + ',' + 0 + ',' + 0 +')');
+                btn.className = 'btn btn-success';               
+                btn.id= 'btnTagAgregar' 
+                div3.className = 'col-lg-2';
+                btn.setAttribute('disabled','disabled')
+                div3.appendChild(document.createElement('br'))
+                div3.appendChild(btn)
+                div.appendChild(div3)        
+                }                   
             },
             error: function(res){
                 console.log(res)
             }});
-        
-    
+}
+
+function guardarExtraComplejo(desc1, desc2){
+    guardarTag('agregarTag0', desc1, 2, 0, 0)
+    guardarTag('agregarTag1', desc2, 2, 0, 0)
 }
 
 function checkGuardarTag(){
     let input=document.getElementById('agregarTag')
-    let btn = document.getElementById('btnTagAgregar')
-    if(input.value == ''){
-        btn.setAttribute('disabled', 'disabled');
+    if(input){
+        let btn = document.getElementById('btnTagAgregar')
+        if(input.value == ''){
+            btn.setAttribute('disabled', 'disabled');
+        }
+        else{
+            btn.removeAttribute('disabled')
+        }
     }
     else{
-        btn.removeAttribute('disabled')
+        let input0=document.getElementById('agregarTag0')
+        let btn = document.getElementById('btnTagAgregar')
+        if(input0.value == ''){
+            btn.setAttribute('disabled', 'disabled');
+        }
+        else{
+            btn.removeAttribute('disabled')
+        }
     }
 }
 

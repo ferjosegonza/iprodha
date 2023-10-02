@@ -138,7 +138,7 @@ public function digitalizar(){
     $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Empresas = Empresa::orderBy('nom_emp','asc')->get();
     $Localidades = Localidad::select('nom_loc','id_loc')->get();
-    $Tags = Dig_tags::where('estructura', '=', 1)->orderBy('descripcion','asc')->get();
+    $Tags = Dig_tags::orderBy('descripcion','asc')->get();
 
     return view('archivo.digitalizar')
         ->with('TipoDocumento',$TipoDocumento)
@@ -226,7 +226,6 @@ public function getSelects(Request $request){
 }
 
 public function complejos(Request $request){
-
     $query="select dt.id_tag, dt.descripcion, id_tag_hijo, orden, sc1.descripcion as deschijo, sc1.dato_tipo, sc1.dato 
     from iprodha.dig_tags dt 
     inner join iprodha.dig_tags_complejo dtc on
@@ -256,8 +255,7 @@ public function complejos(Request $request){
 }
 
 public function busquedaDirigida(Request $request){
-
-   $busqueda = Dig_tag_busqueda::where('id_tag','=', $request->id)->first();
+    $busqueda = Dig_tag_busqueda::where('id_tag','=', $request->id)->first();
     
     $query = "SELECT $busqueda->campo1 as campo1 FROM $busqueda->esquema.$busqueda->tabla 
             WHERE $busqueda->campo1 LIKE '%$request->texto%'";
@@ -363,7 +361,6 @@ public function modificar(Request $request){
 
 public function derivados(Request $request){
     $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
-
     
     if( is_string($request->value)){
         $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 like '%$request->value%'";
