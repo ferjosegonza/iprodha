@@ -89,7 +89,12 @@ class ObraviviendaController extends Controller
                     $viviendas = Ob_vivienda::where('plano', $name)->get();
 
                     foreach ($viviendas as $vivienda) {
-                        $vivs[] = $vivienda->getEntrega->getEtapa->id_obr;
+                        try {
+                            $vivs[] = $vivienda->getEntrega->getEtapa->id_obr;
+                        } catch (\Throwable $th) {
+                            $vivs[] = null;
+                        }
+                        
                     }
 
                     if(count($viviendas) != 0){
