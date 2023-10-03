@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\Ju001Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\Re003Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\No001Controller;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\At001Controller;
 use App\Http\Controllers\App\AuthAppController;
 use App\Http\Controllers\App\LegajoAppController;
 /*
@@ -57,6 +58,10 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/no001/escrituras', [No001Controller::class, 'escrituras']);
     Route::get('/no001/historico', [No001Controller::class, 'historico']);
     Route::get('/no001/historicotipo', [No001Controller::class, 'historicotipo']);
+});
+
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/at001/cancelaciones', [At001Controller::class, 'cancelaciones']);
 });
 
 Route::group(['middleware' => ['auth:api']], function(){
