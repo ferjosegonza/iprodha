@@ -96,6 +96,19 @@ class DigestoController extends Controller
         return $res;
     }
 
+    public function modificar(Request $request){
+        $datosValidos = $request->validate([
+            'id0' => 'required',
+            'idn' => 'required',
+            'obs' => 'required'
+        ]);
+
+        $digesto = Dig_digesto::where('id_archivo0', '=', $request->id0)
+        ->where('id_archivon', '=', $request->idn)->first();
+        $digesto->observacion = $request->obs;
+        return $digesto->save();
+    }
+
     public function areas(Request $request){
         $data = Dig_digesto_areas::where('id_archivo', '=', $request->id)
                 ->join('IPRODHA.VW_DIG_AREAS', 'IPRODHA.VW_DIG_AREAS.idarea', '=', 'iprodha.dig_digesto_areas.id_area')
