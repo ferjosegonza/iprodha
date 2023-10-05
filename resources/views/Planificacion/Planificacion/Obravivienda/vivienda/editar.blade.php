@@ -142,7 +142,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                             <div class="form-group">
                                                 {!! Form::label('Manzana:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('letmanza', $vivienda->man_emp, ['class' => 'form-control', 'id' => 'idempmanza', 'data-type' => 'limitcarac4']) !!}
+                                                {!! Form::text('letmanza', $vivienda->man_emp, ['class' => 'form-control', 'id' => 'idempmanza', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
