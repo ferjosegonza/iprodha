@@ -60,270 +60,16 @@
             </div> 
         </div>
     </div>
-    {{-- <div class="section-header">
-        <div class="titulo page__heading" style="padding:10px">
-            <h6>Ver la oferta de obra</h6>
-        </div>       
-        <div class="dropdown" style="float:right;">
-            <button class="dropbtn">
-                <i class="fas fa-print" style="color: #ffffff;"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href={{route('archivo.consultar')}} target="_blank">Imprimir Todo</a>
-                <a href={{route('ofeobra.pdf2', $data->idobra)}} target="_blank">Informacion de obra y sombrero</a>
-                <a href={{route('ofeobra.pdf1', $data->idobra)}} target="_blank">Items y cronograma</a>
-            </div>
-        </div>
-    </div>     --}}
     
     <div class="section-body">
         <div class="row">
             @include('layouts.modal.mensajes')
+
             @include('Obrasyfinan.Ofertas.layout.informacion_de_ofeobra')
-            {{-- <div class="row">                
-                <div class="col-xs-12 col-sm-12 col-md-12"">
-                    <div class="card">
-                        <div class="card-head">
-                            <br>
-                            <div class="text-center"><h5>Información de la Obra</h5></div>                        
-                        </div>
-                        <div class="card-body">
-                            <div hidden>
-                                {!! Form::label('Id Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                {!! Form::text($data->idobra, null, ['style' => 'disabled;' ]) !!}
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9">
-                                    <div class="form-group">
-                                        {!! Form::label('Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('nombobra', $data->nomobra, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('nom_loc', $data->nom_loc, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                    <div class="form-group">
-                                        {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('nom_emp', $data->nom_emp, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                                
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Tipo Contrato:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('tipocontrato', $obra->getTipoOferta->tipocontratofer, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}  
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Situacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('situacion', $obra->getSituacion->descripcion, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!} 
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('publicacion', $obra->publica, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>                                
-                            </div>
 
-                            <div class="row">
-                                
+            @include('Obrasyfinan.Ofertas.layout.items_de_ofeobra')
 
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-                                    <div class="form-group">
-                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('ope', $obra->getOperatoria->operatoria, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!} 
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Tipo Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                                        {!! Form::text('tipoobr', $obra->getTipoObra->tipo_obra ?? null, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}  
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Numero de Licitacion:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('tipoobr', $obra->num_lic ?? null, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}  
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('idexp',$obra->idexpediente, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Exp.Nro.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        @if($obra->getExpediente != null)
-                                            {!! Form::text('exp_numero', $obra->getExpediente->exp_numero, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                        @else
-                                            {!! Form::text('exp_numero',"-", ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
-                                    <div class="form-group">
-                                        {!! Form::label('Exp.Asunto:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}                   
-                                        {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        @if($obra->getExpediente != null)
-                                        {!! Form::textarea('exp_asunto',$obra->getExpediente->exp_asunto,['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 12vh']) !!}
-                                        @else
-                                        {!! Form::text('exp_asunto',"No hay expediente", ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                        @endif
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Vivienda:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('monviv',"$".number_format($obra->monviv,2, ',', '.'), ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Infraestructura:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('moninf',"$".number_format($obra->moninf,2, ',', '.'), ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Nexo:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('monnex',"$".number_format($obra->monnex,2, ',', '.'), ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('montotope',"$".number_format($obra->montotope,2, ',', '.'), ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}   
-                                            
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-                                    <div class="form-group">
-                                        {!! Form::label('Total de obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('totaldobra',"$0.00", ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true', 'id' => 'totalobr']) !!}         
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    <div class="form-group">
-                                        {!! Form::label('Plazo:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('plazo',$obra->plazo, ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Año y Mes de Cotización:', null, [
-                                            'class' => 'control-label',
-                                            'style' => 'white-space: nowrap;'
-                                        ]) !!}
-                                        @if ($obra->mescotizacion !=null and $obra->aniocotizacion !=null)
-                                        
-                                        {!! Form::month('anioymes', $obra->aniocotizacion. '-' .$obra->mescotizacion, [
-                                            'class' => 'form-control',
-                                            'readonly'=> 'true'
-                                        ]) !!}                                       
-                                        @else
-                                        {!! Form::text('cotizacion', 'No se ha definido una fecha' , ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true' ]) !!}
-                                        @endif                                            
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="card">
-                    <div class="card-head">
-                        <br>
-                        <div class="text-center"><h5>Ítems</h5></div>                        
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover mt-2">
-                                <thead>
-                                    <th class= 'text-center' style="color:#fff; width:5%;">Orden</th>
-                                    <th class= 'text-center' style="color:#fff; width:10%;">Item</th>
-                                    <th class= 'text-center' style="color:#fff; width:10%;">Tipo</th>
-                                    <th class= 'text-center' style="color:#fff; width:10%;">Monto</th>
-                                    <th class= 'text-center' style="color:#fff; width:10%;">% Incidencia</th>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $totalItems = number_format(floatval(0), 2);
-                                        $totalInc = 0;
-                                    @endphp
-                                    @foreach ($items->sortBy('orden') as $item)
-                                        <tr>
-                                            <td class= 'text-center'>{{$item->orden}}</td>                                            
-                                            <td class= 'text-center'>{{$item->nom_item}}</td>                                            
-                                            <td class= 'text-center'>{{$item->nom_tipo}}</td>
-
-                                            @if ($item->cod_tipo == 1)
-                                                <td class= 'text-center'>${{number_format($item->vivienda,2, ',', '.')}}</td>
-                                                @php
-                                                    $totalItems += $item->vivienda;
-                                                @endphp
-                                            @else
-                                                @if ($item->cod_tipo == 2)
-                                                    <td class= 'text-center'>${{number_format($item->infra,2, ',', '.')}}</td>
-                                                    @php
-                                                        $totalItems += $item->infra;
-                                                    @endphp
-                                                @else
-                                                    <td class= 'text-center'>${{number_format($item->vivienda + $item->infra,2, ',', '.')}}</td>
-                                                    @php
-                                                        $totalItems += $item->vivienda + $item->infra;
-                                                    @endphp
-                                                @endif            
-                                            @endif
-
-                                            <td class= 'text-center'>{{number_format($item->por_inc,4)}}</td>
-                                            @php
-                                                $totalInc += $item->por_inc;
-                                            @endphp
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot align="right" style='background-color: #f3c48638;'>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th class="text-center">Total</th>
-                                        <th class="text-center">$ {{number_format($totalItems,2, ',', '.')}}</th>
-                                        <th class="text-center">{{number_format($totalInc,4, ',', '.')}}</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-
-            <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-head">
                         <br>
@@ -540,7 +286,6 @@
                             TOTAL:
                             <strong>
                                 $ {{number_format($totalDef, 2, ',', '.')}}
-                                {{-- $ {{$totalDef}} --}}
                             </strong>
                         </p>                       
                        </div>
@@ -548,123 +293,11 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="card">
-                    <div class="card-head">
-                        <br>
-                        <div class="text-center"><h5>Cronograma</h5></div>                        
-                    </div>
-                    <div class="card-body">
-                        @php
-                            $contador = 1;
-                            $contadorMes = $cronograma->last()->mes ?? 0;
-                        @endphp
-                        <div class="table-responsive">
-                            <table class="table table-hover mt-2" id='cronogramaa'>
-                                <thead>
-                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Orden</th>
-                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">Denom. Ítem</th>
-                                    @while($contador <= $contadorMes)
-                                    <th class="text-center" scope="col" style="color:#fff;width:5%;">{{$contador}}</th>
-                                        @php
-                                            $contador = $contador+1;
-                                        @endphp
-                                    @endwhile
-                                </thead>
-                                <tfoot align="right" style='background-color: #f3c48638;'>
-                                    <tr> <th></th><th></th>
-                                    @for($i = 1; $i <= $contadorMes; $i++)
-                                        <th></th>
-                                    @endfor
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    @php
-                                        $contador = 1;
-                                    @endphp
-                                    @foreach ($items as $item)
-                                        <tr>
-                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->orden}}</td>
-                                            <td class= 'text-center' style="vertical-align: middle;">{{$item->nom_item}}</td>
-                                            @while ($contador <= $contadorMes)
-                                                @if (is_null($cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()))
-                                                    <td class= 'text-center' style="vertical-align: middle;"></td>
-                                                @else
-                                                    <td class= 'text-center' style="vertical-align: middle;">{{$cronograma->where('iditem', $item->iditem)->where('mes', $contador)->first()->avance}}</td>
-                                                @endif
+            @include('Obrasyfinan.Ofertas.layout.plandetrabajo_de_ofeobra')
+            
+            @include('Obrasyfinan.Ofertas.layout.cronodesem_de_ofeobra')
 
-                                                @php
-                                                    $contador = $contador+1;
-                                                @endphp
-                                            @endwhile
-                                            @php
-                                                $contador = 1;
-                                            @endphp
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>       
-
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="card">
-                    <div class="card-head">
-                        <div class="row mt-3">
-                            <div class="col-4">
-                                <h5 class="ml-4">Anticipo: {{$obra->anticipo}} %  {{$obra->getAnticipo->nom_tipo_anticipo ?? null}}</h5>
-                            </div>
-                            <div class="col-4 text-center">
-                                <h5>Cronograma de desembolso</h5>
-                                
-                            </div>
-                            <div class="col-4">
-                                <div class="float-end">
-                                    @can('VALIDAR-OFEOBRA')
-                                        {!! Form::open(['method' => 'GET', 'route' => ['ofeobra.anticipo', $data->idobra], 'style' => '']) !!}
-                                        {!! Form::submit('Editar anticipo', ['class' => 'btn btn-success w-60 float-right mr-4']) !!}
-                                        {!! Form::close() !!}
-                                    @endcan
-                                </div>
-                            </div>           
-                        </div>
-                    </div>
-                    
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover mt-2">
-                                <thead>
-                                    <th class= 'text-center' scope="col" style="color:#fff;width:20%;">Meses</th>
-                                    <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos mensuales</th>
-                                    <th class= 'text-center' scope="col" style="color:#fff;width:40%;">Montos acumulados</th>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $costoAcu = 0
-                                    @endphp
-                                    @foreach($desembolsos as $desembolso)
-                                        @php
-                                            $costoAcu += $desembolso->costo
-                                        @endphp
-                                        <tr>
-                                            <td class= 'text-center'>MES {{$desembolso->mes}}</td>
-
-                                            <td class= 'text-center'>@money($desembolso->costo)</td>
-
-                                            <td class= 'text-center'>@money($costoAcu)</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                             
-                            </table>                      
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-head">
                         <br>
@@ -677,7 +310,7 @@
             </div>
             
 
-            <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -700,71 +333,16 @@
 @endsection
 
 @section('js')
-<script src="{{ asset('js/Obrasyfinan/Ofertas/presentacion.js') }}"></script>
+    <script src="{{ asset('js/Obrasyfinan/Ofertas/presentacion.js') }}"></script>
 
-<script>
-    contadorMes = {{$cronograma->last()->mes ?? 0}}
-</script>
+    <script>
+        window.onload = function() {
+            var to = document.getElementById("totalobr");
+            total = {{$totalDef}};
+            total.toFixed(2);
+            to.value = '$' + ' ' + new Intl.NumberFormat('de-DE').format(total.toFixed(2));
+        };
+    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-
-<script>
-    window.onload = function() {
-        var to = document.getElementById("totalobr");
-        total = {{$totalDef}};
-        total.toFixed(2);
-        to.value = '$' + ' ' + new Intl.NumberFormat('de-DE').format(total.toFixed(2));
-    };
-</script>
-
-<script>
-    contadorMes = {{$cronograma->last()->mes ?? 0}};
-    meses = [];
-    let acu = 0;
-    monto = [];
-    var app = @json($desembolsos);
-    
-    app.forEach(element => {
-        // console.log(element.costo.toFixed(2));
-        acu += Number(element.costo);
-        monto.push(acu.toFixed(2));
-    });
-
-    for (let index = 0; index <= contadorMes; index++) {
-        meses.push('mes '+index); 
-    }
-    meses.push('mes '+(contadorMes+1)); 
-    const ctx = document.getElementById('myChart');
-    // Chart.register(ChartDataLabels);
-    
-    new Chart(ctx, {
-       type: 'line',
-       data: {
-         labels: meses,
-         datasets: [{
-           label: 'Desembolso por mes',
-           data: monto,
-           borderWidth: 1,
-           pointStyle: 'rect',
-         }]
-       },
-       plugins: [ChartDataLabels],
-       options: {
-        plugins: {
-      // Change options for ALL labels of THIS CHART
-            datalabels: {
-                font: {
-                    size: 15
-                },
-            }
-        },
-         scales: {
-           y: {
-            beginAtZero: true
-           },
-         },
-       }
-     });
-</script>
+    @include('Obrasyfinan.Ofertas.layout.graficodesem_de_ofeobra')
 @endsection

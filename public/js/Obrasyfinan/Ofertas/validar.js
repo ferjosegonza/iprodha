@@ -11,6 +11,7 @@ $(function(){
     $('#gra-crono-desem').on('change', cambioEstado);//crono-gra-card
     $('#info-som').on('change', cambioEstado);//info-som-card
     $('#info-nexo').on('change', cambioEstado);//nexo-input
+    $('#info-totalobr').on('change', cambioEstado);//totalobr
     // $('#addRow').on('click', nuevoCrono);
     // $('#item').on('change', mostrarAcumulado);
 });
@@ -28,7 +29,7 @@ function cambioEstado(){
 }
 
 function sensarInformacion(){
-    let componentes = ['viv-input', 'infra-input', 'anio-input', 'plazo-input', 'nexo-input'];
+    let componentes = ['viv-input', 'infra-input', 'anio-input', 'plazo-input', 'nexo-input', 'totalobr'];
     let bandera = 0;
     componentes.forEach(element => {
         if(document.getElementById(element).className.match(/(?:^|\s)border-danger(?!\S)/) && bandera == 0){

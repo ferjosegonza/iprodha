@@ -9,8 +9,8 @@
     <div class="section-body">
         <div class="row">
             @include('layouts.modal.mensajes')
-            <div class="row">                
-                <div class="col-xs-12 col-sm-12 col-md-12"">
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="card border border-3 border-success" id="info-obra-card">
                         <div class="card-head">
                             <br>
@@ -130,15 +130,59 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="d-flex">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="totalobr" id="info-totalobr" checked>
+                                            {!! Form::label('Total de obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        </div>
+                                        {!! Form::text('totaldobra',"$0.00", ['style' => 'disabled;', 'class' => 'form-control border border-success', 'readonly'=> 'true', 'id' => 'totalobr']) !!}         
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="plazo-input" id="info-plazo" checked>
+                                            {!! Form::label('Plazo:', null, ['class' => 'control-label form-check-label',  'style' => 'white-space: nowrap;']) !!}
+                                        </div>
+                                        {!! Form::text('plazo',$obra->plazo, ['style' => 'disabled;', 'class' => 'form-control border border-success', 'readonly'=> 'true', 'id'=>'plazo-input']) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="anio-input" id="info-anio" checked>
+                                            {!! Form::label('Año y Mes de Cotización:', null, [
+                                            'class' => 'control-label form-check-label',
+                                            'style' => 'white-space: nowrap;'
+                                            ]) !!}
+                                        </div>
+                                        @if ($obra->mescotizacion !=null and $obra->aniocotizacion !=null)
+                                        
+                                            {!! Form::month('anioymes', $obra->aniocotizacion. '-' .$obra->mescotizacion, [
+                                                'class' => 'form-control border border-success',
+                                                'readonly'=> 'true',
+                                                'id' => 'anio-input',
+                                            ]) !!}                                       
+                                        @else
+                                            {!! Form::text('cotizacion', 'No se ha definido una fecha' , ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true' ]) !!}
+                                        @endif
+                                        
+                                    </div>
+                                </div>
+
+                                {{-- <div class="d-flex">
                                     <div class="me-auto p-2"></div>
                                     <div class="p-2">
                                         <div class="form-group">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="plazo-input" id="info-plazo" checked>
                                                 {!! Form::label('Plazo:', null, ['class' => 'control-label form-check-label',  'style' => 'white-space: nowrap;']) !!}
-                                            </div> 
-                                            {{-- {!! Form::label('Plazo:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!} --}}
+                                            </div>
                                             {!! Form::text('plazo',$obra->plazo, ['style' => 'disabled;', 'class' => 'form-control border border-success', 'readonly'=> 'true', 'id'=>'plazo-input']) !!}
                                         </div>
                                     </div>
@@ -151,10 +195,7 @@
                                                 'style' => 'white-space: nowrap;'
                                                 ]) !!}
                                             </div>
-                                            {{-- {!! Form::label('Año y Mes de Cotización:', null, [
-                                                'class' => 'control-label',
-                                                'style' => 'white-space: nowrap;'
-                                            ]) !!} --}}
+                                            
                                             @if ($obra->mescotizacion !=null and $obra->aniocotizacion !=null)
                                             
                                             {!! Form::month('anioymes', $obra->aniocotizacion. '-' .$obra->mescotizacion, [
@@ -165,21 +206,11 @@
                                             @else
                                             {!! Form::text('cotizacion', 'No se ha definido una fecha' , ['style' => 'disabled;', 'class' => 'form-control', 'readonly'=> 'true' ]) !!}
                                             @endif
-                                            {{-- <input min="2022-01-01" max="{{\Carbon\Carbon::now()->year . '-12'}}" id="periodo" class="form-control" name="anioymes" type="month" value="{{$unaOferta->aniocotizacion. '-' .$unaOferta->mescotizacion}}"> --}}
-                                            
                                         </div>
                                     </div>
-                                </div>                     
+                                </div>                      --}}
                             </div>
-                            {{-- <div class="row">
-                                <label>Validar los datos de la oferta.</label>
-                            </div> --}}
-                            {{-- <div class="row">
-                                <div class="col-6">
-                                    {!! Form::label('Comentarios:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!}
-                                    {!! Form::textarea('descrip', null, ['class'=>'form-control', 'rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 40vh', 'required']) !!}
-                                </div>
-                            </div> --}}
+                            
                         </div>
                     </div>
                 </div>
@@ -758,6 +789,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
+<script>
+    window.onload = function() {
+        var to = document.getElementById("totalobr");
+        total = {{$totalDef}};
+        total.toFixed(2);
+        to.value = '$' + ' ' + new Intl.NumberFormat('de-DE').format(total.toFixed(2));
+    };
+</script>
   
 <script>
     contadorMes = {{$cronograma->last()->mes}};

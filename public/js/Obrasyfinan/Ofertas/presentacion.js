@@ -173,7 +173,7 @@ $(document).ready(function pintarTabla() {
                     next: 'Sig.',
                 },
             },
-            
+            "pageLength": 50,
             "footerCallback": function ( row, data, start, end, display ) {
               var api = this.api(), data;
    
