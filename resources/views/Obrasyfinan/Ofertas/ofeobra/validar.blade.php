@@ -9,8 +9,8 @@
     <div class="section-body">
         <div class="row">
             @include('layouts.modal.mensajes')
-            <div class="row">                
-                <div class="col-xs-12 col-sm-12 col-md-12"">
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="card border border-3 border-success" id="info-obra-card">
                         <div class="card-head">
                             <br>
