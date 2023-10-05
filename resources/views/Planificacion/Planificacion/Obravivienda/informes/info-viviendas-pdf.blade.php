@@ -56,7 +56,7 @@
                     </div>
                     <div class="form-group column-3">
                         <label><b>Operatoria: <b></label> 
-                        <label>{{$obra->getOperatoria->operat_adm}}</label>
+                        <label>{{$obra->getOperatoria->operat_adm ?? '---'}}</label>
                     </div>
                 </div>
             </div>
