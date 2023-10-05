@@ -1575,7 +1575,11 @@ class ObraviviendaController extends Controller
 
             $etapa = Ob_etapa::find($id_etapa);
 
-            $id_ent = $etapa->getEntregas->where('num_ent', 0)->first()->id_ent;
+            try {
+                $id_ent = $etapa->getEntregas->where('num_ent', 0)->first()->id_ent;
+            } catch (\Throwable $th) {
+                $id_ent = $etapa->getEntregas->where('num_ent', 1)->first()->id_ent;
+            }
 
             $vivienda = Ob_vivienda::create([
                 'id_ent' => $id_ent,
