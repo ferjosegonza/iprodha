@@ -1177,7 +1177,12 @@ class ObraviviendaController extends Controller
             }
         }
         $viviendas = collect($viviendas);
-        $ultimoOrden = $viviendas->sortBy('orden')->last()->orden + 1;
+        try {
+            $ultimoOrden = $viviendas->sortBy('orden')->last()->orden + 1;
+        } catch (\Throwable $th) {
+            $ultimoOrden = 1;
+        }
+        
         return view('Planificacion.Planificacion.Obravivienda.vivienda.crear', compact('obra', 'ultimoOrden'));
     }
 
