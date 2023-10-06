@@ -160,6 +160,13 @@
                 </div>
             </div>
         </div>
+        <div class="">
+            <strong>
+                <h7>
+                    ¿Dudas? <a href="{{ asset('storage/gdu/ObrasViviendas.pdf') }}" style="color: rgb(30, 67, 233)" target="_blank">Descargue un instructivo aqui.</a> 
+                </h7>
+            </strong>
+        </div>
     </section>
     {{-- <script src="{{ asset('js/usuarios/index_usuarios.js') }}"></script> --}}
 
