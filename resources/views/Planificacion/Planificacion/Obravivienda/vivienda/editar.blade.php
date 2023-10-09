@@ -20,12 +20,6 @@
                         <div class="card-body">
                             {!! Form::open(['method' => 'POST','route' => 'obravivienda.guardarvivienda']) !!}
                             <div class="row">
-                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Etapa:', null, ['class' => 'control-label fs-6', 'style' => '']) !!} <span class="obligatorio">*</span>
-                                        {!! Form::select('etapa', $obra->getEtapas->sortBy('nro_eta')->pluck('nro_eta', 'id_etapa'), $etapaActual, ['class' => 'form-select', 'id' => 'idetapa', 'placeholder' => 'Seleccionar', 'required']) !!}
-                                    </div>
-                                </div> --}}
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('N° Orden:', null, ['class' => 'control-label fs-6', 'style' => '']) !!}
@@ -59,6 +53,10 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Municipio:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
+                                        {!! Form::select('muni', $municipios, $vivienda->id_mun, ['class' => 'form-select', 'id' => 'idvivdisc']) !!}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row border border-bottom-0">
