@@ -19,6 +19,7 @@ use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\ob_operatoria;
 use App\Models\Iprodha\Membrete;
 use App\Models\Iprodha\Ob_tip_obr;
+use App\Models\Iprodha\Municipios;
 //Gestion de usuario oracle
 use App\Traits\ConectarUserDB;
 
@@ -1216,7 +1217,8 @@ class ObraviviendaController extends Controller
         $vivienda = Ob_vivienda::find($viv);
         $entregaActual = Ob_entrega::find($vivienda->id_ent);
         $etapaActual = Ob_etapa::find($entregaActual->id_eta)->id_etapa;
-        return view('Planificacion.Planificacion.Obravivienda.vivienda.editar', compact('vivienda', 'obra', 'etapaActual'));
+        $municipios = Municipios::orderBy('nom_municipio')->pluck('nom_municipio','id_municipio');
+        return view('Planificacion.Planificacion.Obravivienda.vivienda.editar', compact('vivienda', 'obra', 'etapaActual', 'municipios'));
     }
 
     public function updateViv(Request $request, $viv, $obra){
@@ -1252,6 +1254,12 @@ class ObraviviendaController extends Controller
         if(!is_null($request->input('vivdisc'))){
             $vivienda->update([
                 'discap' => $request->input('vivdisc')
+            ]);
+        }
+
+        if(!is_null($request->input('muni'))){
+            $vivienda->update([
+                'id_mun' => $request->input('muni')
             ]);
         }
 
