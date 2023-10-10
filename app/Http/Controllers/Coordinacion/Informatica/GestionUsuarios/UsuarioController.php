@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Diegoz\MenuM;
 use App\Models\Iprodha\Fav_Favorito;
+use App\Models\Iprodha\Empresa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
@@ -167,10 +168,10 @@ class UsuarioController extends Controller
                     ->orderBy('name', 'asc')
                     ->get();
                 
-            
+        $Empresa= Empresa::orderBy('nom_emp')->get();
 
         $arbol = MenuM::menus(2);
-        return view('Coordinacion.Informatica.GestionUsuarios.usuarios.editar',compact('arbol','user','roles','userRoles','permisos','roles_sinpermisos','userPermisos','userGrupo'));
+        return view('Coordinacion.Informatica.GestionUsuarios.usuarios.editar',compact('arbol','user','roles','userRoles','permisos','roles_sinpermisos','userPermisos','userGrupo', 'Empresa'));
             //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
     }
     
@@ -219,6 +220,21 @@ class UsuarioController extends Controller
             }
         }
         
+        if($request->input('idempresa')){
+            $empresaOld = Empresa::where('iduserweb', $user->id)->first();
+
+            if(!is_null($empresaOld)){
+                $empresaOld->update([
+                    'iduserweb' => null
+                ]);
+            }      
+            
+            $empresa = Empresa::find($request->input('idempresa'));
+            
+            $empresa->update([
+                'iduserweb' => $user->id
+            ]);
+        }
         
         //DB::table('model_has_roles')->where('model_id',$id)->delete();
         

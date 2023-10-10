@@ -63,6 +63,7 @@ Route::get('/loginIprodha',function(){
     // return view('auth.loginEmp');
     return view('auth.login');
 })->name('login.iprodha');
+
 // Jorge
 //Route::get('/terrenos', [TerrenosController::class, 'index']);
 Route::group(['middleware' => ['auth']], function(){
