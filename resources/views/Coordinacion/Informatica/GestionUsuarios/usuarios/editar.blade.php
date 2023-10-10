@@ -54,6 +54,31 @@
                                     {!! Form::text('emailnew', old('email'), ['class' => 'form-control']) !!}
                                 </div>
                             </div>
+                            
+                            @if($user->hasRole('EMPRESA'))
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    {{-- <div class="form-check"> --}}
+                                        
+                                        {!! Form::label('empresa', 'Empresa :') !!}
+                                        <input class="form-check-input ml-2" type="checkbox" value="" onclick="habilitarInput()">
+                                    {{-- </div>  --}}
+                                    
+                                    <select id="inputemp" name="idempresa" class="selectpicker w-100 form-select"  placeholder="Seleccionar" disabled>
+                                        @foreach ($Empresa as $unaEmpresa)
+                                            @if ($unaEmpresa->iduserweb == $user->id)
+                                                <option value="{{$unaEmpresa->id_emp}}" selected>{{$unaEmpresa->nom_emp}}</option>
+                                            @else
+                                                <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
+                                            @endif
+                                            {{-- <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option> --}}
+                                        @endforeach
+                                    </select>
+                                    {{-- {!! Form::text('emailnew', old('email'), ['class' => 'form-control']) !!} --}}
+                                </div>
+                            </div>
+                            @endif
+
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     {!! Form::label('password', 'Password :') !!}
@@ -256,6 +281,24 @@
 
 @section('js')
     <script src="{{ asset('js/Coordinacion/Informatica/GestionUsuarios/usuarios/editar_usuarios.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.selectpicker').select2();
+            $('.selectpickerLoc').select2();
+        });
+    </script>
+
+    <script>
+        function habilitarInput(){
+            let input = document.getElementById("inputemp");
+            if(input.disabled){
+                input.disabled = false; 
+            }else{
+                input.disabled = true;
+            }
+        }
+    </script>
 @endsection
 
 
