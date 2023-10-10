@@ -29,8 +29,8 @@
             <div class="row">
                 <div class="col-md-6 offset-md-3">
                     <div class="login-brand">
-                        <img src="{{ asset('img/logo3.png') }}" alt="logo" width="80"
-                             class="shadow-light rounded-circle ">
+                        {{-- <img src="{{ asset('img/logo3.png') }}" alt="logo" width="80" --}}
+                             {{-- class="shadow-light rounded-circle "> --}}
                     </div>
                     @yield('content')
                     <div class="simple-footer">
