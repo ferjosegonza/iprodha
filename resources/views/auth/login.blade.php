@@ -35,7 +35,7 @@
                         <label for="password" class="control-label">Password</label>
                         <div class="float-right">
                             <a href="{{ route('password.request') }}" class="text-small">
-                                Olvidó su contraseña?
+                                ¿Olvidó su contraseña?
                             </a>
                         </div>
                     </div>

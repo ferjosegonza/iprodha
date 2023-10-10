@@ -55,11 +55,13 @@ Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
 
 Route::get('/registerEmpIprodha',function(){
-        return view('auth.registerEmp');
+        // return view('auth.registerEmp');
+        return view('auth.register');
 })->name('register.emp');
 
 Route::get('/loginIprodha',function(){
-    return view('auth.loginEmp');
+    // return view('auth.loginEmp');
+    return view('auth.login');
 })->name('login.iprodha');
 // Jorge
 //Route::get('/terrenos', [TerrenosController::class, 'index']);
