@@ -40,12 +40,12 @@
                                                 <input name="name" type="text" class="form-control" placeholder="Buscar Obra por " aria-label="Recipient's username" aria-describedby="button-addon2">
 
                                                 <select name="opcionbusq" class="form-select" aria-label="Default select example">
-                                                    <option value=0 selected>General</option>
-                                                    <option value=1>Numero de obra</option>
-                                                    <option value=2>Nombre de obra</option>
-                                                    <option value=3>Expediente de obra</option>
-                                                    <option value=4>Plano de obra</option>
-                                                    <option value=5>Empresa</option>
+                                                    <option value=0 >General</option>
+                                                    <option value=1 {{ ($opcion == 1 ? "selected":"") }}>Numero de obra</option>
+                                                    <option value=2 {{ ($opcion == 2 ? "selected":"") }}>Nombre de obra</option>
+                                                    <option value=3 {{ ($opcion == 3 ? "selected":"") }}>Expediente de obra</option>
+                                                    <option value=4 {{ ($opcion == 4 ? "selected":"") }}>Plano de obra</option>
+                                                    <option value=5 {{ ($opcion == 5 ? "selected":"") }}>Empresa</option>
                                                     {{-- <option value=6>Localidad</option> --}}
                                                 </select>
 
