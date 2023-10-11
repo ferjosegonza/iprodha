@@ -20,12 +20,15 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         } 
-        $query = "SELECT l.adju, l.operatoria, l.ope, l.barrio, l.nombre_barrio,
-        l.nombre, l.cuil, l.situacion_habitacional, (select count ('estado') 
-        from IPRODHA.APP_BOLETAS b where estado= 'Impago' 
-        and ope =l.ope and Barrio = l.barrio  and adju=l.adju 
-        group by ope, barrio, adju) as adeuda 
-        from IPRODHA.app_legajos l where cuil = $request->cuil";
+        $query = "SELECT l.adju, 
+        l.operatoria, 
+        l.ope, 
+        l.barrio, 
+        l.nombre_barrio,
+        l.nombre, l.cuil, l.situacion_habitacional ,
+        l.adeuda_cant adeuda 
+        from IPRODHA.app_legajos l 
+        where cuil = $request->cuil";
         $legajos = DB::select( DB::raw($query));
         return response()->json($legajos);
     }
