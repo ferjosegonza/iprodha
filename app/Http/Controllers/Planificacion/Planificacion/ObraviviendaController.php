@@ -957,13 +957,16 @@ class ObraviviendaController extends Controller
                         'manzana' => $vivienda->manzana,
                         'man_emp' => $vivienda->man_emp,
                         'nom_cal' => $vivienda->nom_cal,
-                        'entrecalles' => $vivienda->entrecalles]);
+                        'entrecalles' => $vivienda->entrecalles,
+                        'municipio' => $vivienda->getMunicipio->nom_municipio,
+                        'departamento' => $vivienda->getMunicipio->getDepartamento->nom_dep]);
                 }
             }
         }
+        $municipios = Municipios::orderBy('nom_municipio')->pluck('nom_municipio', 'id_municipio');
         $viviendas = collect($viviendas)->sortBy('orden');
         $totalViviendas = count($this->todasLasViviendasDeUnaObra($obra));
-        return view('Planificacion.Planificacion.Obravivienda.cargamasiva', compact('obra', 'viviendas', 'totalViviendas'));
+        return view('Planificacion.Planificacion.Obravivienda.cargamasiva', compact('obra', 'viviendas', 'totalViviendas', 'municipios'));
     }
 
     public function guardarCargaMasiva(Request $request, $id){
@@ -1024,6 +1027,12 @@ class ObraviviendaController extends Controller
                             if($request->input('ent_calles')){
                                 $vivienda->update([
                                     'entrecalles' => $request->input('ent_calles')
+                                ]);
+                            }
+
+                            if($request->input('muni')){
+                                $vivienda->update([
+                                    'id_mun' => $request->input('muni')
                                 ]);
                             }
     
