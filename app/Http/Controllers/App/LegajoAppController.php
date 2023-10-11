@@ -26,7 +26,7 @@ class LegajoAppController extends Controller
         l.barrio, 
         l.nombre_barrio,
         l.nombre, l.cuil, l.situacion_habitacional ,
-        l.adeuda_cant adeuda 
+        l.adeuda
         from IPRODHA.app_legajos l 
         where cuil = $request->cuil";
         $legajos = DB::select( DB::raw($query));
