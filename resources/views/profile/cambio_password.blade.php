@@ -18,7 +18,7 @@
                                     class="required confirm-pwd"></span><span class="required">*</span>
                             <div class="input-group">
                                 <input class="form-control input-group__addon" id="pfCurrentPassword2" type="password"
-                                       name="contraseña_actual" required>
+                                       name="contraseña_actual" required autocomplete="on">
                                 
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                                     class="required confirm-pwd"></span><span class="required">*</span>
                             <div class="input-group">
                                 <input class="form-control input-group__addon" id="pfNewPassword" type="password"
-                                       name="contraseña" required>
+                                       name="contraseña" required autocomplete="on">
                                 
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                                     class="required confirm-pwd"></span><span class="required">*</span>
                             <div class="input-group">
                                 <input class="form-control input-group__addon" id="pfNewConfirmPassword" type="password"
-                                       name="contraseña_confirmacion" required>
+                                       name="contraseña_confirmacion" required autocomplete="on">
                                 
                             </div>
                         </div>

@@ -19,7 +19,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Contraseña:</label>                                    
-                            {!! Form::password('contraseña', array('class' => 'form-control', 'type' => 'password', 'required')) !!}
+                            {!! Form::password('contraseña', array('class' => 'form-control', 'type' => 'password', 'required', 'autocomplete' => 'on')) !!}
                         </div>
                     </div>       
                 </div>

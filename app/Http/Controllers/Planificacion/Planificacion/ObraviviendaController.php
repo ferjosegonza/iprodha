@@ -142,7 +142,7 @@ class ObraviviendaController extends Controller
             $obras = Ob_obra::orderBy('id_obr', 'desc')->limit(5)->get();
         }
 
-        return view('Planificacion.Planificacion.Obravivienda.index', compact('obras'));
+        return view('Planificacion.Planificacion.Obravivienda.index', compact('obras', 'opcion'));
     }
     
     public function indexConvenios(Request $request)
