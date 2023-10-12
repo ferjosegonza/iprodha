@@ -1094,7 +1094,12 @@ class ObraviviendaController extends Controller
 
     public function asignarViviendas(Request $request, $id, $ideta){
         $this->conectar();
-        $entregaCero = Ob_entrega::where('id_eta', $ideta)->where('num_ent', 0)->first()->id_ent;
+        try {
+            $entregaCero = Ob_entrega::where('id_eta', $ideta)->where('num_ent', 0)->first()->id_ent;
+        } catch (\Throwable $th) {
+            $entregaCero = Ob_entrega::where('id_eta', $ideta)->where('num_ent', 1)->first()->id_ent;
+        }
+        
         $etapa = Ob_etapa::find($ideta);
 
         if(empty($request->input('vivs'))){
@@ -1123,7 +1128,7 @@ class ObraviviendaController extends Controller
 
                 for ($i=0; $i < $total; $i++) { 
                     $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viviendas[$i]]);
-                    echo($modif[0]->modif);
+                    
                     if($modif[0]->modif == 0){
                          return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
                     }
