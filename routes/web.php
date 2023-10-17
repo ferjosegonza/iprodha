@@ -35,7 +35,7 @@ use App\Http\Controllers\sectorController;
 use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
-
+use App\Http\Controllers\App\AppNotificacionesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -227,4 +227,10 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], func
     Route::get('digesto/buscador', [DigestoController::class, 'buscador'])->name('digesto.buscador');
     Route::get('digesto/check', [DigestoController::class, 'check'])->name('digesto.check');
     Route::put('digesto/modificar', [DigestoController::class, 'modificar'])->name('digesto.modificar');
+});
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
+    Route::get('notificaciones/boletas', [AppNotificacionesController::class, 'notificacionBoletas'])->name('notificaciones.boletas');
+    Route::get('notificaciones/boletas/pendientes', [AppNotificacionesController::class, 'pendientes'])->name('notificaciones.boletasPendientes');
+    Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');
 });

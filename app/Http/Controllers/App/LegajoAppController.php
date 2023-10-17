@@ -16,7 +16,6 @@ class LegajoAppController extends Controller
         $validator = Validator::make($request->all(), [
             'cuil' => 'required|numeric',
         ]);
-
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         } 
@@ -42,19 +41,12 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
         $query = "SELECT * from IPRODHA.APP_BOLETAS 
         where OPE = '$request->ope' 
         and BARRIO = $request->barrio 
         and ADJU = $request->adju 
         and NRO_CTA >= ult_fac -12";
         $boletas = DB::select( DB::raw($query));
-
-        /* $boletas = App_boletas::where('ope', '=', '\''.$request->ope.'\'')
-        ->where('barrio', '=', $request->barrio)
-        ->where('adju', '=', $request->adju)
-        ->where('nro_cta', '>=', 'ult_fac -12 ')
-        ->get(); */
         return response()->json($boletas);
     }
 
@@ -67,14 +59,12 @@ class LegajoAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
         $query = "SELECT count(estado) as adeuda from IPRODHA.APP_BOLETAS 
         where OPE = '$request->ope' 
         and BARRIO = $request->barrio 
         and ADJU = $request->adju 
         and ESTADO = 'Impago'";
         $boletas = DB::select( DB::raw($query));
-
         return response()->json($boletas);
     }
 }
