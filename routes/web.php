@@ -231,4 +231,6 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], func
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
     Route::get('notificaciones/boletas', [AppNotificacionesController::class, 'notificacionBoletas'])->name('notificaciones.boletas');
+    Route::get('notificaciones/boletas/pendientes', [AppNotificacionesController::class, 'pendientes'])->name('notificaciones.boletasPendientes');
+    Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');
 });
