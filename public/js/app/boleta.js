@@ -95,11 +95,35 @@ function enviarBoletas(){
         dataType: 'json',
         success: function(res) 
         {             
-            console.log(res)
+            if(res == 1){
+                popup(1)
+            }
+            else{
+                popup(2)
+            }
         },
         error: function(response){
             console.log('ERROR')
             console.log(response);
+            popup(3)
         }   
     });
+}
+
+function popup(tipo){  
+    let popEl = document.getElementById('popup')
+    if(tipo == 1 ){
+        document.getElementById('popTitulo').innerHTML = 'Éxito'     
+        document.getElementById('popBody').innerHTML = '<p>Se ha enviado la notificación.</p>'      
+    }
+    else if(tipo == 2){
+        document.getElementById('popTitulo').innerHTML = 'Error'
+        document.getElementById('popBody').innerHTML = '<p>No se ha podido enviar la notificación.</p>'      
+    }    
+    else{
+        document.getElementById('popTitulo').innerHTML = 'Error'
+        document.getElementById('popBody').innerHTML = '<p>Hubo un error desconocido.</p>'      
+    }
+    let pop= bootstrap.Modal.getOrCreateInstance(popEl)
+    pop.show()
 }
