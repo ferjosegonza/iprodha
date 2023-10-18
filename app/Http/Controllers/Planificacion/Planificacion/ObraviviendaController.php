@@ -150,8 +150,8 @@ class ObraviviendaController extends Controller
         $this->conectar();
         $obras = [];
         $obras = Ob_obra::whereBetween('num_obr', ['20000', '30000'])->orderBy('num_obr', 'desc')->get();
-
-        return view('Planificacion.Planificacion.Obravivienda.index', compact('obras'));
+        $opcion = 1;
+        return view('Planificacion.Planificacion.Obravivienda.index', compact('obras', 'opcion'));
     }
 
     public function create(Request $request)
