@@ -148,6 +148,7 @@ class ObraviviendaController extends Controller
     public function indexConvenios(Request $request)
     {
         $this->conectar();
+        
         $obras = [];
         $obras = Ob_obra::whereBetween('num_obr', ['20000', '30000'])->orderBy('num_obr', 'desc')->get();
         $opcion = 1;
