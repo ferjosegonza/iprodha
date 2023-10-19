@@ -8,3 +8,4 @@ h5{
 table{
     width: 100%;
 }
+.modal.modal-sm { max-width: unset !important; right: 0; }

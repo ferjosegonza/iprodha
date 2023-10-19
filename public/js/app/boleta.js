@@ -46,6 +46,7 @@ function boletas(){
             }
             else{
                 pendientes.innerHTML = 'No existen notificaciones pendientes que enviar.'
+                pendientes.removeAttribute('hidden')
             }
         },
         error: function(response){
@@ -126,4 +127,8 @@ function popup(tipo){
     }
     let pop= bootstrap.Modal.getOrCreateInstance(popEl)
     pop.show()
+}
+
+function ocultarPagina(){
+    document.getElementById('pendientes').setAttribute('hidden', 'hidden')
 }
