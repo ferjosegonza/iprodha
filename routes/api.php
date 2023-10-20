@@ -8,6 +8,7 @@ use App\Http\Controllers\Coordinacion\Informatica\Tablero\Ju001Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\Re003Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\No001Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\At001Controller;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\At002Controller;
 use App\Http\Controllers\App\AuthAppController;
 use App\Http\Controllers\App\LegajoAppController;
 /*
@@ -62,6 +63,11 @@ Route::group(['middleware' => ['auth:api']], function(){
 
 Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/at001/cancelaciones', [At001Controller::class, 'cancelaciones']);
+});
+
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/at002/comparativo', [At002Controller::class, 'comparativo']);
+    Route::get('/at002/pagado', [At002Controller::class, 'pagado']);
 });
 
 Route::group(['middleware' => ['auth:api']], function(){
