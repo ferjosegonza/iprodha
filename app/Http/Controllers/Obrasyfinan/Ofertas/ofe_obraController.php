@@ -358,18 +358,26 @@ class ofe_obraController extends Controller
                 'length' => 1000,
             ],
         ];
-        
+        $var2 = 'Migrado con éxito';
         $succeeded = DB::executeProcedure($procedureName, $bindings);
 
         if($succeeded) {
+
+          if (strcmp($result, $var2) !== 0) {
+            return redirect()->route('ofeobra.vervalidar', base64url_encode($idobra))->with('error', $result);
+          }
+          else{
             Ofe_estadoxobra::create(['idobra' => $idobra, 'idestado' => 3]);
+            return redirect()->route('ofeobra.vervalidar', base64url_encode($idobra))->with('mensaje', $result);
+          }
+            
             // try {
             //     Mail::to($email)->send(new AceptarOfeObra($datOfe->getEmpresa->nom_emp, $datOfe->nomobra));
             //     return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result);
             // } catch (Throwable $e) {
             //     return redirect()->route('ofeobra.vervalidar', $idobra)->with('alerta', $result)->with('error', 'No se puedo enviar el email');
             // } 
-            return redirect()->route('ofeobra.vervalidar', base64url_encode($idobra))->with('mensaje', $result);
+            // return redirect()->route('ofeobra.vervalidar', base64url_encode($idobra))->with('mensaje', $result);
         }
         else {
             return redirect()->route('ofeobra.vervalidar',  base64url_encode($idobra))->with('error','Problemas con el procedimiento.');
