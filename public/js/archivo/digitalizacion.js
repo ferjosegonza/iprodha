@@ -1275,10 +1275,10 @@ function agregarTag(){
                             }
                             if(res[i].dato == 2){
                                 let input = document.createElement("select");
-                                getSelects(input, res[i].id_tag);
+                                getSelects(input, res[i].id_tag_hijo);
                                 input.id='agregarTag'+i;
                                 input.className = 'form-control';
-                                input.setAttribute('onchange','checkGuardarTag()');
+                                input.setAttribute('onchange','checkGuardarTag(); derivadoAgregar(\''+res[0].id_tag_hijo+'\',\'' + res[0].deschijo + '\',\'' + res[1].deschijo + '\')');
                                 div2.className = "col-lg-8";
                                 div2.appendChild(input)     
                                 div.appendChild(div2);   
