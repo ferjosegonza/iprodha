@@ -234,7 +234,9 @@
     
     @php
         if(!$tieneInfra){
-            $totalInfra = 0;
+            if(!$tieneNex){
+                $totalInfra = 0;
+            }
         }
 
         if(!$tieneViv){
