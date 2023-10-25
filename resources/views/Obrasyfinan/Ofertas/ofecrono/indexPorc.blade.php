@@ -49,7 +49,7 @@
                                                 <td class= 'text-center'>{{$item->orden}}</td>                                            
                                                 <td class= 'text-center'>{{$item->nom_item}}</td>                                            
                                                 <td class= 'text-center'>{{number_format($item->por_inc, 4, ',','.')}}</td>
-                                                <td class= 'text-center'>{{$item->avaitempor ?? 0}} %</td>
+                                                <td class= 'text-center'>{{number_format($item->avaitempor ?? 0, 4, ',','.')}} %</td>
                                                 @if ($item->estado == 1)
                                                     <td class= 'text-center' style="color: green">Completo</td>
                                                 @else
@@ -133,7 +133,7 @@
                                         <label for="formFile" class="form-label fs-6">Avance: </label>
                                         <div class="input-group mb-3">
                                             {{-- <input class="form-control" type="text" name="balloons" min="1" max="100" data-type="porc" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" name="avance" id='avance'>  --}}
-                                            <input type="text" class="form-control" placeholder="00" type="text" name="avance" id='avance' pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="porc">
+                                            <input type="text" class="form-control" placeholder="00.0000" type="text" name="avance" id='avance' pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="porc">
                                             <span class="input-group-text" id="basic-addon2">%</span>
                                         </div>
                                     </div>

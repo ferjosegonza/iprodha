@@ -110,7 +110,7 @@ function mostrarAcumulado(){
         // console.log(response);
         acu.value = Number(response[0].avaTotal).toFixed(4);
         incI.value = Number(response[0].por_inc).toFixed(4);
-        incIP.value = Number(response[0].avaTotalPor);
+        incIP.value = Number(response[0].avaTotalPor).toFixed(4);
         // if(response != 0){
         //     acu.value = response;
         // }else{
@@ -374,10 +374,10 @@ function formatCurrency(input, blur) {
 $("input[data-type='porc']").on({
     keyup: function() {
         this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
-        formatPorc($(this));
+        formatCurrency($(this));
     },
     blur: function() { 
-        formatPorc($(this), "blur");
+        formatCurrency($(this), "blur");
     }
 });
 
