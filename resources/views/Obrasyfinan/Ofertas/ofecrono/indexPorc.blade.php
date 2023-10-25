@@ -49,7 +49,7 @@
                                                 <td class= 'text-center'>{{$item->orden}}</td>                                            
                                                 <td class= 'text-center'>{{$item->nom_item}}</td>                                            
                                                 <td class= 'text-center'>{{number_format($item->por_inc, 4, ',','.')}}</td>
-                                                <td class= 'text-center'>{{$item->avaitempor ?? 0}} %</td>
+                                                <td class= 'text-center'>{{number_format($item->avaitempor ?? 0, 4, ',','.')}} %</td>
                                                 @if ($item->estado == 1)
                                                     <td class= 'text-center' style="color: green">Completo</td>
                                                 @else
