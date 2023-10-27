@@ -1308,31 +1308,31 @@ class ObraviviendaController extends Controller
             ]);
         }
         
-        if($request->input('edif') != 0){
+        if($request->input('edif')){
             $vivienda->update([
                 'edificio' => $request->input('edif')
             ]);
         }
 
-        if($request->input('piso') != 0){
+        if($request->input('piso')){
             $vivienda->update([
                 'piso' => $request->input('piso')
             ]);
         }
 
-        if($request->input('depto') != 0){
+        if($request->input('depto')){
             $vivienda->update([
                 'departamento' => $request->input('depto')
             ]);
         }
 
-        if($request->input('esca') != 0){
+        if($request->input('esca')){
             $vivienda->update([
                 'escalera' => $request->input('esca')
             ]);
         }
 
-        if($request->input('unfun') != 0){
+        if($request->input('unfun')){
             $vivienda->update([
                 'uni_fun' => $request->input('unfun')
             ]);
