@@ -148,7 +148,7 @@ function agregarVivienda(id, orden){
 
 function eliminarVivienda(orden, id){
     let viviendaParaAsignar = document.getElementById('viviendasParaAsignar');
-    viviendaParaAsignar.innerHTML += '<label id=viv> <i class="fas fa-times" style="color: #ff0000;"></i> Viv. Orden N°:'+orden+' </label>';
+    viviendaParaAsignar.innerHTML += '<label id=viv> <i class="fas fa-times" style="color: #ff0000;"></i> Viv. Orden N°: '+orden+' </label>';
 
     $('.radiockeck'+id).prop("checked", false);
     $('#viv'+id).remove();
