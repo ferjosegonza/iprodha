@@ -261,7 +261,7 @@
                                         ]) !!}
                                         <div class="overflow-auto">
                                             <div class="card-body d-flex flex-column pt-0 overflow-auto" id="viviendasAsignadas">
-                                                @foreach($entre->getViviendas as $viv)
+                                                @foreach($entre->getViviendas->sortBy('orden') as $viv)
                                                 {{-- onclick="eliminarRubro('{{$rubroAsignado->id}}')" class="ru{{$rubroAsignado->id}}" --}}
                                                     <label id="viv{{$viv->id_viv}}"><input checked onclick="eliminarVivienda('{{$viv->orden}}','{{$viv->id_viv}}')" name="vivs[]" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}}</label> 
                                                 @endforeach
@@ -304,7 +304,7 @@
                                         {{-- <th class="text-center" scope="col" style="color:#fff;width:5%;">Superficie</th> --}}
                                     </thead>
                                     <tbody id="tablavivbody">
-                                        @foreach ($entre->getViviendas as $vivienda)
+                                        @foreach ($entre->getViviendas->sortBy('orden') as $vivienda)
                                         <tr>                                          
                                             <td class= 'text-center' >{{$vivienda->orden}}</td>
                                             @if ($vivienda->discap == 1)
