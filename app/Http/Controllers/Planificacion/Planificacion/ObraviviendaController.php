@@ -703,7 +703,8 @@ class ObraviviendaController extends Controller
         $this->conectar();
         $obra = Ob_obra::find($id);
         $viviendasTabla = $this->todasLasViviendasDeUnaObra($obra);
-        return view('Planificacion.Planificacion.Obravivienda.altaeta', compact('obra', 'viviendasTabla'));
+        $totalDeVivReal = count($viviendasTabla);
+        return view('Planificacion.Planificacion.Obravivienda.altaeta', compact('obra', 'viviendasTabla', 'totalDeVivReal'));
     }
 
     public function nuevaEta($id){
