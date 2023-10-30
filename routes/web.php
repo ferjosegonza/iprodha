@@ -49,7 +49,6 @@ use App\Http\Controllers\App\AppNotificacionesController;
 // Route::get('/ipusuario', function(Request $request){
 //     echo request()->ip();
 // });
-Route::get('/ob_lic',[ob_licitacionController::class,'index']);
 
 Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
@@ -147,6 +146,15 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],func
 
 Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],function(){
     Route::get('/barrio/{barrio}/vercostos',[Fc_concosxbarrioController::class,'edit'])->name('barrio.verCostos');        
+});
+
+//ob_licitacion
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN']],function() {
+    Route::get('/ob_lic',[ob_licitacionController::class,'index'])->name('ob_lic.index');    
+    Route::get('/ob_lic/crear',[ob_licitacionController::class,'create'])->name('ob_lic.crear');    
+    Route::post('/ob_lic',[ob_licitacionController::class,'store'])->name('ob_lic.store');
+    Route::post('/ob_lic/subir1/{path?}',[ob_licitacionController::class,'subir1'])->name('ob_lic.subir1');
+    Route::get('/ob_lic/subir/{path?}',[ob_licitacionController::class,'subir'])->name('ob_lic.subir');      
 });
 
 Route::delete('/terrenoSup/eliminar/{barrio}/{id}',[barrio_terrenoController::class,'destroy'])->name('terrenoSup.eliminar');    
