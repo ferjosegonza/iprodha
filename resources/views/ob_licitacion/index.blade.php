@@ -1,13 +1,8 @@
 @extends('layouts.app')
 @section('content')    
-<html>
-    <head>        
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    </head>
-    <body>
-        Licitacion
+    <section class="section">
+        <div class="section-header"><h3 class="page__heading">Alta Licitacion</h3></div>      
+        <a class="btn btn-success float-right" href="{{route('ob_lic.crear')}}">Nuevo</a>
         <table id="tablaconceptos" style="width:100%;" class="table  table-striped mt-2 ">
             <thead style="height:50px;">
                 <th scope="col" style="color:#fff;">Nro.</th>
@@ -25,12 +20,10 @@
                         <td>{{date("d/m/Y",strtotime($unob_licitacion->apertura))}}</td>                                                    
                         <td>{{$unob_licitacion->aÑo}}</td>
                         <td>{{$unob_licitacion->descripcion}}</td>                                                    
-                        <td>
-                            
-                        </td>
+                        <td><a class="btn btn-dark" href="{{route('ob_lic.subir',['dir'=>$unob_licitacion->path])}}">Archivo</a></td>
                     </tr>
                 @endforeach
             </tbody>
         </table>                                
-    </body>
+    </section>
 @endsection
