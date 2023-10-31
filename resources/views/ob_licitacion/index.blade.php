@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('content')    
     <section class="section">
-        <div class="section-header"><h3 class="page__heading">Alta Licitacion</h3></div>      
-        <a class="btn btn-success float-right" href="{{route('ob_lic.crear')}}">Nuevo</a>
+        <div class="section-header"><h3 class="page__heading">Alta Licitacion</h3></div> 
+        @can('CREAR-OB_LIC')     
+            <a class="btn btn-success float-right" href="{{route('ob_lic.crear')}}">Nuevo</a>
+        @endcan
         <table id="tablaconceptos" style="width:100%;" class="table  table-striped mt-2 ">
             <thead style="height:50px;">
                 <th scope="col" style="color:#fff;">Nro.</th>
@@ -19,8 +21,10 @@
                         <td>{{$unob_licitacion->denominacion}}</td>
                         <td>{{date("d/m/Y",strtotime($unob_licitacion->apertura))}}</td>                                                    
                         <td>{{$unob_licitacion->aÑo}}</td>
-                        <td>{{$unob_licitacion->descripcion}}</td>                                                    
-                        <td><a class="btn btn-dark" href="{{route('ob_lic.subir',['dir'=>$unob_licitacion->path])}}">Archivo</a></td>
+                        <td>{{$unob_licitacion->descripcion}}</td> 
+                        @can('EDITAR-OB_LIC')                                                   
+                            <td><a class="btn btn-dark" href="{{route('ob_lic.subir',['dir'=>$unob_licitacion->path])}}">Archivo</a></td>
+                        @endcan
                     </tr>
                 @endforeach
             </tbody>

@@ -8,6 +8,12 @@
     use Illuminate\Support\Facades\DB;
 
     class ob_licitacionController extends Controller{
+        function __construct(){
+            $this->middleware('auth');            
+            $this->middleware('permission:VER-OB_LIC|CREAR-OB_LIC|EDITAR-OB_LIC',['only'=>['index']]);
+            $this->middleware('permission:CREAR-OB_LIC',['only'=>['create','store']]);
+            $this->middleware('permission:EDITAR-OB_LIC',['only'=>['subir','subir1']]);
+        }  
         public function index(){            
             $ob_licitacion=ob_licitacion::with('ob_tipo_licitacion')
             ->join('iprodha.ob_tipo_licitacion',function($join){
