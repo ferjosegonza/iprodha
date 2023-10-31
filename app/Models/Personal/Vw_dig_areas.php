@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Vw_dig_areas extends Model{
     use HasFactory;
     public $timestamps=false;        
-    protected $table='PERSONAL.VW_DIG_AREAS';
+    protected $table='IPRODHA.VW_DIG_AREAS';
     protected $primaryKey='idarea';
     public $incrementing = false;
     protected $fillable=[ 

@@ -15,7 +15,7 @@ class App_usuario extends Model{
     protected $primaryKey = 'id';
 
     protected $fillable = [ 
-        'nombre', 'mail', 'usuario', 'contraseña', 'fecha_creacion'
+        'nombre', 'mail', 'usuario', 'contraseña', 'fecha_creacion', 'token'
     ];
 
     public function crear($nombre, $mail, $usuario, $contra){
@@ -23,7 +23,7 @@ class App_usuario extends Model{
         $this->nombre = $nombre;
         $this->mail = $mail;
         $this->usuario = $usuario;
-        $this->contraseña = password_hash($contra, 'PASSWORD_DEFAULT');
+        $this->contraseña = password_hash($contra, PASSWORD_DEFAULT);
         $this->fecha_creacion = date("Y-m-d h:i:s");
         return $this->save();
     }

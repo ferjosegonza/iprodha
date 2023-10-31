@@ -37,4 +37,16 @@ class Municipios extends Model
     public function terrenos() {
         return $this->hasMany(Terrenos::class,'id_municipio');
     }
+
+    public function getDepartamento() {
+        return $this->belongsTo(Departamento::class, 'id_departamento', 'id_dep');
+    }
+
+    public function getViviendas(){
+        return $this->hasMany(Ob_vivienda::class,'id_mun', 'id_municipio');
+    }
+
+    public function getLocalidad(){
+        return $this->hasOne(Localidad::class,'id_mun', 'id_municipio');
+    }
 }

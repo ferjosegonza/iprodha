@@ -8,9 +8,8 @@
     use Illuminate\Support\Facades\DB;
     class barrio_terrenoController extends Controller{
         public function index($unBarrio){
-            $Barrio=Barrio::select('barrio','nombarrio')->where('barrio',$unBarrio)->get();            
             $terrenos=barrio_terreno::where('barrio',$unBarrio)->get();
-            return view('barrio.terrenoSup',compact('terrenos','Barrio'));
+            return view('barrio.terrenoSup',compact('terrenos','unBarrio'));
         }
         public function destroy($barrio,$id){            
             $terreno=barrio_terreno::where('barrio',$barrio)->where('idtipoterre',$id);            

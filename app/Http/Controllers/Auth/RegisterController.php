@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Diegoz\MenuM;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Crypt;
+use App\Models\Iprodha\Lav_user_db;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -85,7 +88,7 @@ class RegisterController extends Controller
             //Creacion de atajo a documentacion digital
             Fav_Favorito::create(['idusuario' => $user->id , 'ruta' => 'archivos.consultar', 'titulo' => 'Búsqueda de Archivos Digitalizados', 'descripcion' => 'Busqueda de archivos que se encuentras digitalizados.']);
         }
-        
+
         $userWeb = "WEB-".$user->id;
         $pass = $data['password'];
 
@@ -101,6 +104,7 @@ class RegisterController extends Controller
             'pass_lav' => Crypt::encryptString($data['password']),
             'user_lav' => $userWeb,
         ]);
+        
 
         return $user;
     }

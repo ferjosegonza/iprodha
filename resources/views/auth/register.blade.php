@@ -68,13 +68,13 @@
                     </div>
                     <div class="col-md-12 mt-4">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-warning btn-lg btn-block" tabindex="4">
+                            <button type="submit" class="btn btn-warning fs-6 btn-lg btn-block" tabindex="4">
                                 Registrarse
                             </button>
                         </div>
                         
                         <div class="form-group">
-                            <a href="{{ route('login') }}" tabindex="4" class="text-small btn btn-secondary btn-lg btn-block">
+                            <a href="{{ route('login') }}" tabindex="4" class="text-small btn btn-secondary  fs-6 btn-lg btn-block">
                                 Volver
                             </a>
                         </div>

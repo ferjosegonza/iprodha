@@ -2,8 +2,6 @@
 @section('content')
     <section class="section">
         <div class="section-header"><h3 class="page__heading">Superficies x Barrio</h3></div>
-        @foreach($Barrio as$unBarrio)@endforeach
-        <div class="section-header"><h3 class="page__heading">{{$unBarrio->barrio}}: {{$unBarrio->nombarrio}}</h3></div>        
         <div class="section-body">
             <div class="">
                 <div class="row">
@@ -22,7 +20,7 @@
                                             </div>
                                             <div style="width:10%;float:left;margin-left:1%;">    
                                                 {!!Form::text('superficie','0',['type'=>'text','class'=>'form-control'])!!}
-                                                {!!Form::hidden('barrio',$unBarrio->barrio)!!}
+                                                {!!Form::hidden('barrio',$unBarrio)!!}
                                             </div>                                            
                                             <div style="width:10%;float:left;margin-left:1%;">                                                                    
                                                 <button type="submit" class="btn btn-primary mr-2">Guardar</button>                
@@ -32,13 +30,15 @@
                                     </div>
                                     <table id="tablaconceptos" style="width:100%;" class="table  table-striped mt-2 ">
                                         <thead style="height:50px;">
-                                            <th scope="col" style="color:#fff">Terreno</th>
-                                            <th scope="col" style="color:#fff">Superficie</th>
-                                            <th scope="col" style="color:#fff">Acciones</th>
+                                            <th scope="col" style="color:#fff;">Nro. Barrio</th>
+                                            <th scope="col" style="color:#fff;width:60%;">Terreno</th>
+                                            <th scope="col" style="color:#fff;">Superficie</th>
+                                            <th scope="col" style="color:#fff;width:30%;">Acciones</th>
                                         </thead>
                                         <tbody>
                                             @foreach($terrenos as$unTerreno)
                                                 <tr>
+                                                    <td>{{$unTerreno->barrio}}</td>
                                                     <td>{{$unTerreno->idtipoterre}}</td>
                                                     <td>{{$unTerreno->superficie}}</td>                                                    
                                                     <td>                                                      

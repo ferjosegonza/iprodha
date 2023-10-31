@@ -10,10 +10,10 @@
     class Fc_concosxbarrioController extends Controller{
         function __construct(){
             $this->middleware('auth');
-            $this->middleware('permission:VER-BARRIOCOSTOS|CREAR-BARRIOCOSTOS|EDITAR-BARRIOCOSTOS|BORRAR-BARRIOCOSTOS',['only'=>['index']]);
-            $this->middleware('permission:CREAR-BARRIO',['only'=>['create','store']]);
-            $this->middleware('permission:EDITAR-BARRIO',['only'=>['edit','update']]);
-            $this->middleware('permission:BORRAR-BARRIO', ['only'=>['destroy']]);
+            $this->middleware('permission:VER-BARRIOCOSTOS|CREAR-BARRIOCOSTOS|EDITAR-BARRIOCOSTOS|BORRAR-BARRIOCOSTOS', ['only' => ['index']]);
+            $this->middleware('permission:CREAR-BARRIO', ['only' => ['create','store']]);
+            $this->middleware('permission:EDITAR-BARRIO', ['only' => ['edit','update']]);
+            $this->middleware('permission:BORRAR-BARRIO', ['only' => ['destroy']]);
         }        
         public function index(Request $request){}        
         public function edit($barrio){            

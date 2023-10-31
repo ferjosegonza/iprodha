@@ -130,7 +130,8 @@
                     <h6>Cargar Observaciones</h6>
                     <textarea id="observaciones" onkeyup="contadorchar('lab-obs','observaciones',500)"></textarea>
                     <label for="observaciones" id="lab-obs">Quedan 500 caracteres</label>
-                    <button type="button" class="btn btn-success btn-block" onclick="guardar()">Guardar Relación</button>
+                    <button type="button" class="btn btn-success btn-block" onclick="guardar()" id="btnguardar">Guardar Relación</button>
+                    <button  type="button" class="btn btn-success btn-block" onclick="modificar()" id="btnmodificar" hidden>Modificar Relación</button>
                 </div>    
                 <br>    
             </div>

@@ -52,12 +52,12 @@ class Ofe_itemdetController extends Controller
         $this->validate($request, [
             'denominacion' => 'required|min:5|max:150|string',
             'unidad' => 'required|min:1|integer',
-            'cantidad' => 'required|min:1|numeric|between:0,99.99', 
+            'cantidad' => 'required|min:0|numeric|between:0,999999.99', 
             'costounitario' => 'required',
         ], [
             'idunidad.required' => 'Seleccione la Unidad.',
         ]);
-
+        
         $costo = str_replace( ['$', ','], '', $request->input('costounitario'));
 
         Ofe_subitem::create([
@@ -85,7 +85,7 @@ class Ofe_itemdetController extends Controller
         $this->validate($request, [
             'denominacion' => 'required|min:5|max:150|string',
             'unidad' => 'required|min:1|integer',
-            'cantidad' => 'required|min:1|numeric|between:0,99.99', 
+            'cantidad' => 'required|min:0|numeric|between:0,999999.999999', 
             'costounitario' => 'required',
         ], [
             'idunidad.required' => 'Seleccione la Unidad.',

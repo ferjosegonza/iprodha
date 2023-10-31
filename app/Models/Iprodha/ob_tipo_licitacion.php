@@ -2,7 +2,7 @@
     namespace App\Models\Iprodha;
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
-    class ob_licitacion extends model{
+    class ob_tipo_licitacion extends model{
         use HasFactory;
         public$timestamps=false;        
         protected$table='iprodha.ob_tipo_licitacion';

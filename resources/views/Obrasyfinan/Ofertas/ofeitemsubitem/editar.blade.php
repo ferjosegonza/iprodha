@@ -93,5 +93,5 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('js/input-format-dinero.js') }}"></script>
+    {{-- <script src="{{ asset('js/input-format-dinero.js') }}"></script> --}}
 @endsection

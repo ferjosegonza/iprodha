@@ -38,7 +38,7 @@
         </div>
         <div class="modal-footer">
             {!! Form::open(['id'=>'validar', 'method' => 'POST', 'style' => 'display:inline']) !!}
-                    {!! Form::submit('Validar', ['onclick' => '','class' => 'btn btn-success']) !!}
+                    {!! Form::submit('Validar', ['onclick' => 'this.disabled=true;this.form.submit()','class' => 'btn btn-success', 'id' => 'comfirmBtn']) !!}
             {!! Form::close() !!}
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
@@ -83,3 +83,11 @@
 
       check.addEventListener('click', disableButton);
   </script>
+
+<script>
+  
+  // $('#comfirmBtn').on('click', function(){
+  //       $('#comfirmBtn').attr('disabled', 'true');
+  // })
+
+</script>

@@ -9,6 +9,7 @@
                 <div class="">
                     @include('layouts.favorito.fav', ['modo' => 'Agregar'])
                 </div>
+                
                 <div class="ms-auto">
                     @can('CREAR-OFEOBRA')
                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofeobra.create']]) !!}
@@ -18,6 +19,7 @@
                 </div>
         </div>
         <div class="section-body">
+            
             <div class="row">
                 @include('layouts.modal.mensajes')
                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -48,14 +50,20 @@
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->idobra }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ substr($unaOferta->nomobra, 0, 35) }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->plazo }}</td>
-                                                <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->getExpediente->exp_numero }}</td>
+                                                <td class= 'text-center' style="vertical-align: middle;">{{ $unaOferta->getExpediente->exp_numero ?? '' }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">{{ substr($unaOferta->getEmpresa->nom_emp, 0, 20) }}</td>
                                                 <td class= 'text-center' style="vertical-align: middle;">
-                                                    @money($unaOferta->monviv+$unaOferta->montotope+$unaOferta->moninf+ $unaOferta->monnex+$unaOferta->monterr)
+                                                    @php
+                                                        $costoAcu = 0;
+                                                        foreach ($unaOferta->getCronogramaDesem as $desembolso) {
+                                                            $costoAcu += $desembolso->costo;
+                                                        }
+                                                    @endphp
+                                                    @money($costoAcu)
                                                 </td>
                                                 
                                                 <td class='text-center' style="vertical-align: middle;">
-                                                    {{ $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->denestado }}
+                                                    {{ $unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->denestado ?? ''}}
                                                 </td>
                                                 <td class='text-center' style="overflow: hidden;">
                                                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -71,7 +79,7 @@
                                                             {!! Form::close() !!}
                                                         @endcan --}}
 
-                                                        @can('BORRAR-OFEOBRA')
+                                                        @can('VER-OFEOBRA')
                                                             {!! Form::open([
                                                             'method' => 'GET','route' => ['ofeobra.show', base64url_encode($unaOferta->idobra)],'style' => 'display:inline',]) !!}
                                                             {!! Form::submit('Ver', ['class' => 'btn btn-primary m-1']) !!}
@@ -89,12 +97,12 @@
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-12 col-md-4">
                                                                         {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofesombreroxobra.indexx', base64url_encode($unaOferta->idobra)],'style' => '']) !!}
-                                                                        {!! Form::submit('Sombrero', ['class' => 'btn btn-primary']) !!}
+                                                                        {!! Form::submit('Impuestos', ['class' => 'btn btn-primary']) !!}
                                                                         {!! Form::close() !!}
                                                                     </div>
                                                                     <div class="col-xs-12 col-sm-12 col-md-5">
                                                                         @can('VER-CRONOGRAMAOBRA')
-                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.edit',base64url_encode($unaOferta->idobra)],'style' => '']) !!}
+                                                                        {!! Form::open(['method' => 'GET', 'class' => '', 'route' => ['ofecrono.porc',base64url_encode($unaOferta->idobra)],'style' => '']) !!}
                                                                             {!! Form::submit('Cronograma', ['class' => 'btn btn-primary']) !!}
                                                                         {!! Form::close() !!}                                  
                                                                         @endcan
@@ -115,7 +123,7 @@
                                                                 
                                                                 @if ($unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado == 2)
                                                                     <div class="col-12 m-0 p-0 pe-1">
-                                                                        @can('BORRAR-OFEOBRA')
+                                                                        @can('VALIDAR-OFEOBRA')
                                                                             {!! Form::open(['method' => 'GET', 'class' => 'validacion', 'route' => ['ofeobra.vervalidar',base64url_encode($unaOferta->idobra)],'style' => 'display:inline']) !!}
                                                                                 {!! Form::submit('Validar', ['class' => 'btn btn-success', 'style' => 'width: 79%']) !!}
                                                                             {!! Form::close() !!}                                 
@@ -137,6 +145,13 @@
                     </div>
                 </div>             
             </div>
+        </div>
+        <div class="">
+            <strong>
+                <h7>
+                    ¿Dudas? <a href="{{ asset('storage/gdu/OfertaObraEmp.pdf') }}" style="color: rgb(30, 67, 233)" target="_blank">Descargue un instructivo aqui.</a> 
+                </h7>
+            </strong>
         </div>
     </section>
     {{-- @include('layouts.modal.confirmation')  --}}
@@ -160,7 +175,7 @@
                         next: 'Sig.',
                     },
                 },
-                order: [[ 1, 'asc' ]],
+                 order: [[ 0, 'desc' ]],
             });
             });
     </script>

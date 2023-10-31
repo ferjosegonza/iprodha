@@ -115,6 +115,7 @@ function buscarArchivo(estado){
             document.getElementById('preview-org').removeAttribute('hidden')
             document.getElementById('buscador-modif').removeAttribute('hidden')
             document.getElementById('buscador-org').setAttribute('hidden', 'hidden') 
+            document.getElementById('observaciones').innerHTML = ''
             actualizarTabla()        
             buscarRelacionados(res.id_archivo)      
         },
@@ -184,6 +185,7 @@ function buscarRelacionados(id){
                     tr.appendChild(td1)
                     tr.appendChild(td2)
                     tr.appendChild(td3)
+                    tr.setAttribute('onclick', 'modificarOpen(\''+res[i].observacion+'\',\'' + res[i].id_archivon + '\',\'' +  res[i].path_archivo + '\',\'' +  res[i].nombre_archivo + '\')')
                     body.append(tr)
                 }
             }
@@ -228,12 +230,54 @@ function buscarArchivoModificador(){
             document.getElementById('buscador-modif').setAttribute('hidden', 'hidden')  
             document.getElementById('preview-modificador').removeAttribute('hidden')
             document.getElementById('claves-modif').innerHTML = res.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;') 
+            document.getElementById('claves-modif').removeAttribute('hidden')
             document.getElementById('emb-modif').setAttribute('src', res.path_archivo + res.nombre_archivo)
-            
+            document.getElementById('btnguardar').removeAttribute('hidden')
+            document.getElementById('btnmodificar').setAttribute('hidden', 'hidden')
         },
         error: function(res){
             console.log(res)
             popup(-2)
+        }
+    }); 
+}
+
+function modificarOpen(obs, id, path, nombre){
+    idmodificador = id
+    document.getElementById('buscador-modif').setAttribute('hidden', 'hidden')  
+    document.getElementById('preview-modificador').removeAttribute('hidden')
+    document.getElementById('claves-modif').setAttribute('hidden', 'hidden') 
+    document.getElementById('emb-modif').setAttribute('src', path + nombre)
+    document.getElementById('btnguardar').setAttribute('hidden', 'hidden')
+    document.getElementById('btnmodificar').removeAttribute('hidden')
+    document.getElementById('observaciones').innerHTML = obs
+}
+
+function modificar(){
+    console.log(idmodificador)
+    let obs = document.getElementById('observaciones').value
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: 'digesto/modificar',
+        type: 'PUT',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id0: idoriginal,
+            idn: idmodificador,
+            obs: obs
+        }),
+        dataType: 'json',
+        success: function(res){  
+            popup(1)
+        },
+        error: function(res){
+            console.log(res)
+            popup(-1)
         }
     }); 
 }

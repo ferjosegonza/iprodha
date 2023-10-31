@@ -103,11 +103,15 @@ function recuperarFuncionario(){
         success: function(res){    
             console.log(res)      
             let prev = document.getElementById('prevFuncionario')
-            prev.innerHTML = '<hr><h6>Funcionario/a:</h6><table><tr><th>Descripción</th><td>'+res.descripcion+'</td><th>Observación</th><td>'+res.observacion+'</td></tr></table>'         
+            let obs = res.observacion
+            if(res.observacion == null){
+                obs = '-'
+            }
+            prev.innerHTML = '<hr><h6>Funcionario/a:</h6><table><tr><th>Descripción</th><td>'+res.descripcion+'</td><th>Observación</th><td>'+obs+'</td></tr></table>'         
             prev.removeAttribute('hidden')         
             let body = document.getElementById('funcbody')
             let tr = document.createElement('tr')
-            tr.innerHTML = '<td hidden>'+ res.id_tipo+'</td>' +'<td>'+ res.descripcion +'</td>' + '<td>'+ res.observacion +'</td>'  
+            tr.innerHTML = '<td hidden>'+ res.id_tipo+'</td>' +'<td>'+ res.descripcion +'</td>' + '<td>'+ obs +'</td>'  
             body.appendChild(tr)
             document.getElementById('tablefunc').removeAttribute('hidden')       
         },
@@ -202,11 +206,18 @@ function recuperarDocumento(){
         success: function(res){    
             console.log(res)   
             let prev = document.getElementById('prevDocumento')
-            prev.innerHTML = '<hr><h6>Documento:</h6><table><tr><th>Número de Documento</th><td>'+res['nro']+'</td><th>Asunto</th><td>'+res['asun']+'</td></tr></table>'         
+            let asun
+            if(res[0].tipo == 'NOTA'){
+                asun = res[0].not_asunto
+            }
+            else{
+                asun = res[0].exp_asunto
+            }
+            prev.innerHTML = '<hr><h6>Documento:</h6><table><tr><th>Número de Documento</th><td>'+res[0].numero+'</td><th>Asunto</th><td>'+asun+'</td></tr></table>'         
             prev.removeAttribute('hidden')        
             let body = document.getElementById('docbody')
             let tr = document.createElement('tr')
-            tr.innerHTML= '<td hidden>'+ res['id'] +'</td>' + '<td>'+ res['nro'] +'</td>' + '<td>'+ res['asun'] +'</td>'
+            tr.innerHTML= '<td hidden>'+ res[0].doc_id +'</td>' + '<td>'+ res[0].numero +'</td>' + '<td>'+ asun +'</td>'
             body.append(tr)
             document.getElementById('tabledoc').removeAttribute('hidden')             
         },
@@ -216,10 +227,21 @@ function recuperarDocumento(){
     }); 
 }
 
-function checkGuardar(){
-    let btn = document.getElementById('btnSave')
-    let sel = document.getElementById('medio')
-    let inp = document.getElementById('obs')
+function checkGuardar(tipo){
+    let btn
+    let sel
+    let inp
+    if(tipo == '1'){
+        btn = document.getElementById('btnSave')
+        sel = document.getElementById('medio')
+        inp = document.getElementById('obs')
+    }
+    else{
+        btn = document.getElementById('btnSave2')
+        sel = document.getElementById('medio2')
+        inp = document.getElementById('obs2')
+    }
+    
     if(sel.value != 'sel' && inp.value != ''){
         btn.removeAttribute('disabled')
     }
@@ -530,10 +552,10 @@ function buscarDocumento(){
                         }
                         tr.className= 'hoverable'
                         if(tipo == 'exp'){
-                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].exp_doc_id+'", "' + res[i].exp_numero + '", "'+res[i].exp_asunto+'")')
+                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].exp_doc_id+'", "' + res[i].exp_numero + '", "'+res[i].exp_asunto.replaceAll('\"', '\\"')+'")')
                         }
                         else{
-                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].not_doc_id+'", "' + res[i].not_numero +'", "'+res[i].not_asunto+'")')
+                            tr.setAttribute('onclick', 'seleccionarDocumento("'+res[i].not_doc_id+'", "' + res[i].not_numero +'", "'+res[i].not_asunto.replaceAll('\"', '\\"')+'")')
                         }
                         
                         body.appendChild(tr)
@@ -773,4 +795,46 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 function cancelar(){
     document.getElementById('preview').setAttribute('hidden', 'hidden')
+}
+
+function abrirModificarMovimiento(id, obs, med){
+    let modalEl = document.getElementById('modalMov')
+    let modal= bootstrap.Modal.getOrCreateInstance(modalEl)
+    modal.show();
+    document.getElementById('obs2').value = obs
+    document.getElementById('medio2').value = med
+    document.getElementById('idmov').innerHTML = id;
+} 
+
+function modificarMovimiento(){
+    let obs = document.getElementById('obs2').value
+    let medio = document.getElementById('medio2').value
+    let id = document.getElementById('id').innerHTML
+    let idmov=document.getElementById('idmov').innerHTML
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: '/tramite/modificarMovimiento',
+        type: 'POST',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            obs:obs,
+            medio:medio,
+            id:id,
+            idmov:idmov
+        }),
+        dataType: 'json',
+        success: function(res){   
+            alert('El movimiento se actualizó con éxito')           
+            console.log(res)            
+            actualizarTabla()
+        },
+        error: function(res){
+            console.log(res)
+        }
+    }); 
 }

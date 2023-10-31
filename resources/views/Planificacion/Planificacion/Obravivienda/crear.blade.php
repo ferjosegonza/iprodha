@@ -51,22 +51,62 @@
                                     <div class="form-group">
                                         <label for="Empresa:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Empresa: <span class="obligatorio">*</span></label>
                                         {{-- {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!} --}}
-                                        {!! Form::select('idempresa', $Empresa, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
+                                        <select name="idempresa" class="selectpicker w-100 form-select"  placeholder="Seleccionar" required>
+                                            @foreach ($Empresa as $unaEmpresa)
+                                                @if ($unaEmpresa->id_emp == 0)
+                                                    <option value="{{$unaEmpresa->id_emp}}" selected>{{$unaEmpresa->nom_emp}}</option>
+                                                @else
+                                                    <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option>
+                                                @endif
+                                                {{-- <option value="{{$unaEmpresa->id_emp}}">{{$unaEmpresa->nom_emp}}</option> --}}
+                                            @endforeach
+                                        </select>
+                                        {{-- {!! Form::select('idempresa', $Empresa, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!} --}}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                     <div class="form-group">
                                         <label for="Localidad:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Localidad: <span class="obligatorio">*</span></label>
                                         {{-- {!! Form::label('Localidad:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;width:20%;']) !!} --}}
-                                        {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!}
+                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
+                                            @foreach ($Localidad as $unaLocalidad)
+                                            @if ($unaLocalidad->id_loc == 00)
+                                                    <option value="{{$unaLocalidad->id_loc}}" selected>{{$unaLocalidad->nom_loc}}</option>
+                                                @else
+                                                    <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option>
+                                                @endif
+                                                {{-- <option value="{{$unaLocalidad->id_loc}}">{{$unaLocalidad->nom_loc}}</option> --}}
+                                            @endforeach
+                                        </select>
+                                        {{-- {!! Form::select('idloc', $Localidad, null, ['placeholder' => 'Seleccionar', 'class' => 'form-select', 'required']) !!} --}}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Expediente:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         {!! Form::text('expediente', null, ['class' => 'form-control']) !!} 
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::select('idope', $TipoOpe, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::select('idtipobr', $TipoObra, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
                                     </div>
                                 </div>
                                 {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -75,6 +115,12 @@
                                         {!! Form::number('can_viv', null, ['class' => 'form-control', 'required']) !!} 
                                     </div>
                                 </div> --}}
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
+                                    <div class="form-group">
+                                        {!! Form::label('Plazo:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::number('plazo', null, ['class' => 'form-control']) !!}
+                                    </div>
+                                </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Fecha inicio:', null, [
@@ -103,13 +149,8 @@
                                             ]) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Plazo:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::number('plazo', null, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
                                 
+
                             </div>
                             
                             <div class="row">
@@ -126,7 +167,7 @@
                                             <div class="form-group">
                                                 {!! Form::label('Descripcion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                                 <span class="obligatorio">*</span>
-                                                {!! Form::text('descrip', null, ['class' => 'form-control', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'required']) !!}
+                                                {!! Form::text('descrip', null, ['class' => 'form-control', 'style' => 'text-transform:uppercase', 'data-type' => 'limitcarac80', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'required']) !!}
                                             </div>
                                         </div>   
                                     </div>
@@ -137,7 +178,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                                             <div class="form-group">
                                                 <label for="Cantidad de viviendas:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Cantidad de Viviendas: <span class="obligatorio">*</span></label>
-                                                {!! Form::number('can_viv', null, ['class' => 'form-control', 'required', 'id'=>'can_viv']) !!} 
+                                                {!! Form::number('can_viv', 0, ['class' => 'form-control', 'required', 'id'=>'can_viv']) !!} 
                                             </div>
                                         </div>  
                                     </div>
@@ -202,4 +243,5 @@
     </section>
     @include('Planificacion.Planificacion.Obravivienda.mConfirmStore')
     <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/crear_obravivienda.js') }}"></script>
+    <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/format_obravivienda.js') }}"></script>
 @endsection

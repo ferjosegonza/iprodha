@@ -26,23 +26,27 @@
                 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-11">
                     <div class="card">
                         <div class="card-body">
+
                             <div hidden>
                                 {!! Form::label('Id Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                                 {!! Form::text('idobra', null, ['class' => 'form-control']) !!}
                             </div>
+
                             <div class="row">
+
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9">
                                     <div class="form-group">
-                                        {!! Form::label('Obra:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                        {!! Form::label('Obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap; ']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::text('nomobra', $unaOferta->nomobra, ['class' => 'form-control', 'required' => 'required', $editaTodo]) !!}
                                     </div>
                                 </div>
+
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
-                                        {!! Form::label('Localidad:', null, ['class' => 'control-label']) !!}
+                                        {!! Form::label('Localidad:', null, ['class' => 'control-label fs-6']) !!}
                                         <span class="obligatorio">*</span>
-                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required>
+                                        <select name="idloc" class="selectpickerLoc w-100 form-select"  placeholder="Seleccionar" required {{$editaTodo}}>
                                             @foreach ($Localidad as $unaLocalidad)
                                                 @if ($unaLocalidad->id_loc == $unaOferta->idloc)
                                                     <option value="{{$unaLocalidad->id_loc}}" selected>{{$unaLocalidad->nom_loc}}</option>
@@ -51,17 +55,15 @@
                                                 @endif
                                             @endforeach
                                         </select>
-                                        {{-- {!! Form::select('idloc', $Localidad, $unaOferta->idloc, [
-                                            'placeholder' => 'Seleccionar',
-                                            'class' => 'form-select', $editaTodo
-                                        ]) !!} --}}
                                     </div>
                                 </div>
+
                             </div>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                                     <div class="form-group">
-                                        {!! Form::label('Empresa:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::label('Empresa:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
                                         <select name="idempresa" class="selectpicker w-100 form-select"  placeholder="Seleccionar" required {{$editaTodo}}>
                                             @foreach ($Empresa as $unaEmpresa)
@@ -72,16 +74,12 @@
                                                 @endif
                                             @endforeach
                                         </select>
-
-                                        {{-- {!! Form::select('idempresa', $Empresa, $unaOferta->idempresa, [
-                                            'placeholder' => 'Seleccionar',
-                                            'class' => 'form-select', $editaTodo
-                                        ]) !!} --}}
                                     </div>
                                 </div>
+
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('Tipo Contrato:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::label('Tipo Contrato:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::select('idtipocontrato', $TipoContrato, $unaOferta->idtipocontratofer, [
                                             'placeholder' => 'Seleccionar',
@@ -90,48 +88,109 @@
                                         ]) !!}
                                     </div>
                                 </div>
+
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::label('Situacion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
-                                        {!! Form::date('publica', $unaOferta->publica, [
-                                            'min' => '2022-01-01',
-                                            'max' => \Carbon\Carbon::now()->year . '-12',
-                                            'id' => 'periodo',
-                                            'class' => 'form-control',
+                                        {!! Form::select('idsituacion', $TipoSituacion, $unaOferta->id_situacion, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required', $editaTodo
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                    <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idope', $TipoOpe, $unaOferta->id_ope ?? null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
                                             $editaTodo
                                         ]) !!}
                                     </div>
                                 </div>
-                                
-                            </div>
-                            <div class="row">
+
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::label('Tipo de oferta:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idtipofe', $TipoOferta, $unaOferta->id_tip_obr ?? null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::select('idtipobr', $TipoObra, $unaOferta->id_tipo_obra ?? null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                            'required',
+                                            $editaTodo
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Numero de Licitacion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::text('numlic', $unaOferta->num_lic ?? null, [
+                                            'class' => 'form-control',
+                                            'required' => 'required',
+                                            'data-type' => 'numlic',
+                                            'style' => 'text-transform:uppercase',
+                                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase()',
+                                            $editaTodo
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Numero del exp:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::text('numExp', trim($unaOferta->getExpediente->exp_numero ?? '', " ") ?? '', ['class' => 'form-control', $editaTodo]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Cod. Barra del Exp.:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         <span class="obligatorio">*</span>
                                         {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::text('idexpediente', $unaOferta->idexpediente, ['class' => 'form-control', $editaTodo]) !!}
+                                        {!! Form::text('idexpediente', $unaOferta->idexpediente ?? '', ['class' => 'form-control', 'readonly' ,$editaTodo]) !!}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        {!! Form::label('Exp.Nro.:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {{-- {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!} --}}
-                                        {!! Form::text('exp_numero', $unaOferta->getExpediente->exp_numero, ['class' => 'form-control', $editaTodo]) !!}
-                                    </div>
-                                </div>
+                                
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                                     <div class="form-group">
-                                        {!! Form::label('Exp.Asunto::', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}                   
-                                        {!! Form::label('', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
-                                        {!! Form::textarea('exp_Asunto', $unaOferta->getExpediente->exp_asunto, ['class'=>'form-control', 'rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 12vh', $editaTodo]) !!}
-
-                                        {{-- {!! Form::textarea('exp_Asunto', $unaOferta->getExpediente->exp_asunto, ['class' => 'form-control', 'required' => 'required']) !!} --}}
+                                        {!! Form::label('Exp.Asunto:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::textarea('exp_Asunto', $unaOferta->getExpediente->exp_asunto ?? '', ['class'=>'form-control', 'readonly','rows' => 54, 'cols' => 54, 'style' => 'resize:none; height: 12vh', $editaTodo]) !!}
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+
+                            {{-- <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
                                     <div class="form-group">
                                         {!! Form::label('Vivienda:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
@@ -154,35 +213,64 @@
                                     <div class="form-group">
                                         {!! Form::label('Monto Tope:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;']) !!}
                                         <div class="input-group mb-3">
+                                            <input class="form-control" type="text" name="montotope" data-type="currency" value="@money($unaOferta->montotope)" {{$editaTodo}}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Fecha Publicación:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <span class="obligatorio">*</span>
+                                        {!! Form::date('publica', $unaOferta->publica, [
+                                            'min' => '2022-01-01',
+                                            'max' => \Carbon\Carbon::now()->year . '-12',
+                                            'id' => 'periodo',
+                                            'class' => 'form-control',
+                                            'readonly'
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Monto Tope:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        <div class="input-group mb-3">
                                             {{-- <span class="input-group-text">$</span> --}}
                                             <input class="form-control" type="text" name="montotope" data-type="currency" value="@money($unaOferta->montotope)" {{$editaTodo}}>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="d-flex">
-                                    <div class="me-auto p-2"></div>
-                                    <div class="p-2" style="background-color: rgb(223, 188, 144)">
-                                        <div class="form-group">
-                                            {!! Form::label('Plazo:', null, ['class' => 'control-label',  'style' => 'white-space: nowrap;']) !!}
-                                            <span class="obligatorio">*</span>
-                                            {!! Form::text('plazo', $unaOferta->plazo, ['class' => 'form-control']) !!}
+                                
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+                                    <div class="d-flex">
+                                        <div class="me-auto p-2"></div>
+                                        <div class="p-2" style="background-color: rgb(223, 188, 144)">
+                                            <div class="form-group">
+                                                {!! Form::label('Plazo:', null, ['class' => 'control-label fs-6',  'style' => 'white-space: nowrap;']) !!}
+                                                <span class="obligatorio">*</span>
+                                                {!! Form::text('plazo', $unaOferta->plazo, ['class' => 'form-control']) !!}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="p-2" style="background-color: rgb(223, 188, 144)">
-                                        <div class="form-group">
-                                            {!! Form::label('Año y Mes de Cotización:', null, [
-                                                'class' => 'control-label',
-                                                'style' => 'white-space: nowrap;',
-                                            ]) !!}
-                                            <span class="obligatorio">*</span>
-                                            {{-- <input min="2022-01-01" max="{{\Carbon\Carbon::now()->year . '-12'}}" id="periodo" class="form-control" name="anioymes" type="month" value="{{$unaOferta->aniocotizacion. '-' .$unaOferta->mescotizacion}}"> --}}
-                                            {!! Form::month('anioymes', $unaOferta->aniocotizacion. '-' .$unaOferta->mescotizacion, [
-                                                'min' => '2022-01-01',
-                                                'max' => \Carbon\Carbon::now()->year . '-12',
-                                                'class' => 'form-control',
-                                            ]) !!}
+                                        <div class="p-2" style="background-color: rgb(223, 188, 144)">
+                                            <div class="form-group">
+                                                {!! Form::label('Año y Mes de Cotización:', null, [
+                                                    'class' => 'control-label fs-6',
+                                                    'style' => 'white-space: nowrap;',
+                                                ]) !!}
+                                                <span class="obligatorio">*</span>
+                                                {!! Form::month('anioymes', $unaOferta->aniocotizacion. '-' .$unaOferta->mescotizacion, [
+                                                    'min' => '2022-01-01',
+                                                    'max' => \Carbon\Carbon::now()->year . '-12',
+                                                    'class' => 'form-control',
+                                                ]) !!}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>                      
@@ -213,5 +301,6 @@
         </div>
     <script src="{{ asset('js/Obrasyfinan/Ofertas/crear_oferta.js') }}"></script>
     <script src="{{ asset('js/input-format-dinero.js') }}"></script>
+    <script src="{{ asset('js/formato/input-format-num-lic.js') }}"></script>
 @endsection
 

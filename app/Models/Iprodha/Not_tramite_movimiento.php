@@ -29,4 +29,10 @@ class Not_tramite_movimiento extends Model
         return $this->save();
     }
 
+    public function modificar($obs, $medio){
+        $this->observacion= $obs;
+        $this->id_medio = $medio;
+        return $this->save();
+    }
+
 }

@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\App;
-
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Iprodha\App_usuario;
@@ -13,7 +12,7 @@ class AuthAppController extends Controller
     public function registerApp(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|string|email',
             'contra' => 'required|string|min:6',
         ]);
 
@@ -35,15 +34,18 @@ class AuthAppController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
-        }
+        }   
 
-        $res = false;
         $user = App_usuario::where('mail', '=', $request->email)->first();
-        if(password_verify($request->contra, $user->contraseña)){
-            $res = true;
+        $res = password_verify($request->contra, $user->contraseÑa);        
+        if($res){
+            $user->token = md5(uniqid().rand(1000000, 9999999));
+            $user->save();
+            return response()->json($user); 
+        }
+        else{
+           return response()->json($res); 
         }
         
-
-        return response()->json($res);
     }
 }

@@ -25,8 +25,9 @@ class Ofe_item extends Model
         'por_inc',
         'codigo',
         'cod_tipo',
-        'orden',        
+        'orden'
     ];
+
     protected $attributes = [
         'idobra' => false,
         'iditem' => false,
@@ -43,5 +44,9 @@ class Ofe_item extends Model
     public function getCronograma()
     {
         return $this->hasMany(Ofe_cronograma::class, 'iditem', 'iditem');
+    }
+
+    public function getOrdenItemAttribute(){
+        return $this->orden .' - '. $this->nom_item;
     }
 }

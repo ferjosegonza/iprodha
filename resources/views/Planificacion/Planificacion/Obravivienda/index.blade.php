@@ -7,10 +7,25 @@
 
 
     <section class="section">
-        <div class="section-header">
+        <div class="section-header d-flex">
+            <div class="">
+                <h4 class="titulo page__heading my-auto">Obras y Viviendas</h4>
+            </div>
+            <div class="">
+                @include('layouts.favorito.fav', ['modo' => 'Agregar'])
+            </div>
+            <div class="ms-auto">
+                @can('CREAR-OBRAVIVIENDA')
+                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.create'], 'class' => 'd-flex justify-content-end']) !!}
+                        {!! Form::submit('Nueva Obra', ['class' => 'btn btn-success my-1']) !!}
+                    {!! Form::close() !!}
+                @endcan
+            </div>
+        </div>
+        {{-- <div class="section-header">
             <h3 class="page__heading">Obras y Viviendas</h3>
             @include('layouts.favorito.fav', ['modo' => 'Agregar'])
-        </div>
+        </div> --}}
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
         <div class="section-body">
             <div class="row">
@@ -22,7 +37,18 @@
                                     <div class="row justify-content-evenly align-items-evenly">
                                         <form method="GET" action="{{route('obravivienda.index')}}">
                                             <div class="input-group mb-3">
-                                                <input name="name" type="text" class="form-control" placeholder="Buscar Obra por [Numero o Nombre]" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                <input name="name" type="text" class="form-control" placeholder="Buscar Obra por " aria-label="Recipient's username" aria-describedby="button-addon2">
+
+                                                <select name="opcionbusq" class="form-select" aria-label="Default select example">
+                                                    <option value=0 >General</option>
+                                                    <option value=1 {{ ($opcion == 1 ? "selected":"") }}>Numero de obra</option>
+                                                    <option value=2 {{ ($opcion == 2 ? "selected":"") }}>Nombre de obra</option>
+                                                    <option value=3 {{ ($opcion == 3 ? "selected":"") }}>Expediente de obra</option>
+                                                    <option value=4 {{ ($opcion == 4 ? "selected":"") }}>Plano de obra</option>
+                                                    <option value=5 {{ ($opcion == 5 ? "selected":"") }}>Empresa</option>
+                                                    {{-- <option value=6>Localidad</option> --}}
+                                                </select>
+
                                                 <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                                             </div>
                                         </form>
@@ -35,8 +61,8 @@
                                 
                                 <div class="col-lg-2">
                                     @can('CREAR-OBRAVIVIENDA')
-                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.create'], 'class' => 'd-flex justify-content-end']) !!}
-                                            {!! Form::submit('Nueva Obra', ['class' => 'btn btn-success my-1']) !!}
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.indexconvenio'], 'class' => 'd-flex justify-content-end']) !!}
+                                            {!! Form::submit('Convenios 2000', ['class' => 'btn btn-info my-1']) !!}
                                         {!! Form::close() !!}
                                     @endcan
                                 </div>
@@ -59,6 +85,7 @@
                                     <thead style="height:50px;">
                                         <th class='ml-3 text-center' style="color:#fff; width:5%;">Numero</th>
                                         <th class='text-center' style="color:#fff; width:20%;">Obra</th>
+                                        <th class='text-center' style="color:#fff; width:20%;">Expendiente</th>
                                         <th class='text-center' style="color:#fff; width:20%;">Empresa</th>
                                         <th class='text-center' style="color:#fff; width:10%;">Localidad</th>
                                         <th class='text-center' style="color: #fff; width:5%;">Acciones</th>
@@ -68,7 +95,9 @@
                                             <tr>
                                                 <td class='text-center' style="vertical-align: middle;">{{$obra->num_obr}}</td>
 
-                                                <td style="vertical-align: middle;">{{$obra->nom_obr}}</td>
+                                                <td class='text-center' style="vertical-align: middle;">{{$obra->nom_obr}}</td>
+
+                                                <td class='text-center' style="vertical-align: middle;">{{$obra->expedte}}</td>
 
                                                 <td class='text-center' style="vertical-align: middle;">{{$obra->getEmpresa->nom_emp}}</td>
                                                 
@@ -130,6 +159,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="">
+            <strong>
+                <h7>
+                    ¿Dudas? <a href="{{ asset('storage/gdu/ObrasViviendas.pdf') }}" style="color: rgb(30, 67, 233)" target="_blank">Descargue un instructivo aqui.</a> 
+                </h7>
+            </strong>
         </div>
     </section>
     {{-- <script src="{{ asset('js/usuarios/index_usuarios.js') }}"></script> --}}

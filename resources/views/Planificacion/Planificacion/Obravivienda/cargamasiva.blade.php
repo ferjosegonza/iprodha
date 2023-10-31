@@ -136,6 +136,8 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Etapa</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Entrega</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Plano</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Municipio</th>
+                                        <th class="text-center" scope="col" style="color:#fff;width:10%;">Departamento</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Seccion</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Chacra</th>
                                         <th class="text-center" scope="col" style="color:#fff;width:10%;">Manzana</th>
@@ -149,7 +151,9 @@
                                                 <td class= 'text-center' >{{$vivienda->orden}}</td>
                                                 <td class= 'text-center' >{{$vivienda->etapa}}</td>   
                                                 <td class= 'text-center' >{{$vivienda->entrega}}</td>
-                                                <td class= 'text-center' >{{$vivienda->plano}}</td>                                           
+                                                <td class= 'text-center' >{{$vivienda->plano}}</td>
+                                                <td class= 'text-center' >{{$vivienda->municipio}}</td>
+                                                <td class= 'text-center' >{{$vivienda->departamento}}</td>                                          
                                                 <td class= 'text-center' >{{$vivienda->seccion}}</td>
                                                 <td class= 'text-center' >{{$vivienda->chacra}}</td>
                                                 <td class= 'text-center' >{{$vivienda->manzana}}</td>
@@ -206,6 +210,14 @@
                                     <div class="form-group">
                                         {!! Form::label('Plano:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
                                         {!! Form::number('plano', null, ['class' => 'form-control', 'id' => 'idplano']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    <div class="form-group">
+                                        {!! Form::label('Municipio:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
+                                        <input class="form-check-input ml-4" type="checkbox" value="" onclick="habilitarInput()">
+                                        {!! Form::select('muni', $municipios, '00', ['class' => 'form-select', 'id' => 'inputmuni', 'disabled']) !!}
+
                                     </div>
                                 </div>
                             </div> 
@@ -295,4 +307,14 @@
         </div>
     </section>
     {{-- <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/cargamasiva_obravivienda.js') }}"></script> --}}
+    <script>
+        function habilitarInput(){
+            let input = document.getElementById("inputmuni");
+            if(input.disabled){
+                input.disabled = false; 
+            }else{
+                input.disabled = true;
+            }
+        }
+    </script>
 @endsection

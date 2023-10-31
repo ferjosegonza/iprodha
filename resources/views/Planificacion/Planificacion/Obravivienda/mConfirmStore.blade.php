@@ -59,8 +59,4 @@
 
       check.addEventListener('click', disableButton);
 
-      $('#btnAceptar').on('click', function() {
-        $(this).disable();
-      });
-      
   </script>

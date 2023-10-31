@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1">Asociar Concepto Sombrero - Obra: <strong>{{$unaObra->nomobra}}</strong></div>
+            <div class="titulo py-1">Asociar Concepto Impuesto - Obra: <strong>{{$unaObra->nomobra}}</strong></div>
             {{-- <a><strong>Asociar Concepto Sombrero - Obra: {{ $unaObra->nomobra}} </strong></a> --}}
         </div>
         <div class="section-body">
@@ -21,27 +21,30 @@
                                 <div class="col-12">
                                     <p>Conceptos:</p>
                                 </div>
+                                
                                 @foreach ( $losConceptos as $sombrero => $i )
-                                <div class="col-6 py-1">
-                                    <div class="row">
-                                        <div class="col-6 m-auto">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="{{$i->idconceptosombrero}}" id="flexCheckDefault{{$i->idconceptosombrero}}" name="conceptos[]">
-                                                <label class="form-check-label" for="flexCheckDefault{{$i->idconceptosombrero}}">
-                                                    {{$i->conceptosombrero}}
-                                                </label>
+                                    <div class="col-6 py-1">
+                                        <div class="row">
+                                            <div class="col-6 m-auto">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="{{$i->idconceptosombrero}}" id="flexCheckDefault{{$i->idconceptosombrero}}" name="conceptos[]" onclick="habilitarInput({{$i->idconceptosombrero}})">
+                                                    <label class="form-check-label" for="flexCheckDefault{{$i->idconceptosombrero}}">
+                                                        {{$i->conceptosombrero}}
+                                                    </label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <input type="number" class="form-control" name="valores[]" step=".01" value=0>
-                                        </div>
-                                    </div> 
-                                </div>
+                                            <div class="col-6">
+                                                <input type="number" class="form-control" name="valores[]" step=".01" value=0 id="input{{$i->idconceptosombrero}}" disabled>
+                                            </div>
+                                        </div> 
+                                    </div>
                                 @endforeach
                             </div>
                             <div class="row">
                                 <div class="d-flex mt-1">
-                                    <div class="me-auto"></div>
+                                    <div class="me-auto">
+                                        <p><strong>Valor en porcentaje. Ej:</strong> 15 o 16.5</p>
+                                    </div>
                                     <div class="p-1">
                                         {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
                                         {!! Form::close() !!}
@@ -59,4 +62,16 @@
             </div>
         </div>
     </section>
+    <script>
+
+        function habilitarInput(id){
+            let input = document.getElementById("input"+id);
+            if(input.disabled){
+                input.disabled = false; 
+            }else{
+                input.disabled = true;
+            }
+        }
+
+    </script>
 @endsection

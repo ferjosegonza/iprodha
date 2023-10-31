@@ -35,25 +35,25 @@
                                     <div class="form-group">
                                         {!! Form::label('N° Orden:', null, ['class' => 'control-label fs-6', 'style' => '']) !!}
                                         <span class="obligatorio">*</span>
-                                        {!! Form::number('orden', $ultimoOrden, ['class' => 'form-control', 'id' => 'idorden', 'required']) !!}
+                                        {!! Form::number('orden', $ultimoOrden ?? 0, ['class' => 'form-control', 'id' => 'idorden', 'required', 'data-type' => 'limitcarac3']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Plano:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        {!! Form::number('plano', null, ['class' => 'form-control', 'id' => 'idplano']) !!}
+                                        {!! Form::number('plano', null, ['class' => 'form-control', 'id' => 'idplano', 'data-type' => 'limitcarac10']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Partida:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        {!! Form::number('partida', null, ['class' => 'form-control', 'id' => 'idpartida']) !!}
+                                        {!! Form::text('partida', null, ['class' => 'form-control', 'id' => 'idpartida', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac12']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Partida UCAC:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        {!! Form::number('partidaucac', null, ['class' => 'form-control', 'id' => 'idpartidaucac']) !!}
+                                        {!! Form::text('partidaucac', null, ['class' => 'form-control', 'id' => 'idpartidaucac', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac12']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -74,31 +74,31 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Sección:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('seccion', null, ['class' => 'form-control', 'id' => 'idseccion']) !!}
+                                                {!! Form::number('seccion', null, ['class' => 'form-control', 'id' => 'idseccion', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac3']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Chacra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('chacra', null, ['class' => 'form-control', 'id' => 'idchacra']) !!}
+                                                {!! Form::text('chacra', null, ['class' => 'form-control', 'id' => 'idchacra', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Manzana:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('manzana', null, ['class' => 'form-control', 'id' => 'idmanzana']) !!}
+                                                {!! Form::text('manzana', null, ['class' => 'form-control', 'id' => 'idmanzana', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Parcela:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('parcela', null, ['class' => 'form-control', 'id' => 'idparcela']) !!}
+                                                {!! Form::text('parcela', null, ['class' => 'form-control', 'id' => 'idparcela', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Finca:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('finca', null, ['class' => 'form-control', 'id' => 'idfinca']) !!}
+                                                {!! Form::number('finca', null, ['class' => 'form-control', 'id' => 'idfinca', 'data-type' => 'limitcarac6']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -106,31 +106,31 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Edificio:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('edif', null, ['class' => 'form-control', 'id' => 'idedif']) !!}
+                                                {!! Form::text('edif', null, ['class' => 'form-control', 'id' => 'idedif', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac5']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Piso:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('piso', null, ['class' => 'form-control', 'id' => 'idpiso']) !!}
+                                                {!! Form::text('piso', null, ['class' => 'form-control', 'id' => 'idpiso', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac2']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Departamento:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('depto', null, ['class' => 'form-control', 'id' => 'iddepto']) !!}
+                                                {!! Form::text('depto', null, ['class' => 'form-control', 'id' => 'iddepto', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac5']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Escalera:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('esca', null, ['class' => 'form-control', 'id' => 'idesca']) !!}
+                                                {!! Form::text('esca', null, ['class' => 'form-control', 'id' => 'idesca', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac5']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Unidad funcional:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('unfun', null, ['class' => 'form-control', 'id' => 'idunfun']) !!}
+                                                {!! Form::text('unfun', null, ['class' => 'form-control', 'id' => 'idunfun', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac6']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -146,13 +146,13 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                             <div class="form-group">
                                                 {!! Form::label('Manzana:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('letmanza', null, ['class' => 'form-control', 'id' => 'idempmanza']) !!}
+                                                {!! Form::text('letmanza', null, ['class' => 'form-control', 'id' => 'idempmanza', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                             <div class="form-group">
                                                 {!! Form::label('Lote:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('lote', null, ['class' => 'form-control', 'id' => 'idlote']) !!}
+                                                {!! Form::text('lote', null, ['class' => 'form-control', 'id' => 'idlote', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac12']) !!}
                                             </div>
                                         </div>
                                     </div> 
@@ -165,19 +165,19 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('N° Calle:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::number('numcalle', null, ['class' => 'form-control', 'id' => 'idnumcalle']) !!}
+                                                {!! Form::text('numcalle', null, ['class' => 'form-control', 'id' => 'idnumcalle', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                                             <div class="form-group">
                                                 {!! Form::label('Nombre Calle:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('nomcalle', null, ['class' => 'form-control', 'id' => 'idnomcalle']) !!}
+                                                {!! Form::text('nomcalle', null, ['class' => 'form-control', 'id' => 'idnomcalle', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac50']) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                             <div class="form-group">
                                                 {!! Form::label('Entre Calles:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('ent_calles', null, ['class' => 'form-control', 'id' => 'identcalle']) !!}
+                                                {!! Form::text('ent_calles', null, ['class' => 'form-control', 'id' => 'identcalle', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac80']) !!}
                                             </div>
                                         </div>
                                         
@@ -219,7 +219,7 @@
                                         (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAS')
+                                        @can('CREAR-OBRAVIVIENDA')
                                             {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                         @endcan
                                         {!! Form::close() !!}
@@ -237,4 +237,5 @@
             </div>
         </div>
     </section>
+    <script src="{{ asset('js/Planificacion/Planificacion/Obravivienda/format_obravivienda.js') }}"></script>
 @endsection

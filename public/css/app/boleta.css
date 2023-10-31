@@ -1,0 +1,11 @@
+h5{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.center{
+    align-items: center;
+}
+table{
+    width: 100%;
+}
+.modal.modal-sm { max-width: unset !important; right: 0; }

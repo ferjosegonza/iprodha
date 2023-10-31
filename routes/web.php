@@ -35,8 +35,7 @@ use App\Http\Controllers\sectorController;
 use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
-use App\Http\Controllers\App\AuthAppController;
-
+use App\Http\Controllers\App\AppNotificacionesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,22 +49,20 @@ use App\Http\Controllers\App\AuthAppController;
 // Route::get('/ipusuario', function(Request $request){
 //     echo request()->ip();
 // });
-Route::get('/ob_lic',[ob_licitacionController::class,'index']);
-
-
-Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
-Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
 
 Route::get('/sintaxis',function()
     {return view('zsintaxis.LaravelCollective');})->name('sintaxis.index');
 
 Route::get('/registerEmpIprodha',function(){
-        return view('auth.registerEmp');
+        // return view('auth.registerEmp');
+        return view('auth.register');
 })->name('register.emp');
 
 Route::get('/loginIprodha',function(){
-    return view('auth.loginEmp');
+    // return view('auth.loginEmp');
+    return view('auth.login');
 })->name('login.iprodha');
+
 // Jorge
 //Route::get('/terrenos', [TerrenosController::class, 'index']);
 Route::group(['middleware' => ['auth']], function(){
@@ -151,15 +148,23 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],func
     Route::get('/barrio/{barrio}/vercostos',[Fc_concosxbarrioController::class,'edit'])->name('barrio.verCostos');        
 });
 
+//ob_licitacion
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN']],function() {
+    Route::get('/ob_lic',[ob_licitacionController::class,'index'])->name('ob_lic.index');    
+    Route::get('/ob_lic/crear',[ob_licitacionController::class,'create'])->name('ob_lic.crear');    
+    Route::post('/ob_lic',[ob_licitacionController::class,'store'])->name('ob_lic.store');
+    Route::post('/ob_lic/subir1/{path?}',[ob_licitacionController::class,'subir1'])->name('ob_lic.subir1');
+    Route::get('/ob_lic/subir/{path?}',[ob_licitacionController::class,'subir'])->name('ob_lic.subir');      
+});
+
 Route::delete('/terrenoSup/eliminar/{barrio}/{id}',[barrio_terrenoController::class,'destroy'])->name('terrenoSup.eliminar');    
 Route::get('/barrio/{barrio}/terrenoSup',[barrio_terrenoController::class,'index'])->name('barrio.terrenoSup');
 Route::post('/terrenoSup',[barrio_terrenoController::class,'store']);
 Route::resource('terrenoSup',barrio_terrenoController::class);
 
-Route::delete('/dormXTerr/eliminar/{barrio}/{dor}/{terr}/{con}',[BarrioXOrgController::class,'destroy'])->name('dormXTerr.eliminar');
+Route::delete('/dormXTerr/eliminar/{barrio}/{dor}/{terr}',[BarrioXOrgController::class,'destroy'])->name('dormXTerr.eliminar');
 Route::get('/barrio/{barrio}/dormXTerr',[BarrioXOrgController::class,'index'])->name('barrio.dormXTerr');
 Route::resource('dormXTerr',BarrioXOrgController::class);
-Route::get('/barrio/{barrio}/fc_conxbarrio',[fc_conxbarrioController::class,'index'])->name('barrio.fc_conxbarrio');
 
 Route::get('/obras84',function()
         {//return view('welcome');
@@ -229,4 +234,11 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], func
     Route::get('digesto/modificaciones', [DigestoController::class, 'modificaciones'])->name('digesto.modificaciones');
     Route::get('digesto/buscador', [DigestoController::class, 'buscador'])->name('digesto.buscador');
     Route::get('digesto/check', [DigestoController::class, 'check'])->name('digesto.check');
+    Route::put('digesto/modificar', [DigestoController::class, 'modificar'])->name('digesto.modificar');
+});
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
+    Route::get('notificaciones/boletas', [AppNotificacionesController::class, 'notificacionBoletas'])->name('notificaciones.boletas');
+    Route::get('notificaciones/boletas/pendientes', [AppNotificacionesController::class, 'pendientes'])->name('notificaciones.boletasPendientes');
+    Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');
 });

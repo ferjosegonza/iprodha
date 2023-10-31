@@ -25,7 +25,7 @@ class TramiteController extends Controller
         $tramites = json_decode($request->tramite);
 
         $this->validate($request, [
-            'doc' => 'required|numeric|max:99999999|min:10000000',
+            'doc' => 'required|numeric|max:99999999|min:1000000',
             'nombre' => 'required',
             'cel' => 'numeric|nullable',
             'tipo' => 'required|numeric'
@@ -125,7 +125,7 @@ class TramiteController extends Controller
         else{
             $documento = array('id' => $resultado[0]->doc_id, 'nro' => $resultado[0]->numero, 'asun' => $resultado[0]->exp_asunto);
         }
-        return response()->json($documento);      
+        return response()->json($resultado);      
     }
 
     public function modificar(Request $request){
@@ -133,7 +133,7 @@ class TramiteController extends Controller
         $tramites = json_decode($request->tramite);
 
         $this->validate($request, [
-            'doc' => 'required|numeric|max:99999999|min:10000000',
+            'doc' => 'required|numeric|max:99999999|min:1000000',
             'nombre' => 'required',
             'cel' => 'numeric|nullable',
             'tipo' => 'required|numeric'
@@ -244,5 +244,12 @@ class TramiteController extends Controller
         }
 
         return response()->json($res);        
+    }
+
+    public function updateMovimiento(Request $request){
+        $mov = Not_tramite_movimiento::where('id_movimiento', '=', $request->idmov)
+        ->where('id_tramite', '=', $request->id)->first();
+        $res = $mov->modificar($request->obs, $request->medio);
+        return response()->json($res);
     }
 }

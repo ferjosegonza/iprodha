@@ -91,7 +91,7 @@
                         </div>  
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 flex">
                         {!! Form::label('Buscar por otros parámetros:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                        <input type="text" name="busqueda" id="busq" onkeyup="filtrar()" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">
+                        <input type="text" name="busqueda" id="busq" class="form-control" placeholder="Ej: DNI:00000000 o 00000000">
                         {{--  {!! Form::text('busqueda', null, ['class' => 'form-control', 'id' => 'busq', 'onchange'=>'filtrar()', 'placeholder'=>'Ej: DNI:00000000 o 00000000']) !!}  --}}
                     </div> 
                 </div>                

@@ -33,21 +33,22 @@ class Ofe_sombreroController extends Controller
         $losConceptos = Ofe_conceptosombrero::all();
         return view('Obrasyfinan.Ofertas.ofesombrero.editar',compact('unaObra','sombrerosxobra','losConceptos'));
     }
+
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'conceptos' => 'required'                
+        // return $request;
+        $this->validate($request, [
+            'conceptos' => 'required'
         ], [
             'conceptos.required' => 'No hay concepto seleccionado.'
         ]);
-
-        $input  = $request->all();         
+     
         $ar_onceptos=array();
         $ar_valores=array();
-        $items=0;
-        $todoOK=true;
-        $valores=$request->valores;
-        $conceptos=$request->conceptos;
+
+        $items = 0;
+        $todoOK = true;
+        
         foreach ($request->input('conceptos') as $indice => $i) {
                 array_push($ar_onceptos, $i);
                 $items++;
@@ -58,28 +59,27 @@ class Ofe_sombreroController extends Controller
             }
         }
         for($p = 0; $p < $items; $p++) {
-            if($ar_valores[$p]<0 || $ar_valores[$p]>100){
+            if($ar_valores[$p] < 0 || $ar_valores[$p]>100){
                 $todoOK=false;
                 return redirect()->route('ofesombreroxobra.crear', base64url_encode($request->input('idobra')))->with('error', 'Los valores deben estar comprendidos entre 0 y 100.');
             }
         }
         if($todoOK){
             for($p = 0; $p < $items; $p++) {
-                $sombre = new Ofe_sombrero;
-                $sombre->idobra = $request->input('idobra');
-                $sombre->idconceptosombrero = $ar_onceptos[$p];
-                $sombre->valor = $ar_valores[$p];
-                $sombre->save(); 
+                Ofe_sombrero::create([
+                    'idobra' => $request->input('idobra'),
+                    'idconceptosombrero' => $ar_onceptos[$p],
+                    'valor' => $ar_valores[$p]
+                ]);
+                // $sombre = new Ofe_sombrero;
+                // $sombre->idobra = $request->input('idobra');
+                // $sombre->idconceptosombrero = $ar_onceptos[$p];
+                // $sombre->valor = $ar_valores[$p];
+                // $sombre->save(); 
             }
         }else{
-            //return redirect()->route('ofesombreroxobra.index',$request->input('idobra'))->withErrors($validatedData);
-            //return redirect('ofesombreroxobra.index')->with('error', 'Valores no permitidos');
-            
-            //return redirect('/')->with('error', 'Error string');
             return redirect()->route('ofesombreroxobra.crear', base64url_encode($request->input('idobra')))->with('error', 'Los valores deben estar comprendidos entre 0 y 100.');
         }
-        
-        //return redirect('/ofesombreroxobra')->route('ofesombreroxobra.indexx',$request->input('idobra'));
         return redirect()->route('ofesombreroxobra.indexx',base64url_encode($request->input('idobra')));
     } 
 

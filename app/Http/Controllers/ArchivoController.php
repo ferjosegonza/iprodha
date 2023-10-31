@@ -109,9 +109,6 @@ public function buscar(Request $request){
 
 
     $archivos = DB::select( DB::raw($query));
-    $TipoDocumento = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('nombre_corto')->get();
-    $SubTipoDocumento = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
-    $Tags = Dig_tags::where('estructura','=','1')->orderBy('descripcion')->get();
 
     return response()->json($archivos);
 } 
@@ -141,7 +138,7 @@ public function digitalizar(){
     $SubTipoDocumento = Dig_subtipoarchivo::orderBy('dessubtipoarchivo')->orderBy('id_tipoarchivo', 'asc')->orderBy('id_subtipoarchivo', 'asc')->get();
     $Empresas = Empresa::orderBy('nom_emp','asc')->get();
     $Localidades = Localidad::select('nom_loc','id_loc')->get();
-    $Tags = Dig_tags::where('estructura', '=', 1)->orderBy('descripcion','asc')->get();
+    $Tags = Dig_tags::orderBy('descripcion','asc')->get();
 
     return view('archivo.digitalizar')
         ->with('TipoDocumento',$TipoDocumento)
@@ -165,17 +162,14 @@ public function check(Request $request){
                 ->first();
   
     return response()->json(['response' => $archivo]);
-
-    if($archivo == null){
-        $archivo = 'null';
-    }
-    return response()->json($archivo);
 }
 
 public function getArchivos(Request $request){  
     if($request->fecha != null){
         $fecha = explode("-", $request->fecha);
-        $query = "select * from iprodha.dig_archivos da 
+        $query = "select da.id_archivo, id_tipoarchivo, id_subtipoarchivo, ano_archivo,
+        mes_archivo, dia_archivo, nro_archivo, claves_archivo, path_archivo,
+        nombre_archivo, fecha_carga, id_tipocabecera, fecha_boletin, orden, asunto from iprodha.dig_archivos da 
         left join iprodha.dig_asunto ds 
         on ds.id_archivo = da.id_archivo 
         where id_tipoarchivo = $request->tipo 
@@ -188,7 +182,9 @@ public function getArchivos(Request $request){
         $archivo = DB::select( DB::raw($query));
     }
     else{
-        $query = "select * from iprodha.dig_archivos da 
+        $query = "select da.id_archivo, id_tipoarchivo, id_subtipoarchivo, ano_archivo,
+        mes_archivo, dia_archivo, nro_archivo, claves_archivo, path_archivo,
+        nombre_archivo, fecha_carga, id_tipocabecera, fecha_boletin, orden, asunto from iprodha.dig_archivos da 
         left join iprodha.dig_asunto ds 
         on ds.id_archivo = da.id_archivo 
         where id_tipoarchivo = $request->tipo 
@@ -230,7 +226,6 @@ public function getSelects(Request $request){
 }
 
 public function complejos(Request $request){
-
     $query="select dt.id_tag, dt.descripcion, id_tag_hijo, orden, sc1.descripcion as deschijo, sc1.dato_tipo, sc1.dato 
     from iprodha.dig_tags dt 
     inner join iprodha.dig_tags_complejo dtc on
@@ -260,8 +255,7 @@ public function complejos(Request $request){
 }
 
 public function busquedaDirigida(Request $request){
-
-   $busqueda = Dig_tag_busqueda::where('id_tag','=', $request->id)->first();
+    $busqueda = Dig_tag_busqueda::where('id_tag','=', $request->id)->first();
     
     $query = "SELECT $busqueda->campo1 as campo1 FROM $busqueda->esquema.$busqueda->tabla 
             WHERE $busqueda->campo1 LIKE '%$request->texto%'";
@@ -336,6 +330,15 @@ public function modificar(Request $request){
     $archivo->id_tipoarchivo = $request->tipo;
     $archivo->id_subtipoarchivo = $request->subtipo;
     $archivo->id_tipocabecera = $request->cabecera;
+    $archivo->nombre_archivo = $request->pdfname;
+    $archivo->nro_archivo = $request->doc;
+    $path = Dig_subtipoarchivo::where('id_tipocabecera', '=', $request->cabecera)
+    ->where('id_tipoarchivo', '=', $request->tipo)
+    ->where('id_subtipoarchivo', '=', $request->subtipo)
+    ->first();
+    if($path != null){
+        $archivo->path_archivo = $path->path_archivo;
+    }
     $res = $archivo->save();
     //
      $asunto = Dig_asunto::where('id_archivo', '=', $archivo->id_archivo)->first();
@@ -358,7 +361,6 @@ public function modificar(Request $request){
 
 public function derivados(Request $request){
     $busqueda = Dig_tag_busqueda::where('id_tag', '=', $request->id)->first();
-
     
     if( is_string($request->value)){
         $query = "SELECT $busqueda->campo2 as dato FROM $busqueda->esquema.$busqueda->tabla where $busqueda->campo1 like '%$request->value%'";

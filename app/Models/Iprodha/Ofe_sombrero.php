@@ -45,7 +45,7 @@ class Ofe_sombrero extends Model
     }
     public function getFormattedValorAttribute()
     {
-        return number_format($this->attributes['valor'], 4);
+        return number_format($this->attributes['valor'], 2);
     }
     
 }

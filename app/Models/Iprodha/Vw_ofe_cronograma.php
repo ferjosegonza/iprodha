@@ -28,7 +28,8 @@ class Vw_ofe_cronograma extends Model
         'avance',
         'incidencia',
         'importe',
-        'poravaacuitem'
+        'poravaacuitem',
+        'avaitempor'
     ];
 
     protected $casts = [

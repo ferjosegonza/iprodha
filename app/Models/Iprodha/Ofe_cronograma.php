@@ -14,10 +14,10 @@ class Ofe_cronograma extends Model
     
     protected $table = 'iprodha.ofe_cronograma';
     protected $primaryKey = 'idcrono';
-    public $incrementing = false;
+    public $incrementing = true;
 
     protected $fillable = [ 
-        'idcrono',    'iditem', 'mes', 'avance',
+        'idcrono', 'iditem', 'mes', 'avance', 'porcentaje',
     ];
     
     // public function getEstadoTarea()

@@ -38,4 +38,8 @@ class Expediente extends Model
     {
         return $this->belongsTo(Ofe_obra::class, 'idexpediente', 'exp_doc_id');
     }
+
+    // public function getExpNumeroWithoutSpaces() {
+    //     return preg_replace('/\s+/', '', $this->exp_numero);
+    // }
 }

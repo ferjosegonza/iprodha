@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Obrasyfinan\Ofertas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 //agregamos
 
 use App\Models\Iprodha\Ofe_cronograma;
@@ -27,6 +27,18 @@ class Ofe_cronogramaController extends Controller
     public function index(Request $request)
     {     
         return view('Obrasyfinan.Ofertas.ofecrono.index');
+    }
+
+    public function indexPorc(Request $request, $id)
+    {     
+        $id = base64url_decode($id);
+
+        $losItems = DB::select('select i.idobra, i.iditem, i.orden, i.nom_item, i.por_inc, NVL(a.AvaItemPor, 0) AvaItemPor, CASE WHEN a.AvaItemPor >= 100 THEN 1 ELSE 0 END estado from iprodha.ofe_item i left join (select iditem, sum(porcentaje) AvaItemPor from iprodha.ofe_cronograma group by iditem) a on a.iditem = i.iditem where idobra = ? order by orden', [$id]);
+        
+        $items = Ofe_item::all()->where('idobra', '=', $id)->sortBy('orden')->pluck('orden_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
+        // $items = Ofe_item::where('idobra', '=', $id)->orderBy('iditem')->pluck('orden_item', 'iditem')->prepend('Seleccionar...', '0')->toArray();
+        $plazo = Ofe_obra::where('idobra', $id)->first()->plazo;
+        return view('Obrasyfinan.Ofertas.ofecrono.indexPorc', compact('losItems', 'plazo', 'items', 'id'));
     }
     
     public function create(Request $request)
@@ -65,7 +77,7 @@ class Ofe_cronogramaController extends Controller
 
     public function losItems($obra, $mes)
     {
-        $items = Vw_ofe_cronograma::where('idobra', '=', $obra)->where('mes', '=', $mes)->get();
+        $items = Vw_ofe_cronograma::where('idobra', '=', $obra)->where('mes', '=', $mes)->orderBy('orden')->get();
         return $items;
     }
 
@@ -75,18 +87,10 @@ class Ofe_cronogramaController extends Controller
         return $unItem;
     }
 
-    public function guardarCrono($mes, $item, $avance)
+    public function guardarCrono($mes, $item, $avance, $porc)
     {
-        $nuevoCrono = Ofe_cronograma::create(['iditem' => $item, 'mes' => $mes, 'avance' => $avance]);
-        // $unItem = Ofe_item::where('iditem', "=", $item)->where('idobra', '=', $obra)->get();
-        // return $unItem;
-        // $idCrono = Ofe_cronograma::orderBy('idcrono', 'desc')->first()->idcrono;
-        // return $idCrono;
-        // $nuevoCrono = new Ofe_cronograma();
-        // $nuevoCrono->iditem = $item;
-        // $nuevoCrono->mes = $mes;
-        // $nuevoCrono->avance = $avance;
-        // $nuevoCrono->save();
+        // return $porc;
+        $nuevoCrono = Ofe_cronograma::create(['iditem' => $item, 'mes' => $mes, 'avance' => $avance, 'porcentaje' => $porc]);
         return $nuevoCrono;
     }
 
@@ -110,5 +114,36 @@ class Ofe_cronogramaController extends Controller
         }else{
             return 0;
         }
+    }
+
+    public function infoItem($item)
+    {
+        $elItem = Vw_ofe_cronograma::where('iditem', '=', $item)->first();
+        // return $elItem;
+        $incItem = Ofe_item::where('iditem', $item)->first();
+
+        $avaAcuItem = ofe_cronograma::where('iditem', $item)->sum('porcentaje');
+        
+        $infoItem = array();
+        
+        if(!empty($elItem)){
+            array_push($infoItem, (object)['por_inc' => $elItem->por_inc,
+                                        'avaTotal' => $elItem->poravaacuitem,
+                                        'avaTotalPor' => $avaAcuItem
+                                        ]);
+        }else{
+            array_push($infoItem, (object)['por_inc' => $incItem->por_inc,
+                                        'avaTotal' => 0,
+                                        'avaTotalPor' => 0
+                                        ]);
+        }
+        return $infoItem;
+    }
+
+    public function limpiarAvanceITem($iditem){
+
+        $cronoItem = ofe_cronograma::where('iditem', $iditem)->get();
+        $cronoItem->each->delete();
+        return back()->with('mensaje','Se limpio el avance del item.');
     }
 }
