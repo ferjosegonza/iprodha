@@ -149,7 +149,7 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],func
 });
 
 //ob_licitacion
-Route::group(['middleware' => ['auth','role_or_permission:ADMIN']],function() {
+Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-OB_LIC']],function(){
     Route::get('/ob_lic',[ob_licitacionController::class,'index'])->name('ob_lic.index');    
     Route::get('/ob_lic/crear',[ob_licitacionController::class,'create'])->name('ob_lic.crear');    
     Route::post('/ob_lic',[ob_licitacionController::class,'store'])->name('ob_lic.store');
