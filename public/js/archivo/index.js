@@ -886,6 +886,9 @@ function buscarArchivos(){
             let table = $('#archivos').DataTable()
             table.clear()
             console.log(res.length)
+            if(res.length == 0){
+                alert('No se encontraron archivos.')
+            }
             for(let i=0; i<res.length; i++){
                 console.log(res[i])
                 let claves 
