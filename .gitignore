@@ -3,6 +3,7 @@
 /public/storage
 /public/images
 /public/Documentos
+/public/DocumentacionWeb
 /storage/*.key
 /vendor
 .env
@@ -17,3 +18,4 @@ yarn-error.log
 /.vscode
 /nbproject/private/
 .pdf
+*.pdf

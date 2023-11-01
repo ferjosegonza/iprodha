@@ -54,7 +54,7 @@
 </style>
     <section class="section">
         <div class="section-header">
-            <div class="titulo py-1">Gestion de Etapas y Entregas de la Obra</div>
+            <h5 class="titulo py-1">Gestion de Etapas y Entregas de la Obra</h5>
         </div>
         <div class="section-body">
             <div class="row">
