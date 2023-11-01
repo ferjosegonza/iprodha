@@ -1105,6 +1105,7 @@ class ObraviviendaController extends Controller
         $etapa = Ob_etapa::find($ideta);
 
         if(empty($request->input('vivs'))){
+            
             $viviendas = Ob_vivienda::where('id_ent', '=', $id)->get();
 
             foreach($viviendas as $vivienda){
