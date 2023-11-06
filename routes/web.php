@@ -36,6 +36,7 @@ use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\App\AppNotificacionesController;
+use App\Http\Controllers\App\AuthAppController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -241,4 +242,9 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () 
     Route::get('notificaciones/boletas', [AppNotificacionesController::class, 'notificacionBoletas'])->name('notificaciones.boletas');
     Route::get('notificaciones/boletas/pendientes', [AppNotificacionesController::class, 'pendientes'])->name('notificaciones.boletasPendientes');
     Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('ciudadano', [AuthAppController::class, 'loginCiudadano'])->name('app.ciudadano');
+    Route::get('iprodha-ciudadano', [AuthAppController::class, 'iprodhaCiudadano'])->name('app.Ipciudadano');
 });
