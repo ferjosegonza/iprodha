@@ -9,6 +9,10 @@ use App\Models\Iprodha\App_usuario;
 
 class AuthAppController extends Controller
 {
+    public function loginCiudadano(){
+        return view('app.loginCiudadano');
+    }
+
     public function registerApp(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',

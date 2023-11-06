@@ -1,0 +1,15 @@
+body{
+    background-color: orange;
+}
+button{
+    width: 95%;
+    height: 15%;
+    font-size: 60;
+    align-self: center;   
+}
+#container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
