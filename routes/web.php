@@ -246,4 +246,5 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () 
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('ciudadano', [AuthAppController::class, 'loginCiudadano'])->name('app.ciudadano');
+    Route::get('iprodha-ciudadano', [AuthAppController::class, 'iprodhaCiudadano'])->name('app.Ipciudadano');
 });

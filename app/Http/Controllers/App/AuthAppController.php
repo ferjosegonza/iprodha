@@ -9,8 +9,12 @@ use App\Models\Iprodha\App_usuario;
 
 class AuthAppController extends Controller
 {
-    public function loginCiudadano(){
+    public function loginCiudadano(Request $request){
         return view('app.loginCiudadano');
+    }
+
+    public function iprodhaCiudadano(Request $request){
+        return view('app.iprodhaCiudadano');
     }
 
     public function registerApp(Request $request){
