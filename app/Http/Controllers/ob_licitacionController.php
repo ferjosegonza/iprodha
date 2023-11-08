@@ -6,6 +6,7 @@
     use Illuminate\Http\Request;
     use Illuminate\Validation\Validator;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Storage;
 
     class ob_licitacionController extends Controller{
         function __construct(){
@@ -39,13 +40,20 @@
             $unOb_licitacion->save();
             return redirect()->route('ob_lic.index')->with('mensaje','Licitacion '.$unOb_licitacion->denominacion.' creada con exito.');
         }   
-        public function subir(Request $request){return view('ob_licitacion.subir',compact('request'));}
-        public function subir1(Request $request){
-            // Validación del archivo (tamaño, tipo, etc.) aquí si es necesario            
-            $archivo=$request->file('archivo');            
+        public function subir(Request $request){
+            $archivos=Storage::files($request['dir']);
+            return view('ob_licitacion.subir',compact('request','archivos'));
+        }
+        public function subir1(Request $request){                      
+            $archivo=$request->file('archivo');  
+            //comprueba si no existe el directorio lo crea          
+            if(!Storage::exists($request['dir']))Storage::makeDirectory($request['dir']);            
             // Guardar el archivo en el sistema de archivos
-            $archivo->storeAs($request['dir'],$archivo->getClientOriginalName());
-            // Lógica adicional (guardar la ruta en la base de datos, etc.) aquí si es necesario
+            $archivo->storeAs($request['dir'],$archivo->getClientOriginalName());            
             return redirect()->route('ob_lic.index')->with('mensaje','Archivo subido con éxito');
+        }
+        public function destroy(Request $request){
+            Storage::delete($request['dir']);
+            return redirect()->route('ob_lic.index')->with('mensaje','Archivo Eliminado con éxito');
         }
     }

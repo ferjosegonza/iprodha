@@ -151,6 +151,7 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-OB_LIC']],func
     Route::get('/ob_lic/crear',[ob_licitacionController::class,'create'])->name('ob_lic.crear');    
     Route::post('/ob_lic',[ob_licitacionController::class,'store'])->name('ob_lic.store');
     Route::post('/ob_lic/subir1/{path?}',[ob_licitacionController::class,'subir1'])->name('ob_lic.subir1');
+    Route::delete('/ob_lic/destroy/{path?}',[ob_licitacionController::class,'destroy'])->name('ob_lic.destroy');
     Route::get('/ob_lic/subir/{path?}',[ob_licitacionController::class,'subir'])->name('ob_lic.subir');      
 });
 
