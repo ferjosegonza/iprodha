@@ -196,7 +196,7 @@
                                                 <td class= 'text-center' >{{$vivienda->escalera}}</td>
                                                 <td class= 'text-center' >{{$vivienda->uni_fun}}</td>
                                                 <td class= 'text-center' >
-                                                    @can('EDITAR-OBRAVIVIENDA')
+                                                    @can('EDITAR-VIVIENDA')
                                                         {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.editarviv', $vivienda->id_viv, $obra->id_obr], 'style' => 'display:inline']) !!}
                                                         {!! Form::submit('Editar', ['class' => 'btn btn-primary mb-2 w-100']) !!}
                                                         {!! Form::close() !!}

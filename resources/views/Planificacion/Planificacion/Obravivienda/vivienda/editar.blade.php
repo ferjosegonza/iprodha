@@ -232,7 +232,7 @@
                                     </div>
                                     <div class="p-1">
                                         @if($estado[0]->modif)
-                                            @can('EDITAR-OBRAVIVIENDA')
+                                            @can('EDITAR-VIVIENDA')
                                                 {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                             @endcan
                                         @endif
