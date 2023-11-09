@@ -235,6 +235,10 @@
                                             @can('EDITAR-VIVIENDA')
                                                 {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                             @endcan
+                                        @else
+                                            @can('EDITAR-VIVIENDACOMPROMETIDA')
+                                                {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
+                                            @endcan
                                         @endif
                                         
                                         {!! Form::close() !!}
