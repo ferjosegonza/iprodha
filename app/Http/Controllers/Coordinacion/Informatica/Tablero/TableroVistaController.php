@@ -48,9 +48,11 @@ class TableroVistaController extends Controller
 
     public function store(Request $request)
     {
+        $nombreTablero = Lav_tc_tablero::find($request->input('idtablero'));
+        $nombreVista = 'iprodha.vw_tc_'.$nombreTablero->nombre_tablero.'_'.$request->input('alias');
         Lav_tc_vista::create([
             'alias_vista' => $request->input('alias'),
-            'nombre_vista' => $request->input('nombre'),
+            'nombre_vista' => $nombreVista,
             'id_tc_tablero' => $request->input('idtablero')
         ]);
         return redirect()->route('tab_vista.index')->with('mensaje','La vista '.$request->input('nombre').' creado con éxito!.');
