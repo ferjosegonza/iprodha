@@ -10,10 +10,14 @@
         <table style="width:50%;" class="table  table-striped mt-2 ">
             <thead style="height:50px;"><th>Archivos subidos:</th><th>Acciones</th></thead>
             @foreach($archivos as $archivo)            
-                <?php $ruta=str_replace('public','storage/app',asset($archivo))?>
+                <?php $ruta=asset($archivo)?>
                 <tbody>
                     <tr>
-                        <td><a href="<?php echo $ruta?>" target="_blank">{{basename($archivo)}}</a></td>
+                        <td>
+                            <a href="<?php echo str_replace('C:\xampp\htdocs\iprodha\public\\','',$ruta)?>" target="_blank">
+                                {{basename($archivo)}}
+                            </a>
+                        </td>
                         <td>
                             @method('DELETE')                                                        
                             {!!Form::open([
