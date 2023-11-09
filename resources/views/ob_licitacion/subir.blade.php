@@ -10,11 +10,13 @@
         <table style="width:50%;" class="table  table-striped mt-2 ">
             <thead style="height:50px;"><th>Archivos subidos:</th><th>Acciones</th></thead>
             @foreach($archivos as $archivo)            
-                <?php $ruta=asset($archivo)?>
+                <?php 
+                    $ruta='http://'.$_SERVER['HTTP_HOST']."/iprodha/public/storage/upload/".$request['dir'].'/'.basename($archivo)
+                ?>
                 <tbody>
                     <tr>
                         <td>
-                            <a href="<?php echo str_replace('C:\xampp\htdocs\iprodha\public\\','',$ruta)?>" target="_blank">
+                            <a href="<?php echo$ruta?>" target="_blank">
                                 {{basename($archivo)}}
                             </a>
                         </td>
@@ -22,7 +24,7 @@
                             @method('DELETE')                                                        
                             {!!Form::open([
                                 'method'=>'DELETE',
-                                'route'=>['ob_lic.destroy',['dir'=>$archivo]],
+                                'route'=>['ob_lic.destroy',['dir'=>$request['dir'].'/'.basename($archivo)]],
                                 'style'=>'display:inline'
                             ])!!}
                             {!!Form::submit('Borrar',[
