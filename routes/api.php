@@ -10,6 +10,7 @@ use App\Http\Controllers\Coordinacion\Informatica\Tablero\No001Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\At001Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\At002Controller;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\At003Controller;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\TableroVistaController;
 use App\Http\Controllers\App\AuthAppController;
 use App\Http\Controllers\App\LegajoAppController;
 /*
@@ -75,6 +76,10 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/at003/actualizaciones', [At003Controller::class, 'actualizaciones']);
     Route::get('/at003/altas', [At003Controller::class, 'altas']);
     Route::get('/at003/movimientos', [At003Controller::class, 'movimientos']);
+});
+
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/tc/{tablero}/{alias}', [TableroVistaController::class, 'obtenerDatos']);
 });
 
 Route::group(['middleware' => ['auth:api']], function(){
