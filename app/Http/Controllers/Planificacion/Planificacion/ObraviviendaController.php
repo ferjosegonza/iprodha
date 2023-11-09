@@ -1255,7 +1255,8 @@ class ObraviviendaController extends Controller
         $entregaActual = Ob_entrega::find($vivienda->id_ent);
         $etapaActual = Ob_etapa::find($entregaActual->id_eta)->id_etapa;
         $municipios = Municipios::orderBy('nom_municipio')->pluck('nom_municipio','id_municipio');
-        return view('Planificacion.Planificacion.Obravivienda.vivienda.editar', compact('vivienda', 'obra', 'etapaActual', 'municipios'));
+        $estado = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viv]);
+        return view('Planificacion.Planificacion.Obravivienda.vivienda.editar', compact('vivienda', 'obra', 'etapaActual', 'municipios', 'estado'));
     }
 
     public function updateViv(Request $request, $viv, $obra){
