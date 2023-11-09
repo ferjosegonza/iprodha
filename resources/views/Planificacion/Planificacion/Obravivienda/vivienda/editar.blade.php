@@ -13,9 +13,27 @@
                     <div class="card">
                         <div class="card-head">
                             <br>
-                            <div class="text-center">
-                                <h6>Vivienda</h6>
+                            <div class="row">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-4 text-center">
+                                    <h6>Vivienda</h6>
+                                </div>
+                                <div class="col-4 text-center">
+                                     @if ($estado[0]->modif)
+                                        <h6>Estado: <label style="color: green">Libre</label>  - Se puede editar</h6>
+                                     @else
+                                        <h6>Estado: <label style="color: red">Comprometida</label>  - No se puede editar</h6>
+                                     @endif
+                                    
+                                </div>
                             </div>
+                            {{-- <div>Estado: </div> --}}
+                            {{-- <div class="text-center">
+                                <h6>Vivienda</h6>
+                                <h6>Estado: </h6>
+                            </div> --}}
                         </div>
                         <div class="card-body">
                             {!! Form::open(['method' => 'POST','route' => 'obravivienda.guardarvivienda']) !!}
@@ -213,9 +231,12 @@
                                         (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @can('CREAR-OBRAVIVIENDA')
-                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
-                                        @endcan
+                                        @if($estado[0]->modif)
+                                            @can('EDITAR-OBRAVIVIENDA')
+                                                {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
+                                            @endcan
+                                        @endif
+                                        
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="p-1">

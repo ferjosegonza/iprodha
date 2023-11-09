@@ -6,20 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Vw_ofe_crono_desem_ant extends Model
+class Not_tramite_tipo extends Model
 {
     use HasFactory;
     
     public $timestamps = false;
     
-    protected $table = 'iprodha.vw_ofe_crono_desem_ant';
-    // protected $primaryKey = 'idcrono';
-    public $incrementing = false;
+    protected $table = 'iprodha.not_tramite_tipo';
+    protected $primaryKey = 'id_tipo';
 
     protected $fillable = [ 
-        'idobra',
-        'mes',
-        'costo',
+        'descripcion'
     ];
 
 }
