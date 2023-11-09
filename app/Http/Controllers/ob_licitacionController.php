@@ -7,6 +7,7 @@
     use Illuminate\Validation\Validator;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Facades\File;
 
     class ob_licitacionController extends Controller{
         function __construct(){
@@ -41,7 +42,9 @@
             return redirect()->route('ob_lic.index')->with('mensaje','Licitacion '.$unOb_licitacion->denominacion.' creada con exito.');
         }   
         public function subir(Request $request){
-            $archivos=Storage::files($request['dir']);
+            //$archivos=Storage::files($request['dir']);
+            $path=public_path()."\storage\upload\\".str_replace("/","\\",$request['dir']);            
+            $archivos=File::files($path);            
             return view('ob_licitacion.subir',compact('request','archivos'));
         }
         public function subir1(Request $request){                      
@@ -49,7 +52,7 @@
             //comprueba si no existe el directorio lo crea          
             if(!Storage::exists($request['dir']))Storage::makeDirectory($request['dir']);            
             // Guardar el archivo en el sistema de archivos
-            $archivo->storeAs($request['dir'],$archivo->getClientOriginalName());            
+            $archivo->storeAs($request['dir'],$archivo->getClientOriginalName(),'public_uploads');
             return redirect()->route('ob_lic.index')->with('mensaje','Archivo subido con éxito');
         }
         public function destroy(Request $request){
