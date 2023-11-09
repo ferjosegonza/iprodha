@@ -126,7 +126,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                                @can('EDITAR-OBRAVIVIENDA')
+                                                                @can('EDITAR-VIVIENDA')
                                                                     {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
                                                                     {!! Form::submit('Viviendas', ['class' => 'btn btn-primary mb-2 w-100']) !!}
                                                                     {!! Form::close() !!}
