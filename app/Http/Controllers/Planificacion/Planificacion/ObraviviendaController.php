@@ -562,13 +562,13 @@ class ObraviviendaController extends Controller
         $id_viv = $request->input('vivienda');
         $id_obr = $request->input('id_obr');
 
-        $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$id_viv]);
+        // $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$id_viv]);
 
-        if (count(auth()->user()->getDirectPermissions()->where('name', 'EDITAR-VIVIENDACOMPROMETIDA')) != 1){
-            if ($modif[0]->modif == 0) {
-                return redirect()->route('obravivienda.viviendas', $id_obr)->with('error','La vivienda se encuentra comprometida.');
-            }
-        }
+        // if (count(auth()->user()->getDirectPermissions()->where('name', 'EDITAR-VIVIENDACOMPROMETIDA')) != 1){
+        //     if ($modif[0]->modif == 0) {
+        //         return redirect()->route('obravivienda.viviendas', $id_obr)->with('error','La vivienda se encuentra comprometida.');
+        //     }
+        // }
         $vivienda = Ob_vivienda::find($id_viv);
         
         if($request->input('plano')){
@@ -992,18 +992,18 @@ class ObraviviendaController extends Controller
         if($hasta <= $desde){
             return redirect()->route('obravivienda.cargamasiva', $obra->id_obr)->with('error','El numero de orden hasta debe ser mayor al numero orden desde.');
         }else{
-            if (count(auth()->user()->getDirectPermissions()->where('name', 'EDITAR-VIVIENDACOMPROMETIDA')) != 1){
-                foreach($obra->getEtapas as $etapa){
-                    foreach($etapa->getEntregas as $entrega){
-                        foreach ($entrega->getViviendas as $vivienda) {
-                            $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$vivienda->id_viv]);
-                            if ($modif[0]->modif == 0) {
-                                return redirect()->route('obravivienda.viviendas', $obra)->with('error','Una o varias viviendas se encuentra comprometida en una convocatoria.');
-                            }
-                        }
-                    }
-                }
-            }
+            // if (count(auth()->user()->getDirectPermissions()->where('name', 'EDITAR-VIVIENDACOMPROMETIDA')) != 1){
+            //     foreach($obra->getEtapas as $etapa){
+            //         foreach($etapa->getEntregas as $entrega){
+            //             foreach ($entrega->getViviendas as $vivienda) {
+            //                 $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$vivienda->id_viv]);
+            //                 if ($modif[0]->modif == 0) {
+            //                     return redirect()->route('obravivienda.viviendas', $obra)->with('error','Una o varias viviendas se encuentra comprometida en una convocatoria.');
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
             
             foreach($obra->getEtapas as $etapa){
                 foreach($etapa->getEntregas as $entrega){
@@ -1256,25 +1256,33 @@ class ObraviviendaController extends Controller
         $etapaActual = Ob_etapa::find($entregaActual->id_eta)->id_etapa;
         $municipios = Municipios::orderBy('nom_municipio')->pluck('nom_municipio','id_municipio');
         $estado = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viv]);
-        return view('Planificacion.Planificacion.Obravivienda.vivienda.editar', compact('vivienda', 'obra', 'etapaActual', 'municipios', 'estado'));
+
+        if($estado[0]->modif || count(auth()->user()->getDirectPermissions()->where('name', 'EDITAR-VIVIENDACOMPROMETIDA')) == 1){
+            $edita= '';
+        }else{
+            $edita= 'disabled';
+        }
+        return view('Planificacion.Planificacion.Obravivienda.vivienda.editar', compact('vivienda', 'obra', 'etapaActual', 'municipios', 'estado', 'edita'));
     }
 
     public function updateViv(Request $request, $viv, $obra){
         
         $this->conectar();
         $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viv]);
-        
-        if (count(auth()->user()->getDirectPermissions()->where('name', 'EDITAR-VIVIENDACOMPROMETIDA')) == 1) {
-            $this->updateVivienda($request, $viv);
-            return redirect()->route('obravivienda.viviendas', $obra)->with('mensaje','La vivienda se modifico con exito.');
-        } else {
-            if ($modif[0]->modif == 0) {
-                return redirect()->route('obravivienda.viviendas', $obra)->with('error','La vivienda se encuentra comprometida en una convocatoria.');
-            }else{
-                $this->updateVivienda($request, $viv);
-                return redirect()->route('obravivienda.viviendas', $obra)->with('mensaje','La vivienda se modifico con exito.');
-            }
-        }
+        $this->updateVivienda($request, $viv);
+        return redirect()->route('obravivienda.viviendas', $obra)->with('mensaje','La vivienda se modifico con exito.');
+
+        // if (count(auth()->user()->getDirectPermissions()->where('name', 'EDITAR-VIVIENDACOMPROMETIDA')) == 1) {
+        //     $this->updateVivienda($request, $viv);
+        //     return redirect()->route('obravivienda.viviendas', $obra)->with('mensaje','La vivienda se modifico con exito.');
+        // } else {
+        //     if ($modif[0]->modif == 0) {
+        //         return redirect()->route('obravivienda.viviendas', $obra)->with('error','La vivienda se encuentra comprometida en una convocatoria.');
+        //     }else{
+        //         $this->updateVivienda($request, $viv);
+        //         return redirect()->route('obravivienda.viviendas', $obra)->with('mensaje','La vivienda se modifico con exito.');
+        //     }
+        // }
         
 
         // if($modif[0]->modif == 0 || auth()->user()->can('EDITAR-OBRAVIVIENDA')){
