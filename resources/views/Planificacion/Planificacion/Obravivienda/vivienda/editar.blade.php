@@ -164,7 +164,7 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                             <div class="form-group">
                                                 {!! Form::label('Lote:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('lote', $vivienda->lot_emp, ['class' => 'form-control', 'id' => 'idlote', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac12']) !!}
+                                                {!! Form::text('lote', $vivienda->lot_emp, ['class' => 'form-control', 'id' => 'idlote', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac12', $edita]) !!}
                                             </div>
                                         </div>
                                     </div> 
