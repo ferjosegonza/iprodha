@@ -1268,7 +1268,8 @@ class ObraviviendaController extends Controller
     public function updateViv(Request $request, $viv, $obra){
         
         $this->conectar();
-        $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viv]);
+        
+        // $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viv]);
         $this->updateVivienda($request, $viv);
         return redirect()->route('obravivienda.viviendas', $obra)->with('mensaje','La vivienda se modifico con exito.');
 
