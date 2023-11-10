@@ -22,9 +22,9 @@
                                 </div>
                                 <div class="col-4 text-center">
                                      @if ($estado[0]->modif)
-                                        <h6>Estado: <label style="color: green">Libre</label>  - Se puede editar</h6>
+                                        <h6>Estado: <label style="color: green">Libre</label></h6>
                                      @else
-                                        <h6>Estado: <label style="color: red">Comprometida</label>  - No se puede editar</h6>
+                                        <h6>Estado: <label style="color: red">Comprometida</label></h6>
                                      @endif
                                     
                                 </div>
@@ -67,7 +67,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Viv. para Discapacitados:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                        {!! Form::select('vivdisc', [ 0 => 'NO', 1 => 'SI'], $vivienda->discap, ['class' => 'form-select', 'id' => 'idvivdisc']) !!}
+                                        {!! Form::select('vivdisc', [ 0 => 'NO', 1 => 'SI'], $vivienda->discap, ['class' => 'form-select', 'id' => 'idvivdisc', $edita]) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -86,25 +86,25 @@
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Sección:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('seccion', $vivienda->seccion, ['class' => 'form-control', 'id' => 'idseccion', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac3']) !!}
+                                                {!! Form::text('seccion', $vivienda->seccion, ['class' => 'form-control', 'id' => 'idseccion', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac3', $edita]) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Chacra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('chacra', $vivienda->chacra, ['class' => 'form-control', 'id' => 'idchacra', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
+                                                {!! Form::text('chacra', $vivienda->chacra, ['class' => 'form-control', 'id' => 'idchacra', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4', $edita]) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Manzana:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('manzana', $vivienda->manzana, ['class' => 'form-control', 'id' => 'idmanzana', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
+                                                {!! Form::text('manzana', $vivienda->manzana, ['class' => 'form-control', 'id' => 'idmanzana', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4', $edita]) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                             <div class="form-group">
                                                 {!! Form::label('Parcela:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;width:20%;']) !!}
-                                                {!! Form::text('parcela', $vivienda->parcela, ['class' => 'form-control', 'id' => 'idparcela', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4']) !!}
+                                                {!! Form::text('parcela', $vivienda->parcela, ['class' => 'form-control', 'id' => 'idparcela', 'style' => 'text-transform:uppercase', 'onkeyup' => 'javascript:this.value=this.value.toUpperCase()', 'data-type' => 'limitcarac4', $edita]) !!}
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
@@ -231,15 +231,10 @@
                                         (<span class="obligatorio">*</span>) <strong><i>Obligatorio</i></strong>
                                     </div>
                                     <div class="p-1">
-                                        @if($estado[0]->modif)
+                                        
                                             @can('EDITAR-VIVIENDA')
                                                 {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                             @endcan
-                                        @else
-                                            @can('EDITAR-VIVIENDACOMPROMETIDA')
-                                                {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
-                                            @endcan
-                                        @endif
                                         
                                         {!! Form::close() !!}
                                     </div>
