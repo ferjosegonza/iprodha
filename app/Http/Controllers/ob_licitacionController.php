@@ -41,8 +41,9 @@
             $unOb_licitacion->save();
             return redirect()->route('ob_lic.index')->with('mensaje','Licitacion '.$unOb_licitacion->denominacion.' creada con exito.');
         }   
-        public function subir(Request $request){            
-            $path=public_path()."/storage/upload/".str_replace("\\","/",$request['dir']);            
+        public function subir(Request $request){                     
+            $path=public_path()."/storage/upload/".$request['dir'];
+            if(!Storage::disk('public_uploads')->exists($request['dir']))Storage::disk('public_uploads')->makeDirectory($request['dir'],0777);        
             $archivos=File::files($path);            
             return view('ob_licitacion.subir',compact('request','archivos'));
         }
