@@ -50,12 +50,24 @@ class TableroVistaController extends Controller
     {
         $nombreTablero = Lav_tc_tablero::find($request->input('idtablero'));
         $nombreVista = 'iprodha.vw_tc_'.$nombreTablero->nombre_tablero.'_'.$request->input('alias');
+
         Lav_tc_vista::create([
             'alias_vista' => $request->input('alias'),
             'nombre_vista' => $nombreVista,
             'id_tc_tablero' => $request->input('idtablero')
         ]);
-        return redirect()->route('tab_vista.index')->with('mensaje','La vista '.$request->input('nombre').' creado con éxito!.');
+
+        try {
+            $permisoVistaDB = 'GRANT SELECT ON '.$nombreVista.' TO DIEGOZ;';
+            DB::statement($permisoUserDB);
+            return redirect()->route('tab_vista.index')->with('mensaje','La vista '.$request->input('nombre').' creado con éxito!.');
+        } catch (\Throwable $th) {
+            return redirect()->route('tab_vista.index')->with('mensaje','La vista '.$request->input('nombre').' creado con éxito!.');
+        }
+        
+                    // DB::select(DB::raw($permisoUserDB));
+        //DB::statement($permisoUserDB);
+        // return redirect()->route('tab_vista.index')->with('mensaje','La vista '.$request->input('nombre').' creado con éxito!.');
     }
 
     public function show($id)
