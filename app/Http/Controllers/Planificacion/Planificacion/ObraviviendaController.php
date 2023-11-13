@@ -534,7 +534,39 @@ class ObraviviendaController extends Controller
 
     public function viviendaDeObra($id){
         $this->conectar();
-        return Ob_vivienda::find($id);
+        $vivienda_est = array();
+        $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$id]);
+        $vivienda = Ob_vivienda::find($id);
+        array_push($vivienda_est, (object)[
+            'orden' => $vivienda->orden,
+            'etapa' => $vivienda->getEntrega->getEtapa->nro_eta,
+            'entrega' => $vivienda->getEntrega->num_ent,
+            'discap' => $vivienda->discap,
+            'partida' => $vivienda->partida,
+            'partida_2' => $vivienda->partida_2,
+            'plano' => $vivienda->plano,
+            'seccion' => $vivienda->seccion,
+            'chacra' => $vivienda->chacra,
+            'manzana' => $vivienda->manzana,
+            'parcela' => $vivienda->parcela,
+            'finca' => $vivienda->finca,
+            'man_emp' => $vivienda->man_emp,
+            'lot_emp' => $vivienda->lot_emp,
+            'sup_fin' => $vivienda->sup_fin,
+            'sup_lot' => $vivienda->sup_lot,
+            'num_cal' => $vivienda->num_cal,
+            'nom_cal' => $vivienda->nom_cal,
+            'latitud' => $vivienda->latitud,
+            'longitud' => $vivienda->longitud,
+            'edificio' => $vivienda->edificio,
+            'piso' => $vivienda->piso,
+            'departamento' => $vivienda->departamento,
+            'escalera' => $vivienda->escalera,
+            'uni_fun' => $vivienda->uni_fun,
+            'entrecalles' => $vivienda->entrecalles,
+            'deslinde' => $vivienda->deslinde,
+            'estado' => $modif[0]->modif]);
+            return $vivienda_est;
     }
 
     public function viviendaDeObraId($id){
