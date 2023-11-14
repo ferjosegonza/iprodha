@@ -37,6 +37,11 @@ use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\App\AppNotificacionesController;
 use App\Http\Controllers\App\AuthAppController;
+
+//--Fer Jose
+use App\Http\Controllers\Generales\ProtocoloController;
+//--
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -248,4 +253,8 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('ciudadano', [AuthAppController::class, 'loginCiudadano'])->name('app.ciudadano');
     Route::get('iprodha-ciudadano', [AuthAppController::class, 'iprodhaCiudadano'])->name('app.Ipciudadano');
+});
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
+    Route::get('generales/protocolo', [ProtocoloController::class, 'protocolo'])->name('generales.protocolo');
 });
