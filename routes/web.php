@@ -38,6 +38,7 @@ use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\App\AppNotificacionesController;
 use App\Http\Controllers\App\AuthAppController;
 
+
 //--Fer Jose
 use App\Http\Controllers\Generales\ProtocoloController;
 //--
