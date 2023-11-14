@@ -138,6 +138,7 @@ Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-REGTRIGGER'
 });
 
 Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-TAB_VISTA']], function(){
+    Route::post('/tab_vista/obtener_codigo/{tablero}/{alias}', [TableroVistaController::class, 'generarCodigo']);
     Route::resource('tab_vista', TableroController::class);
     Route::resource('tab_vista_v', TableroVistaController::class); 
 });

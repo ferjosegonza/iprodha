@@ -108,4 +108,10 @@ class TableroVistaController extends Controller
             'data' => $data
         ]);
     }
+
+    public function generarCodigo($tablero, $alias){
+        $tablero = Lav_tc_tablero::where('nombre_tablero', $tablero)->first();
+        $vista = $tablero->getVistas->where('alias_vista', $alias)->first();
+        return $codigo = DB::select('SELECT iprodha.fun_app_script(?, ?, ?) as codigo from dual', [$tablero->nombre_tablero, $alias, $vista->nombre_vista]);
+    }
 }
