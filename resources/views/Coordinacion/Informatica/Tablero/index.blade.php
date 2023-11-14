@@ -195,7 +195,7 @@
                 alias: alias,
             },
             success: function (response) {
-                codigo.innerHTML += response[0].codigo;
+                codigo.innerHTML = response[0].codigo;
             },
             error: function (error) {
                 console.log(error);
