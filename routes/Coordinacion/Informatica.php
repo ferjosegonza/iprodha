@@ -137,7 +137,7 @@ Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-REGTRIGGER'
     Route::resource('regtrigger', TriggerController::class);  
 });
 
-Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN']], function(){
+Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-TAB_VISTA']], function(){
     Route::resource('tab_vista', TableroController::class);
     Route::resource('tab_vista_v', TableroVistaController::class); 
 });
