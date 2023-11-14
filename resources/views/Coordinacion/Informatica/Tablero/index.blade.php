@@ -183,14 +183,31 @@
     function mostrarRuta(alias, tablero) {
         // cargarModal();
         let ruta = "https://sistema.iprodha.misiones.gob.ar/api/tc/"+tablero+"/"+alias;
+        let codigo = document.getElementById('cod_txt_area');
         $('#ruta').val(ruta);
+        let html = '';
+
+        $.when($.ajax({
+            type: "post",
+            url: '/tab_vista/obtener_codigo/'+tablero+'/'+alias, 
+            data: {
+                tablero: tablero,
+                alias: alias,
+            },
+            success: function (response) {
+                codigo.innerHTML += response[0].codigo;
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        }));
         $('#exampleModalCo').modal('show');  
             // return confirm('La ruta es https://sistema.iprodha.misiones.gob.ar/api/tc/'+tablero+'/'+alias);
     }
 
     function copiarCodigo(){
         // Get the text field
-        var copyText = document.getElementById("codigo");
+        var copyText = document.getElementById("cod_txt_area");
 
         // Select the text field
         copyText.select();
