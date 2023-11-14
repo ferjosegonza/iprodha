@@ -19,6 +19,8 @@ use App\Http\Controllers\Coordinacion\Informatica\Ticket\SolucionadorController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemaController;
 use App\Http\Controllers\Coordinacion\Informatica\Ticket\CategoriaproblemasubController;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\TableroController;
+use App\Http\Controllers\Coordinacion\Informatica\Tablero\TableroVistaController;
 use App\Http\Controllers\FavoritoController;
 use App\Http\Controllers\Auth\LoginController;
 //use App\Http\Controllers\Coordinacion\Informatica\Ticket\TiposolucionadorController;
@@ -133,5 +135,10 @@ Route::group(['middleware' => ['auth']], function() {
 
 Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-REGTRIGGER']], function(){
     Route::resource('regtrigger', TriggerController::class);  
+});
+
+Route::group(['middleware' => ['auth', 'role_or_permission:ADMIN|VER-TAB_VISTA']], function(){
+    Route::resource('tab_vista', TableroController::class);
+    Route::resource('tab_vista_v', TableroVistaController::class); 
 });
 

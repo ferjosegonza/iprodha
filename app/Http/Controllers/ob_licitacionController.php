@@ -6,6 +6,8 @@
     use Illuminate\Http\Request;
     use Illuminate\Validation\Validator;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Facades\File;
 
     class ob_licitacionController extends Controller{
         function __construct(){
@@ -39,13 +41,22 @@
             $unOb_licitacion->save();
             return redirect()->route('ob_lic.index')->with('mensaje','Licitacion '.$unOb_licitacion->denominacion.' creada con exito.');
         }   
-        public function subir(Request $request){return view('ob_licitacion.subir',compact('request'));}
-        public function subir1(Request $request){
-            // Validación del archivo (tamaño, tipo, etc.) aquí si es necesario            
-            $archivo=$request->file('archivo');            
+        public function subir(Request $request){                     
+            $path=public_path()."/storage/upload/".$request['dir'];
+            if(!Storage::disk('public_uploads')->exists($request['dir']))Storage::disk('public_uploads')->makeDirectory($request['dir'],0777);        
+            $archivos=File::files($path);            
+            return view('ob_licitacion.subir',compact('request','archivos'));
+        }
+        public function subir1(Request $request){                      
+            $archivo=$request->file('archivo');  
+            //comprueba si no existe el directorio lo crea          
+            if(!Storage::exists($request['dir']))Storage::makeDirectory($request['dir']);            
             // Guardar el archivo en el sistema de archivos
-            $archivo->storeAs($request['dir'],$archivo->getClientOriginalName());
-            // Lógica adicional (guardar la ruta en la base de datos, etc.) aquí si es necesario
+            $archivo->storeAs($request['dir'],$archivo->getClientOriginalName(),'public_uploads');
             return redirect()->route('ob_lic.index')->with('mensaje','Archivo subido con éxito');
+        }
+        public function destroy(Request $request){            
+            Storage::disk('public_uploads')->delete($request['dir']);
+            return redirect()->route('ob_lic.index')->with('mensaje','Archivo Eliminado con éxito');
         }
     }

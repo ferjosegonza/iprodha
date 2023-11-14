@@ -36,6 +36,7 @@ use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\App\AppNotificacionesController;
+use App\Http\Controllers\App\AuthAppController;
 
 //--Fer Jose
 use App\Http\Controllers\Generales\ProtocoloController;
@@ -159,6 +160,7 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-OB_LIC']],func
     Route::get('/ob_lic/crear',[ob_licitacionController::class,'create'])->name('ob_lic.crear');    
     Route::post('/ob_lic',[ob_licitacionController::class,'store'])->name('ob_lic.store');
     Route::post('/ob_lic/subir1/{path?}',[ob_licitacionController::class,'subir1'])->name('ob_lic.subir1');
+    Route::delete('/ob_lic/destroy/{path?}',[ob_licitacionController::class,'destroy'])->name('ob_lic.destroy');
     Route::get('/ob_lic/subir/{path?}',[ob_licitacionController::class,'subir'])->name('ob_lic.subir');      
 });
 
@@ -248,7 +250,11 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () 
     Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');
 });
 
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('ciudadano', [AuthAppController::class, 'loginCiudadano'])->name('app.ciudadano');
+    Route::get('iprodha-ciudadano', [AuthAppController::class, 'iprodhaCiudadano'])->name('app.Ipciudadano');
+});
+
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
     Route::get('generales/protocolo', [ProtocoloController::class, 'protocolo'])->name('generales.protocolo');
 });
-

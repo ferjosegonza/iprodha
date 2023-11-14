@@ -23,7 +23,7 @@
                         <td>{{$unob_licitacion->aÑo}}</td>
                         <td>{{$unob_licitacion->descripcion}}</td> 
                         @can('EDITAR-OB_LIC')                                                   
-                            <td><a class="btn btn-dark" href="{{route('ob_lic.subir',['dir'=>$unob_licitacion->path])}}">Archivo</a></td>
+                            <td><a class="btn btn-dark" href="{{route('ob_lic.subir',['dir'=>$unob_licitacion->path])}}">Archivos</a></td>
                         @endcan
                     </tr>
                 @endforeach
