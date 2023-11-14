@@ -29,6 +29,16 @@ Route::group(['middleware' => ['auth:api']], function(){
 });
 
 Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/at003/actualizaciones', [At003Controller::class, 'actualizaciones']);
+    Route::get('/at003/altas', [At003Controller::class, 'altas']);
+    Route::get('/at003/movimientos', [At003Controller::class, 'movimientos']);
+});
+
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::get('/tc/{tablero}/{alias}', [TableroVistaController::class, 'obtenerDatos']);
+});
+
+Route::group(['middleware' => ['auth:api']], function(){
     Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
     Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
     Route::get('/legajos', [LegajoAppController::class, 'legajos'])->name('app.legajos');
