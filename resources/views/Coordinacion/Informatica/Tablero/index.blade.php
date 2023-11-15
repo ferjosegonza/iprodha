@@ -186,7 +186,7 @@
         let codigo = document.getElementById('cod_txt_area');
         $('#ruta').val(ruta);
         let html = '';
-
+        codigo.innerHTML = '';
         $.when($.ajax({
             type: "post",
             url: '/tab_vista/obtener_codigo/'+tablero+'/'+alias, 
