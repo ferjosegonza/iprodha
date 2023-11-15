@@ -22,11 +22,7 @@ $(document).ready(function () {
                 body: requestBody,
                 success: function(res) 
                 {        
-                    const userInfo = res
-                    console.log('User Information:', userInfo);
-                    const cuit = userInfo.cuit;
-                    const email = userInfo.email;
-                    const nombre = userInfo.name;  
+                    console.log('User Information:', res);
                 },
                 error: function(response){
                     console.log('Response Status:', response.status);

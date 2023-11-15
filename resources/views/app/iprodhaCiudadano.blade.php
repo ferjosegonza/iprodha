@@ -1,6 +1,6 @@
 <head>
-    <link rel="stylesheet" href="{{asset('css/app/iprodhaCiudadano.css')}}">
-    <script src="{{ asset('js/app/loginCiudadano.js') }}"></script>
+    <link rel="stylesheet" href="{{asset('css/app/loginCiudadano.css')}}">
+    <script src="{{ asset('js/app/iprodhaCiudadano.js') }}"></script>
 </head>
 <body>
     <div id="container">
