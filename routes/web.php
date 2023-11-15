@@ -251,7 +251,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () 
     Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group([], function () {
     Route::get('ciudadano', [AuthAppController::class, 'loginCiudadano'])->name('app.ciudadano');
     Route::get('iprodha-ciudadano', [AuthAppController::class, 'iprodhaCiudadano'])->name('app.Ipciudadano');
 });
