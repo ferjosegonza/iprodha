@@ -8,7 +8,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
         url: apiUrl,
         type: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': '*'
             }, 
         body: requestBody,
         success: function(res) 
