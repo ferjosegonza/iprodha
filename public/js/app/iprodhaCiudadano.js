@@ -1,4 +1,4 @@
-$(document).ready(function () {
+window.addEventListener("DOMContentLoaded", (event) => {
     let url = window.location.href 
     let code = url.split('code=')[1].split('&')[0];
     const apiUrl = 'https://sso.misiones.gob.ar/auth/realms/Misiones/protocol/openid-connect/token';
