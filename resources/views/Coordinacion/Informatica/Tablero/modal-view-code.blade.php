@@ -9,7 +9,7 @@
         position:absolute;
         /* bottom:10px; */
         top: 45px;
-        right:10px;
+        right:25px;
     }
     /* #codigo{
         display:block;
