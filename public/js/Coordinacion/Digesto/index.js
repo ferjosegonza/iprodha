@@ -187,7 +187,7 @@ function buscarRelacionados(id){
                     tr.appendChild(td1)
                     tr.appendChild(td2)
                     tr.appendChild(td3)
-                    tr.setAttribute('onclick', 'modificarOpen(\''+element.observacion+'\',\'' + element.id_archivon + '\',\'' +  element.path_archivo + '\',\'' +  element.nombre_archivo + '\')')
+                    tr.setAttribute('onclick', 'modificarOpen(\''+element.observacion+'\',\'' + element.id_archivo0 + '\',\'' +  element.path_archivo.replaceAll('\\','\\\\')  + '\',\'' +  element.nombre_archivo + '\')')
                     body.append(tr)
                 }
             }
@@ -238,7 +238,7 @@ function buscarArchivoModificador(){
             document.getElementById('btnmodificar').setAttribute('hidden', 'hidden')
             document.getElementById('areas').removeAttribute('hidden')
             document.getElementById('areas2').removeAttribute('hidden')
-            document.getElementById('observaciones').innerHTML=''
+            document.getElementById('observaciones').innerHTML=' '
         },
         error: function(res){
             console.log(res)
@@ -248,18 +248,18 @@ function buscarArchivoModificador(){
 }
 
 function modificarOpen(obs, id, path, nombre){
-    idmodificador = id
+    idoriginal = id
     document.getElementById('buscador-modif').setAttribute('hidden', 'hidden')  
     document.getElementById('preview-modificador').removeAttribute('hidden')
     document.getElementById('claves-modif').setAttribute('hidden', 'hidden') 
-    document.getElementById('emb-modif').setAttribute('src', path + nombre)
+    document.getElementById('emb-modif').setAttribute('src', path.slice(14) + nombre)
     document.getElementById('btnguardar').setAttribute('hidden', 'hidden')
     document.getElementById('btnmodificar').removeAttribute('hidden')
     document.getElementById('observaciones').innerHTML = obs
 }
 
 function modificar(){
-    console.log(idmodificador)
+    console.log(idoriginal, ', ', idmodificador)
     let obs = document.getElementById('observaciones').value
     $.ajaxSetup({
         headers: {

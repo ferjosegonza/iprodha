@@ -136,9 +136,9 @@ class DigestoController extends Controller
     }
 
     public function relacionados(Request $request){
-        $archivos = Dig_digesto::select('id_archivon', 'nro_archivo', 'observacion', 'nombre_archivo')
-        ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', '=', 'iprodha.dig_digesto.id_archivon')
-        ->where('id_archivo0', '=', $request->id)->get();
+        $archivos = Dig_digesto::select('id_archivo0','id_archivon', 'nro_archivo', 'observacion', 'nombre_archivo', 'path_archivo')
+        ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', '=', 'iprodha.dig_digesto.id_archivo0')
+        ->where('id_archivon', '=', $request->id)->get();
         return response()->json($archivos);
     }
 
