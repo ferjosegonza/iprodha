@@ -22,7 +22,8 @@ class DigestoController extends Controller
     public function index(){
         $tipos = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
        // $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->get(); se necesita agregar un atributo de modificable
-        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
+        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->where('id_tipoarchivo', '=', 1)
+        ->orWhere('id_subtipoarchivo', '=', 2)->where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
         $areas = Vw_dig_areas::orderBy('area')->get();
         return view('Digesto.index')
 
@@ -68,7 +69,8 @@ class DigestoController extends Controller
 
     public function buscador(){
         $tipos = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
-        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
+        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->where('id_tipoarchivo', '=', 1)
+        ->orWhere('id_subtipoarchivo', '=', 2)->where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
         return view('Digesto.buscador')
             ->with('tipos', $tipos)
             ->with('subtipos', $subtipos);
