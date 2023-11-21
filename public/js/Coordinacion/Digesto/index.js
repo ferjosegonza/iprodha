@@ -108,7 +108,7 @@ function buscarArchivo(estado){
         }),
         dataType: 'json',
         success: function(res){  
-            idoriginal = res.id_archivo
+            idmodificador = res.id_archivo
             document.getElementById('archivo-on').removeAttribute('hidden')                        
             document.getElementById('claves-org').innerHTML = res.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;') 
             document.getElementById('emb-org').setAttribute('src', res.path_archivo + res.nombre_archivo)
@@ -116,6 +116,8 @@ function buscarArchivo(estado){
             document.getElementById('buscador-modif').removeAttribute('hidden')
             document.getElementById('buscador-org').setAttribute('hidden', 'hidden') 
             document.getElementById('observaciones').innerHTML = ''
+            document.getElementById('areas').setAttribute('hidden', 'hidden')
+            document.getElementById('areas2').setAttribute('hidden', 'hidden')
             actualizarTabla()        
             buscarRelacionados(res.id_archivo)      
         },
@@ -168,24 +170,24 @@ function buscarRelacionados(id){
                 tr.className = 'row2'   
                 th3.className ='tercero'
                 head.appendChild(tr)
-                body=document.createElement('tbody')
+                let body=document.createElement('tbody')
                 table.append(body)
-                for(let i=0; i<res.length; i++){
+                for(const element of res){
                     let tr = document.createElement('tr')
                     tr.className = 'row2'
                     let td1 = document.createElement('td')
                     let td2 = document.createElement('td')
                     let td3 = document.createElement('td')
-                    td1.innerHTML = res[i].nro_archivo
+                    td1.innerHTML = element.nro_archivo
                     td1.className = 'primero'
-                    td2.innerHTML = res[i].observacion
+                    td2.innerHTML = element.observacion
                     td2.className = 'segundo'
-                    td3.innerHTML = res[i].nombre_archivo
+                    td3.innerHTML = element.nombre_archivo
                     td3.className = 'tercero'
                     tr.appendChild(td1)
                     tr.appendChild(td2)
                     tr.appendChild(td3)
-                    tr.setAttribute('onclick', 'modificarOpen(\''+res[i].observacion+'\',\'' + res[i].id_archivon + '\',\'' +  res[i].path_archivo + '\',\'' +  res[i].nombre_archivo + '\')')
+                    tr.setAttribute('onclick', 'modificarOpen(\''+element.observacion+'\',\'' + element.id_archivon + '\',\'' +  element.path_archivo + '\',\'' +  element.nombre_archivo + '\')')
                     body.append(tr)
                 }
             }
@@ -225,8 +227,8 @@ function buscarArchivoModificador(){
         }),
         dataType: 'json',
         success: function(res){  
-            idmodificador = res.id_archivo    
-            console.log(res)        
+            idoriginal = res.id_archivo    
+            console.log(res)                    
             document.getElementById('buscador-modif').setAttribute('hidden', 'hidden')  
             document.getElementById('preview-modificador').removeAttribute('hidden')
             document.getElementById('claves-modif').innerHTML = res.claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;') 
@@ -234,6 +236,9 @@ function buscarArchivoModificador(){
             document.getElementById('emb-modif').setAttribute('src', res.path_archivo + res.nombre_archivo)
             document.getElementById('btnguardar').removeAttribute('hidden')
             document.getElementById('btnmodificar').setAttribute('hidden', 'hidden')
+            document.getElementById('areas').removeAttribute('hidden')
+            document.getElementById('areas2').removeAttribute('hidden')
+            document.getElementById('observaciones').innerHTML=''
         },
         error: function(res){
             console.log(res)
