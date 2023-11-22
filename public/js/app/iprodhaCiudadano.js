@@ -13,6 +13,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Access-Control-Allow-Origin': '*',
             }, 
+        contentType: 'application/x-www-form-urlencoded',
         body: requestBody,
         success: function(res) 
         {        
