@@ -9,11 +9,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     $.ajax({
         url: apiUrl,
         type: 'POST',
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            }, 
         contentType: 'application/x-www-form-urlencoded',
-        body: requestBody,
+        data: requestBody,
         success: function(res) 
         {        
             const accessToken = res.access_token;
@@ -22,7 +19,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
                 url: 'https://sso.misiones.gob.ar/auth/realms/Misiones/protocol/openid-connect/userinfo',
                 type: 'GET',
                 headers: { Authorization: `Bearer ${accessToken}` },
-                body: requestBody,
+                data: requestBody,
                 success: function(res) 
                 {        
                     console.log('User Information:', res);
