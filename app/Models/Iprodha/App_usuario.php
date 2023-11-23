@@ -18,7 +18,7 @@ class App_usuario extends Model{
         'nombre', 'mail', 'usuario', 'fecha_creacion', 'token'
     ];
 
-    public function crear($nombre, $mail, $usuario, $contra){
+    public function crear($nombre, $mail, $usuario){
         date_default_timezone_set('America/Argentina/Buenos_Aires'); 
         $this->nombre = $nombre;
         $this->mail = $mail;
