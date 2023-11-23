@@ -26,9 +26,10 @@ $(document).ready(function() {
                 type: 'GET',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
-                },
+                }, 
                 success: function(userInfo) {
                     console.log('User Information:', userInfo);
+                    window.location.href = `sistema.iprodha.misiones.gob.ar/exito-ciudadano?usuario=${userInfo.cuit}&email=${userInfo.email}&email_verified=${userInfo.email_verified}&family_name=${userInfo.family_name}&given_name=${userInfo.given_name}`;
                 },
                 error: function(response) {
                     console.log('Error getting user information. Status:', response.status);

@@ -17,6 +17,10 @@ class AuthAppController extends Controller
         return view('app.iprodhaCiudadano');
     }
 
+    public function exitoCiudadano(Request $request){
+        return view('app.exitoCiudadano');
+    }
+
     public function registerApp(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
