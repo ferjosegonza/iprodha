@@ -49,7 +49,7 @@ class AuthAppController extends Controller
         }
         $user = App_usuario::where('usuario', '=', $request->usuario)->first();
         $user->token = md5(uniqid().rand(1000000, 9999999));
-        //$user->save();
+        $user->save();
         return response()->json($user);
     }
 }
