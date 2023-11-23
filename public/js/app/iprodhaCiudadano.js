@@ -6,8 +6,8 @@ $(document).ready(function() {
 
     const apiUrl = 'https://sso.misiones.gob.ar/auth/realms/Misiones/protocol/openid-connect/token';
     const redirectUri = encodeURIComponent('https://sistema.iprodha.misiones.gob.ar/iprodha-ciudadano');
-    const clientId = 'iprodha';
-    const clientSecret = '9c17c97d-40f0-47e9-87f1-f65adcdd7410';
+    const clientId = 'iprodha-app-test';
+    const clientSecret = '3d666545-f7d9-4a1b-8e23-a2bb0b217556';
 
     const requestBody = `redirect_uri=${redirectUri}&client_id=${clientId}&grant_type=authorization_code&client_secret=${clientSecret}&code=${code}`;
 
