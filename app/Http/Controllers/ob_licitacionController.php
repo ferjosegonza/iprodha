@@ -8,6 +8,7 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Facades\File;
+    use Symfony\Component\Finder\Finder;
 
     class ob_licitacionController extends Controller{
         function __construct(){
@@ -41,18 +42,29 @@
             $unOb_licitacion->save();
             return redirect()->route('ob_lic.index')->with('mensaje','Licitacion '.$unOb_licitacion->denominacion.' creada con exito.');
         }   
-        public function subir(Request $request){                     
+        public function subir(Request $request){ 
+            if(!Storage::disk('public_uploads')->exists($request['dir']))Storage::disk('public_uploads')->makeDirectory($request['dir'],0777);
+            // Crear un objeto Finder
+            $finder=new Finder();
             $path=public_path()."/storage/upload/".$request['dir'];
-            if(!Storage::disk('public_uploads')->exists($request['dir']))Storage::disk('public_uploads')->makeDirectory($request['dir'],0777);        
-            $archivos=File::files($path);            
-            return view('ob_licitacion.subir',compact('request','archivos'));
+            $archivos=File::files($path);//los archivos que hay en el directorio raiz
+            // Buscar directorios de forma recursiva
+            $directorios=$finder->directories()->in($path);
+            $i=0;
+            foreach($directorios as$subDirectorios){  
+                $subArchivos[$i]=File::files($subDirectorios->getRealPath());
+                $subCarpetas[$i]=$subDirectorios->getRelativePathname();
+                $i++;
+            }                                    
+            return view('ob_licitacion.subir',compact('request','archivos','subCarpetas','subArchivos'));
         }
-        public function subir1(Request $request){                      
+        public function subir1(Request $request){            
+            if(!$request->hasFile('archivo'))return redirect()->back()->with('mensaje','No se ha seleccionado ningn archivo.');
             $archivo=$request->file('archivo');  
             //comprueba si no existe el directorio lo crea          
-            if(!Storage::exists($request['dir']))Storage::makeDirectory($request['dir']);            
+            if(!Storage::exists($request['dir'].$request->input('SUB')))Storage::makeDirectory($request['dir'].$request->input('SUB'),0777);            
             // Guardar el archivo en el sistema de archivos
-            $archivo->storeAs($request['dir'],$archivo->getClientOriginalName(),'public_uploads');
+            $archivo->storeAs($request['dir'].$request->input('SUB'),$archivo->getClientOriginalName(),'public_uploads');
             return redirect()->route('ob_lic.index')->with('mensaje','Archivo subido con éxito');
         }
         public function destroy(Request $request){            
