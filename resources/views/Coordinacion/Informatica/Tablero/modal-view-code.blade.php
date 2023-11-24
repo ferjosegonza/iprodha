@@ -29,7 +29,7 @@
                     <label for="Ruta:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Ruta:</label>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="ruta">
-                        <button class="btn btn-outline-secondary" type="button" id="btn_copiar_ruta" onclick="copiarRuta()">Copiar</button>
+                        <button class="btn btn-outline-primary" type="button" id="btn_copiar_ruta" onclick="copiarRuta()">Copiar</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 <div class="form-group" id="dvtxtarea">
                     <label for="Codigo:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Codigo: </label>
                     <textarea id="cod_txt_area" class="form-control" rows="54" cols="54" style="resize:none; height: 45vh" readonly></textarea>
-                    <button id="btntxtarea" onclick="copiarCodigo()">Copiar</button>
+                    <button id="btntxtarea" class="btn btn-outline-primary" onclick="copiarCodigo()">Copiar</button>
                 </div>
             </div>
           </div>
