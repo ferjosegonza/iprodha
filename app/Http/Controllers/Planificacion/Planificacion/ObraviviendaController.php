@@ -1116,6 +1116,7 @@ class ObraviviendaController extends Controller
 
     public function asignarViviendas(Request $request, $id, $ideta){
         $this->conectar();
+    
         try {
             $entregaCero = Ob_entrega::where('id_eta', $ideta)->where('num_ent', 0)->first()->id_ent;
         } catch (\Throwable $th) {
@@ -1128,12 +1129,12 @@ class ObraviviendaController extends Controller
             
             $viviendas = Ob_vivienda::where('id_ent', '=', $id)->get();
 
-            foreach($viviendas as $vivienda){
-               $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$vivienda->id_viv]);
-               if($modif[0]->modif == 0){
-                    return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
-               }
-            }
+            // foreach($viviendas as $vivienda){
+            //    $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$vivienda->id_viv]);
+            //    if($modif[0]->modif == 0){
+            //         return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
+            //    }
+            // }
             
             foreach($viviendas as $vivienda){
                 $vivienda->update([
@@ -1142,20 +1143,21 @@ class ObraviviendaController extends Controller
             }
 
         }else{
+
             $viviendas = $request->input('vivs');
             $total = count($viviendas);
             
             $viviendasAsignadas = Ob_vivienda::where('id_ent', $id)->get();
 
             if($viviendasAsignadas->isEmpty()){
-
-                for ($i=0; $i < $total; $i++) { 
-                    $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viviendas[$i]]);
+                
+                // for ($i=0; $i < $total; $i++) { 
+                //     $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viviendas[$i]]);
                     
-                    if($modif[0]->modif == 0){
-                         return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
-                    }
-                }
+                //     if($modif[0]->modif == 0){
+                //          return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
+                //     }
+                // }
 
                 for ($i=0; $i < $total; $i++) { 
                     $vivienda = Ob_vivienda::find($viviendas[$i]);
@@ -1165,20 +1167,20 @@ class ObraviviendaController extends Controller
                 }
 
             }else{
-    
-                foreach($viviendasAsignadas as $viviendaAsignada){
-                    $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viviendaAsignada->id_viv]);
-                    if($modif[0]->modif == 0){
-                         return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
-                    }
-                }
 
-                for ($i=0; $i < $total; $i++) { 
-                    $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viviendas[$i]]);
-                    if($modif[0]->modif == 0){
-                         return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
-                    }
-                }
+                // foreach($viviendasAsignadas as $viviendaAsignada){
+                //     $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viviendaAsignada->id_viv]);
+                //     if($modif[0]->modif == 0){
+                //          return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
+                //     }
+                // }
+
+                // for ($i=0; $i < $total; $i++) { 
+                //     $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$viviendas[$i]]);
+                //     if($modif[0]->modif == 0){
+                //          return redirect()->route('obravivienda.entrega', [$etapa->id_obr, $id])->with('error','Una o varias viviendas de esta entrega se encuentra comprometida en una convocatoria.');
+                //     }
+                // }
 
                 foreach ($viviendasAsignadas as $viviendaAsignada) { 
                     if(!in_array($viviendaAsignada->id_viv, $viviendas)){
