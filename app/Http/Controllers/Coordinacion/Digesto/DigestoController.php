@@ -10,7 +10,7 @@ use App\Models\Iprodha\Dig_subtipoarchivo;
 use App\Models\Iprodha\Dig_digesto;
 use App\Models\Iprodha\Dig_digesto_areas;
 use App\Models\Personal\Vw_dig_areas;
-
+use DB;
 
 class DigestoController extends Controller
 {
@@ -150,5 +150,18 @@ class DigestoController extends Controller
         else{
             return response()->json(true);
         }
+    }
+
+    public function historial(Request $request){
+    $query = "SELECT id_archivo0, id_archivon, observacion, 
+    a0.nro_archivo as nro0, an.nro_archivo as nron 
+    FROM IPRODHA.DIG_DIGESTO D
+    INNER JOIN IPRODHA.DIG_ARCHIVOS A0 
+    ON A0.ID_ARCHIVO = D.ID_ARCHIVO0
+    left JOIN IPRODHA.DIG_ARCHIVOS An 
+    ON AN.ID_ARCHIVO = D.ID_ARCHIVON";
+    $historial = DB::select( DB::raw($query));
+    return view('Digesto.historial')
+        ->with('historial', $historial);
     }
 }

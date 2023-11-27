@@ -453,7 +453,7 @@ $(document).ready(function () {
         document.getElementById('linkpdf').setAttribute('href', data[6])
         document.getElementById('pdftitle').innerHTML= data[1] + ' - ' + data[2] + ' - ' + data[4]
 
-        if(data[1] == 'RESOLUCIONES' && data[2] == 'Reglamentaria'){
+        if(data[1] == 'RESOLUCIONES'){
             tieneDigesto(data[8], data)
         }
         else{
