@@ -1116,7 +1116,20 @@ class ObraviviendaController extends Controller
 
     public function asignarViviendas(Request $request, $id, $ideta){
         $this->conectar();
-    
+
+        $viviendas = $request->input('vivs');
+
+        $total = count($viviendas);
+        for ($i=0; $i < $total; $i++) { 
+            $id_viviendas_a_asignar[] = $viviendas[$i];
+        }
+        $viviendas_a_asignar = Ob_vivienda::whereIn('id_viv', $id_viviendas_a_asignar)->get();
+
+        return $viviendasACambiar = array_diff();
+        return $viviendas_a_asignar;
+        
+        return 1;
+
         try {
             $entregaCero = Ob_entrega::where('id_eta', $ideta)->where('num_ent', 0)->first()->id_ent;
         } catch (\Throwable $th) {
