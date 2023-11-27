@@ -371,10 +371,7 @@ $(document).ready(function () {
      //create();
     // Setup - add a text input to each footer cell
     $('#archivos thead tr').clone(true).addClass('filters').appendTo( '#archivos thead' );
-    var table = $('#archivos').DataTable({        
-        orderCellsTop: true,
-        fixedHeader: true,
-        "bSort":false,
+    var table = $('#archivos').DataTable({      
         columnDefs: [
             {
                 target: 7,
@@ -403,7 +400,6 @@ $(document).ready(function () {
                 next: 'Sig.',
             },
         },
-        order: [[ 1, 'asc' ]],
 
         initComplete: function() {
             var api = this.api();
