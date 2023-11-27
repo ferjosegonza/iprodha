@@ -19,6 +19,7 @@ use App\Models\Iprodha\Empresa;
 use App\Models\Iprodha\ob_operatoria;
 use App\Models\Iprodha\Membrete;
 use App\Models\Iprodha\Ob_tip_obr;
+use App\Models\Iprodha\Ob_tipo_obra;
 use App\Models\Iprodha\Municipios;
 //Gestion de usuario oracle
 use App\Traits\ConectarUserDB;
@@ -160,11 +161,12 @@ class ObraviviendaController extends Controller
         // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
         //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->orderBy('operat_adm', 'asc')->pluck('operat_adm', 'id_ope');
-        $TipoObra = Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
+        $TipoContratacion = Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
+        $TipoObra = Ob_tipo_obra::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
         $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
         $Localidad = Localidad::orderBy('nom_loc')->get();
         $Empresa = Empresa::orderBy('nom_emp')->get();
-        return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa', 'TipoOpe', 'TipoObra'));
+        return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa', 'TipoOpe', 'TipoObra', 'TipoContratacion'));
     }
 
     public function store(Request $request)
