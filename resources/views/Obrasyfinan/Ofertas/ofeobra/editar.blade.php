@@ -282,8 +282,10 @@
                                     </div>
                                     <div class="p-1">
                                         @can('EDITAR-OFEOBRA')
-                                            {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
-                                            {!! Form::close() !!}
+                                            @if($validado == 0)
+                                                {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                                {!! Form::close() !!}
+                                            @endif
                                         @endcan
                                         
                                     </div>
