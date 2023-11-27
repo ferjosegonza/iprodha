@@ -38,6 +38,7 @@ function onBuscarVivienda(){
              periodo: idviv
          },
         success: function (response) {
+            response = response[0];
             plano.value = response.plano;
             partida.value = response.partida;
             partidaucac.value = response.partida_2;
@@ -60,6 +61,15 @@ function onBuscarVivienda(){
             numFinca.value = response.sup_fin;
             supLote.value = response.sup_lot;
             deslinde.value = response.deslinde;
+            // console.log(response.estado);
+            if(response.estado == 0){
+                seccion.disabled = true;
+                chacra.disabled = true;
+                manzana.disabled = true;
+                parcela.disabled = true;
+                lote.disabled = true;
+                vivdiscap.disabled = true;
+            }
             // console.log(response);
          },
          error: function (error) {

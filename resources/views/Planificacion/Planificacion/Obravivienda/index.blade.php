@@ -126,6 +126,13 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                
+                                                                {{-- {{Auth::user()->hasAllPermissions('EDITAR-OBRAVIVIENDA')}}
+                                                                @if (Auth::user()->hasAllPermissions('EDITAR-OBRAVIVIENDA') || Auth::user()->hasAllPermissions('EDITAR-VIVIENDA'))
+                                                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
+                                                                    {!! Form::submit('Viviendas', ['class' => 'btn btn-primary mb-2 w-100']) !!}
+                                                                    {!! Form::close() !!}
+                                                                @endif --}}
                                                                 @can('EDITAR-OBRAVIVIENDA')
                                                                     {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.viviendas',$obra->id_obr], 'style' => 'display:inline']) !!}
                                                                     {!! Form::submit('Viviendas', ['class' => 'btn btn-primary mb-2 w-100']) !!}
