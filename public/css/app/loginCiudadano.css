@@ -1,0 +1,21 @@
+body{
+    background-color: orange;
+}
+button{
+    width: 95%;
+    font-size: 60;
+    height: 200%;
+    justify-self: center;
+}
+a{
+    width: 100%;    
+    align-self: center; 
+    display: grid;  
+    text-decoration: none;
+}
+#container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

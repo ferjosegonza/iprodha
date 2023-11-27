@@ -232,7 +232,7 @@
                                     </div>
                                     <div class="p-1">
                                         
-                                            @can('EDITAR-VIVIENDA')
+                                            @can('EDITAR-OBRAVIVIENDA')
                                                 {!! Form::submit('Guardar', ['class' => 'btn btn-success', 'id' => 'guardarVivienda']) !!}
                                             @endcan
                                         

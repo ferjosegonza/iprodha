@@ -9,43 +9,47 @@ use App\Models\Iprodha\App_usuario;
 
 class AuthAppController extends Controller
 {
+    public function loginCiudadano(Request $request){
+        return view('app.loginCiudadano');
+    }
+
+    public function iprodhaCiudadano(Request $request){
+        return view('app.iprodhaCiudadano');
+    }
+
+    public function exitoCiudadano(Request $request){
+        return view('app.exitoCiudadano');
+    }
+
     public function registerApp(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
-            'email' => 'required|string|email',
-            'contra' => 'required|string|min:6',
+            'email' => 'required|string|email'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
-        $user = new App_usuario;
-        $user->crear($request->nombre, $request->email, $request->usuario, $request->contra);
-
-        return response()->json(['message' => 'User registered successfully']);
+        if(App_usuario::where('usuario', '=', $request->usuario)->first()){
+            return response()->json(['message' => 'User already registered']);
+        }
+        else{
+            $user = new App_usuario;
+            $user->crear($request->nombre, $request->email, $request->usuario);
+            return response()->json(['message' => 'User registered successfully']);
+        }
     }
 
     public function loginApp(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'contra' => 'required|string',
+            'usuario' => 'required'
         ]);
-
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
-        }   
-
-        $user = App_usuario::where('mail', '=', $request->email)->first();
-        $res = password_verify($request->contra, $user->contraseÑa);        
-        if($res){
-            $user->token = md5(uniqid().rand(1000000, 9999999));
-            $user->save();
-            return response()->json($user); 
         }
-        else{
-           return response()->json($res); 
-        }
-        
+        $user = App_usuario::where('usuario', '=', $request->usuario)->first();
+        $user->token = md5(uniqid().rand(1000000, 9999999));
+        $user->save();
+        return response()->json($user);
     }
 }

@@ -15,7 +15,7 @@
         <div class="row" id='buscador-org'>
             <div class="card col-lg-12">
                 <div class="card-head">
-                    <h4>Buscar archivo original</h4>
+                    <h4>Buscar archivo modificador</h4>
                 </div>
                 <div class="card-body row">
                     <div class="col-lg-3">
@@ -50,18 +50,18 @@
             </div>
             <div class="card col-lg-6" id='preview-org' hidden>
                 <div class="card-head">
-                    <h5>Original</h5>                    
+                    <h5>Modificador</h5>                    
                 </div>
                 <div class="card-body row">
                     <div id='claves-org'></div>
                     <br> 
                     <embed src="#" width="100%" height="450" id="emb-org">
                     <br>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6"  hidden id="areas2">
                         <h6>Áreas que afecta:</h6>
                         <table id="areas-afectadas"></table>
                     </div>
-                    <div class="col-lg-6 row">
+                    <div class="col-lg-6 row" hidden id="areas">
                         <div class="col-lg-11"><h6>Agregar un área:</h6>
                             <select class="form-select" id="area_select" onchange="checkBtnAgregar()" name="area_select">
                                 <option value="sel" selected>Seleccionar</option>
@@ -77,7 +77,7 @@
             <div class="col-lg-6" id='buscador-modif' hidden>
                 <div class="card">
                     <div class="card-head">
-                        <h5>Buscar archivo que modifica el original</h5>                    
+                        <h5>Buscar archivo original</h5>                    
                     </div>                
                     <div class="card-body row">
                         <div class="col-lg-3">
@@ -118,7 +118,7 @@
             <div class="col-lg-6 card" id='preview-modificador' hidden>
                 <div class="col-lg-12">
                     <div class="card-head">
-                        <h5>Modificador</h5>
+                        <h5>Original</h5>
                     </div>
                     <div class="card-body">
                         <div id='claves-modif'></div>
