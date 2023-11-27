@@ -897,7 +897,7 @@ function buscarArchivos(){
                    0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
                    1 : res[i].nombre_corto,
                    2 : res[i].dessubtipoarchivo,
-                   3 : '<span>'+myDate.getFullYear()+("0" + myDate.getMonth()+1).slice(-2)+("0" + myDate.getDate()).slice(-2)+'</span>' + noTime,
+                   3 : '<span>'+myDate.getFullYear()+("0" + (myDate.getMonth()+1)).slice(-2)+("0" + myDate.getDate()).slice(-2)+'</span>' + noTime,
                    4 : res[i].nro_archivo,
                    5 : claves,
                    6 : res[i].path_archivo + res[i].nombre_archivo,
