@@ -1,3 +1,5 @@
+var pagina
+
 function tipos(){
     if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
@@ -369,8 +371,7 @@ $(document).ready(function () {
      //create();
     // Setup - add a text input to each footer cell
     $('#archivos thead tr').clone(true).addClass('filters').appendTo( '#archivos thead' );
-
-    var table = $('#archivos').DataTable({
+    var table = $('#archivos').DataTable({        
         orderCellsTop: true,
         fixedHeader: true,
         "bSort":false,
@@ -437,6 +438,7 @@ $(document).ready(function () {
         
     });   
     $('#archivos tbody').on('click', 'tr', function () {
+        pagina = table.page();
         let data = table.row(this).data();
         console.log(data)
         table.columns( '.sub' ).search(data[2]).draw();
@@ -581,21 +583,14 @@ function cancelarbusqueda(){
     table.columns( '.nro' ).search("").draw();    
     if(document.getElementById('año').value == "sel"){
         table.columns( '.fecha' ).search("").draw();
-        console.log('nada')
     }
     else{
         let year = document.getElementById('año').value; 
         console.log(year)
         table.columns( '.fecha' ).search(year).draw();
     }  
-    /* if(document.getElementById('busq').value == ""){
-        table.columns( '.asun' ).search("").draw();
-    }
-    else{
-        let asun = document.getElementById('busq').value; 
-        table.columns( '.asun' ).search(asun).draw();
-    }    */
     document.getElementById('preview').hidden = true
+    table.page(pagina).draw(false)
 }
 
 function toggle() {
