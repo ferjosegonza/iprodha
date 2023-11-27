@@ -22,7 +22,8 @@ class DigestoController extends Controller
     public function index(){
         $tipos = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
        // $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->get(); se necesita agregar un atributo de modificable
-        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
+        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->where('id_tipoarchivo', '=', 1)
+        ->orWhere('id_subtipoarchivo', '=', 2)->where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
         $areas = Vw_dig_areas::orderBy('area')->get();
         return view('Digesto.index')
 
@@ -68,7 +69,8 @@ class DigestoController extends Controller
 
     public function buscador(){
         $tipos = Dig_tipoarchivo::where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
-        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->get();
+        $subtipos = Dig_subtipoarchivo::where('id_tipocabecera', '=', 1)->where('id_subtipoarchivo', '=', 3)->where('id_tipoarchivo', '=', 1)
+        ->orWhere('id_subtipoarchivo', '=', 2)->where('id_tipocabecera', '=', 1)->where('id_tipoarchivo', '=', 1)->get();
         return view('Digesto.buscador')
             ->with('tipos', $tipos)
             ->with('subtipos', $subtipos);
@@ -134,9 +136,9 @@ class DigestoController extends Controller
     }
 
     public function relacionados(Request $request){
-        $archivos = Dig_digesto::select('id_archivon', 'nro_archivo', 'observacion', 'nombre_archivo')
-        ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', '=', 'iprodha.dig_digesto.id_archivon')
-        ->where('id_archivo0', '=', $request->id)->get();
+        $archivos = Dig_digesto::select('id_archivo0','id_archivon', 'nro_archivo', 'observacion', 'nombre_archivo', 'path_archivo')
+        ->join('iprodha.dig_archivos', 'iprodha.dig_archivos.id_archivo', '=', 'iprodha.dig_digesto.id_archivo0')
+        ->where('id_archivon', '=', $request->id)->get();
         return response()->json($archivos);
     }
 

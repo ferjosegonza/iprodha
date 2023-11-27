@@ -117,9 +117,10 @@ class ofe_obraController extends Controller
         }
         
         $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
+        $nombreDeObra = str_replace('–','-', $request->input('nomobra'));
 
         $laOferta = Ofe_obra::create([
-          'nomobra' => strtoupper($request->input('nomobra')),
+          'nomobra' => strtoupper($nombreDeObra),
           'idloc' => $request->input('idloc'),
           'idempresa' => $request->input('idempresa'),
           'idtipocontratofer' =>  $request->input('idtipocontrato'),
@@ -185,8 +186,12 @@ class ofe_obraController extends Controller
             $Empresa = Empresa::get(); 
             $TipoContrato = Ofe_tipocontratoferta::pluck('tipocontratofer','idtipocontratofer');
         }
-            
-        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe', 'TipoOferta'));
+        $validado = 0;
+        if($unaOferta->getEstados->sortByDesc('actual')->first()->getEstado->idestado == 3){
+          $validado = 1;
+        }
+
+        return view('Obrasyfinan.Ofertas.ofeobra.editar',compact('unaOferta','Localidad','Empresa','TipoContrato', 'TipoSituacion', 'TipoObra', 'TipoOpe', 'TipoOferta', 'validado'));
     }
 
     public function show($idobra)
