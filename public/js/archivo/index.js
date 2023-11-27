@@ -891,18 +891,19 @@ function buscarArchivos(){
                 }
                 //console.log(res[i].nombre_corto, '', res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo, res[i].nro_archivo, res[i].claves_archivo, '', res[i].orden)
                 //table.rows.add([0,1,2,3,4,5,6.7]).draw(true);
-                
+                let myDate = new Date(res[i].fecha_archivo)
+                let noTime = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate()).toLocaleDateString();
                 table.row.add({
                    0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
                    1 : res[i].nombre_corto,
                    2 : res[i].dessubtipoarchivo,
-                   3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
+                   3 : '<span>'+myDate.getFullYear()+("0" + myDate.getMonth()+1).slice(-2)+("0" + myDate.getDate()).slice(-2)+'</span>' + noTime,
                    4 : res[i].nro_archivo,
                    5 : claves,
                    6 : res[i].path_archivo + res[i].nombre_archivo,
                    7 : res[i].orden,
                    8: res[i].id_archivo
-                })      
+                })                      
             }      
             table.draw(true); 
             
@@ -944,13 +945,14 @@ function cargarBoletin(){
                 else{
                     claves=res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')
                 }
-               
+                let myDate = new Date(res[i].fecha_archivo)
+                let noTime = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate()).toLocaleDateString();
                 console.log(res[i])
                 table.row.add({
                    0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
                    1 : res[i].nombre_corto,
                    2 : res[i].dessubtipoarchivo,
-                   3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
+                   3 : '<span>'+myDate.getFullYear()+("0" + myDate.getMonth()+1).slice(-2)+("0" + myDate.getDate()).slice(-2)+'</span>' + noTime,
                    4 : res[i].nro_archivo,
                    5 : claves,
                    6 : res[i].path_archivo + res[i].nombre_archivo,
