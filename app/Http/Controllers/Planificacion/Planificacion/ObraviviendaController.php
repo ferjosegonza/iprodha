@@ -162,7 +162,7 @@ class ObraviviendaController extends Controller
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
         //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->orderBy('operat_adm', 'asc')->pluck('operat_adm', 'id_ope');
         $TipoContratacion = Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
-        $TipoObra = Ob_tipo_obra::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
+        $TipoObra = Ob_tip_obr::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
         $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
         $Localidad = Localidad::orderBy('nom_loc')->get();
         $Empresa = Empresa::orderBy('nom_emp')->get();
