@@ -158,14 +158,16 @@ class ObraviviendaController extends Controller
 
     public function create(Request $request)
     {
-        // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
-        // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
-        //$TipoOpe = ob_operatoria::whereNotNull('operat_adm')->orderBy('operat_adm', 'asc')->pluck('operat_adm', 'id_ope');
         $TipoContratacion = Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
-        $TipoObra = Ob_tip_obr::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
+
+        $TipoObra = Ob_tipo_obra::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
+
         $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
+
         $Localidad = Localidad::orderBy('nom_loc')->get();
+
         $Empresa = Empresa::orderBy('nom_emp')->get();
+
         return view('Planificacion.Planificacion.Obravivienda.crear', compact('Localidad', 'Empresa', 'TipoOpe', 'TipoObra', 'TipoContratacion'));
     }
 
@@ -291,7 +293,13 @@ class ObraviviendaController extends Controller
 
             if($request->input('idtipobr')){
                 $obra->update([
-                    'id_tip_obr' => $request->input('idtipobr')
+                    'id_tipo_obra' => $request->input('idtipobr')
+                ]);
+            }
+
+            if($request->input('idtipcontr')){
+                $obra->update([
+                    'id_tip_obr' => $request->input('idtipcontr')
                 ]);
             }
 
@@ -401,11 +409,12 @@ class ObraviviendaController extends Controller
         // $Localidad= Localidad::orderBy('nom_loc')->pluck('nom_loc','id_loc'); 
         // $Empresa= Empresa::orderBy('nom_emp')->pluck('nom_emp','id_emp');
         $Localidad = Localidad::orderBy('nom_loc')->get();
-        $TipoObra = Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
+        $TipoContratacion= Ob_tip_obr::orderBy('tipo_obra')->pluck('tipo_obra','id_tip_obr');
+        $TipoObra = Ob_tipo_obra::orderBy('nom_tipo_obra')->pluck('nom_tipo_obra', 'id_tipo_obra');
         $Empresa = Empresa::orderBy('nom_emp')->get(); 
         $TipoOpe = ob_operatoria::where('certifica', 1)->orderBy('operatoria', 'asc')->pluck('operatoria', 'id_ope');
         // $TipoOpe = ob_operatoria::whereNotNull('operat_adm')->pluck('operat_adm', 'id_ope');
-        return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa', 'TipoOpe', 'TipoObra'));
+        return view('Planificacion.Planificacion.Obravivienda.editar', compact('obra', 'Localidad', 'Empresa', 'TipoOpe', 'TipoObra', 'TipoContratacion'));
     }
     
     public function update(Request $request, $id)
@@ -458,7 +467,13 @@ class ObraviviendaController extends Controller
 
         if($request->input('idtipobr')){
             $obra->update([
-                'id_tip_obr' => $request->input('idtipobr')
+                'id_tipo_obra' => $request->input('idtipobr')
+            ]);
+        }
+
+        if($request->input('idtipcontr')){
+            $obra->update([
+                'id_tip_obr' => $request->input('idtipcontr')
             ]);
         }
 

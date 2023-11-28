@@ -89,7 +89,8 @@
                                         {!! Form::text('expediente', null, ['class' => 'form-control']) !!} 
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         {{-- <span class="obligatorio">*</span> --}}
@@ -99,6 +100,20 @@
                                         ]) !!}
                                     </div>
                                 </div>
+
+                                
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo Contratacion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::select('idtipcontr', $TipoContratacion, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
+                                    </div>
+                                </div>
+
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
                                         {!! Form::label('Tipo obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
@@ -108,6 +123,34 @@
                                             'class' => 'form-select',
                                         ]) !!}
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    {{-- <div class="form-group">
+                                        {!! Form::label('Expediente:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::text('expediente', null, ['class' => 'form-control']) !!} 
+                                    </div> --}}
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                    {{-- <div class="form-group">
+                                        {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        
+                                        {!! Form::select('idope', $TipoOpe, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
+                                    </div> --}}
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    {{-- <div class="form-group">
+                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::select('idtipobr', $TipoObra, null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
+                                    </div> --}}
                                 </div>
                                 {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">

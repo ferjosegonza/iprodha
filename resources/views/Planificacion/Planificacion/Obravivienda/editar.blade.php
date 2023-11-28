@@ -81,7 +81,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         {!! Form::label('Operatoria:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         {{-- <span class="obligatorio">*</span> --}}
@@ -94,13 +94,36 @@
 
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                                     <div class="form-group">
-                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {!! Form::label('Tipo Contratacion:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
                                         {{-- <span class="obligatorio">*</span> --}}
-                                        {!! Form::select('idtipobr', $TipoObra, $obra->id_tip_obr ?? null, [
+                                        {!! Form::select('idtipcontr', $TipoContratacion, $obra->id_tip_obr ?? null, [
                                             'placeholder' => 'Seleccionar',
                                             'class' => 'form-select',
                                         ]) !!}
                                     </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        {!! Form::label('Tipo obra:', null, ['class' => 'control-label fs-6', 'style' => 'white-space: nowrap;']) !!}
+                                        {{-- <span class="obligatorio">*</span> --}}
+                                        {!! Form::select('idtipobr', $TipoObra, $obra->id_tipo_obra ?? null, [
+                                            'placeholder' => 'Seleccionar',
+                                            'class' => 'form-select',
+                                        ]) !!}
+                                    </div>
+                                </div>      
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                    <div class="form-group">
+                                        <label for="Viviendas:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Cant. Viviendas: <span class="obligatorio">*</span></label>
+                                        {!! Form::number('can_viv', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!} 
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                                 </div>
 
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
@@ -138,17 +161,9 @@
                                                 'class' => 'form-control',
                                             ]) !!}
                                     </div>
-                                </div>        
+                                </div> 
                             </div>
-
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                                    <div class="form-group">
-                                        <label for="Viviendas:" class="control-label fs-6" style="white-space: nowrap;width:20%;">Cant. Viviendas: <span class="obligatorio">*</span></label>
-                                        {!! Form::number('can_viv', $obra->can_viv, ['class' => 'form-control', 'readonly']) !!} 
-                                    </div>
-                                </div>
-                            </div>
+                            
                     
                             
 
