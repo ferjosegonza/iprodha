@@ -251,9 +251,27 @@ class ofe_obraController extends Controller
             $exp = null;
 
             if($request->input('numExp')){
+
               $numExp = $request->input('numExp');
+
               $numExp = trim($numExp, " ");
-              $exp = Expediente::where('exp_numero', $numExp.'      ')->first();
+
+              $numExpSinValidar = substr($numExp, 0, strpos($numExp, "-"));
+
+              $letraYanioExp = substr($numExp, strrpos($numExp, '-'));
+
+
+              if(strlen($numExpSinValidar) < 5){
+                $cantidadCeros = 5 - strlen($numExpSinValidar);
+
+                for ($i=0; $i < $cantidadCeros; $i++) { 
+                  $numExpSinValidar = substr_replace($numExpSinValidar, "0", 0, 0);
+                }
+                $NumExpValidado = $numExpSinValidar.$letraYanioExp;
+              }else{
+                $NumExpValidado = $numExp;
+              }
+              $exp = Expediente::where('exp_numero', $NumExpValidado.'      ')->first();
             }
 
             $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
