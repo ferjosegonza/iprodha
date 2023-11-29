@@ -80,7 +80,8 @@ class DigestoController extends Controller
         //return $request;
         $archivo = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
                     ->where('id_subtipoarchivo', '=', $request->subtipo)
-                    ->where('nro_archivo', '=', $request->doc)->first();
+                    ->where('nro_archivo', '=', $request->doc)
+                   ->where('ano_archivo', '=', $request->año)->first();
         //return $archivo;
         $archivo->path_archivo = substr($archivo->path_archivo, 14);
         return response()->json($archivo);

@@ -89,6 +89,7 @@ function buscarArchivo(estado){
     let tipo = document.getElementById('tipo').value
     let subtipo = getSubtipoId(document.getElementById('subtipo'))
     let doc = document.getElementById('doc').value
+    let año = document.getElementById('año').value
     //
     let route = 'digesto/buscar'
     $.ajaxSetup({
@@ -104,7 +105,8 @@ function buscarArchivo(estado){
             _token: $('#signup-token').val(),
             tipo:tipo,
             subtipo:subtipo,
-            doc:doc
+            doc:doc,
+            año: año
         }),
         dataType: 'json',
         success: function(res){  
@@ -116,6 +118,8 @@ function buscarArchivo(estado){
             document.getElementById('buscador-modif').removeAttribute('hidden')
             document.getElementById('buscador-org').setAttribute('hidden', 'hidden') 
             document.getElementById('observaciones').innerHTML = ''
+            document.getElementById('año').innerHTML = ''
+            document.getElementById('año2').innerHTML = ''
             document.getElementById('areas').setAttribute('hidden', 'hidden')
             document.getElementById('areas2').setAttribute('hidden', 'hidden')
             actualizarTabla()        
@@ -208,6 +212,7 @@ function buscarArchivoModificador(){
     let tipo = document.getElementById('tipo2').value
     let subtipo = getSubtipoId(document.getElementById('subtipo2'))
     let doc = document.getElementById('doc2').value
+    let año = document.getElementById('año2').value
     //
     let route = 'digesto/buscar'
     $.ajaxSetup({
@@ -223,7 +228,8 @@ function buscarArchivoModificador(){
             _token: $('#signup-token').val(),
             tipo:tipo,
             subtipo:subtipo,
-            doc:doc
+            doc:doc,
+            año:año
         }),
         dataType: 'json',
         success: function(res){  
