@@ -15,8 +15,11 @@ body{
   margin-right: 0 !important;
   margin-left: 0 !important;
 }
-span{
+#archivos span{
   display:none;
+}
+#despdf span{
+  display: none;
 }
 .abajo{
   margin-top: 30px;
