@@ -161,13 +161,14 @@ class ItemObraController extends Controller
     
     public function update(Request $request, $id)
     { 
+        $this->conectar();
         $ListaItemCosto = Ob_item_costo::where('id_obr', $id)->where('id_red', 0)->get();
         
-
+        $ext_db = DB::connection('oracleuser');
         foreach ($ListaItemCosto as $itemCosto) {
             $costoNuevo = (float) $request->input('item-'.$itemCosto->id_item);
 
-            DB::update('UPDATE iprodha.ob_item_costo SET costo=? WHERE id_obr=? and id_item=? and id_red=0', [$costoNuevo, $id, $itemCosto->id_item]);
+            $ext_db->update('UPDATE iprodha.ob_item_costo SET costo=? WHERE id_obr=? and id_item=? and id_red=0', [$costoNuevo, $id, $itemCosto->id_item]);
 
         }
 
