@@ -5,7 +5,7 @@
 
     class Ob_item_costo extends Model{
 
-        // protected $connection = 'oracleuser';
+        protected $connection = 'oracleuser';
         
         use HasFactory;
 
