@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Planificacion\Planificacion\ObraviviendaController;
+use App\Http\Controllers\Planificacion\Planificacion\ItemObraController;
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAVIVIENDA']], function () {
     //AJAX
@@ -41,4 +42,8 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAVIVIENDA
     Route::get('/obravivienda/{idobra}/{opcion}/{ident}/{ideta}/pdfinfovivienda', [ObraviviendaController::class, 'pdfViviendas'])->name('infovivienda.pdf');
     // Route::get('/obravivienda/{idobra}/{opcion}/pdfviviendaetyen', [ObraviviendaController::class, 'pdfViviendas'])->name('infovivienda.pdf');
     Route::resource('obravivienda', ObraviviendaController::class);
+});
+
+Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-ITEMOBRA']], function () {
+    Route::resource('itemizado_obra', ItemObraController::class);
 });
