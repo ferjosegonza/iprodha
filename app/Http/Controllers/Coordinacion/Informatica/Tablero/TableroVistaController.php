@@ -100,7 +100,9 @@ class TableroVistaController extends Controller
     public function obtenerDatos($tablero, $alias){
         $tablero = Lav_tc_tablero::where('nombre_tablero', $tablero)->first();
         $vista = $tablero->getVistas->where('alias_vista', $alias)->first();
-        $data = DB::SELECT('SELECT * FROM '.$vista->nombre_vista);
+        $ext_db = DB::connection('oracleiprodha');
+        $data = $ext_db->SELECT('SELECT * FROM '.$vista->nombre_vista);
+        // $data = DB::SELECT('SELECT * FROM '.$vista->nombre_vista);
         // return $data;
         // $data = $alias;
         return response()->json([
