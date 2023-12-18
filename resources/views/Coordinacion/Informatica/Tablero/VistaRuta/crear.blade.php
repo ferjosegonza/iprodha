@@ -7,7 +7,7 @@
         </div>
         <div class="section-body">
             <div class="row">
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     @include('layouts.modal.mensajes')
                     <div class="card">
                         <div class="card-body">
@@ -38,6 +38,17 @@
                             <button type="submit" class="btn btn-success mr-2">Guardar</button>
                             <a href="{{ route('tab_vista.index') }}"class="btn btn-danger">Volver</a>
                         {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row overflow-auto">
+                                <div class="col-lg-12 text-center">
+                                    <img src="{{asset('storage/upload/images/vista/ejem-vista.png')}}" alt="">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
