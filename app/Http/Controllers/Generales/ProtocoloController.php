@@ -5,12 +5,22 @@ namespace App\Http\Controllers\Generales;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\rrhh\Denuncias;
 use \PDF;
 
 
 
 class ProtocoloController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('permission:VER-RUBROS|CREAR-RUBROS|EDITAR-RUBROS|BORRAR-RUBROS', ['only' => ['index']]);
+        // $this->middleware('permission:CREAR-RUBROS', ['only' => ['create','store']]);
+        // $this->middleware('permission:EDITAR-RUBROS', ['only' => ['edit','update']]);
+        //$this->middleware('permission:BORRAR-DENUNCIA', ['only' => ['destroy']]);
+    }
+    
     public function protocolo()
     {
         $pathResolucion= public_path()."\storage\pdf\\resolucion.pdf";
@@ -18,7 +28,62 @@ class ProtocoloController extends Controller
 
         return view('Generales.protocolo', compact('pathResolucion', 'pathFormulario'));
     }
+
+    // formularioAlta
+    public function listarDenuncias(){
+        try {
+            $denuncias = Denuncias::orderBy('FECHA', 'desc')->get();
+            //$denuncias = Denuncias::orderBy('FECHA', 'desc')->paginate(10);
+        } catch (\Exception $e){
+            $denuncias = 'error';
+            echo "error: " . $e;
+        } finally {
+            return view('rrhh.listar_denuncias', compact('denuncias'));
+        }
+    }
+
+    // public function cargarDenuncia(){
+    //     return view('rrhh.cargar_denuncia');
+    // }
+
+    public function denunciaGuardar(Request $request){
+        //$idNvo = $request->input('id_modif');
+        //echo 'idNvo: '.$idNvo;
+
+        $denuncia_extracto = $request->input('denuncia_extracto');
+        $nvaDenuncia = new Denuncias;
+        $nvaDenuncia->id_denuncia = Denuncias::max('ID_DENUNCIA')+1;
+        $nvaDenuncia->fecha = $request->input('fecha');
+        $nvaDenuncia->extracto = $denuncia_extracto;
+        $nvaDenuncia->descripcion = $request->input('denuncia_descripcion');
+        // $usuario = $request->session()->get('usuario');
+
+        try {
+            $nvaDenuncia->save();
+            return redirect()->route('rrhh.listardenuncias')->with('mensaje','Denuncia \''. $denuncia_extracto .'\' creada exitosamente.');
+        } catch (\Exception $e){
+            return redirect()->route('rrhh.listardenuncias')->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroy($id_denuncia){
+        try {
+            $denuncia = Denuncias::where('id_denuncia', $id_denuncia);
+
+            if (!$denuncia){
+                return redirect()->route('rrhh.listardenuncias')->with('mensaje','No se encontró esa denuncia.');
+            }
+
+            $denuncia->delete();
+
+            return redirect()->route('rrhh.listardenuncias')->with('mensaje','La denuncia se borró con éxito.');
+        } catch (\Exception $e){
+            return redirect()->route('rrhh.listardenuncias')->with('error', $e->getMessage());
+        }
+    }
+
 }
+
 
 /*
 <?php
