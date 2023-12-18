@@ -1,3 +1,5 @@
+//alert('sdf');
+
 $(document).ready(function (){
 //window.addEventListener("DOMContentLoaded", (event) =>
     $('#example').DataTable({
@@ -17,17 +19,37 @@ $(document).ready(function (){
             },
             "aaSorting": []
     });
+
+    $('#modalDenuncia').on('shown.bs.modal', function () {
+        $('#fecha').focus();
+    });
+
+    // Limpiar el formulario cuando se cierra el modal
+    $('#modalDenuncia').on('hide.bs.modal', function () {
+        limpiarFormDenuncia();
+    });
+
+    // Función p/ cerrar el modal al hacer clic en cualq parte fuera del modal
+    $(document).on('click', function (e) {
+        if ($(e.target).closest('.modal').length === 0 && $(e.target).closest('.btn-ver-denuncia').length === 0){
+            location.reload(true);
+        }
+    })
 });
 
+
 function limpiarFormDenuncia() {
-    console.log('BotonModal clickeado');
-    $('#id_modif').empty();
+    //console.log('BotonModal clickeado');
+    $('#id_modif').val('');
+    $('#denuncia_extracto').val('');
+    $('#denuncia_descripcion').val('');
+    // $('#id_modif').empty();
+    // $('#denuncia_extracto').empty();
+    // $('#denuncia_descripcion').empty();
 
     var fechaActual = new Date().toISOString().split('T')[0];
     $('#fecha').val(fechaActual);
 
-    $('#denuncia_extracto').empty();
-    $('#denuncia_descripcion').empty();
 }
 
 $('#botonCerrar').on('click', function () {
@@ -46,7 +68,18 @@ $('#botonCerrar').on('click', function () {
     // Resto del código para borrar la denuncia (código anterior)
 });*/
 
-$('.btn-ver-denuncia').on('click', 'tr',function () {
+function verDenuncia(id_denuncia, fecha, extracto, descripcion) {
+    //alert("id_denuncia: "+id_denuncia+ "fecha: "+fecha+ "extracto: "+extracto+ "descripcion: "+descripcion);
+    $('#modalDenuncia').modal('show');
+    $('#exampleModalLabel').text('VER DENUNCIA');
+    var fechaParaMostrar = fecha ? fecha.substr(0, 10) : ''; // Verificar si fecha 
+    $('#id_modif').val(idDenuncia);
+    $('#fecha').val(fechaParaMostrar);
+    $('#denuncia_extracto').val(extracto);
+    $('#denuncia_descripcion').val(descripcion);
+}
+
+/*$('.btn-ver-denuncia').on('click', function () {
     //e.stopPropagation();
     //if (!$(e.target).hasClass('borrar-denuncia')) {
         $('#exampleModalLabel').text('VER DENUNCIA');
@@ -76,4 +109,4 @@ $('.btn-ver-denuncia').on('click', 'tr',function () {
                             '<br><b>Descripción:</b> '+descripcion;
         $('#modifDenuncia').html(datosActuales);*/
     //}
-});
+/*});*/

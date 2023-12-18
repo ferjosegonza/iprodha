@@ -85,34 +85,65 @@
                                                         {!! Form::close() !!}
                                                         @endcan
                                                         --}}
-                                                        {{--
-                                                            ESTE ANDA
-                                                            @can('BORRAR-DENUNCIA')
-                                                            {!! Form::open([
-                                                                    'method' => 'DELETE',
-                                                                    'class' => 'formulario',
-                                                                    'route' => ['denuncia.borrar', $denuncia->id_denuncia],
-                                                                    'style' => 'display:inline',
-                                                                ])
-                                                            !!}
-                                                            {!! Form::submit('Borrar', ['class' => 'btn btn-danger borrar-denuncia']) !!}
-                                                            {!! Form::close() !!}
-                                                         @endcan --}}
-                                                         <div class="btn-group">
+                                                        <div class="btn-group">
                                                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 DENUNCIA
                                                             </button>
                                                             <div class="dropdown-menu">
-                                                                <button class="dropdown-item btn-ver-denuncia" data-id="{{ $denuncia->id }}" data-bs-toggle="modal" data-bs-target="#modalVerDenuncia">Ver</button>
-                                                                <button class="dropdown-item btn-editar-denuncia" data-id="{{ $denuncia->id }}" data-bs-toggle="modal" data-bs-target="#modalEditarDenuncia">Editar</button>
-                                                                <button class="dropdown-item btn-borrar-denuncia" data-id="{{ $denuncia->id }}" data-bs-toggle="modal" data-bs-target="#modalBorrarDenuncia">Borrar</button>
+                                                                {{-- <button class="formulario dropdown-item btn-ver-denuncia" 
+                                                                        data-id = "{{$denuncia->id_denuncia}}"
+                                                                        data-fecha = "{{$denuncia->fecha}}"
+                                                                        data-extracto = "{{$denuncia->extracto}}"
+                                                                        data-descripcion = "{{$denuncia->descripcion}}"
+                                                                        data-bs-toggle="modal" 
+                                                                        data-bs-target="#modalVerDenuncia">Ver</button> --}}
+                                                                {{-- <button class="formulario dropdown-item btn-ver-denuncia"
+                                                                        onclick="verDenuncia({{$denuncia->id_denuncia}},'{{$denuncia->fecha}}',
+                                                                        '{{$denuncia->extracto}}',
+                                                                        '{{$denuncia->descripcion}}')" >Ver</button> --}}
+                                                                {{-- <a href="#" class="dropdown-item btn-ver-denuncia" data-id="{{ $denuncia->id }}" data-bs-toggle="modal" data-bs-target="#modalVerDenuncia">
+                                                                    Ver
+                                                                </a> --}}
+                                                                {{--<button class="dropdown-item btn-editar-denuncia" data-id="{{ $denuncia->id }}" data-bs-toggle="modal" data-bs-target="#modalEditarDenuncia">Editar</button>
+                                                                <button class="dropdown-item btn-borrar-denuncia" data-id="{{ $denuncia->id }}" data-bs-toggle="modal" data-bs-target="#modalBorrarDenuncia">Borrar</button> --}}
+                                                                {{-- {!! Form::open([
+                                                                    'method' => 'PUT',
+                                                                    'route' => ['denuncia.ver', $denuncia->id_denuncia],
+                                                                    'style' => 'display:inline']) !!} --}}
+                                                                {{-- {!! Form::open([
+                                                                    'method' => 'POST',
+                                                                    //'route' => ['denuncia.ver', $denuncia->id_denuncia],
+                                                                    'class' => 'formulario',
+                                                                    'style' => 'display:inline']) !!}
+                                                                    {!! Form::hidden('fecha', $denuncia->fecha) !!}
+                                                                    {!! Form::hidden('extracto', $denuncia->extracto) !!}
+                                                                    {!! Form::hidden('descripcion', $denuncia->descripcion) !!}
+                                                                    {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-info borrar-denuncia']) !!}
+                                                                {!! Form::close() !!} --}}
+
+                                                                <button class="formulario dropdown-item btn-ver-denuncia btn btn-info ver-denuncia"
+                                                                        onclick="verDenuncia({{$denuncia->id_denuncia}},'{{$denuncia->fecha}}',
+                                                                        '{{$denuncia->extracto}}',
+                                                                        '{{$denuncia->descripcion}}')" >Ver</button>
+
+                                                                {{-- {!! Form::open([
+                                                                    'method' => 'GET',
+                                                                    'class' => 'formulario',
+                                                                    'onsubmit' => 'return verDenuncia(' . $denuncia->id_denuncia . ',
+                                                                                        "' . $denuncia->fecha . '",
+                                                                                        "' . $denuncia->extracto . '",
+                                                                                        "' . $denuncia->descripcion . '")',
+                                                                    'style' => 'display:inline'
+                                                                ]) !!}
+                                                                    {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn-ver-denuncia btn btn-info ver-denuncia']) !!}
+                                                                {!! Form::close() !!} --}}
+
                                                                 {!! Form::open([
                                                                     'method' => 'DELETE',
                                                                     'class' => 'formulario',
                                                                     'route' => ['denuncia.borrar', $denuncia->id_denuncia],
-                                                                    'style' => 'display:inline',
-                                                                ])!!}
-                                                                {!! Form::submit('Borrar', ['class' => 'btn btn-danger borrar-denuncia dropdown-item btn-borrar-denuncia']) !!}
+                                                                    'style' => 'display:inline'])!!}
+                                                                    {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
                                                                 {!! Form::close() !!}
                                                                 <!-- Agrega más acciones según sea necesario -->
                                                             </div>
@@ -149,8 +180,8 @@
                 <div class="modal-body">
                     <div id="modifDenuncia"></div>
                     {!! Form::open(['route' => 'denuncia.guardar', 'method' => 'post', 'id' => 'form_nva_denuncia']) !!}
-                        {{-- {!! Form::hidden('id_modif', null, ['id' => 'id_modif']) !!} --}}
-                        {!! Form::text('id_modif', null, ['id' => 'id_modif']) !!}
+                        {!! Form::hidden('id_modif', null, ['id' => 'id_modif']) !!}
+                        {{-- {!! Form::text('id_modif', null, ['id' => 'id_modif']) !!} --}}
                     <div class="mb-3">
                         {!! Form::label('fecha', 'FECHA:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
                         {!! Form::date('fecha',\Carbon\Carbon::now(),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
