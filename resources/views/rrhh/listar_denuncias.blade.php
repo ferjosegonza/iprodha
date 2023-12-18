@@ -3,8 +3,9 @@
 @section('content')
 
     <head>
-        <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
         <script src="{{ asset('js/rrhh/denuncias.js') }}"></script>
+        <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
+        
         <style>
             .fila-denuncia:hover {
                 background-color: #f5f5f5; /* Cambia el color de fondo al pasar el mouse */
