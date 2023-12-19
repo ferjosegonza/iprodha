@@ -118,6 +118,7 @@ class ofe_obraController extends Controller
         
         $montotope = str_replace( ['$', ','], '', $request->input('montotope'));
         $nombreDeObra = str_replace('–','-', $request->input('nomobra'));
+        $nombreDeObra = str_replace(["'", "“", "\""], "", $nombreDeObra);
 
         $laOferta = Ofe_obra::create([
           'nomobra' => strtoupper($nombreDeObra),
