@@ -37,6 +37,7 @@ use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\App\AppNotificacionesController;
 use App\Http\Controllers\App\AuthAppController;
+use App\Http\Controllers\App\PagosAppController;
 
 
 //--Fer Jose
@@ -256,6 +257,7 @@ Route::group([], function () {
     Route::get('ciudadano', [AuthAppController::class, 'loginCiudadano'])->name('app.ciudadano');
     Route::get('iprodha-ciudadano', [AuthAppController::class, 'iprodhaCiudadano'])->name('app.Ipciudadano');
     Route::get('exito-ciudadano', [AuthAppController::class, 'exitoCiudadano'])->name('app.exitociudadano');
+    Route::get('pago-boleta', [PagosAppController::class, 'pagoBoleta'])->name('app.pagoBoleta');
 });
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {

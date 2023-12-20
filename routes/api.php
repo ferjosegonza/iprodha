@@ -33,5 +33,6 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
     Route::get('/legajos', [LegajoAppController::class, 'legajos'])->name('app.legajos');
     Route::get('/boletas', [LegajoAppController::class, 'boletas'])->name('app.boletas');
+    Route::get('/boletasImpagas', [LegajoAppController::class, 'boletasImpagas'])->name('app.boletasImpagas');
     Route::get('/adeuda', [LegajoAppController::class, 'adeuda'])->name('app.adeuda');
 });
