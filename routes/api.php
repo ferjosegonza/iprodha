@@ -29,13 +29,13 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/tc/{tablero}/{alias}', [TableroVistaController::class, 'obtenerDatos']);
 });
 
-Route::group(['middleware' => ['auth:api']], function(){
+Route::group(['middleware' => []], function(){
     Route::post('/registerApp', [AuthAppController::class, 'registerApp'])->name('app.register');
     Route::post('/loginApp', [AuthAppController::class, 'loginApp'])->name('app.login');
     Route::get('/legajos', [LegajoAppController::class, 'legajos'])->name('app.legajos');
     Route::get('/boletas', [LegajoAppController::class, 'boletas'])->name('app.boletas');
     Route::get('/boletasImpagas', [LegajoAppController::class, 'boletasImpagas'])->name('app.boletasImpagas');
     Route::get('/adeuda', [LegajoAppController::class, 'adeuda'])->name('app.adeuda');
-    Route::post('/grabarPagoOnline', [LegajoAppController::class, 'grabarPagoOnline'])->name('app.grabarPagoOnline');
-    Route::post('/irMacroClick', [LegajoAppController::class, 'irMacroClick'])->name('app.grabarPagoOnline');
+    Route::post('/grabarPagoOnline', [PagosAppController::class, 'grabarPagoOnline'])->name('app.grabarPagoOnline');
+    Route::post('/irMacroClick', [PagosAppController::class, 'irMacroClick'])->name('app.grabarPagoOnline');
 });

@@ -23,6 +23,7 @@ class PagosAppController extends Controller
             'operatoria' => 'required',
             'nro_adju' => 'required',
             'nro_barrio' => 'required',
+            'cuotas' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
