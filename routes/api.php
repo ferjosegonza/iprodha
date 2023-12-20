@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Coordinacion\Informatica\Tablero\TableroVistaController;
 use App\Http\Controllers\App\AuthAppController;
 use App\Http\Controllers\App\LegajoAppController;
+use App\Http\Controllers\App\PagosAppController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,4 +36,6 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('/boletas', [LegajoAppController::class, 'boletas'])->name('app.boletas');
     Route::get('/boletasImpagas', [LegajoAppController::class, 'boletasImpagas'])->name('app.boletasImpagas');
     Route::get('/adeuda', [LegajoAppController::class, 'adeuda'])->name('app.adeuda');
+    Route::post('/grabarPagoOnline', [LegajoAppController::class, 'grabarPagoOnline'])->name('app.grabarPagoOnline');
+    Route::post('/irMacroClick', [LegajoAppController::class, 'irMacroClick'])->name('app.grabarPagoOnline');
 });
