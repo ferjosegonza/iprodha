@@ -95,16 +95,8 @@ class PagosAppController extends Controller
             'ClientData.CUIT' => $row[0]->clientdata_cuit,
             'ClientData.NombreApellido' => $row[0]->clientdata_nombreapellido
         ];
-        // Set the URL for the POST request
-        $url = 'https://botonpp.asjservicios.com.ar/';
 
-        // Make the POST request
-        $response = Http::post($url, $postData);
-        return $response;
-        // Get the response body as an array or JSON
-        $data = $response->json();
-
-        // Process the response
-        var_dump($data);
+        return view('app.pagoBoleta')
+        ->with('postData', $postData);
     }
 }
