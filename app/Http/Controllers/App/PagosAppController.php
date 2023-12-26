@@ -34,7 +34,6 @@ class PagosAppController extends Controller
                 FROM iprodhaweb.cuotas_$request->operatoria
                 WHERE codbar=$request->nro_barrio and nroadj=$request->nro_adju and NROCTA in($request->cuotas)";
         $importeTotal = DB::select( DB::raw($query));
-        return $importeTotal;
         $pago = new Pol_pagoonlinecab;
         $id = $pago->guardar($importeTotal[0]->importetotal, 1, $request->operatoria, $request->nro_barrio, $request->nro_adju);
         if($id != -1){
@@ -42,6 +41,7 @@ class PagosAppController extends Controller
                     + IMPORTEWEB IMPORTE FROM iprodhaweb.cuotas_$request->operatoria
                     WHERE codbar=$request->nro_barrio and nroadj=$request->nro_adju and nrocta in($request->cuotas)";
             $reg = DB::select(DB::raw($query));
+            return $reg;
             for($i=0;$i<count($reg);$i++){
                 $detalle = new Pol_pagoonlinedet;
                 $res = $detalle->guardar($id, 1, $reg[$i]->nrocta, $reg[$i]->importe);
