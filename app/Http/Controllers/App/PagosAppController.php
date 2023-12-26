@@ -29,7 +29,7 @@ class PagosAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        $query = "SELECT sum(USUA400.FUN_MORA_CTA('$request->operatoria',CODBAR,NROADJ,NROCTA)
+        $query = "SELECT sum(nvl(USUA400.FUN_MORA_CTA('$request->operatoria',CODBAR,NROADJ,NROCTA),0)
                 + IMPORTEWEB) IMPORTETOTAL
                 FROM iprodhaweb.cuotas_$request->operatoria
                 WHERE codbar=$request->nro_barrio and nroadj=$request->nro_adju and NROCTA in($request->cuotas)";
