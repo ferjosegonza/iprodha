@@ -68,7 +68,9 @@ class PagosAppController extends Controller
         $query = "SELECT * from IPRODHA.pol_pagoonlinecab c
         inner join iprodha.pol_pagoonlinedet d on c.idpagoonline=d.idpagoonline
         where c.idpagoonline= $request->id order by d.nrocomprobante desc";
+        var_dump($query);
         $importeTotal = DB::select( DB::raw($query));
+        var_dump($importeTotal);
         $amount = intval($importeTotal[0]->importetotal * 100);
         $unHash = $hash->Generate($ipAddress, $secretKey, $comercio, $sucursal, $amount);
         $callbackSuccess = $row[0]->callbacksuccess;
