@@ -40,6 +40,7 @@ class PagosAppController extends Controller
             $query = "SELECT nrocta, USUA400.FUN_MORA_CTA('$request->operatoria', CODBAR, NROADJ, NROCTA)
                     + IMPORTEWEB IMPORTE FROM iprodhaweb.cuotas_$request->operatoria
                     WHERE codbar=$request->nro_barrio and nroadj=$request->nro_adju and nrocta in($request->cuotas)";
+            return $query;
             $reg = DB::select(DB::raw($query));
             for($i=0;$i<count($reg);$i++){
                 $detalle = new Pol_pagoonlinedet;
