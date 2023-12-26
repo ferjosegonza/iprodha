@@ -19,16 +19,16 @@ class Pol_pagoonlinecab extends Model{
 
    
     public function guardar($importe, $origen, $op, $ba, $ad){
-        $query = 'SELECT IPRODHA.SEC_POL_TRANSACCION.nextval ID_PAG from dual';
-        $id = DB::select( DB::raw($query));
-        $this->idpagoonline= $id;
         $this->importetotal = $importe;
         $this->idorigenpago = $origen;
         $this->operatoria = $op;
         $this->barrio = $ba;
         $this->adju = $ad;
+        $query = 'SELECT IPRODHA.SEC_POL_TRANSACCION.nextval ID_PAG from dual';
+        $id = DB::select( DB::raw($query));
+        $this->idpagoonline= $id[0]->id_pag;
         if($this->save()){
-            return $id;
+            return $id[0]->id_pag;
         }
         else{
             return -1;
