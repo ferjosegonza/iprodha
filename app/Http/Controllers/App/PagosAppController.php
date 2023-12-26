@@ -100,7 +100,7 @@ class PagosAppController extends Controller
 
         // Make the POST request
         $response = Http::post($url, $postData);
-
+        return $response;
         // Get the response body as an array or JSON
         $data = $response->json();
 
