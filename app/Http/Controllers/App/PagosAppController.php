@@ -61,7 +61,7 @@ class PagosAppController extends Controller
                   where transaccioncomercioid= $request->id";
         $row = DB::select( DB::raw($query));
         $hash = new SHA256Encript();
-        $ipAddress = $request->ip();
+        $ipAddress = trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com"));
         return $ipAddress;
         $secretKey = 'IPRODHA_08692b3d-f495-4888-8a58-f254529fe2b1';
         $comercio = 'fe1d2911-f9f2-4046-871b-a5b3f713d812';
