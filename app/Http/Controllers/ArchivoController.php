@@ -99,8 +99,13 @@ public function buscar(Request $request){
     }
     if($busqueda != null){
         //hay una busqueda
-        $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
-    }    
+        if(is_numeric($busqueda)){
+            $query = $query . " AND (NRO_ARCHIVO='$busqueda' or claves_archivo LIKE '%$busqueda%')";
+        }
+        else{
+            $query = $query . " AND claves_archivo LIKE '%$busqueda%'";
+        }
+    }
     if($tag != null and $info != null){
         $query = $query . " AND claves_archivo LIKE '%<$tag[1]:$info%>%'";
     }

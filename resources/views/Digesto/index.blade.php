@@ -34,11 +34,15 @@
                             @endforeach                        
                         </select>    
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                         {!! Form::number('doc', null, ['class' => 'form-control no-spin', 'id'=>'doc', 'min'=>'0']) !!}
                     </div>
-                    <div class="col-lg-3"> 
+                    <div class="col-lg-2">
+                        {!! Form::label('*Año Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                        {!! Form::number('año', null, ['class' => 'form-control no-spin', 'id'=>'año', 'min'=>'0']) !!}
+                    </div>                    
+                    <div class="col-lg-2"> 
                         <button type="button" class="btn btn-success btn-block" id='btn-buscar' onclick="buscarArchivo()" disabled>Buscar</button>
                     </div>
                 </div>
@@ -79,30 +83,38 @@
                     <div class="card-head">
                         <h5>Buscar archivo original</h5>                    
                     </div>                
-                    <div class="card-body row">
-                        <div class="col-lg-3">
-                            {!! Form::label('*Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
-                            <select class="form-select" id="tipo2" onchange="tipos()" name="tipo2">
-                                @foreach ($tipos as $tipo)                           
-                                    <option value="{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
-                                @endforeach                        
-                            </select>   
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                {!! Form::label('*Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
+                                <select class="form-select" id="tipo2" onchange="tipos()" name="tipo2">
+                                    @foreach ($tipos as $tipo)                           
+                                        <option value="{{$tipo->id_tipoarchivo}}">{{$tipo->nombre_corto}}</option>
+                                    @endforeach                        
+                                </select>   
+                            </div>
+                            <div class="col-lg-6">
+                                {!! Form::label('*Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                <select class="form-select" id="subtipo2" name="subtipo2">
+                                    @foreach ($subtipos as $subtipo)
+                                        <option value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
+                                    @endforeach                        
+                                </select>    
+                            </div>
                         </div>
-                        <div class="col-lg-3">
-                            {!! Form::label('*Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                            <select class="form-select" id="subtipo2" name="subtipo2">
-                                @foreach ($subtipos as $subtipo)
-                                    <option value="{{$subtipo->id_tipoarchivo}}|{{$subtipo->id_subtipoarchivo}}">{{$subtipo->dessubtipoarchivo}}</option>
-                                @endforeach                        
-                            </select>    
-                        </div>
-                        <div class="col-lg-3">
-                            {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
-                            {!! Form::number('doc2', null, ['class' => 'form-control no-spin', 'id'=>'doc2', 'min'=>'0']) !!}
-                        </div>
-                        <div class="col-lg-3"> 
-                            <button type="button" class="btn btn-success btn-block" id='btn-buscar2' onclick="buscarArchivoModificador()" disabled>Buscar</button>
-                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                {!! Form::number('doc2', null, ['class' => 'form-control no-spin', 'id'=>'doc2', 'min'=>'0']) !!}
+                            </div>
+                            <div class="col-lg-5">
+                                {!! Form::label('*Año Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                                {!! Form::number('año2', null, ['class' => 'form-control no-spin', 'id'=>'año2', 'min'=>'0']) !!}
+                            </div>                        
+                            <div class="col-lg-2" style="margin-top: 5%"> 
+                                <button type="button" class="btn btn-success btn-block" id='btn-buscar2' onclick="buscarArchivoModificador()" disabled>Buscar</button>
+                            </div>
+                        </div>          
                     </div>
                 </div>
                 <div class="card col-lg-12" id="archivos-relacionados" hidden>

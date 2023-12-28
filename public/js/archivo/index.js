@@ -1,3 +1,5 @@
+var pagina
+
 function tipos(){
     if(document.getElementById('tipo').value == 'sel'){
         document.getElementById('subtipo').hidden = true;
@@ -369,11 +371,9 @@ $(document).ready(function () {
      //create();
     // Setup - add a text input to each footer cell
     $('#archivos thead tr').clone(true).addClass('filters').appendTo( '#archivos thead' );
-
-    var table = $('#archivos').DataTable({
+    var table = $('#archivos').DataTable({      
         orderCellsTop: true,
         fixedHeader: true,
-        "bSort":false,
         columnDefs: [
             {
                 target: 7,
@@ -402,7 +402,6 @@ $(document).ready(function () {
                 next: 'Sig.',
             },
         },
-        order: [[ 1, 'asc' ]],
 
         initComplete: function() {
             var api = this.api();
@@ -437,6 +436,7 @@ $(document).ready(function () {
         
     });   
     $('#archivos tbody').on('click', 'tr', function () {
+        pagina = table.page();
         let data = table.row(this).data();
         console.log(data)
         table.columns( '.sub' ).search(data[2]).draw();
@@ -451,7 +451,7 @@ $(document).ready(function () {
         document.getElementById('linkpdf').setAttribute('href', data[6])
         document.getElementById('pdftitle').innerHTML= data[1] + ' - ' + data[2] + ' - ' + data[4]
 
-        if(data[1] == 'RESOLUCIONES' && data[2] == 'Reglamentaria'){
+        if(data[1] == 'RESOLUCIONES'){
             tieneDigesto(data[8], data)
         }
         else{
@@ -581,21 +581,14 @@ function cancelarbusqueda(){
     table.columns( '.nro' ).search("").draw();    
     if(document.getElementById('año').value == "sel"){
         table.columns( '.fecha' ).search("").draw();
-        console.log('nada')
     }
     else{
         let year = document.getElementById('año').value; 
         console.log(year)
         table.columns( '.fecha' ).search(year).draw();
     }  
-    /* if(document.getElementById('busq').value == ""){
-        table.columns( '.asun' ).search("").draw();
-    }
-    else{
-        let asun = document.getElementById('busq').value; 
-        table.columns( '.asun' ).search(asun).draw();
-    }    */
     document.getElementById('preview').hidden = true
+    table.page(pagina).draw(false)
 }
 
 function toggle() {
@@ -900,18 +893,19 @@ function buscarArchivos(){
                 }
                 //console.log(res[i].nombre_corto, '', res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo, res[i].nro_archivo, res[i].claves_archivo, '', res[i].orden)
                 //table.rows.add([0,1,2,3,4,5,6.7]).draw(true);
-                
+                let myDate = new Date(res[i].fecha_archivo)
+                let noTime = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate()).toLocaleDateString();
                 table.row.add({
                    0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
                    1 : res[i].nombre_corto,
                    2 : res[i].dessubtipoarchivo,
-                   3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
+                   3 : '<span>'+myDate.getFullYear()+(myDate.getMonth() + 1).toString().padStart(2, "0")+ myDate.getDate().toString().padStart(2, "0") + '</span>' + noTime,
                    4 : res[i].nro_archivo,
                    5 : claves,
                    6 : res[i].path_archivo + res[i].nombre_archivo,
                    7 : res[i].orden,
                    8: res[i].id_archivo
-                })      
+                })                      
             }      
             table.draw(true); 
             
@@ -953,13 +947,14 @@ function cargarBoletin(){
                 else{
                     claves=res[i].claves_archivo.replaceAll('<','&lt;').replaceAll('>','&gt;')
                 }
-               
+                let myDate = new Date(res[i].fecha_archivo)
+                let noTime = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate()).toLocaleDateString();
                 console.log(res[i])
                 table.row.add({
                    0: '<button type="button" class="btn"><i class="fas fa-print" style="color: #ff9f79;"></i></button>',
                    1 : res[i].nombre_corto,
                    2 : res[i].dessubtipoarchivo,
-                   3 : res[i].dia_archivo + '-' + res[i].mes_archivo + '-' + res[i].ano_archivo,
+                   3 : '<span>'+myDate.getFullYear()+(myDate.getMonth() + 1).toString().padStart(2, "0")+ myDate.getDate().toString().padStart(2, "0") + '</span> '+ noTime,                   
                    4 : res[i].nro_archivo,
                    5 : claves,
                    6 : res[i].path_archivo + res[i].nombre_archivo,

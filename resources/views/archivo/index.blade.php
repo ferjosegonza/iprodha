@@ -145,4 +145,3 @@
     </section>
     @include('layouts.modal.confirmation') 
 @endsection
-    

@@ -10,7 +10,7 @@ use App\Models\Iprodha\Dig_subtipoarchivo;
 use App\Models\Iprodha\Dig_digesto;
 use App\Models\Iprodha\Dig_digesto_areas;
 use App\Models\Personal\Vw_dig_areas;
-
+use DB;
 
 class DigestoController extends Controller
 {
@@ -78,9 +78,18 @@ class DigestoController extends Controller
 
     public function buscarArchivo(Request $request){
         //return $request;
-        $archivo = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
-                    ->where('id_subtipoarchivo', '=', $request->subtipo)
-                    ->where('nro_archivo', '=', $request->doc)->first();
+        if($request->subtipo == 3){
+            $archivo = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
+            ->where('id_subtipoarchivo', '=', $request->subtipo)
+            ->where('nro_archivo', '=', $request->doc)->first();
+        }
+        else{
+            $archivo = Dig_archivos::where('id_tipoarchivo', '=', $request->tipo)
+            ->where('id_subtipoarchivo', '=', $request->subtipo)
+            ->where('nro_archivo', '=', $request->doc)
+           ->where('ano_archivo', '=', $request->año)->first();
+        }
+       
         //return $archivo;
         $archivo->path_archivo = substr($archivo->path_archivo, 14);
         return response()->json($archivo);
@@ -150,5 +159,18 @@ class DigestoController extends Controller
         else{
             return response()->json(true);
         }
+    }
+
+    public function historial(Request $request){
+    $query = "SELECT id_archivo0, id_archivon, observacion, 
+    a0.nro_archivo as nro0, an.nro_archivo as nron 
+    FROM IPRODHA.DIG_DIGESTO D
+    INNER JOIN IPRODHA.DIG_ARCHIVOS A0 
+    ON A0.ID_ARCHIVO = D.ID_ARCHIVO0
+    left JOIN IPRODHA.DIG_ARCHIVOS An 
+    ON AN.ID_ARCHIVO = D.ID_ARCHIVON";
+    $historial = DB::select( DB::raw($query));
+    return view('Digesto.historial')
+        ->with('historial', $historial);
     }
 }

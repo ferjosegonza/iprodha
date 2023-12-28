@@ -37,6 +37,7 @@ use App\Http\Controllers\Coordinacion\Digesto\DigestoController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\App\AppNotificacionesController;
 use App\Http\Controllers\App\AuthAppController;
+use App\Http\Controllers\App\PagosAppController;
 
 
 //--Fer Jose
@@ -232,6 +233,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|CREAR-ARCHIVOS|D
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], function () {
     Route::get('digesto', [DigestoController::class, 'index'])->name('digesto.index');
+    Route::get('digesto/historial', [DigestoController::class, 'historial'])->name('digesto.historial');
     Route::get('digesto/buscador', [DigestoController::class, 'buscarArchivo'])->name('digesto.buscador'); //borrar esto
     Route::get('digesto/buscar', [DigestoController::class, 'buscarArchivo'])->name('digesto.buscar');
     Route::post('digesto/guardar', [DigestoController::class, 'guardar'])->name('digesto.guardar');
@@ -255,6 +257,7 @@ Route::group([], function () {
     Route::get('ciudadano', [AuthAppController::class, 'loginCiudadano'])->name('app.ciudadano');
     Route::get('iprodha-ciudadano', [AuthAppController::class, 'iprodhaCiudadano'])->name('app.Ipciudadano');
     Route::get('exito-ciudadano', [AuthAppController::class, 'exitoCiudadano'])->name('app.exitociudadano');
+    Route::get('pago-boleta', [PagosAppController::class, 'pagoBoleta'])->name('app.pagoBoleta');
 });
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
