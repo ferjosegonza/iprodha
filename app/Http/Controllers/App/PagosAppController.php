@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Iprodha\Pol_pagoonlinecab;
 use App\Models\Iprodha\Pol_pagoonlinedet;
 use DB;
-use App\Http\Controllers\App\SHA256Encript;
-use App\Http\Controllers\App\AESEncrypter;
 
 class PagosAppController extends Controller
 {
@@ -29,21 +27,21 @@ class PagosAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        $query = "SELECT sum(nvl(USUA400.FUN_MORA_CTA('$request->operatoria',CODBAR,NROADJ,NROCTA),0)
-                + IMPORTEWEB) IMPORTETOTAL
-                FROM iprodhaweb.cuotas_$request->operatoria
-                WHERE codbar=$request->nro_barrio and nroadj=$request->nro_adju and NROCTA in($request->cuotas)";
+        $query = "SELECT sum(a_pagar) IMPORTETOTAL from iprodha.vw_ahcrpi_adeuda d
+        where d.ope = '$request->operatoria' and d.barrio = $request->nro_barrio
+        and d.adju = $request->nro_adju and d.Cuota in ($request->cuotas)";
         $importeTotal = DB::select( DB::raw($query));
         $pago = new Pol_pagoonlinecab;
         $id = $pago->guardar($importeTotal[0]->importetotal, 1, $request->operatoria, $request->nro_barrio, $request->nro_adju);
+        var_dump($id);
+        var_dump($importeTotal);
         if($id != -1){
-            $query = "SELECT nrocta, nvl(USUA400.FUN_MORA_CTA('$request->operatoria', CODBAR, NROADJ, NROCTA),0)
-                    + IMPORTEWEB IMPORTE FROM iprodhaweb.cuotas_$request->operatoria
-                    WHERE codbar=$request->nro_barrio and nroadj=$request->nro_adju and nrocta in($request->cuotas)";
+            $query = "SELECT * from iprodha.vw_ahcrpi_adeuda
+                    WHERE barrio=$request->nro_barrio and adju=$request->nro_adju and cuota in($request->cuotas)";
             $reg = DB::select(DB::raw($query));
             for($i=0;$i<count($reg);$i++){
                 $detalle = new Pol_pagoonlinedet;
-                $res = $detalle->guardar($id, 1, $reg[$i]->nrocta, $reg[$i]->importe);
+                $res = $detalle->guardar($id, 1, $reg[$i]->cuota, $reg[$i]->a_pagar);
                 if(!$res){
                     return 0;
                 }
@@ -56,44 +54,40 @@ class PagosAppController extends Controller
     }
 
     public function irMacroClick(Request $request){
-        $aes = new AESEncrypter();
         $query = "SELECT * from IPRODHA.vw_pol_pagoonline
                   where transaccioncomercioid= $request->id";
         $row = DB::select( DB::raw($query));
-        $hash = new SHA256Encript();
-        $ipAddress = trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com"));
-        $secretKey = 'IPRODHA_08692b3d-f495-4888-8a58-f254529fe2b1';
-        $comercio = 'fe1d2911-f9f2-4046-871b-a5b3f713d812';
-        $sucursal = '';
+        $comercio = 'ca309049-84d7-430a-af3a-ce747f3c1f50';
         $query = "SELECT * from IPRODHA.pol_pagoonlinecab c
         inner join iprodha.pol_pagoonlinedet d on c.idpagoonline=d.idpagoonline
         where c.idpagoonline= $request->id order by d.nrocomprobante desc";
-        var_dump($query);
         $importeTotal = DB::select( DB::raw($query));
-        var_dump($importeTotal);
         $amount = intval($importeTotal[0]->importetotal * 100);
-        $unHash = $hash->Generate($ipAddress, $secretKey, $comercio, $sucursal, $amount);
         $callbackSuccess = $row[0]->callbacksuccess;
         $callbackCancel = $row[0]->callbackcancel;
-        $sucursalComercio = '';
         $pro1;
         if ($row[0]->idbpe == null){
             $pro1 = $row[0]->producto;
         }else{
             $pro1 = $row[0]->productobpe;
         }
+        $info;
+        if($row[0]->informacion == null){
+            $info = '';
+        }
+        else{
+            $info = $row[0]->informacion;
+        }
         // Sample data to send in the POST request
         $postData = [
-            'CallbackSuccess' => $aes->EncryptString($callbackSuccess, $secretKey),
-            'CallbackCancel' => $aes->EncryptString($callbackCancel, $secretKey),
+            'CallbackSuccess' => $callbackSuccess,
+            'CallbackCancel' => $callbackCancel,
             'Comercio' => $comercio,
-            'SucursalComercio' => $aes->EncryptString($sucursalComercio, $secretKey),
-            'Hash' => $unHash,
             'TransaccionComercioId' => $row[0]->transaccioncomercioid,
-            'Monto' => $aes->EncryptString($amount, $secretKey),
+            'Monto' => $amount,
             'Producto[0]' => $row[0]->producto_0,
             'Producto[1]' => $pro1,
-            'Informacion' => $aes->EncryptString($row[0]->informacion, $secretKey),
+            'Informacion' => $info,
             'ClientData.CUIT' => $row[0]->clientdata_cuit,
             'ClientData.NombreApellido' => $row[0]->clientdata_nombreapellido
         ];
