@@ -33,8 +33,6 @@ class PagosAppController extends Controller
         $importeTotal = DB::select( DB::raw($query));
         $pago = new Pol_pagoonlinecab;
         $id = $pago->guardar($importeTotal[0]->importetotal, 1, $request->operatoria, $request->nro_barrio, $request->nro_adju);
-        var_dump($id);
-        var_dump($importeTotal);
         if($id != -1){
             $query = "SELECT * from iprodha.vw_ahcrpi_adeuda
                     WHERE barrio=$request->nro_barrio and adju=$request->nro_adju and cuota in($request->cuotas)";
