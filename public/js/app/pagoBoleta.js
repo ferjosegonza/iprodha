@@ -1,6 +1,5 @@
 window.onload=function(){    
     let form = document.getElementById('formPagos')
-    console.log(form)
     var secretKey = "IPRODHA_28813050-3d45-4cd1-a246-2c907f258aff"; 
     var callbackSucces = document.getElementById("CallbackSuccess").value; 
     var callbackCancel = document.getElementById("CallbackCancel").value; 
@@ -17,6 +16,5 @@ window.onload=function(){
     document.getElementById("SucursalComercio").value = sucursalComercio;                
     document.getElementById("Monto").value = monto;  
     document.getElementById("Informacion").value = info;  
-    console.log(form)    
     form.submit();
 }
