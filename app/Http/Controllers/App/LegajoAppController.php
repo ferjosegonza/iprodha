@@ -62,7 +62,7 @@ class LegajoAppController extends Controller
         where OPE = '$request->ope'
         and BARRIO = $request->barrio
         and ADJU = $request->adju
-        and ESTADO = 'Impago'";
+        and pagable = 1";
         $boletas = DB::select( DB::raw($query));
         return response()->json($boletas);
     }
