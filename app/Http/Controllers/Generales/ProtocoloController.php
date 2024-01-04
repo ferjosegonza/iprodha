@@ -47,8 +47,8 @@ class ProtocoloController extends Controller
     // }
 
     public function denunciaGuardar(Request $request){
-        //$idNvo = $request->input('id_modif');
-        //echo 'idNvo: '.$idNvo;
+        $idNvo = $request->input('id_modif');
+        echo 'idNvo: '.$idNvo;
 
         $denuncia_extracto = $request->input('denuncia_extracto');
         $nvaDenuncia = new Denuncias;
