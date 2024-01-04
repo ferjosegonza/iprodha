@@ -27,19 +27,20 @@ class PagosAppController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        $query = "SELECT sum(a_pagar) IMPORTETOTAL from iprodha.vw_ahcrpi_adeuda d
+        $query = "SELECT sum(importe + recargo ) IMPORTETOTAL from iprodha.app_boletas d
         where d.ope = '$request->operatoria' and d.barrio = $request->nro_barrio
-        and d.adju = $request->nro_adju and d.Cuota in ($request->cuotas)";
+        and d.adju = $request->nro_adju and d.nro_cta in ($request->cuotas)";
         $importeTotal = DB::select( DB::raw($query));
         $pago = new Pol_pagoonlinecab;
         $id = $pago->guardar($importeTotal[0]->importetotal, 1, $request->operatoria, $request->nro_barrio, $request->nro_adju);
         if($id != -1){
-            $query = "SELECT * from iprodha.vw_ahcrpi_adeuda
-                    WHERE barrio=$request->nro_barrio and adju=$request->nro_adju and cuota in($request->cuotas)";
+            $query = "SELECT * from iprodha.app_boletas WHERE barrio=$request->nro_barrio 
+            and adju=$request->nro_adju and ope='$request->operatoria' and nro_cta in($request->cuotas)";
             $reg = DB::select(DB::raw($query));
             for($i=0;$i<count($reg);$i++){
                 $detalle = new Pol_pagoonlinedet;
-                $res = $detalle->guardar($id, 1, $reg[$i]->cuota, $reg[$i]->a_pagar);
+                $importe = $reg[$i]->importe + $reg[$i]->recargo;
+                $res = $detalle->guardar($id, 1, $reg[$i]->nro_cta, $importe);
                 if(!$res){
                     return 0;
                 }
