@@ -52,6 +52,13 @@ class PagosAppController extends Controller
     }
 
     public function irMacroClick(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        //return $request;
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
         $query = "SELECT * from IPRODHA.vw_pol_pagoonline
                   where transaccioncomercioid= $request->id";
         $row = DB::select( DB::raw($query));
@@ -92,5 +99,14 @@ class PagosAppController extends Controller
 
         return view('app.pagoBoleta')
         ->with('postData', $postData);
+    }
+
+    public function reflejarPendiente(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        $pagoPendiente = Pol_pagoonlinecab::where('idpagoonline', '=', $request->id)->first();
+        $pagoPendiente->estado_pasarela = 1;
+        return $pagoPendiente->save();
     }
 }

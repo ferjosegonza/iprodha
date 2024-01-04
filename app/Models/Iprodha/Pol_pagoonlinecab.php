@@ -14,7 +14,7 @@ class Pol_pagoonlinecab extends Model{
     public $incrementing = false;
     protected $fillable=[ 
         'idpagoonline', 'fechagen', 'importetotal', 'shasign', 'idorigenpago', 'operatoria', 'barrio', 'adju',
-        'fechapago', 'fechacruce', 'importepagado', 'pasadoatxt', 'idbpe'
+        'fechapago', 'fechacruce', 'importepagado', 'pasadoatxt', 'idbpe', 'estado_pasarela'
     ];
 
    
@@ -24,6 +24,7 @@ class Pol_pagoonlinecab extends Model{
         $this->operatoria = $op;
         $this->barrio = $ba;
         $this->adju = $ad;
+        $this->estado_pasarela=0;
         $query = 'SELECT IPRODHA.SEC_POL_TRANSACCION.nextval ID_PAG from dual';
         $id = DB::select( DB::raw($query));
         $this->idpagoonline= $id[0]->id_pag;

@@ -38,4 +38,5 @@ Route::group(['middleware' => []], function(){
     Route::get('/adeuda', [LegajoAppController::class, 'adeuda'])->name('app.adeuda');
     Route::post('/grabarPagoOnline', [PagosAppController::class, 'grabarPagoOnline'])->name('app.grabarPagoOnline');
     Route::get('/irMacroClick', [PagosAppController::class, 'irMacroClick'])->name('app.grabarPagoOnline');
+    Route::post('/reflejarPendiente', [PagosAppController::class, 'reflejarPendiente'])->name('app.reflejarPendiente');
 });
