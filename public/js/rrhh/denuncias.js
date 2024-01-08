@@ -42,13 +42,14 @@ function limpiarFormDenuncia() {
     $('#id_modif').val('');
     $('#denuncia_extracto').val('');
     $('#denuncia_descripcion').val('');
+    $('#form_nva_denuncia').attr('method', 'post');
+    $('#form_nva_denuncia').attr('route', 'denuncia.guardar');
     // $('#id_modif').empty();
     // $('#denuncia_extracto').empty();
     // $('#denuncia_descripcion').empty();
 
     var fechaActual = new Date().toISOString().split('T')[0];
     $('#fecha').val(fechaActual);
-
 }
 
 $('#botonCerrar').on('click', function () {
@@ -56,10 +57,10 @@ $('#botonCerrar').on('click', function () {
     //limpiarFormDenuncia();
 });
 
-/*$('#botonModal').on('click', function () {
-    //location.reload(true);
-    //limpiarFormDenuncia();
-});*/
+// $('#botonModal').on('click', function () {
+//     //location.reload(true);
+//     //limpiarFormDenuncia();
+// });
 
 /*$('#example tbody').on('click', '.borrar-denuncia', function (e) {
     e.stopPropagation(); // Evita que el evento se propague a la fila
@@ -96,8 +97,12 @@ function verDenuncia(id_denuncia, fecha, extracto, descripcion) {
 }
 
 function modificarDenuncia(id_denuncia, fecha, extracto, descripcion) {
-    cargarModal(id_denuncia, fecha, extracto, descripcion, 'MODIFICAR');
+    let newFecha = fecha.substr(0, 10);
+    //alert('id_denuncia: '+id_denuncia+'\nfecha: '+fecha+'\nnewFecha'+newFecha+'\nextracto: '+extracto+'\ndescripcion: '+descripcion);
     activarModal();
+    $('#form_nva_denuncia').attr('method', 'put');
+    $('#form_nva_denuncia').attr('route', 'denuncia.modificar');
+    cargarModal(id_denuncia, newFecha, extracto, descripcion, 'MODIFICAR');
 }
 
 /*$('.btn-ver-denuncia').on('click', function () {

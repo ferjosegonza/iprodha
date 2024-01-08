@@ -21,7 +21,7 @@
             </div> -->
             <h3 class="page__heading">Denuncias</h3>
             @can('CARGAR-DENUNCIA')
-                <button id="botonModal" type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalDenuncia">
+                <button id="botonModal" type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalDenuncia" onclick="limpiarFormDenuncia()">
                     Nueva Denuncia
                 </button>
             @endcan
@@ -97,17 +97,32 @@
                                                                                                 "' . $denuncia->descripcion . '")',
                                                                 ]) !!}
 
-                                                                {{-- <button class="formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia"
+                                                                <button class="formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia"
                                                                 onclick="modificarDenuncia({{$denuncia->id_denuncia}},'{{$denuncia->fecha}}',
                                                                 '{{$denuncia->extracto}}',
-                                                                '{{$denuncia->descripcion}}')" >Modificar</button> --}}
-                                                                {!! Form::button('Modificar', [
+                                                                '{{$denuncia->descripcion}}')" >Modificar</button>
+                                                                {{-- {!! Form::button('Modificar', [
                                                                     'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia',
                                                                     'onclick' => 'modificarDenuncia(' . $denuncia->id_denuncia . ',
                                                                                                 "' . $denuncia->fecha . '",
                                                                                                 "' . $denuncia->extracto . '",
                                                                                                 "' . $denuncia->descripcion . '")',
-                                                                ]) !!}
+                                                                    //'route' => ['denuncia.modificar', $denuncia->id_denuncia]
+                                                                ]) !!} --}}
+
+                                                                {{-- {!! Form::open([
+                                                                    'method' => 'PUT',
+                                                                    'class' => 'formulario',
+                                                                    'route' => ['denuncia.modificar', $denuncia->id_denuncia],
+                                                                    'onsubmit' => 'return modificarDenunciaSubmit(' . $denuncia->id_denuncia . ',
+                                                                                                                "' . $denuncia->fecha . '",
+                                                                                                                "' . $denuncia->extracto . '",
+                                                                                                                "' . $denuncia->descripcion . '")']) !!}
+                                                                    {!! Form::button('Modificar', [
+                                                                        'type' => 'submit',
+                                                                        'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia']) !!}
+                                                                {!! Form::close() !!} --}}
+
 
                                                                 {!! Form::open([
                                                                     'method' => 'DELETE',
@@ -183,8 +198,15 @@
                 </div>
                 <div class="modal-body">
                     <div id="modifDenuncia"></div>
-                    {!! Form::open(['route' => 'denuncia.guardar', 'method' => 'post', 'id' => 'form_nva_denuncia']) !!}
-                        {!! Form::hidden('id_modif', $denuncia->id_denuncia, ['id' => 'id_modif']) !!}
+                    {!! Form::open([
+                        'route' => $denuncia->id_denuncia ? 'denuncia.modificar' : 'denuncia.guardar',
+                        'method' => $denuncia->id_denuncia ? 'put' : 'post',
+                        'id' => 'form_nva_denuncia']) !!}
+                        @if ($denuncia->id_denuncia)
+                            {{-- Agregar el token CSRF solo si se está modificando una denuncia existente --}}
+                            {!! Form::token() !!}
+                        @endif
+                        {!! Form::hidden('id_modif', $denuncia->id_denuncia ?? null, ['id' => 'id_modif']) !!}
                         {{-- {!! Form::text('id_modif', null, ['id' => 'id_modif']) !!} --}}
                     <div class="mb-3">
                         {!! Form::label('fecha', 'FECHA:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
