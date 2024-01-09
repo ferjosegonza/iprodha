@@ -14,7 +14,7 @@ class Denuncias extends Model
     protected $primaryKey = 'ID_DENUNCIA';
     public $incrementing = false;
     protected $fillable = [
-        'ID_DENUNCIA',
+        //'ID_DENUNCIA',
         'FECHA',
         'EXTRACTO',
         'DESCRIPCION'

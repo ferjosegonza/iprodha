@@ -85,10 +85,6 @@
                                                                 DENUNCIA
                                                             </button>
                                                             <div class="dropdown-menu">
-                                                                {{-- <button class="formulario dropdown-item btn-ver-denuncia btn btn-info ver-denuncia"
-                                                                    onclick="verDenuncia({{$denuncia->id_denuncia}},'{{$denuncia->fecha}}',
-                                                                    '{{$denuncia->extracto}}',
-                                                                    '{{$denuncia->descripcion}}')" >Ver</button> --}}
                                                                 {!! Form::button('Ver', [
                                                                     'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-info ver-denuncia',
                                                                     'onclick' => 'verDenuncia(' . $denuncia->id_denuncia . ',
@@ -97,32 +93,17 @@
                                                                                                 "' . $denuncia->descripcion . '")',
                                                                 ]) !!}
 
-                                                                <button class="formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia"
-                                                                onclick="modificarDenuncia({{$denuncia->id_denuncia}},'{{$denuncia->fecha}}',
-                                                                '{{$denuncia->extracto}}',
-                                                                '{{$denuncia->descripcion}}')" >Modificar</button>
-                                                                {{-- {!! Form::button('Modificar', [
-                                                                    'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia',
+                                                                {!! Form::button('Modificar', [
+                                                                    'class' => 'formulario dropdown-item btn btn-warning',
                                                                     'onclick' => 'modificarDenuncia(' . $denuncia->id_denuncia . ',
                                                                                                 "' . $denuncia->fecha . '",
                                                                                                 "' . $denuncia->extracto . '",
                                                                                                 "' . $denuncia->descripcion . '")',
-                                                                    //'route' => ['denuncia.modificar', $denuncia->id_denuncia]
-                                                                ]) !!} --}}
+                                                                ])->id('botonModificar') !!}
 
-                                                                {{-- {!! Form::open([
-                                                                    'method' => 'PUT',
-                                                                    'class' => 'formulario',
-                                                                    'route' => ['denuncia.modificar', $denuncia->id_denuncia],
-                                                                    'onsubmit' => 'return modificarDenunciaSubmit(' . $denuncia->id_denuncia . ',
-                                                                                                                "' . $denuncia->fecha . '",
-                                                                                                                "' . $denuncia->extracto . '",
-                                                                                                                "' . $denuncia->descripcion . '")']) !!}
-                                                                    {!! Form::button('Modificar', [
-                                                                        'type' => 'submit',
-                                                                        'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia']) !!}
+                                                                {{-- {!! Form::open(['method' => 'GET','route' => ['denuncia.modificar', $denuncia->id_denuncia],'style' => 'display:inline']) !!}
+                                                                {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
                                                                 {!! Form::close() !!} --}}
-
 
                                                                 {!! Form::open([
                                                                     'method' => 'DELETE',
@@ -199,10 +180,13 @@
                 <div class="modal-body">
                     <div id="modifDenuncia"></div>
                     {!! Form::open([
-                        'route' => $denuncia->id_denuncia ? 'denuncia.modificar' : 'denuncia.guardar',
-                        'method' => $denuncia->id_denuncia ? 'put' : 'post',
+                        'route' => 'denuncia.guardar',
+                        'method' => 'POST',
                         'id' => 'form_nva_denuncia']) !!}
+                        @csrf
                         @if ($denuncia->id_denuncia)
+                            <div>jelou</div>
+                            @method('PUT')
                             {{-- Agregar el token CSRF solo si se está modificando una denuncia existente --}}
                             {!! Form::token() !!}
                         @endif

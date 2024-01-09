@@ -100,9 +100,16 @@ function modificarDenuncia(id_denuncia, fecha, extracto, descripcion) {
     let newFecha = fecha.substr(0, 10);
     //alert('id_denuncia: '+id_denuncia+'\nfecha: '+fecha+'\nnewFecha'+newFecha+'\nextracto: '+extracto+'\ndescripcion: '+descripcion);
     activarModal();
-    $('#form_nva_denuncia').attr('method', 'put');
-    $('#form_nva_denuncia').attr('route', 'denuncia.modificar');
     cargarModal(id_denuncia, newFecha, extracto, descripcion, 'MODIFICAR');
+    let action = $('#form_nva_denuncia').attr('action');
+    action = action.substring(0, action.lastIndexOf('/')+1)+'modificar';
+    $('#form_nva_denuncia').attr('action', action);
+    $('#form_nva_denuncia').attr('method', 'PUT');
+    $('#form_nva_denuncia').attr('route', 'denuncia.modificar');
+    $('#form_nva_denuncia').querySelector('input[name="_method"]').value = 'PUT'
+
+    // var form = document.getElementById('form_denuncia');
+    // form.querySelector('input[name="_method"]').value = 'PUT';
 }
 
 /*$('.btn-ver-denuncia').on('click', function () {

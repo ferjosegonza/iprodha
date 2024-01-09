@@ -46,27 +46,34 @@ class ProtocoloController extends Controller
     //     return view('rrhh.cargar_denuncia');
     // }
 
-    public function denunciaGuardar(Request $request){
+    public function crearDenuncia(Request $request){
         $idNvo = $request->input('id_modif');
-
-        $denuncia_extracto = $request->input('denuncia_extracto');
         $nvaDenuncia = new Denuncias;
+
         $nvaDenuncia->id_denuncia = Denuncias::max('ID_DENUNCIA')+1;
         $nvaDenuncia->fecha = $request->input('fecha');
+        $denuncia_extracto = $request->input('denuncia_extracto');
         $nvaDenuncia->extracto = $denuncia_extracto;
         $nvaDenuncia->descripcion = $request->input('denuncia_descripcion');
         // $usuario = $request->session()->get('usuario');
 
         try {
             $nvaDenuncia->save();
-            return redirect()->route('rrhh.listardenuncias')->with('mensaje','Denuncia \''. $denuncia_extracto .'\' creada exitosamente.');
+            return redirect()->route('rrhh.listardenuncias')->with('mensaje','Denuncia creada exitosamente.');
         } catch (\Exception $e){
             return redirect()->route('rrhh.listardenuncias')->back()->with('error', $e->getMessage());
         }
     }
 
-    public function modificarDenuncia(Request $request)
-    {
+    public function modificarDenuncia(Request $request) {
+        //dd($request->all());
+        /*
+        "_token" => "pbj84Dt6OiREJEgEebA2zTOVzFwxTjpFOMFYd2h0"
+        "id_modif" => "26"
+        "fecha" => "2024-01-09"
+        "denuncia_extracto" => "AS"
+        "denuncia_descripcion" => "AAS"
+        */
 
         // $digesto = Dig_digesto::where('id_archivo0', '=', $request->id0)
         // ->where('id_archivon', '=', $request->idn)->first();
