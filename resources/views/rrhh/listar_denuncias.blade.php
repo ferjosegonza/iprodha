@@ -12,6 +12,20 @@
                 /*cursor: pointer; Cambia el cursor a manito */
             }
         </style>
+
+        <script>
+            let nuevaDenuncia = true;
+            function esDenunciaNueva(valor) {
+                nuevaDenuncia = valor;
+            }
+
+            function beforeSubmit() {
+                const form = document.getElementById('form_nva_denuncia');
+                form.action = nuevaDenuncia ? '{{ route("denuncia.guardar")}}' : '{{ route("denuncia.modificar")}}';
+                form.method = nuevaDenuncia ? 'POST' : 'PUT';
+                return true;
+            }
+        </script>
     </head>
 
     <section id="denunciasSection" class="section">
@@ -21,7 +35,7 @@
             </div> -->
             <h3 class="page__heading">Denuncias</h3>
             @can('CARGAR-DENUNCIA')
-                <button id="botonModal" type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalDenuncia" onclick="limpiarFormDenuncia()">
+                <button id="botonModal" type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalDenuncia" onclick="limpiarFormDenuncia(); esDenunciaNueva(true)">
                     Nueva Denuncia
                 </button>
             @endcan
@@ -94,12 +108,13 @@
                                                                 ]) !!}
 
                                                                 {!! Form::button('Modificar', [
+                                                                    'id' => 'botonModificar',
                                                                     'class' => 'formulario dropdown-item btn btn-warning',
-                                                                    'onclick' => 'modificarDenuncia(' . $denuncia->id_denuncia . ',
+                                                                    'onclick' => 'esDenunciaNueva(false); modificarDenuncia(' . $denuncia->id_denuncia . ',
                                                                                                 "' . $denuncia->fecha . '",
                                                                                                 "' . $denuncia->extracto . '",
                                                                                                 "' . $denuncia->descripcion . '")',
-                                                                ])->id('botonModificar') !!}
+                                                                ]) !!}
 
                                                                 {{-- {!! Form::open(['method' => 'GET','route' => ['denuncia.modificar', $denuncia->id_denuncia],'style' => 'display:inline']) !!}
                                                                 {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
@@ -182,14 +197,16 @@
                     {!! Form::open([
                         'route' => 'denuncia.guardar',
                         'method' => 'POST',
-                        'id' => 'form_nva_denuncia']) !!}
+                        'id' => 'form_nva_denuncia',
+                        'onsubmit' => 'return beforeSubmit();',
+                    ]) !!}
                         @csrf
-                        @if ($denuncia->id_denuncia)
+                        {{-- @if (!$nuevaDenuncia) --}}
                             <div>jelou</div>
+                            {{-- Agregar el token CSRF y @method('PUT') solo si se está modificando una denuncia existente PERO TODAVÍA NO ESTOY PONIENDO UN FILTRO PA SABER SI ES NVA DENUNCIA O NO --}}
                             @method('PUT')
-                            {{-- Agregar el token CSRF solo si se está modificando una denuncia existente --}}
                             {!! Form::token() !!}
-                        @endif
+                        {{-- @endif --}}
                         {!! Form::hidden('id_modif', $denuncia->id_denuncia ?? null, ['id' => 'id_modif']) !!}
                         {{-- {!! Form::text('id_modif', null, ['id' => 'id_modif']) !!} --}}
                     <div class="mb-3">
