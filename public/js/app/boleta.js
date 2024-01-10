@@ -7,10 +7,12 @@ function previsualizar(){
     if(val == 1){
         boletas()
     }
+    if(val == 2){
+        adeuda()
+    }
 }
 
 function boletas(){
-    let pendientes = document.getElementById('pendientes')
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -27,27 +29,7 @@ function boletas(){
         success: function(res) 
         {             
             console.log(res)
-            if(res.length > 0){
-                let innerHTML
-                if(res.length == 1){
-                    innerHTML = '<label>Hay 1 notificación pendiente.</label>'
-                }
-                else{
-                    innerHTML = '<label>Hay ' + res.length + ' notificaciones pendientes.</label>'
-                }
-                innerHTML = innerHTML + '<table id="pendientesTabla"><thead><th>Cuil</th><th>Encabezado</th><th>Mensaje</th><th>Fecha</th></thead><tbody>'
-                res.forEach((noti) => {
-                    innerHTML = innerHTML + '<tr><td>'+noti.usuario+'</td><td>'+noti.encabezado+'</td><td>'+noti.mensaje+'</td><td>'+noti.fecha+'</td></tr>'
-                })
-                innerHTML = innerHTML + '</tbody></table><button class="btn btn-primary" onclick="enviarBoletas()">Enviar notificaciones</button>'
-                pendientes.innerHTML = innerHTML
-                pendientes.removeAttribute('hidden')
-                tabla()
-            }
-            else{
-                pendientes.innerHTML = 'No existen notificaciones pendientes que enviar.'
-                pendientes.removeAttribute('hidden')
-            }
+            rellenarTabla(res, 1)
         },
         error: function(response){
             console.log('ERROR')
@@ -56,6 +38,63 @@ function boletas(){
     });
 }
 
+function adeuda(){
+    console.log('va')
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    $.ajax({
+        url: '/notificaciones/boletas/adeuda',
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+        }),
+        dataType: 'json',
+        success: function(res) 
+        {             
+            console.log(res)
+            rellenarTabla(res, 2)
+        },
+        error: function(response){
+            console.log('ERROR')
+            console.log(response);
+        }   
+    });
+}
+
+function rellenarTabla(res, tipo){    
+    let pendientes = document.getElementById('pendientes')
+    if(res.length > 0){
+        let innerHTML
+        if(res.length == 1){
+            innerHTML = '<label>Hay 1 notificación pendiente.</label>'
+        }
+        else{
+            innerHTML = '<label>Hay ' + res.length + ' notificaciones pendientes.</label>'
+        }
+        innerHTML = innerHTML + '<table id="pendientesTabla"><thead><th>Cuil</th><th>Encabezado</th><th>Mensaje</th><th>Fecha</th></thead><tbody>'
+        res.forEach((noti) => {
+            innerHTML = innerHTML + '<tr><td>'+noti.usuario+'</td><td>'+noti.encabezado+'</td><td>'+noti.mensaje+'</td><td>'+noti.fecha+'</td></tr>'
+        })
+        if(tipo == 1){
+            innerHTML = innerHTML + '</tbody></table><button class="btn btn-primary" onclick="enviarBoletas()">Enviar notificaciones</button>'
+        }
+        if (tipo==2){
+            innerHTML = innerHTML + '</tbody></table><button class="btn btn-primary" onclick="enviarAdeuda()">Enviar notificaciones</button>'
+        }
+        pendientes.innerHTML = innerHTML
+        pendientes.removeAttribute('hidden')
+        tabla()
+    }
+    else{
+        pendientes.innerHTML = 'No existen notificaciones pendientes que enviar.'
+        pendientes.removeAttribute('hidden')
+    }
+}
 
 function tabla() {
   $('#pendientesTabla').DataTable({
@@ -88,6 +127,37 @@ function enviarBoletas(){
     });
     $.ajax({
         url: '/notificaciones/boletas/enviar',
+        type: 'POST',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+        }),
+        dataType: 'json',
+        success: function(res) 
+        {             
+            if(res == 1){
+                popup(1)
+            }
+            else{
+                popup(2)
+            }
+        },
+        error: function(response){
+            console.log('ERROR')
+            console.log(response);
+            popup(3)
+        }   
+    });
+}
+
+function enviarAdeuda(){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: '/notificaciones/boletas/enviarAdeuda',
         type: 'POST',
         cache: false,
         data: ({
