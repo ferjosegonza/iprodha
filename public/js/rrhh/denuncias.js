@@ -97,10 +97,10 @@ function verDenuncia(id_denuncia, fecha, extracto, descripcion) {
 }
 
 function modificarDenuncia(id_denuncia, fecha, extracto, descripcion) {
-    let newFecha = fecha.substr(0, 10);
+    //let newFecha = fecha.substr(0, 10);
     //alert('id_denuncia: '+id_denuncia+'\nfecha: '+fecha+'\nnewFecha'+newFecha+'\nextracto: '+extracto+'\ndescripcion: '+descripcion);
     activarModal();
-    cargarModal(id_denuncia, newFecha, extracto, descripcion, 'MODIFICAR');
+    //cargarModal(id_denuncia, newFecha, extracto, descripcion, 'MODIFICAR');
     // let action = $('#form_nva_denuncia').attr('action');
     // action = action.substring(0, action.lastIndexOf('/')+1)+'modificar';
     // $('#form_nva_denuncia').attr('action', action);

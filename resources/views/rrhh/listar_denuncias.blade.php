@@ -14,17 +14,23 @@
         </style>
 
         <script>
-            let nuevaDenuncia = true;
-            function esDenunciaNueva(valor) {
-                nuevaDenuncia = valor;
+            //let nuevaDenuncia = true;
+            function esDenunciaNueva(esNuevo) {
+                if (esNuevo) {
+                    $('modal-nueva-denuncia').attr('style="display: block;"');
+                    $('modal-modif-denuncia').attr('style="display: none;"');
+                } else {
+                    $('modal-nueva-denuncia').attr('style="display: none;"');
+                    $('modal-modif-denuncia').attr('style="display: block;"');
+                }
             }
 
-            function beforeSubmit() {
-                const form = document.getElementById('form_nva_denuncia');
-                form.action = nuevaDenuncia ? '{{ route("denuncia.guardar")}}' : '{{ route("denuncia.modificar")}}';
-                form.method = nuevaDenuncia ? 'POST' : 'PUT';
-                return true;
-            }
+            // function beforeSubmit() {
+            //     const form = document.getElementById('form_nva_denuncia');
+            //     form.action = nuevaDenuncia ? '{{ route("denuncia.guardar")}}' : '{{ route("denuncia.modificar")}}';
+            //     form.method = nuevaDenuncia ? 'POST' : 'PUT';
+            //     return true;
+            // }
         </script>
     </head>
 
@@ -183,10 +189,10 @@
         </div>
     </section>
 
-    <!--  MODAL PARA CARGAR NVA DENUNCIA -->
+    <!--  MODAL PARA CARGAR NVA DENUNCIA O MODIFICAR EXISTENTE -->
     <div class="modal fade" id="modalDenuncia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
-            <div class="modal-content">
+            <div class="modal-content" id="modal-nueva-denuncia" style="display: none;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">CARGAR DENUNCIA</h5>
                     <div id="modifDatos" style="display: none"></div>
@@ -198,17 +204,9 @@
                         'route' => 'denuncia.guardar',
                         'method' => 'POST',
                         'id' => 'form_nva_denuncia',
-                        'onsubmit' => 'return beforeSubmit();',
+                        //'onsubmit' => 'return beforeSubmit();',
                     ]) !!}
                         @csrf
-                        {{-- @if (!$nuevaDenuncia) --}}
-                            <div>jelou</div>
-                            {{-- Agregar el token CSRF y @method('PUT') solo si se está modificando una denuncia existente PERO TODAVÍA NO ESTOY PONIENDO UN FILTRO PA SABER SI ES NVA DENUNCIA O NO --}}
-                            @method('PUT')
-                            {!! Form::token() !!}
-                        {{-- @endif --}}
-                        {!! Form::hidden('id_modif', $denuncia->id_denuncia ?? null, ['id' => 'id_modif']) !!}
-                        {{-- {!! Form::text('id_modif', null, ['id' => 'id_modif']) !!} --}}
                     <div class="mb-3">
                         {!! Form::label('fecha', 'FECHA:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
                         {!! Form::date('fecha',\Carbon\Carbon::now(),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
@@ -241,8 +239,61 @@
                     {!! Form::close() !!}
                 </div>
             </div>
+
+            {{-- <div class="modal-content" id="modal-modif-denuncia" style="display: none;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">MODIFICAR DENUNCIA</h5>
+                    <div id="modifDatos" style="display: none"></div>
+                    <button id="botonCerrar" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="modifDenuncia"></div>
+                    {!! Form::open($denuncia, [
+                        'route' => ['denuncia.update', $denuncia->id_denuncia],
+                        'method' => 'PATCH',
+                        'id' => 'form_modif_denuncia',
+                        'class' => 'formulario',
+                        //'onsubmit' => 'return beforeSubmit();',
+                    ]) !!}
+                        @csrf
+                            @method('PUT')
+                            {!! Form::token() !!}
+                            {{-- {!! Form::hidden('id_modif', $denuncia->id_denuncia, ['id' => 'id_modif']) !!} --}}{{--  
+                    <div class="mb-3">
+                        {!! Form::label('fecha', 'FECHA:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
+                        {!! Form::date('fecha',old('fecha'),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
+                        {!! Form::label('denuncia_extracto', 'EXTRACTO:', ['class' => 'form-label','style' => 'color:black;']) !!}
+                        {!! Form::text('denuncia_extracto', old('denuncia_extracto'), [
+                            'class' => 'form-control',
+                            'style' => 'resize:none;text-transform:uppercase;color: var(--bs-modal-color);',
+                            'id'    =>  'denuncia_extracto',
+                            'maxlenght'=>'100',
+                            'placeholder' => 'Detalle \'DENUNCIANTE\' CONTRA \'DENUNCIADO\'',
+                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("denuncia_caracteres", "denuncia_extracto", 100)',
+                            ]) !!}
+                        <label for="denuncia_extracto" id="denuncia_caracteres">Quedan 100 caracteres.</label>
+                        <br>
+
+                        {!! Form::label('denuncia_descripcion', 'DESCRIPCIÓN:', ['class' => 'form-label','style' => 'color:black;']) !!}
+                        {!! Form::textarea('denuncia_descripcion', old('denuncia_descripcion'), [
+                            'class' => 'form-control',
+                            'rows' => 34,
+                            'cols' => 54,
+                            'style' => 'resize:none;height:20vh;text-transform:uppercase;color: var(--bs-modal-color);',
+                            'id'    =>  'denuncia_descripcion',
+                            'maxlenght'=>'1500',
+                            'placeholder' => 'Describa lugar y lo que considere relevante de lo acontecido. Detalle los elementos o medios probatorios que se puedan agregar para el esclarecimiento.',
+                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("elementos_caracteres", "denuncia_descripcion", 1500)',
+                            ]) !!}
+                        <label for="denuncia_descripcion" id="elementos_caracteres" style="mb-2">Quedan 1500 caracteres.</label>
+                    </div>
+                    {!! Form::submit('EDITAR', ['onclick' => '', 'class' => 'btn btn-success mr-2']) !!}
+                    {{-- <button id="guardar_denuncia" type="submit" class="btn btn-primary">GUARDAR</button> --}}{{--  
+                    {!! Form::close() !!}
+                </div>
+            </div> --}}
         </div>
     </div>
-    <!--  FIN MODAL PARA CARGAR NVA DENUNCIA -->
+    <!--  FIN MODAL PARA CARGAR NVA DENUNCIA O MODIFICAR EXISTENTE -->
 
 @endsection

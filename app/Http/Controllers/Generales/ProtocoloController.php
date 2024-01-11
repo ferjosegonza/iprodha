@@ -65,6 +65,8 @@ class ProtocoloController extends Controller
         }
     }
 
+    // es así o cómo?
+    //public function modificarDenuncia($id) {
     public function modificarDenuncia(Request $request) {
         //dd($request->all());
         /*
