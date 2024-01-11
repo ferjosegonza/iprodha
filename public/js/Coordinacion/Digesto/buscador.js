@@ -86,6 +86,7 @@ function buscarArchivo(){
     let tipo = document.getElementById('tipo').value
     let subtipo = getSubtipoId(document.getElementById('subtipo'))
     let doc = document.getElementById('doc').value
+    let año = document.getElementById('año').value
     //
     console.log(tipo, subtipo, doc)
     $.ajaxSetup({
@@ -101,7 +102,8 @@ function buscarArchivo(){
             _token: $('#signup-token').val(),
             tipo:tipo,
             subtipo:subtipo,
-            doc:doc
+            doc:doc,
+            año: año
         }),
         dataType: 'json',
         success: function(res){  
