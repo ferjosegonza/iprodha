@@ -2,7 +2,7 @@
 
 $(document).ready(function (){
 //window.addEventListener("DOMContentLoaded", (event) =>
-    $('#example').DataTable({
+    $('#tabla-lista-denuncias').DataTable({
         language: {
                 lengthMenu: 'Mostrar _MENU_ registros por pagina',
                 zeroRecords: 'No se ha encontrado registros',
@@ -29,6 +29,8 @@ $(document).ready(function (){
         limpiarFormDenuncia();
     });
 
+    cerrarAmbosModalesDenuncia();
+
     // Función p/ cerrar el modal al hacer clic en cualq parte fuera del modal
     /*$(document).on('click', function (e) {
         if ($(e.target).closest('.modal').length === 0 && $(e.target).closest('.btn-ver-denuncia').length === 0){
@@ -39,11 +41,11 @@ $(document).ready(function (){
 
 
 function limpiarFormDenuncia() {
-    $('#id_modif').val('');
+    //$('#id_modif').val('');
     $('#denuncia_extracto').val('');
     $('#denuncia_descripcion').val('');
-    $('#form_nva_denuncia').attr('method', 'post');
-    $('#form_nva_denuncia').attr('route', 'denuncia.guardar');
+    //$('#form_nva_denuncia').attr('method', 'post');
+    //$('#form_nva_denuncia').attr('route', 'denuncia.guardar');
     // $('#id_modif').empty();
     // $('#denuncia_extracto').empty();
     // $('#denuncia_descripcion').empty();
@@ -62,13 +64,23 @@ $('#botonCerrar').on('click', function () {
 //     //limpiarFormDenuncia();
 // });
 
-/*$('#example tbody').on('click', '.borrar-denuncia', function (e) {
-    e.stopPropagation(); // Evita que el evento se propague a la fila
-    // Resto del código para borrar la denuncia (código anterior)
-});*/
+    function abrirModalDenunciaNueva() {
+        $('#modalNuevaDenuncia').modal('show');
+        $('#modalModificarDenuncia').modal('hide');
+    }
+
+    function abrirModalModificarDenuncia() {
+        $('#modalNuevaDenuncia').modal('hide');
+        $('#modalModificarDenuncia').modal('show');
+    }
+
+    function cerrarAmbosModalesDenuncia() {
+        $('#modalNuevaDenuncia').modal('hide');
+        $('#modalModificarDenuncia').modal('hide');
+    }
 
 function cargarModal(id_denuncia, fecha, extracto, descripcion, titulo) {
-    $('#modalDenuncia').modal('show');
+    abrirModalDenunciaNueva();
     $('#id_modif').val(id_denuncia);
     $('#exampleModalLabel').text(titulo+' DENUNCIA');
     var fechaParaMostrar = fecha ? fecha.substr(0, 10) : '';
@@ -94,12 +106,16 @@ function activarModal() {
 function verDenuncia(id_denuncia, fecha, extracto, descripcion) {
     cargarModal(id_denuncia, fecha, extracto, descripcion, 'VER');
     desactivarModal();
+    $('#modal-nueva-denuncia').css('display', 'block');
+    $('#modal-modif-denuncia').css('display', 'none');
 }
 
 function modificarDenuncia(id_denuncia, fecha, extracto, descripcion) {
     //let newFecha = fecha.substr(0, 10);
     //alert('id_denuncia: '+id_denuncia+'\nfecha: '+fecha+'\nnewFecha'+newFecha+'\nextracto: '+extracto+'\ndescripcion: '+descripcion);
     activarModal();
+    $('#modal-nueva-denuncia').css('display', 'none');
+    $('#modal-modif-denuncia').css('display', 'block');
     //cargarModal(id_denuncia, newFecha, extracto, descripcion, 'MODIFICAR');
     // let action = $('#form_nva_denuncia').attr('action');
     // action = action.substring(0, action.lastIndexOf('/')+1)+'modificar';
