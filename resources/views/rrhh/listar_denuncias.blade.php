@@ -88,14 +88,14 @@
                                                                                                 "' . $denuncia->descripcion . '")',
                                                                 ]) !!}
 
-                                                                {{-- {!! Form::button('Modificar', [
+                                                                {!! Form::button('Modificar', [
                                                                     'id' => 'botonModificar',
                                                                     'class' => 'formulario dropdown-item btn btn-warning',
                                                                     'onclick' => 'abrirModalModificarDenuncia(); modificarDenuncia(' . $denuncia->id_denuncia . ',
                                                                                                 "' . $denuncia->fecha . '",
                                                                                                 "' . $denuncia->extracto . '",
                                                                                                 "' . $denuncia->descripcion . '")',
-                                                                ]) !!} --}}
+                                                                ]) !!}
 
                                                                 {!! Form::open([
                                                                     'method' => 'GET',
@@ -233,7 +233,7 @@
                     'class' => 'formulario',
                     //'onsubmit' => 'return beforeSubmit();',
                 ]) !!} --}}
-                {{-- {!! Form::model($denuncia, ['method' => 'PATCH', 'id' => 'form_modif_denuncia', 'class' => 'formulario','route' => ['denuncia.update', $denuncia->id_denuncia]]) !!} --}}
+                {!! Form::model($denuncia, ['method' => 'PATCH', 'id' => 'form_modif_denuncia', 'class' => 'formulario','route' => ['denuncia.update', $denuncia->id_denuncia]]) !!}
                     @csrf
                     @method('PUT')
                     {!! Form::token() !!}

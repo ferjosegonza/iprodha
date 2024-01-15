@@ -64,20 +64,20 @@ $('#botonCerrar').on('click', function () {
 //     //limpiarFormDenuncia();
 // });
 
-    function abrirModalDenunciaNueva() {
-        $('#modalNuevaDenuncia').modal('show');
-        $('#modalModificarDenuncia').modal('hide');
-    }
+function abrirModalDenunciaNueva() {
+    $('#modalNuevaDenuncia').modal('show');
+    $('#modalModificarDenuncia').modal('hide');
+}
 
-    function abrirModalModificarDenuncia() {
-        $('#modalNuevaDenuncia').modal('hide');
-        $('#modalModificarDenuncia').modal('show');
-    }
+function abrirModalModificarDenuncia() {
+    $('#modalNuevaDenuncia').modal('hide');
+    $('#modalModificarDenuncia').modal('show');
+}
 
-    function cerrarAmbosModalesDenuncia() {
-        $('#modalNuevaDenuncia').modal('hide');
-        $('#modalModificarDenuncia').modal('hide');
-    }
+function cerrarAmbosModalesDenuncia() {
+    $('#modalNuevaDenuncia').modal('hide');
+    $('#modalModificarDenuncia').modal('hide');
+}
 
 function cargarModal(id_denuncia, fecha, extracto, descripcion, titulo) {
     abrirModalDenunciaNueva();

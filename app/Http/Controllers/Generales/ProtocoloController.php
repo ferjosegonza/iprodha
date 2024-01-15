@@ -20,7 +20,7 @@ class ProtocoloController extends Controller
         // $this->middleware('permission:EDITAR-RUBROS', ['only' => ['edit','update']]);
         //$this->middleware('permission:BORRAR-DENUNCIA', ['only' => ['destroy']]);
     }
-    
+
     public function protocolo()
     {
         $pathResolucion= public_path()."\storage\pdf\\resolucion.pdf";
@@ -65,9 +65,10 @@ class ProtocoloController extends Controller
         }
     }
 
+    public function abrirModalModificarDenuncia(Request $request, $id){}
     // es así o cómo?
     //public function modificarDenuncia($id) {
-    public function modificarDenuncia(Request $request) {
+    public function guardarDenunciaModificada(Request $request, $id) {
         //dd($request->all());
         /*
         "_token" => "pbj84Dt6OiREJEgEebA2zTOVzFwxTjpFOMFYd2h0"
@@ -86,25 +87,24 @@ class ProtocoloController extends Controller
         //$denuncia = Denuncias::find($request->input('id_modif'));
         //$idModificar = $request->input('id_modif');
 
-
         try {
             // Obtener la información actual de la denuncia
-            $idModificar = $request->input('id_modif');
-            $denuncia = Denuncias::find($idModificar);
-    
+            // $idModificar = $request->input('id_modif');
+            $denuncia = Denuncias::find($id);
+
             // Verificar si se encontró la denuncia
             if (!$denuncia) {
                 return redirect()->route('rrhh.listardenuncias')->with('error', 'Denuncia no encontrada.');
             }
-    
+
             // Actualizar la información con los datos del formulario
             $denuncia->fecha = $request->input('fecha');
             $denuncia->extracto = $request->input('denuncia_extracto');
             $denuncia->descripcion = $request->input('denuncia_descripcion');
-    
+
             // Guardar los cambios
             $denuncia->save();
-    
+
             return redirect()->route('rrhh.listardenuncias')->with('mensaje', 'Denuncia modificada exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('rrhh.listardenuncias')->back()->with('error', $e->getMessage());
@@ -128,7 +128,6 @@ class ProtocoloController extends Controller
             return redirect()->route('rrhh.listardenuncias')->back()->with('error', $e->getMessage());
         }*/
     }
-
 
 
     public function destroy($id_denuncia){
@@ -187,9 +186,9 @@ class TicketController extends Controller
     }
 
     public function index(Request $request)
-    {        
+    {
         $name = $request->query->get('name');
-        if (!isset($name)) {    
+        if (!isset($name)) {
             //Con paginación
             $Tickets = Tic_Tarea::where('idusuario', '=', Auth::user()->id)->orderBy('idtarea', 'desc')->simplePaginate(10);
             //al usar esta paginacion, recordar poner en el el index.blade.php este codigo  {!! $roles->links() !!}
@@ -198,22 +197,22 @@ class TicketController extends Controller
         }
         return view('Coordinacion.Informatica.ticket.index',compact('Tickets'));
     }
-    
+
     public function create(Request $request)
     {
         $Categorias = Tic_Catproblema::all();
         return view('Coordinacion.Informatica.ticket.crear',compact('Categorias'));
     }
 
-    public function getClientIP(){       
+    public function getClientIP(){
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)){
-               return  $_SERVER["HTTP_X_FORWARDED_FOR"];  
-        }else if (array_key_exists('REMOTE_ADDR', $_SERVER)) { 
-               return $_SERVER["REMOTE_ADDR"]; 
+               return  $_SERVER["HTTP_X_FORWARDED_FOR"];
+        }else if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
+               return $_SERVER["REMOTE_ADDR"];
         }else if (array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
-               return $_SERVER["HTTP_CLIENT_IP"]; 
-        } 
-   
+               return $_SERVER["HTTP_CLIENT_IP"];
+        }
+
         return '';
    }
 
@@ -249,7 +248,7 @@ class TicketController extends Controller
         $modelo->idsolucionador = 0;
 
         $data = Tic_Tarea::latest('idtarea')->first();
-       
+
 
         if(is_null($data)){
             $modelo->idtarea = 1;
@@ -262,7 +261,7 @@ class TicketController extends Controller
         $modeloEstado->idestado = 1;
         $modeloEstado->fecha = \Carbon\Carbon::today()->toDateString();
         $modeloEstado->observacion = null;
-           
+
         $modelo->save();
         $modeloEstado->save();
 
@@ -271,10 +270,10 @@ class TicketController extends Controller
             $filename = time().'-'. $cadenaConvert . '.' . $request->file('image')->extension();
             $path = $request->file('image')->storeAs('images/ticket', $filename, 'public_uploads');
 
-            // $path = $request->file('image')->getRealPath();    
+            // $path = $request->file('image')->getRealPath();
             // $logo = file_get_contents($path);
             // $base64 = base64_encode($logo);
-    
+
             $save = new Tic_Imagen_x_Tarea;
 
             $data = Tic_Imagen_x_Tarea::latest('idimagen')->first();
@@ -288,9 +287,9 @@ class TicketController extends Controller
             // $save->imgb = $base64;
             // return response()->json($base64);
             $save->save();
-        } 
-      
-        return redirect()->route('ticket.index')->with('mensaje','El ticket '.$modelo->idtarea.' creado con exito.');                                                   
+        }
+
+        return redirect()->route('ticket.index')->with('mensaje','El ticket '.$modelo->idtarea.' creado con exito.');
     }
 
     public function show($id)
@@ -299,16 +298,16 @@ class TicketController extends Controller
         $Image = Tic_Imagen_x_Tarea::where('idtarea', '=', $id )->first();
         return view('Coordinacion.Informatica.ticket.show', compact('Ticket', 'Image'));
     }
-   
+
     public function edit(Request $request, $id)
     {
         $Ticket = Tic_Tarea::findorfail($id);
         $Image = Tic_Imagen_x_Tarea::where('idtarea', '=', $id )->first();
-        return view ('Coordinacion.Informatica.ticket.editar',compact('Ticket', 'Image'));                                                    
+        return view ('Coordinacion.Informatica.ticket.editar',compact('Ticket', 'Image'));
     }
-    
+
     public function update(Request $request, $id)
-    {             
+    {
         $this->validate($request, [
             'categ' => 'required|integer|between:1,999',
             'observ' => 'required|string',
@@ -327,13 +326,13 @@ class TicketController extends Controller
 
         $Ticket->idsolucionador = $request->input('categ');
         $Ticket->save();
-        return redirect()->route('ticket.asigna')->with('mensaje','Se asigno el solucionador con exito.');                   
+        return redirect()->route('ticket.asigna')->with('mensaje','Se asigno el solucionador con exito.');
     }
 
     public function destroy($id)
-    {  
+    {
     }
-    
+
     public function cancelticket($id){
         $Ticket = Tic_Tarea::findOrFail($id);
 
@@ -344,9 +343,9 @@ class TicketController extends Controller
         $modeloEstado->observacion = 'Cancelado por el usuario';
         $modeloEstado->save();
 
-        return redirect()->route('ticket.index')->with('mensaje','El ticket '.$Ticket->idtarea.' cancelado con exito.');  
-    } 
-    
+        return redirect()->route('ticket.index')->with('mensaje','El ticket '.$Ticket->idtarea.' cancelado con exito.');
+    }
+
     public function asigna($id)
     {
         $Ticket = Tic_Tarea::where('idtarea', '=', $id )->first();
@@ -355,10 +354,10 @@ class TicketController extends Controller
         $idtipsolu = Tic_Catproblema::where('idcatprob', '=', $idcat->idcatprob)->select('idtipsolucionador')->first();
         $Solucionadores = Tic_Solucionador::where('idtipsolucionador', '=', $idtipsolu->idtipsolucionador)->pluck('nombre', 'idsolucionador')->prepend('Seleccionar', '0')->toArray();
         $Categorias = Tic_catproblema::all();
-        $Subcategorias = Tic_Catproblemasub::all(); 
+        $Subcategorias = Tic_Catproblemasub::all();
         return view('Coordinacion.Informatica.ticket.agregar', compact('Ticket','Image','Solucionadores','Categorias','Subcategorias'));
     }
-    
+
 
     public function asignadores(Request $request)
     {
@@ -377,7 +376,7 @@ class TicketController extends Controller
             $categoria = $catesolu[0]->idcatprob;
         }
 
-        
+
         // echo($solu->getTipo);
         if (!isset($name)) {
             $estadosTarea = DB::table('iprodha.tic_estados_x_tarea')
@@ -394,7 +393,7 @@ class TicketController extends Controller
             $Tickets = Tic_tarea::joinSub($estadosOrden, 'estados_Orden', function ($join) {
                                         $join->on('iprodha.tic_tarea.idtarea', '=', 'estados_Orden.idtarea');})
                                         ->categoria($categoria)->get();
-            
+
         } else {
             $Tickets = Tic_Tarea::whereRaw('UPPER(idtarea) LIKE ?', ['%' . strtoupper($name) . '%'])->orderBy('idtarea', 'asc')->simplePaginate(100);
         }
@@ -415,9 +414,9 @@ class TicketController extends Controller
         }
             // $Tickets = Tic_Tarea::where('idsolucionador', '=', $Solucionador->idsolucionador)->orderBy('idtarea', 'desc')->paginate(10);
             return view('Coordinacion.Informatica.ticket.Atencionturno.index', compact('Tickets'));
-     
+
     }
-    
+
     function atencionticket($id)
     {
         $Ticket = Tic_Tarea::findOrFail($id);
@@ -431,7 +430,7 @@ class TicketController extends Controller
             $modeloEstado->observacion = 'Esta siendo atendido por '. Auth::user()->name;
             $modeloEstado->save();
         }
-        
+
         return view('Coordinacion.Informatica.ticket.Atencionturno.editar', compact('Ticket', 'Image'));
     }
 
@@ -446,8 +445,8 @@ class TicketController extends Controller
         $modeloEstado->observacion = $request->input('observ');
         $modeloEstado->save();
 
-        return redirect()->route('ticket.atencion')->with('mensaje','El ticket '.$Ticket->idtarea.' completado con exito.');  
-    } 
+        return redirect()->route('ticket.atencion')->with('mensaje','El ticket '.$Ticket->idtarea.' completado con exito.');
+    }
 
     public function validarTicket(Request $request, $id)
     {
@@ -504,7 +503,7 @@ class TicketController extends Controller
             }else{
                 $nuevaimagen->idimagen = $imagenactaul['idimagen'] + 1;
             }
-            $nuevaimagen->idtarea = $nuevoTicket->idtarea; 
+            $nuevaimagen->idtarea = $nuevoTicket->idtarea;
             $nuevaimagen->ruta = $imagenticket->ruta;
             $nuevaimagen->save();
         }
@@ -534,7 +533,7 @@ class TicketController extends Controller
         ]);
 
         $Ticket = Tic_Tarea::findOrFail($id);
-        $Ticket->descripciontarea = $request->input('descrip'); 
+        $Ticket->descripciontarea = $request->input('descrip');
         $Ticket->interno = $request->input('interno');
         $Ticket->save();
         if($request->hasFile('image')){
@@ -546,7 +545,7 @@ class TicketController extends Controller
 
             $filename = time().'-'. Auth::user()->name . '.' . $request->file('image')->extension();
             $path = $request->file('image')->storeAs('images/ticket', $filename, 'public_uploads');
-    
+
             $save = new Tic_Imagen_x_Tarea;
 
             $data = Tic_Imagen_x_Tarea::latest('idimagen')->first();
@@ -558,8 +557,8 @@ class TicketController extends Controller
             $save->idtarea = $Ticket->idtarea;
             $save->ruta = 'storage/upload/' . $path;
             $save->save();
-        } 
-      
+        }
+
         return redirect()->route('ticket.index')->with('mensaje','El ticket '.$Ticket->idtarea.' editado con exito.');
     }
 
@@ -596,7 +595,7 @@ class TicketController extends Controller
         }
         $Ticket->save();
 
-        return redirect()->route('ticket.asigna')->with('mensaje','El ticket '.$Ticket->idtarea.' editado con exito.');    
+        return redirect()->route('ticket.asigna')->with('mensaje','El ticket '.$Ticket->idtarea.' editado con exito.');
     }
 
     public function allTicket($id)
@@ -606,7 +605,7 @@ class TicketController extends Controller
         $latestPosts = DB::table('iprodha.tic_estados_x_tarea')
                    ->select('idtarea', DB::raw('MAX(idestado) estado_actual'))
                    ->groupBy('idtarea');
-    
+
 
             $TicketsAsignado = Tic_tarea::joinSub($latestPosts, 'latest_posts', function ($join) {
                 $join->on('iprodha.tic_tarea.idtarea', '=', 'latest_posts.idtarea');
@@ -629,11 +628,11 @@ class TicketController extends Controller
         return $prueba;
     }
 
-    
+
     public function isMobileDevice() {
         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
-    
+
 }
 
 */
