@@ -20,10 +20,15 @@
                 <div class="titulo page__heading">Denuncias</div>
             </div> -->
             <h3 class="page__heading">Denuncias</h3>
-            @can('CARGAR-DENUNCIA')
+            {{-- @can('CARGAR-DENUNCIA')
                 <button id="botonModal" type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalNuevaDenuncia" onclick="limpiarFormDenuncia(); abrirModalDenunciaNueva()">
                     Nueva Denuncia
                 </button>
+            @endcan --}}
+            @can('CARGAR-DENUNCIA')
+                {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
+                    {!! Form::submit('Nueva Denuncia', ['class' => 'btn btn-success my-1']) !!}
+                {!! Form::close() !!}
             @endcan
         </div>
 
@@ -38,11 +43,6 @@
                                     {{ session('mensaje') }}
                                 </div>
                             @endif--}}
-                            {{-- @if ($denuncias != 'error')
-                                <div class="pagination justify-content-end">
-                                    {!! $denuncias->links() !!}
-                                </div>
-                            @endif --}}
                             <div class="table-responsive">
                                 <table id="tabla-lista-denuncias" class="table table-hover mt-2">
                                 <!--<table class="table table-striped mt-2" id="example">
@@ -99,7 +99,7 @@
 
                                                                 {!! Form::open([
                                                                     'method' => 'GET',
-                                                                    'route' => ['denuncia.modificar', $denuncia->id_denuncia],
+                                                                    'route' => ['rrhh.denuncias.modificar', $denuncia->id_denuncia],
                                                                     'onclick' => 'abrirModalModificarDenuncia();',
                                                                     'style' => 'display:inline']) !!}
                                                                 {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
@@ -108,7 +108,7 @@
                                                                 {!! Form::open([
                                                                     'method' => 'DELETE',
                                                                     'class' => 'formulario',
-                                                                    'route' => ['denuncia.borrar', $denuncia->id_denuncia],
+                                                                    'route' => ['rrhh.denuncias.borrar', $denuncia->id_denuncia],
                                                                     'style' => 'display:inline'])!!}
                                                                     {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
                                                                 {!! Form::close() !!}
@@ -143,7 +143,7 @@
                                                                 {!! Form::open([
                                                                     'method' => 'DELETE',
                                                                     'class' => 'formulario',
-                                                                    'route' => ['denuncia.borrar', $denuncia->id_denuncia],
+                                                                    'route' => ['rrhh.denuncias.borrar', $denuncia->id_denuncia],
                                                                     'style' => 'display:inline'])!!}
                                                                     {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
                                                                 {!! Form::close() !!}
@@ -162,60 +162,6 @@
         </div>
     </section>
 
-    <!--  MODAL PARA CARGAR DENUNCIA NUEVA -->
-    <div class="modal fade" id="modalNuevaDenuncia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content" id="modal-nueva-denuncia">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">CARGAR NUEVA DENUNCIA</h5>
-                    <div id="modifDatos" style="display: none"></div>
-                    <button id="botonCerrar" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="modifDenuncia"></div>
-                    {!! Form::open([
-                        'route' => 'denuncia.guardar',
-                        'method' => 'POST',
-                        'id' => 'form_nva_denuncia',
-                        //'onsubmit' => 'return beforeSubmit();',
-                    ]) !!}
-                        @csrf
-                    <div class="mb-3">
-                        {!! Form::label('fecha', 'FECHA:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
-                        {!! Form::date('fecha',\Carbon\Carbon::now(),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
-                        {!! Form::label('denuncia_extracto', 'EXTRACTO:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                        {!! Form::text('denuncia_extracto', null, [
-                            'class' => 'form-control',
-                            'style' => 'resize:none;text-transform:uppercase;color: var(--bs-modal-color);',
-                            'id'    =>  'denuncia_extracto',
-                            'maxlenght'=>'100',
-                            'placeholder' => 'Detalle \'DENUNCIANTE\' CONTRA \'DENUNCIADO\'',
-                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("extracto_caracteres", "denuncia_extracto", 100)',
-                            ]) !!}
-                        <label for="denuncia_extracto" id="extracto_caracteres">Quedan 100 caracteres.</label>
-                        <br>
-
-                        {!! Form::label('denuncia_descripcion', 'DESCRIPCIÓN:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                        {!! Form::textarea('denuncia_descripcion', null, [
-                            'class' => 'form-control',
-                            'rows' => 34,
-                            'cols' => 54,
-                            'style' => 'resize:none;height:20vh;text-transform:uppercase;color: var(--bs-modal-color);',
-                            'id'    =>  'denuncia_descripcion',
-                            'maxlenght'=>'1500',
-                            'placeholder' => 'Describa lugar y lo que considere relevante de lo acontecido. Detalle los elementos o medios probatorios que se puedan agregar para el esclarecimiento.',
-                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("descripcion_caracteres", "denuncia_descripcion", 1500)',
-                            ]) !!}
-                        <label for="denuncia_descripcion" id="descripcion_caracteres" style="mb-2">Quedan 1500 caracteres.</label>
-                    </div>
-                    <button id="guardar_denuncia" type="submit" class="btn btn-primary">GUARDAR</button>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--  FIN MODAL PARA CARGAR DENUNCIA NUEVA -->
-
     <!-- MODAL PARA MODIFICAR DENUNCIA EXISTENTE -->
     <div class="modal fade" id="modalModificarDenuncia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">axaxa
@@ -233,7 +179,7 @@
                     'class' => 'formulario',
                     //'onsubmit' => 'return beforeSubmit();',
                 ]) !!} --}}
-                {!! Form::model($denuncia, ['method' => 'PATCH', 'id' => 'form_modif_denuncia', 'class' => 'formulario','route' => ['denuncia.update', $denuncia->id_denuncia]]) !!}
+                {!! Form::model($denuncia, ['method' => 'PATCH', 'id' => 'form_modif_denuncia', 'class' => 'formulario','route' => ['rrhh.denuncias.update', $denuncia->id_denuncia]]) !!}
                     @csrf
                     @method('PUT')
                     {!! Form::token() !!}

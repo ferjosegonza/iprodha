@@ -38,7 +38,7 @@ class ProtocoloController extends Controller
             $denuncias = 'error';
             echo "error: " . $e;
         } finally {
-            return view('rrhh.listar_denuncias', compact('denuncias'));
+            return view('rrhh.denuncias.listar', compact('denuncias'));
         }
     }
 
@@ -46,8 +46,11 @@ class ProtocoloController extends Controller
     //     return view('rrhh.cargar_denuncia');
     // }
 
-    public function crearDenuncia(Request $request){
-        $idNvo = $request->input('id_modif');
+    public function crearDenuncia(){
+        return view('rrhh.denuncias.crear');
+    }
+
+    public function guardarDenuncia(Request $request){
         $nvaDenuncia = new Denuncias;
 
         $nvaDenuncia->id_denuncia = Denuncias::max('ID_DENUNCIA')+1;
@@ -59,13 +62,13 @@ class ProtocoloController extends Controller
 
         try {
             $nvaDenuncia->save();
-            return redirect()->route('rrhh.listardenuncias')->with('mensaje','Denuncia creada exitosamente.');
+            return redirect()->route('rrhh.denuncias.listar')->with('mensaje','Denuncia creada exitosamente.');
         } catch (\Exception $e){
-            return redirect()->route('rrhh.listardenuncias')->back()->with('error', $e->getMessage());
+            return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
         }
     }
 
-    public function abrirModalModificarDenuncia(Request $request, $id){}
+    public function abrirModificarDenuncia(Request $request, $id){}
     // es así o cómo?
     //public function modificarDenuncia($id) {
     public function guardarDenunciaModificada(Request $request, $id) {
@@ -94,7 +97,7 @@ class ProtocoloController extends Controller
 
             // Verificar si se encontró la denuncia
             if (!$denuncia) {
-                return redirect()->route('rrhh.listardenuncias')->with('error', 'Denuncia no encontrada.');
+                return redirect()->route('rrhh.denuncias.listar')->with('error', 'Denuncia no encontrada.');
             }
 
             // Actualizar la información con los datos del formulario
@@ -105,9 +108,9 @@ class ProtocoloController extends Controller
             // Guardar los cambios
             $denuncia->save();
 
-            return redirect()->route('rrhh.listardenuncias')->with('mensaje', 'Denuncia modificada exitosamente.');
+            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('rrhh.listardenuncias')->back()->with('error', $e->getMessage());
+            return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
         }
 /*
         $denuncia = Denuncias::where('ID_DENUNCIA', '=', $request->id_denuncia)->first();
@@ -123,9 +126,9 @@ class ProtocoloController extends Controller
         // Redireccionar a la lista de denuncias u otra página
         try {
             $denuncia->save();
-            return redirect()->route('rrhh.listardenuncias')->with('mensaje', 'Denuncia modificada exitosamente.');
+            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
         } catch (\Exception $e){
-            return redirect()->route('rrhh.listardenuncias')->back()->with('error', $e->getMessage());
+            return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
         }*/
     }
 
@@ -135,14 +138,14 @@ class ProtocoloController extends Controller
             $denuncia = Denuncias::where('id_denuncia', $id_denuncia);
 
             if (!$denuncia){
-                return redirect()->route('rrhh.listardenuncias')->with('mensaje','No se encontró esa denuncia.');
+                return redirect()->route('rrhh.denuncias.listar')->with('mensaje','No se encontró esa denuncia.');
             }
 
             $denuncia->delete();
 
-            return redirect()->route('rrhh.listardenuncias')->with('mensaje','La denuncia se borró con éxito.');
+            return redirect()->route('rrhh.denuncias.listar')->with('mensaje','La denuncia se borró con éxito.');
         } catch (\Exception $e){
-            return redirect()->route('rrhh.listardenuncias')->with('error', $e->getMessage());
+            return redirect()->route('rrhh.denuncias.listar')->with('error', $e->getMessage());
         }
     }
 
