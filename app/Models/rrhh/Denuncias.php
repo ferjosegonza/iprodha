@@ -11,13 +11,13 @@ class Denuncias extends Model
 
     public $timestamps = false;
     protected $table = 'personal.PV_DENUNCIA';
-    protected $primaryKey = 'ID_DENUNCIA';
+    protected $primaryKey = 'id_denuncia';
     public $incrementing = false;
     protected $fillable = [
-        //'ID_DENUNCIA',
-        'FECHA',
-        'EXTRACTO',
-        'DESCRIPCION'
+        'id_denuncia',
+        'fecha',
+        'extracto',
+        'descripcion'
     ];
 
 }

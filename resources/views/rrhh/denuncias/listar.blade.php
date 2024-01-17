@@ -16,15 +16,7 @@
 
     <section id="denunciasSection" class="section">
         <div class="section-header d-flex justify-content-between">
-            <!--<div>
-                <div class="titulo page__heading">Denuncias</div>
-            </div> -->
             <h3 class="page__heading">Denuncias</h3>
-            {{-- @can('CARGAR-DENUNCIA')
-                <button id="botonModal" type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalNuevaDenuncia" onclick="limpiarFormDenuncia(); abrirModalDenunciaNueva()">
-                    Nueva Denuncia
-                </button>
-            @endcan --}}
             @can('CARGAR-DENUNCIA')
                 {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
                     {!! Form::submit('Nueva Denuncia', ['class' => 'btn btn-success my-1']) !!}
@@ -56,25 +48,15 @@
                                     <tbody>
                                         @foreach ($denuncias as $denuncia)
                                             <tr class="fila-denuncia">
-                                                <td>{{date("d/m/Y",strtotime($denuncia->fecha))}}</td>
+                                                <td>@if ($denuncia->fecha)
+                                                    {{ date("d/m/Y", strtotime($denuncia->fecha)) }}
+                                                    @else
+                                                        Sin fecha
+                                                    @endif
+                                                </td>
                                                 <td>{{$denuncia->extracto}}</td>
                                                 <td>{{$denuncia->descripcion}}</td>
                                                 <td>
-                                                    {{-- <div class="d-flex align-items-center"> --}}
-                                                        {{--@can('EDITAR-ALUMNOS')--}}
-                                                        {{--<button id="ver_denuncia" class="btn btn-primary btn-ver-denuncia" data-bs-toggle="modal"
-                                                            data-bs-target="#modalDenuncia"
-                                                            data-id = "{{$denuncia->id_denuncia}}"
-                                                            data-fecha="{{$denuncia->fecha}}"
-                                                            data-extracto="{{$denuncia->extracto}}"
-                                                            data-descripcion="{{$denuncia->descripcion}}">
-                                                            DENUNCIA
-                                                        </button>--}}
-                                                        {{--{!! Form::open(['method' => 'GET','route' => ['alumnos.edit', $alumno->dni],'style' => 'display:inline']) !!}
-                                                            {!! Form::submit('Editar', ['class' => 'btn btn-primary']) !!}
-                                                        {!! Form::close() !!}
-                                                        @endcan
-                                                        --}}
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 DENUNCIA
@@ -88,19 +70,10 @@
                                                                                                 "' . $denuncia->descripcion . '")',
                                                                 ]) !!}
 
-                                                                {!! Form::button('Modificar', [
-                                                                    'id' => 'botonModificar',
-                                                                    'class' => 'formulario dropdown-item btn btn-warning',
-                                                                    'onclick' => 'abrirModalModificarDenuncia(); modificarDenuncia(' . $denuncia->id_denuncia . ',
-                                                                                                "' . $denuncia->fecha . '",
-                                                                                                "' . $denuncia->extracto . '",
-                                                                                                "' . $denuncia->descripcion . '")',
-                                                                ]) !!}
-
                                                                 {!! Form::open([
                                                                     'method' => 'GET',
                                                                     'route' => ['rrhh.denuncias.modificar', $denuncia->id_denuncia],
-                                                                    'onclick' => 'abrirModalModificarDenuncia();',
+                                                                    //'onclick' => 'abrirModalModificarDenuncia();',
                                                                     'style' => 'display:inline']) !!}
                                                                 {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
                                                                 {!! Form::close() !!}
@@ -161,63 +134,5 @@
             </div>
         </div>
     </section>
-
-    <!-- MODAL PARA MODIFICAR DENUNCIA EXISTENTE -->
-    <div class="modal fade" id="modalModificarDenuncia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">axaxa
-            <div class="modal-content" id="modal-modif-denuncia">
-                <h5 class="modal-title" id="exampleModalLabel">MODIFICAR DENUNCIA</h5>
-                <div id="modifDatos" style="display: none"></div>
-                <button id="botonCerrar" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="modifDenuncia"></div>
-                {{-- {!! Form::open($denuncia, [
-                    'route' => ['denuncia.update', $denuncia->id_denuncia],
-                    'method' => 'PATCH',
-                    'id' => 'form_modif_denuncia',
-                    'class' => 'formulario',
-                    //'onsubmit' => 'return beforeSubmit();',
-                ]) !!} --}}
-                {!! Form::model($denuncia, ['method' => 'PATCH', 'id' => 'form_modif_denuncia', 'class' => 'formulario','route' => ['rrhh.denuncias.update', $denuncia->id_denuncia]]) !!}
-                    @csrf
-                    @method('PUT')
-                    {!! Form::token() !!}
-                    <div class="mb-3">
-                        @include('layouts.modal.mensajes')
-                        {!! Form::label('fecha', 'FECHA:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
-                        {!! Form::date('fecha',old('fecha'),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
-                        {!! Form::label('denuncia_extracto', 'EXTRACTO:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                        {!! Form::text('denuncia_extracto', old('denuncia_extracto'), [
-                            'class' => 'form-control',
-                            'style' => 'resize:none;text-transform:uppercase;color: var(--bs-modal-color);',
-                            'id'    =>  'denuncia_extracto',
-                            'maxlenght'=>'100',
-                            'placeholder' => 'Detalle \'DENUNCIANTE\' CONTRA \'DENUNCIADO\'',
-                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("extracto_caracteres", "denuncia_extracto", 100)',
-                            ]) !!}
-                        <label for="denuncia_extracto" id="extracto_caracteres">Quedan 100 caracteres.</label>
-                        <br>
-
-                        {!! Form::label('denuncia_descripcion', 'DESCRIPCIÓN:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                        {!! Form::textarea('denuncia_descripcion', old('denuncia_descripcion'), [
-                            'class' => 'form-control',
-                            'rows' => 34,
-                            'cols' => 54,
-                            'style' => 'resize:none;height:20vh;text-transform:uppercase;color: var(--bs-modal-color);',
-                            'id'    =>  'denuncia_descripcion',
-                            'maxlenght'=>'1500',
-                            'placeholder' => 'Describa lugar y lo que considere relevante de lo acontecido. Detalle los elementos o medios probatorios que se puedan agregar para el esclarecimiento.',
-                            'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("descripcion_caracteres", "denuncia_descripcion", 1500)',
-                            ]) !!}
-                        <label for="denuncia_descripcion" id="descripcion_caracteres" style="mb-2">Quedan 1500 caracteres.</label>
-                    </div>
-                    {!! Form::submit('EDITAR', ['onclick' => '', 'class' => 'btn btn-success mr-2']) !!}
-                    {{-- <button id="guardar_denuncia" type="submit" class="btn btn-primary">GUARDAR</button> --}}
-                {!! Form::close() !!}
-            </div>
-        </div>
-    </div>
-    <!--  FIN MODAL PARA MODIFICAR DENUNCIA EXISTENTE -->
 
 @endsection

@@ -6,22 +6,27 @@
     </head>
     <section class="section">
         <div class="section-header">
-            <h3 class="page__heading">Crear Nueva Denuncia</h3>
+            <h3 class="page__heading">Modificar Denuncia</h3>
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
         <div class="section-body">
             <div class="row">
                 <div class="card">
                     <div class="card-body">
-                        {!! Form::open(array('route'=>'rrhh.denuncias.guardar', 'method'=>'POST'))!!}
+                        <div><h4>Datos actuales:</h4></div>
+                        {!! Form::model($denuncia,['method'=>'PATCH',
+                                                'class' => 'formulario',
+                                                'route'=>['rrhh.denuncias.update', $denuncia->id_denuncia]
+                                                ])!!}
                         <div class="row">
                             <div class="form-group">
                                 {!! Form::label('fecha', 'Fecha:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
-                                {!! Form::date('fecha',\Carbon\Carbon::now(),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
+                                {{-- {!! $fechaParaMostrar = $denuncia->fecha ? substr($denuncia->fecha, 0, 10) : '' !!} --}}
+                                {!! Form::date('fecha',$denuncia->fecha ? substr($denuncia->fecha, 0, 10) : '',['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
                             </div>
                             <div class="form-group">
                                 {!! Form::label('denuncia_extracto', 'Extracto:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                                {!! Form::text('denuncia_extracto', null, [
+                                {!! Form::text('denuncia_extracto', $denuncia->extracto, [
                                     'class' => 'form-control',
                                     'style' => 'resize:none;text-transform:uppercase;color: var(--bs-modal-color);',
                                     'id'    =>  'denuncia_extracto',
@@ -33,7 +38,7 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('denuncia_descripcion', 'Descripción:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                                {!! Form::textarea('denuncia_descripcion', null, [
+                                {!! Form::textarea('denuncia_descripcion', $denuncia->descripcion, [
                                     'class' => 'form-control',
                                     'rows' => 34,
                                     'cols' => 54,
@@ -46,8 +51,14 @@
                                 <label for="denuncia_descripcion" id="descripcion_caracteres" style="mb-2">Quedan 1500 caracteres.</label>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-                        <a href="{{ route('rrhh.denuncias.listar') }}"class="btn btn-secondary fo">Volver</a>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            @can('CREAR-DENUNCIA')
+                            {!! Form::submit('Editar', ['onclick' => '', 'class' => 'btn btn-success mr-2']) !!}
+                            @endcan
+                            {!! link_to_route('rrhh.denuncias.listar',$title = 'Volver',$parameters = [],$attributes = ['class' => 'btn btn-secondary fo']) !!}
+                        </div>
+                        {{-- <button type="submit" class="btn btn-primary mr-2">Editar</button>
+                        <a href="{{ route('rrhh.denuncias.listar') }}"class="btn btn-secondary fo">Volver</a> --}}
                         {!! Form::close() !!}
                     </div>
                 </div>

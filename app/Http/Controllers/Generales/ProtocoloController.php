@@ -68,50 +68,43 @@ class ProtocoloController extends Controller
         }
     }
 
-    public function abrirModificarDenuncia(Request $request, $id){}
-    // es así o cómo?
-    //public function modificarDenuncia($id) {
+    public function abrirModificarDenuncia(Request $request, $id){
+        $denuncia = Denuncias::find($id);
+        return view('rrhh.denuncias.modificar', compact('denuncia'));
+    }
+
     public function guardarDenunciaModificada(Request $request, $id) {
+        //dd($id);
         //dd($request->all());
-        /*
-        "_token" => "pbj84Dt6OiREJEgEebA2zTOVzFwxTjpFOMFYd2h0"
-        "id_modif" => "26"
-        "fecha" => "2024-01-09"
-        "denuncia_extracto" => "AS"
-        "denuncia_descripcion" => "AAS"
-        */
-
-        // $digesto = Dig_digesto::where('id_archivo0', '=', $request->id0)
-        // ->where('id_archivon', '=', $request->idn)->first();
-        // $digesto->observacion = $request->obs;
-        // return $digesto->save();
-
+        
         // Obtener la información actual de la denuncia
-        //$denuncia = Denuncias::find($request->input('id_modif'));
-        //$idModificar = $request->input('id_modif');
+        // $idModificar = $request->input('id_modif');
+        $denuncia = Denuncias::find($id);
 
-        try {
-            // Obtener la información actual de la denuncia
-            // $idModificar = $request->input('id_modif');
-            $denuncia = Denuncias::find($id);
-
-            // Verificar si se encontró la denuncia
-            if (!$denuncia) {
-                return redirect()->route('rrhh.denuncias.listar')->with('error', 'Denuncia no encontrada.');
-            }
-
-            // Actualizar la información con los datos del formulario
-            $denuncia->fecha = $request->input('fecha');
-            $denuncia->extracto = $request->input('denuncia_extracto');
-            $denuncia->descripcion = $request->input('denuncia_descripcion');
-
-            // Guardar los cambios
-            $denuncia->save();
-
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
+        // Verificar si se encontró la denuncia
+        if (!$denuncia) {
+            return redirect()->route('rrhh.denuncias.listar')->with('error', 'Denuncia no encontrada.');
         }
+
+        // Actualizar la información con los datos del formulario
+        $denuncia->fecha = $request->input('fecha') ?? null;
+        $denuncia->extracto = $request->input('denuncia_extracto');
+        $denuncia->descripcion = $request->input('denuncia_descripcion');
+
+        if ($denuncia->save()) {
+            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
+        } else {
+            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'No se ha podido modificar la Denuncia.');
+        }
+
+        // try {
+        //     // Guardar los cambios
+        //     $denuncia->save();
+
+        //     return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
+        // } catch (\Exception $e) {
+        //     return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
+        // }
 /*
         $denuncia = Denuncias::where('ID_DENUNCIA', '=', $request->id_denuncia)->first();
 
