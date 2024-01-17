@@ -1961,4 +1961,37 @@ class ObraviviendaController extends Controller
                     ])  ->setPaper('legal', 'landscape')
                         ->stream('Info-viviendas.pdf');
     }
+
+    public function getEta0(Request $request){
+        $query = "SELECT en.id_ent 
+        from iprodha.ob_obra ob
+        left join iprodha.ob_etapa et on et.id_obr = ob.id_obr
+        left join iprodha.ob_entrega en on en.id_eta = et.id_etapa
+        where ob.id_obr = $request->id and en.num_ent = 0";
+        $etapa0 = DB::select( DB::raw($query));
+        return response()->json($etapa0[0]);
+    }
+
+    public function macroVivienda(Request $request){
+        try {
+            $id = $request->id;
+            $viviendas = $request->viviendas;
+    
+            // Assuming you have two parameters in your stored procedure, adjust if needed
+            DB::statement('BEGIN iprodha.sp_agregar_viv(:id, :viviendas); END;', [
+                'id' => $id,
+                'viviendas' => $viviendas,
+            ]);
+    
+            return response()->json(['success' => true, 'message' => 'Stored procedure executed successfully']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error executing stored procedure',
+                'exception' => get_class($e),
+                'error_code' => $e->getCode(),
+                'error_message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

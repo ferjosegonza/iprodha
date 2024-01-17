@@ -24,6 +24,8 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|VER-OBRAVIVIENDA
     Route::post('/obra/vivienda/{id}', [ObraviviendaController::class, 'viviendaDeObra']);
     Route::get('/obravivienda/viv/{id}', [ObraviviendaController::class, 'verViv'])->name('obravivienda.viviendas');
     Route::get('/obravivienda/eta-y-ent/{id}', [ObraviviendaController::class, 'verEta'])->name('obravivienda.etapas');
+    Route::get('/obravivienda/eta-y-ent/{id}/etapa0', [ObraviviendaController::class, 'getEta0'])->name('obravivienda.eta0');
+    Route::post('/obravivienda/eta-y-ent/{id}/macroVivienda', [ObraviviendaController::class, 'macroVivienda'])->name('obravivienda.macroVivienda');
     Route::get('/obravivienda/eta/nueva/{id}', [ObraviviendaController::class, 'nuevaEta'])->name('obravivienda.nuevaetapa');
     Route::post('/obravivienda/eta/nueva/guardar', [ObraviviendaController::class, 'guardarNuevaEta'])->name('obravivienda.guardarnuevaetapa');
     Route::get('/obravivienda/eta/editar/{id}', [ObraviviendaController::class, 'verEditarEta'])->name('obravivienda.editaretapa');
