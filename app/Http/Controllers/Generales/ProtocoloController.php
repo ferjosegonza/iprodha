@@ -42,9 +42,10 @@ class ProtocoloController extends Controller
         }
     }
 
-    // public function cargarDenuncia(){
-    //     return view('rrhh.cargar_denuncia');
-    // }
+    public function verDenuncia(Request $request, $id){
+        $denuncia = Denuncias::find($id);
+        return view('rrhh.denuncias.ver', compact('denuncia'));
+    }
 
     public function crearDenuncia(){
         return view('rrhh.denuncias.crear');
@@ -76,9 +77,8 @@ class ProtocoloController extends Controller
     public function guardarDenunciaModificada(Request $request, $id) {
         //dd($id);
         //dd($request->all());
-        
+
         // Obtener la información actual de la denuncia
-        // $idModificar = $request->input('id_modif');
         $denuncia = Denuncias::find($id);
 
         // Verificar si se encontró la denuncia
@@ -96,33 +96,6 @@ class ProtocoloController extends Controller
         } else {
             return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'No se ha podido modificar la Denuncia.');
         }
-
-        // try {
-        //     // Guardar los cambios
-        //     $denuncia->save();
-
-        //     return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
-        // } catch (\Exception $e) {
-        //     return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
-        // }
-/*
-        $denuncia = Denuncias::where('ID_DENUNCIA', '=', $request->id_denuncia)->first();
-
-        // Actualizar la información con los datos del formulario
-        $denuncia->fecha = $request->input('fecha');
-        $denuncia->extracto = $request->input('denuncia_extracto');
-        $denuncia->descripcion = $request->input('denuncia_descripcion');
-
-        // Guardar los cambios
-        //$denuncia->save();
-
-        // Redireccionar a la lista de denuncias u otra página
-        try {
-            $denuncia->save();
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
-        } catch (\Exception $e){
-            return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
-        }*/
     }
 
 

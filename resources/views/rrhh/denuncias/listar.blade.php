@@ -62,13 +62,19 @@
                                                                 DENUNCIA
                                                             </button>
                                                             <div class="dropdown-menu">
-                                                                {!! Form::button('Ver', [
+                                                                {{-- {!! Form::button('Ver', [
                                                                     'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-info ver-denuncia',
                                                                     'onclick' => 'verDenuncia(' . $denuncia->id_denuncia . ',
                                                                                                 "' . $denuncia->fecha . '",
                                                                                                 "' . $denuncia->extracto . '",
                                                                                                 "' . $denuncia->descripcion . '")',
-                                                                ]) !!}
+                                                                ]) !!} --}}
+                                                                {!! Form::open([
+                                                                    'method' => 'GET',
+                                                                    'route' => ['rrhh.denuncias.ver', $denuncia->id_denuncia],
+                                                                    'style' => 'display:inline']) !!}
+                                                                {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
+                                                                {!! Form::close() !!}
 
                                                                 {!! Form::open([
                                                                     'method' => 'GET',

@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|RRHH']], functio
     //Route::post('generales/formularioMostrar', [ProtocoloController::class, 'formularioMostrar'])->name('rrhh.formulario_mostrar');
     Route::get('rrhh/denuncias/listar', [ProtocoloController::class, 'listarDenuncias'])->name('rrhh.denuncias.listar');
     //Route::get('rrhh/cargar_denuncia', [ProtocoloController::class, 'cargarDenuncia'])->name('rrhh.cargardenuncia');
+    Route::get('rrhh/denuncias/ver/{id}', [ProtocoloController::class, 'verDenuncia'])->name('rrhh.denuncias.ver');
     Route::any('rrhh/denuncias/crear', [ProtocoloController::class, 'crearDenuncia'])->name('rrhh.denuncias.crear');
     Route::any('rrhh/denuncia/guardar', [ProtocoloController::class, 'guardarDenuncia'])->name('rrhh.denuncias.guardar');
     Route::get('rrhh/denuncia/modificar/{id}', [ProtocoloController::class, 'abrirModificarDenuncia'])->name('rrhh.denuncias.modificar');
