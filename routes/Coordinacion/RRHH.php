@@ -28,8 +28,14 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|RRHH']], functio
     Route::any('rrhh/denuncia/guardar', [ProtocoloController::class, 'guardarDenuncia'])->name('rrhh.denuncias.guardar');
     Route::get('rrhh/denuncia/modificar/{id}', [ProtocoloController::class, 'abrirModificarDenuncia'])->name('rrhh.denuncias.modificar');
     Route::patch('rrhh/denuncias/update/{id}', [ProtocoloController::class, 'guardarDenunciaModificada'])->name('rrhh.denuncias.update');
-    //Route::post('denuncia/ver', [ProtocoloController::class, 'verDenuncia'])->name('denuncia.ver');
     Route::delete('denuncias/borrar/{id_denuncia}', [ProtocoloController::class, 'destroy'])->name('rrhh.denuncias.borrar');
+
+    Route::get('rrhh/denuncias/denunciante/ver/{id}', [ProtocoloController::class, 'verDenuncia'])->name('rrhh.denuncias.denunciante.ver');
+    Route::any('rrhh/denuncias/denunciante/crear', [ProtocoloController::class, 'crearDenuncia'])->name('rrhh.denuncias.denunciante.crear');
+    Route::any('rrhh/denuncia/denunciante/guardar', [ProtocoloController::class, 'guardarDenuncia'])->name('rrhh.denuncias.denunciante.guardar');
+    Route::get('rrhh/denuncia/denunciante/modificar/{id}', [ProtocoloController::class, 'abrirModificarDenuncia'])->name('rrhh.denuncias.denunciante.modificar');
+    Route::patch('rrhh/denuncias/denunciante/update/{id}', [ProtocoloController::class, 'guardarDenunciaModificada'])->name('rrhh.denuncias.denunciante.update');
+    Route::delete('denuncias/borrar/denunciante/{id_denuncia}', [ProtocoloController::class, 'destroy'])->name('rrhh.denuncias.denunciante.borrar');
 });
 
 

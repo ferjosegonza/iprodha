@@ -32,7 +32,7 @@ class ProtocoloController extends Controller
     // formularioAlta
     public function listarDenuncias(){
         try {
-            $denuncias = Denuncias::orderBy('FECHA', 'desc')->get();
+            $denuncias = Denuncias::with('denunciante')->orderBy('FECHA', 'desc')->get();
             //$denuncias = Denuncias::orderBy('FECHA', 'desc')->paginate(10);
         } catch (\Exception $e){
             $denuncias = 'error';
