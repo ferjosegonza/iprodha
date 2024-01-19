@@ -12,6 +12,7 @@
             }
             .btn-group{
                 display:'inline-block';
+                margin: 'm-2';
             }
             .gropo-botones{}
         </style>
@@ -51,7 +52,8 @@
                                     <tbody>
                                         @foreach ($denuncias as $denuncia)
                                             <tr class="fila-denuncia">
-                                                <td>@if ($denuncia->fecha)
+                                                <td>
+                                                    @if ($denuncia->fecha)
                                                     {{ date("d/m/Y", strtotime($denuncia->fecha)) }}
                                                     @else
                                                         Sin fecha
@@ -61,7 +63,7 @@
                                                 <td>{{$denuncia->descripcion}}</td>
                                                 <td>
                                                     <div class="gropo-botones d-flex">
-                                                        <div class="btn-group">
+                                                        <div class="btn-group m-1">
                                                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 DENUNCIA
                                                             </button>
@@ -88,94 +90,71 @@
                                                                     'style' => 'display:inline'])!!}
                                                                     {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
                                                                 {!! Form::close() !!}
-                                                            </div>
-                                                        </div>
-                                                        {{--
-                                                            @if ($denuncia->denunciante)
-                                                                <br>id_denuncia:{{ $denuncia->denunciante->id_denuncia }}
-                                                                <br>nro_doc:{{ $denuncia->denunciante->nro_doc }}
-                                                                <br>apellido:{{ $denuncia->denunciante->apellido }}
-                                                                <br>nombre:{{ $denuncia->denunciante->nombre }}
-                                                                <br>tipo_doc:{{ $denuncia->denunciante->tipo_doc }}
-                                                                <br>id_sexo:{{ $denuncia->denunciante->id_sexo }}
-                                                                <br>fecha_nac:{{ $denuncia->denunciante->fecha_nac }}
-                                                                <br>domicilio:{{ $denuncia->denunciante->domicilio }}
-                                                                <br>mail:{{ $denuncia->denunciante->mail }}
-                                                                <br>telefono:{{ $denuncia->denunciante->telefono }}
-                                                                <br>vinculo_inst:{{ $denuncia->denunciante->vinculo_inst }}
-                                                                <br>es_victima:{{ $denuncia->denunciante->es_victima }}
-                                                            @else
-                                                                Sin denunciante
-                                                            @endif
-                                                            --}}
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                DENUNCIANTE
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                @if ($denuncia->denunciante)
-                                                                    {{ $disabled = false; }}
-                                                                @else
-                                                                    {{ $disabled = true; }}
-                                                                @endif
-                                                                {!! Form::open([
-                                                                    'method' => 'GET',
-                                                                    'route' => ['rrhh.denuncias.denunciante.ver', $denuncia->id_denuncia],
-                                                                    'disabled' => $disabled,
-                                                                    'style' => 'display:inline']) !!}
-                                                                    {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
-                                                                {!! Form::close() !!}
 
-                                                                {!! Form::open([
-                                                                    'method' => 'GET',
-                                                                    'route' => ['rrhh.denuncias.denunciante.crear', $denuncia->id_denuncia],
-                                                                    'class' => 'd-flex justify-content-evenly']) !!}
-                                                                    {!! Form::submit('Agregar', ['class' => 'btn btn-warning my-1']) !!}
-                                                                {!! Form::close() !!}
+                                                                <div class="btn-group m-1">
+                                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        DENUNCIANTE
+                                                                    </button>
+                                                                    <div class="dropdown-menu">
+                                                                        @php
+                                                                            $denunciante = empty($denuncia->denunciante) ? false : true;
+                                                                        @endphp
+                                                                        {!! Form::open([
+                                                                            'method' => 'GET',
+                                                                            'route' => ['rrhh.denuncias.denunciante.ver', $denuncia->id_denuncia],
+                                                                            'style' => 'display:inline'
+                                                                        ]) !!}
+                                                                            {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info',
+                                                                            'disabled' => empty($denuncia->denunciante) ? true : false ]) !!}
+                                                                        {!! Form::close() !!}
 
-                                                                {!! Form::open([
-                                                                    'method' => 'GET',
-                                                                    'route' => ['rrhh.denuncias.denunciante.modificar', $denuncia->id_denuncia],
-                                                                    //'onclick' => 'abrirModalModificarDenuncia();',
-                                                                    'style' => 'display:inline']) !!}
-                                                                    {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
-                                                                {!! Form::close() !!}
+                                                                        {!! Form::open([
+                                                                            'method' => 'GET',
+                                                                            'route' => ['rrhh.denuncias.denunciante.crear', $denuncia->id_denuncia],
+                                                                            'class' => 'd-flex justify-content-evenly'
+                                                                        ]) !!}
+                                                                            {!! Form::submit('Agregar', ['class' => 'formulario dropdown-item btn btn-success',
+                                                                            'disabled' => empty($denuncia->denunciante) ? false : true]) !!}
+                                                                        {!! Form::close() !!}
 
-                                                                {!! Form::open([
-                                                                    'method' => 'DELETE',
-                                                                    'class' => 'formulario',
-                                                                    'route' => ['rrhh.denuncias.denunciante.borrar', $denuncia->id_denuncia],
-                                                                    'style' => 'display:inline'])!!}
-                                                                    {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
-                                                                {!! Form::close() !!}
-                                                                {{-- {!! Form::button('Ver', [
-                                                                    'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-info ver-denuncia',
-                                                                    'onclick' => 'verDenuncia(' . $denuncia->id_denuncia . ',
-                                                                                                "' . $denuncia->fecha . '",
-                                                                                                "' . $denuncia->extracto . '",
-                                                                                                "' . $denuncia->descripcion . '")',
-                                                                ]) !!} --}}
-                                                                {{-- {!! Form::button('Agregar', [
-                                                                    'class' => 'formulario dropdown-item btn-ver-denuncia btn btn-success ver-denuncia',
-                                                                    'onclick' => 'verDenuncia(' . $denuncia->id_denuncia . ',
-                                                                                                "' . $denuncia->fecha . '",
-                                                                                                "' . $denuncia->extracto . '",
-                                                                                                "' . $denuncia->descripcion . '")',
-                                                                ]) !!} --}}
+                                                                        {!! Form::open([
+                                                                            'method' => 'GET',
+                                                                            'route' => ['rrhh.denuncias.denunciante.modificar', $denuncia->id_denuncia],
+                                                                            'style' => 'display:inline'
+                                                                        ]) !!}
+                                                                            {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning',
+                                                                            'disabled' => empty($denuncia->denunciante) ? true : false]) !!}
+                                                                        {!! Form::close() !!}
 
+                                                                        {!! Form::open([
+                                                                            'method' => 'DELETE',
+                                                                            'class' => 'formulario',
+                                                                            'route' => ['rrhh.denuncias.denunciante.borrar', $denuncia->id_denuncia],
+                                                                            'style' => 'display:inline'
+                                                                        ]) !!}
+                                                                            {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn btn-danger',
+                                                                            'disabled' => empty($denuncia->denunciante) ? true : false]) !!}
+                                                                        {!! Form::close() !!}
+                                                                    </div>
+                                                                </div>
 
-                                                                <button class="formulario dropdown-item btn-ver-denuncia btn btn-warning ver-denuncia"
-                                                                onclick="modificarDenuncia({{$denuncia->id_denuncia}},'{{$denuncia->fecha}}',
-                                                                '{{$denuncia->extracto}}',
-                                                                '{{$denuncia->descripcion}}')" >Modificar</button>
-
-                                                                {!! Form::open([
-                                                                    'method' => 'DELETE',
-                                                                    'class' => 'formulario',
-                                                                    'route' => ['rrhh.denuncias.borrar', $denuncia->id_denuncia],
-                                                                    'style' => 'display:inline'])!!}
-                                                                    {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
-                                                                {!! Form::close() !!}
+                                                                <div class="btn-group m-1">
+                                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        VÍCTIMA
+                                                                    </button>
+                                                                    <div class="dropdown-menu">
+                                                                        {{-- Agrega los botones para Víctima aquí --}}
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                <div class="btn-group m-1">
+                                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        DENUNCIADO
+                                                                    </button>
+                                                                    <div class="dropdown-menu">
+                                                                        {{-- Agrega los botones para Denunciado aquí --}}
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
