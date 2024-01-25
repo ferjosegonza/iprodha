@@ -63,7 +63,7 @@
                                                 <td>{{$denuncia->descripcion}}</td>
                                                 <td>
                                                     <div class="gropo-botones d-flex">
-                                                        <div class="btn-group m-1">
+                                                        {{-- <div class="btn-group m-1">
                                                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 DENUNCIA
                                                             </button>
@@ -144,7 +144,7 @@
                                                                     </button>
                                                                     <div class="dropdown-menu">
                                                                         {{-- Agrega los botones para Víctima aquí --}}
-                                                                    </div>
+                                                                    {{--</div>
                                                                 </div>
                                             
                                                                 <div class="btn-group m-1">
@@ -153,10 +153,49 @@
                                                                     </button>
                                                                     <div class="dropdown-menu">
                                                                         {{-- Agrega los botones para Denunciado aquí --}}
-                                                                    </div>
+                                                                    {{--</div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
+                                                        <ul>
+                                                            <li>
+                                                                <button onclick="toggleSubMenu('main')">Principal</button>
+                                                                <ul id="main" style="display: none;">
+                                                                    <li><button>Ver</button></li>
+                                                                    <li><button>Modificar</button></li>
+                                                                    <li><button>Borrar</button></li>
+                                                                    <li>
+                                                                        <button onmouseover="toggleSubMenu('denunciante')">Denunciante</button>
+                                                                        <ul id="denunciante" style="display: none;">
+                                                                            <li><button>Ver</button></li>
+                                                                            <li><button>Agregar</button></li>
+                                                                            <li><button>Modificar</button></li>
+                                                                            <li><button>Borrar</button></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li>
+                                                                        <button onmouseover="toggleSubMenu('denunciado')">Denunciado</button>
+                                                                        <ul id="denunciado" style="display: none;">
+                                                                            <li><button>Ver</button></li>
+                                                                            <li><button>Agregar</button></li>
+                                                                            <li><button>Modificar</button></li>
+                                                                            <li><button>Borrar</button></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li>
+                                                                        <button onmouseover="toggleSubMenu('victima')">Víctima</button>
+                                                                        <ul id="victima" style="display: none;">
+                                                                            <li><button>Ver</button></li>
+                                                                            <li><button>Agregar</button></li>
+                                                                            <li><button>Modificar</button></li>
+                                                                            <li><button>Borrar</button></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+
+
                                                     </div>
                                                 </td>
                                             </tr>

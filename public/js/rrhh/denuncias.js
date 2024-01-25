@@ -39,6 +39,16 @@ $(document).ready(function (){
     })*/
 });
 
+function toggleSubMenu(subMenuId) {
+    var subMenu = document.getElementById(subMenuId);
+    if (subMenu.style.display === "none") {
+        subMenu.style.display = "block";
+    } else {
+        subMenu.style.display = "none";
+    }
+}
+
+
 
 // function limpiarFormDenuncia() {
 //     //$('#id_modif').val('');
