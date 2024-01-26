@@ -39,14 +39,19 @@ $(document).ready(function (){
     })*/
 });
 
-function toggleSubMenu(subMenuId) {
-    var subMenu = document.getElementById(subMenuId);
-    if (subMenu.style.display === "none") {
-        subMenu.style.display = "block";
-    } else {
-        subMenu.style.display = "none";
-    }
-}
+    // Muestra y oculta los submenús al hacer clic en los botones
+    document.getElementById('dropdownDenunciante').addEventListener('click', function () {
+        document.getElementById('dropdownDenunciante').classList.toggle('show');
+    });
+
+    document.getElementById('dropdownVictima').addEventListener('click', function () {
+        document.getElementById('dropdownVictima').classList.toggle('show');
+    });
+
+    document.getElementById('dropdownDenunciado').addEventListener('click', function () {
+        document.getElementById('dropdownDenunciado').classList.toggle('show');
+    });
+
 
 
 
