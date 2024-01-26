@@ -34,6 +34,9 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 ">
                     <div class="card">
                         <div class="card-body">
+                            <div id="accordion">
+
+                            </div>
                             {{--@if (session('mensaje'))
                                 <div class="alert alert-success">
                                     {{ session('mensaje') }}
@@ -62,104 +65,89 @@
                                                 <td>{{$denuncia->extracto}}</td>
                                                 <td>{{$denuncia->descripcion}}</td>
                                                 <td>
-                                                    <div class="gropo-botones d-flex">
-                                                        <div class="btn-group m-1">
-                                                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                DENUNCIA
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                {!! Form::open([
-                                                                    'method' => 'GET',
-                                                                    'route' => ['rrhh.denuncias.ver', $denuncia->id_denuncia],
-                                                                    'style' => 'display:inline']) !!}
-                                                                    {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
-                                                                {!! Form::close() !!}
-
-                                                                {!! Form::open([
-                                                                    'method' => 'GET',
-                                                                    'route' => ['rrhh.denuncias.modificar', $denuncia->id_denuncia],
-                                                                    //'onclick' => 'abrirModalModificarDenuncia();',
-                                                                    'style' => 'display:inline']) !!}
-                                                                    {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
-                                                                {!! Form::close() !!}
-
-                                                                {!! Form::open([
-                                                                    'method' => 'DELETE',
-                                                                    'class' => 'formulario',
-                                                                    'route' => ['rrhh.denuncias.borrar', $denuncia->id_denuncia],
-                                                                    'style' => 'display:inline'])!!}
-                                                                    {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
-                                                                {!! Form::close() !!}
-
-                                                                <div class="btn-group m-1">
-                                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="botonDenunciante();">
-                                                                        DENUNCIANTE
+                                                    <div id="accordion">
+                                                        <div class="card">
+                                                            <div class="card-header" id="headingDenuncia">
+                                                                <h5 class="mb-0">
+                                                                    <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                        DENUNCIA
+                                                                        <span>
+                                                                            <i class="fas fa-chevron-down"></i>
+                                                                        </span>
                                                                     </button>
-                                                                    <div class="dropdown-menu" style="display: none" id="submenu-denunciante">
-                                                                        @php
-                                                                            $denunciante = empty($denuncia->denunciante) ? false : true;
-                                                                        @endphp
-                                                                        {!! Form::open([
-                                                                            'method' => 'GET',
-                                                                            'route' => ['rrhh.denuncias.denunciante.ver', $denuncia->id_denuncia],
-                                                                            'style' => 'display:inline'
-                                                                        ]) !!}
-                                                                            {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info',
-                                                                            'disabled' => empty($denuncia->denunciante) ? true : false ]) !!}
-                                                                        {!! Form::close() !!}
+                                                                </h5>
+                                                            </div>
 
-                                                                        {!! Form::open([
-                                                                            'method' => 'GET',
-                                                                            'route' => ['rrhh.denuncias.denunciante.crear', $denuncia->id_denuncia],
-                                                                            'class' => 'd-flex justify-content-evenly'
-                                                                        ]) !!}
-                                                                            {!! Form::submit('Agregar', ['class' => 'formulario dropdown-item btn btn-success',
-                                                                            'disabled' => empty($denuncia->denunciante) ? false : true]) !!}
-                                                                        {!! Form::close() !!}
-
-                                                                        {!! Form::open([
-                                                                            'method' => 'GET',
-                                                                            'route' => ['rrhh.denuncias.denunciante.modificar', $denuncia->id_denuncia],
-                                                                            'style' => 'display:inline'
-                                                                        ]) !!}
-                                                                            {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning',
-                                                                            'disabled' => empty($denuncia->denunciante) ? true : false]) !!}
-                                                                        {!! Form::close() !!}
-
-                                                                        {!! Form::open([
-                                                                            'method' => 'DELETE',
-                                                                            'class' => 'formulario',
-                                                                            'route' => ['rrhh.denuncias.denunciante.borrar', $denuncia->id_denuncia],
-                                                                            'style' => 'display:inline'
-                                                                        ]) !!}
-                                                                            {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn btn-danger',
-                                                                            'disabled' => empty($denuncia->denunciante) ? true : false]) !!}
-                                                                        {!! Form::close() !!}
+                                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingDenuncia" data-parent="#accordion">
+                                                                <div class="card-body">
+                                                                    {!! Form::open([
+                                                                        'method' => 'GET',
+                                                                        'route' => ['rrhh.denuncias.ver', $denuncia->id_denuncia],
+                                                                        'style' => 'display:inline']) !!}
+                                                                        {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
+                                                                    {!! Form::close() !!}
+                                                        
+                                                                    {!! Form::open([
+                                                                        'method' => 'GET',
+                                                                        'route' => ['rrhh.denuncias.modificar', $denuncia->id_denuncia],
+                                                                        //'onclick' => 'abrirModalModificarDenuncia();',
+                                                                        'style' => 'display:inline']) !!}
+                                                                        {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
+                                                                    {!! Form::close() !!}
+                                                        
+                                                                    {!! Form::open([
+                                                                        'method' => 'DELETE',
+                                                                        'class' => 'formulario',
+                                                                        'route' => ['rrhh.denuncias.borrar', $denuncia->id_denuncia],
+                                                                        'style' => 'display:inline'])!!}
+                                                                        {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
+                                                                    {!! Form::close() !!}
+                                                                    <div class="card-header" id="headingDenunciado">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseDenunciado
+Denunciado" aria-expanded="false" aria-controls="collapseDenunciado
+Denunciado">
+                                                                                DENUNCIADO
+                                                                                <span>
+                                                                                    <i class="fas fa-chevron-down"></i>
+                                                                                </span>
+                                                                            </button>
+                                                                        </h5>
                                                                     </div>
-                                                                </div>
-
-                                                                <div class="btn-group m-1">
-                                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        VÍCTIMA
-                                                                    </button>
-                                                                    <div class="dropdown-menu">
-                                                                        <!-- Agrega los botones para Víctima aquí -->
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="btn-group m-1">
-                                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        DENUNCIADO
-                                                                    </button>
-                                                                    <div class="dropdown-menu">
-                                                                        <!-- Agrega los botones para Denunciado aquí -->
+        
+                                                                    <div id="collapseDenunciado
+Denunciado" class="collapse" aria-labelledby="headingDenunciado" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            {!! Form::open([
+                                                                                'method' => 'GET',
+                                                                                'route' => ['rrhh.denuncias.ver', $denuncia->id_denuncia],
+                                                                                'style' => 'display:inline']) !!}
+                                                                                {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
+                                                                            {!! Form::close() !!}
+                                                                
+                                                                            {!! Form::open([
+                                                                                'method' => 'GET',
+                                                                                'route' => ['rrhh.denuncias.modificar', $denuncia->id_denuncia],
+                                                                                //'onclick' => 'abrirModalModificarDenuncia();',
+                                                                                'style' => 'display:inline']) !!}
+                                                                                {!! Form::submit('Modificar', ['class' => 'formulario dropdown-item btn btn-warning']) !!}
+                                                                            {!! Form::close() !!}
+                                                                
+                                                                            {!! Form::open([
+                                                                                'method' => 'DELETE',
+                                                                                'class' => 'formulario',
+                                                                                'route' => ['rrhh.denuncias.borrar', $denuncia->id_denuncia],
+                                                                                'style' => 'display:inline'])!!}
+                                                                                {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
+                                                                            {!! Form::close() !!}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            
                                                         </div>
-
-
                                                     </div>
+                                                    
                                                 </td>
                                             </tr>
                                         @endforeach
