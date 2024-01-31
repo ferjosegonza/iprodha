@@ -47,6 +47,11 @@ class ProtocoloController extends Controller
         return view('rrhh.denuncias.ver', compact('denuncia'));
     }
 
+    public function intervinientesDenuncia(Request $request, $id){
+        $denuncia = Denuncias::find($id);
+        return view('rrhh.denuncias.intervinientes', compact('denuncia'));
+    }
+
     public function crearDenuncia(){
         return view('rrhh.denuncias.crear');
     }
