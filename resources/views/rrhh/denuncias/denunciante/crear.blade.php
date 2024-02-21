@@ -6,7 +6,7 @@
     </head>
     <section class="section">
         <div class="section-header">
-            <h3 class="page__heading">Crear Nueva Denuncia</h3>
+            <h3 class="page__heading">Crear Denunciante</h3>
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
         <div class="section-body">
@@ -47,7 +47,13 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-                        <a href="{{ route('rrhh.denuncias.listar') }}"class="btn btn-secondary fo">Volver</a>
+                        {{-- <a href="{{ route('rrhh.denuncias.listar') }}"class="btn btn-secondary fo">Volver</a> --}}
+                            {!! Form::open([
+                                'method' => 'GET',
+                                'route' => ['rrhh.denuncias.intervinientes', $denuncia->id_denuncia] /*,
+                                'style' => 'display:inline'*/]) !!}
+                                {!! Form::submit('Nuevo Volver', ['class' => 'btn btn-primary mr-2']) !!}
+                            {!! Form::close() !!}
                         {!! Form::close() !!}
                     </div>
                 </div>
