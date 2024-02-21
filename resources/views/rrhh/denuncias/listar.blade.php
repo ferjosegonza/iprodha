@@ -70,7 +70,7 @@
                                                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 DENUNCIA
                                                             </button>
-                                                            <div class="dropdown-menu">
+                                                            <div class="dropdown-menu" style="min-width: 240px">
                                                                 {!! Form::open([
                                                                     'method' => 'GET',
                                                                     'route' => ['rrhh.denuncias.ver', $denuncia->id_denuncia],
