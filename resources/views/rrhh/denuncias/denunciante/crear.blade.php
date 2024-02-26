@@ -7,6 +7,7 @@
     <section class="section">
         <div class="section-header">
             <h3 class="page__heading">Crear Denunciante</h3>
+            {{$denuncia}}
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
         <div class="section-body">
@@ -15,35 +16,110 @@
                     <div class="card-body">
                         {!! Form::open(array('route'=>'rrhh.denuncias.guardar', 'method'=>'POST'))!!}
                         <div class="row">
-                            <div class="form-group">
-                                {!! Form::label('fecha', 'Fecha:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
-                                {!! Form::date('fecha',\Carbon\Carbon::now(),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;', 'max' => now()->format('Y-m-d')]) !!}
+                            {{-- 
+                                - todos los campos de la BD:
+                                ID_DENUNCIA
+                                    NRO_DOC
+                                    APELLIDO
+                                    NOMBRE
+                                    TIPO_DOC
+                                    ID_SEXO
+                                    FECHA_NAC
+                                    DOMICILIO
+                                    MAIL
+                                    TELEFONO
+                                VINCULO_INST
+                                    ES_VICTIMA
+
+                                DATOS A CARGAR:
+                                    - poner un checkbox con una preg tipo "¿El Denunciante y la Víctima son la misma persona?" y si es, cargar tb en la tabla victima o ver con sergio cómo hacemos
+                                    - ape y nom
+                                    - tipo y nº doc
+                                    - sexo
+                                    - fecha nac (en el pdf hay un campo "edad" pero lo puedo deducir de la fecha nac así q no es necesario)
+                                    - domicilio
+                                    - telefono
+                                    - e-mail (no está pero como este dato se le pide a la víctima y puede q sean la misma persona más vale tenerlo tb)
+                                - vínculo con el Instituto (marcar lo q corresponda)
+                                    -- Autoridad
+                                    -- Personal Administrativo
+                                    -- Público externo
+                                    -- Personal de servicios tercerizados
+                                    -- Otro: (campo para describir)
+                                --}}
+                            <div class="form-group form-check-inline" style="align-items:baseline; display:flex;">
+                                {!! Form::checkbox('denunciante_victima', 1, false, ['class' => 'form-check-input', 'id' => 'isVictima']) !!}
+                                {!! Form::label('denunciante_victima', '¿El Denunciante y la Víctima son la misma persona?', ['class' => 'form-label m-1', 'style' => 'color:black;']) !!}
                             </div>
                             <div class="form-group">
-                                {!! Form::label('denuncia_extracto', 'Extracto:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                                {!! Form::text('denuncia_extracto', null, [
+                                {!! Form::label('apellido_denunciante', 'Apellido y Nombres:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
+                                <div class="form-group" style="display: flex; align-items:baseline; justify-content: flex-start;margin-bottom:0px;">
+                                {!! Form::text('apellido_denunciante', null, [
+                                    'id' => 'apellido_denunciante',
                                     'class' => 'form-control',
-                                    'style' => 'resize:none;text-transform:uppercase;color: var(--bs-modal-color);',
-                                    'id'    =>  'denuncia_extracto',
-                                    'maxlenght'=>'100',
-                                    'placeholder' => 'Detalle \'DENUNCIANTE\' CONTRA \'DENUNCIADO\'',
-                                    'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("extracto_caracteres", "denuncia_extracto", 100)',
-                                    ]) !!}
-                                <label for="denuncia_extracto" id="extracto_caracteres">Quedan 100 caracteres.</label>
+                                    'style' => 'text-transform:uppercase;max-width: 300px;',
+                                    'placeholder' => 'Ingrese apellido']) !!}
+                                {!! Form::text('nombres_denunciante', null, [
+                                    'id' => 'nombres_denunciante',
+                                    'class' => 'form-control',
+                                    'style' => 'text-transform:uppercase;max-width: 300px;margin-left: 10px',
+                                    'placeholder' => 'Ingrese nombres']) !!}
+                                </div>
                             </div>
                             <div class="form-group">
-                                {!! Form::label('denuncia_descripcion', 'Descripción:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                                {!! Form::textarea('denuncia_descripcion', null, [
+                                {!! Form::label('identificacion', 'Identificación:', ['class' => 'form-label']) !!}
+                                <div class="form-group" style="display: flex; align-items:center; justify-content: flex-start;margin-bottom:0%">
+                                    {{-- tabla "TIP_DOC" de BD iprodha --}}
+                                    {!! Form::select('tipo-doc', [
+                                        '4'	=>	'DNI - Documento Nacional de Identidad',
+                                        '1'	=>	'LE - Libreta Enrolamiento',
+                                        '2'	=>  'LC - Libreta Cívica	',
+                                        '3'	=>	'CI - Cédula Identidad',
+                                        '5'	=>	'DE - Documento Extranjero',
+                                        '6'	=>	'Pas. - Pasaporte',
+                                        '7' =>		'N/E - No Especifica'
+                                    ], null, ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...']) !!}
+                                    {!! Form::number('num-doc', null, ['class' => 'form-control', 'style'=> 'max-width: 300px;margin-left: 10px', 'min' => 1, 'max' => 999999999, 'placeholder' => 'INGRESE NÚMERO']) !!}
+                                </div>
+                            </div>
+                            <div class="form-group" style="display: flex; justify-content: flex-start; align-items: flex-end;margin-bottom:0px">
+                                    {!! Form::label('tipo-sex', 'Sexo:', ['class' => 'form-label', 'style' => 'width: 30%;margin-bottom:0px']) !!}
+                                    {!! Form::label('fecha-nac', 'Fecha Nacimiento:', ['class' => 'form-label','style' => 'color:black;margin-left: 20px;margin-bottom:0px']) !!}
+                            </div>
+                            <div class="form-group" style="display: flex; justify-content:flex-start; align-items:flex-start;margin:10px 0 0 0">
+                                {{-- tabla "sexo" de BD iprodha --}}
+                                {!! Form::select('tipo-sex', [
+                                        '1'	=>	'Masculino',
+                                        '2'	=>	'Femenino',
+                                        '3' => 'No binario',
+                                        '0' => 'No informa'
+                                    ], null, ['class' => 'form-select', 'style'=> 'width: 30%;margin-bottom:15px;margin-top:0px', 'placeholder' => 'SELECCIONE TIPO...']) !!}
+                                {!! Form::date('fecha-nac',\Carbon\Carbon::now(),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;justify-content:left;margin:0 0 0 20px', 'max' => now()->format('Y-m-d')]) !!}
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('direccion', 'Dirección:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
+                                {!! Form::text('direccion', null, [
+                                    'id' => 'direccion',
                                     'class' => 'form-control',
-                                    'rows' => 34,
-                                    'cols' => 54,
-                                    'style' => 'resize:none;height:20vh;text-transform:uppercase;color: var(--bs-modal-color);',
-                                    'id'    =>  'denuncia_descripcion',
-                                    'maxlenght'=>'1500',
-                                    'placeholder' => 'Describa lugar y lo que considere relevante de lo acontecido. Detalle los elementos o medios probatorios que se puedan agregar para el esclarecimiento.',
-                                    'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("descripcion_caracteres", "denuncia_descripcion", 1500)',
-                                    ]) !!}
-                                <label for="denuncia_descripcion" id="descripcion_caracteres" style="mb-2">Quedan 1500 caracteres.</label>
+                                    'style' => 'text-transform:uppercase;',
+                                    'placeholder' => 'Ingrese dirección']) !!}
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('email', 'E-mail:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
+                                {!! Form::email('email', null, ['class' => 'form-control']) !!}
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('tel', 'Teléfono:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
+                                {!! Form::tel('tel', null, ['class' => 'form-control', 'style'=> 'max-width: 300px;']) !!}
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('tipo-vinculo', 'Vínculo con el Instituto:', ['class' => 'form-label']) !!}
+                                {!! Form::select('tipo-vinculo', [
+                                        '1' => 'Autoridad',
+                                        '2' => 'Personal Administrativo',
+                                        '3' => 'Público externo',
+                                        '4' => 'Personal de servicios tercerizados'
+                                    ], null, ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...']) !!}
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Guardar</button>
@@ -52,7 +128,7 @@
                                 'method' => 'GET',
                                 'route' => ['rrhh.denuncias.intervinientes', $denuncia->id_denuncia] /*,
                                 'style' => 'display:inline'*/]) !!}
-                                {!! Form::submit('Nuevo Volver', ['class' => 'btn btn-primary mr-2']) !!}
+                                {!! Form::submit('Volver', ['class' => 'btn btn-secondary mr-2']) !!}
                             {!! Form::close() !!}
                         {!! Form::close() !!}
                     </div>

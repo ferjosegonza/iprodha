@@ -54,8 +54,9 @@ class DenuncianteController extends Controller
         return view('rrhh.denuncias.intervinientes', compact('denuncia'));
     }
 
-    public function crearDenunciante(){
-        return view('rrhh.denuncias.denunciante.crear');
+    public function crearDenunciante(Request $request, $id){
+        $denuncia = Denuncias::find($id);
+        return view('rrhh.denuncias.denunciante.crear', compact('denuncia'));
     }
 
     public function guardarDenunciante(Request $request){

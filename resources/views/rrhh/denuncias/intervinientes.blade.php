@@ -59,8 +59,11 @@
                                             $denuncianteVacio = empty($denuncia->denunciante) ? true : false;
                                         @endphp
                                         @if ($denuncianteVacio)
-                                            {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.denunciante.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
-                                                {!! Form::submit('Agregar Nuevo', ['class' => 'btn btn-success my-1']) !!}
+                                            {!! Form::open([
+                                                'method' => 'GET',
+                                                'route' => ['rrhh.denuncias.denunciante.crear', $denuncia->id_denuncia],
+                                                'class' => 'd-flex justify-content-evenly']) !!}
+                                                {!! Form::submit('AgregarR Nuevo', ['class' => 'btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else
                                             {!! Form::open([
