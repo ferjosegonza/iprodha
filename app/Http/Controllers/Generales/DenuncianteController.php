@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Generales;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\rrhh\Denuncias;
-use app\Models\rrhh\Denunciante;
-use \PDF;
-
+use App\Models\rrhh\Denunciante;
+//use \PDF;
+use DateTime;
 
 
 class DenuncianteController extends Controller
@@ -22,38 +22,16 @@ class DenuncianteController extends Controller
         //$this->middleware('permission:BORRAR-DENUNCIA', ['only' => ['destroy']]);
     }
 
-    public function protocolo()
-    {
-        $pathResolucion= public_path()."\storage\pdf\\resolucion.pdf";
-        $pathFormulario= public_path()."\storage\pdf\\formulario_denuncia.pdf";
-
-        return view('Generales.protocolo', compact('pathResolucion', 'pathFormulario'));
-    }
-
-    /*
-    // ESTE NO VOY A USAR
-    public function listarDenuncias(){
-        try {
-            $denuncias = Denuncias::with('denunciante')->orderBy('FECHA', 'desc')->get();
-            //$denuncias = Denuncias::orderBy('FECHA', 'desc')->paginate(10);
-        } catch (\Exception $e){
-            $denuncias = 'error';
-            echo "error: " . $e;
-        } finally {
-            return view('rrhh.denuncias.listar', compact('denuncias'));
-        }
-    } */
-
     public function verDenunciante(Request $request, $id){
         $denuncia = Denuncias::find($id);
         return view('rrhh.denuncias.denunciante.ver', compact('denunciante'));
     }
 
     // dejar esta función para q, desde el formulario de denunciante se puede volver a la vista de la denuncia q permite gestionar los intervinientes
-    public function intervinientesDenuncia(Request $request, $id){
-        $denuncia = Denuncias::find($id);
-        return view('rrhh.denuncias.intervinientes', compact('denuncia'));
-    }
+    // public function intervinientesDenuncia(Request $request, $id){
+    //     $denuncia = Denuncias::find($id);
+    //     return view('rrhh.denuncias.intervinientes', compact('denuncia'));
+    // }
 
     public function crearDenunciante(Request $request, $id){
         $denuncia = Denuncias::find($id);
@@ -61,51 +39,65 @@ class DenuncianteController extends Controller
     }
 
     public function guardarDenunciante(Request $request){
-        /*
-        - todos los campos de la BD:
-            ID_DENUNCIA
-            NRO_DOC
-            APELLIDO
-            NOMBRE
-            TIPO_DOC
-            ID_SEXO
-            FECHA_NAC
-            DOMICILIO
-            MAIL
-            TELEFONO
-            VINCULO_INST
-            ES_VICTIMA
+        /*echo 'id_denuncia'.$request->input('id_denuncia');
+        echo 'num-doc'.$request->input('num-doc');
+        echo 'apellido_denunciante'.$request->input('apellido_denunciante');
+        echo 'nombres_denunciante'.$request->input('nombres_denunciante');
+        echo 'tipo-doc'.$request->input('tipo-doc');
+        echo 'tipo-sex'.$request->input('tipo-sex');
+        echo 'fecha-nac'.$request->input('fecha-nac');
+        echo 'direccion'.$request->input('direccion');
+        echo 'email'.$request->input('email');
+        echo 'tel'.$request->input('tel');
+        echo 'tipo-vinculo'.$request->input('tipo-vinculo');
+        $esVictima = isset($_POST['denunciante_victima']) ? 1 : 0 ;
+        echo 'esVictima'.$esVictima;*/
 
-        - todos los campos del form guardar:
-            id_denuncia
-            denunciante_victima
-            apellido_denunciante
-            nombres_denunciante
-            tipo-doc
-            num-doc
-            tipo-sex
-            fecha-nac
-            direccion
-            email
-            tel
-            tipo-vinculo
+        /*
+        campos de la BD:    campos del form guardar:
+            ID_DENUNCIA     id_denuncia
+            NRO_DOC         num-doc
+            APELLIDO        apellido_denunciante
+            NOMBRE          nombres_denunciante
+            TIPO_DOC        tipo-doc
+            ID_SEXO         tipo-sex
+            FECHA_NAC       fecha-nac
+            DOMICILIO       direccion
+            MAIL            email
+            TELEFONO        tel
+            VINCULO_INST    tipo-vinculo
+            ES_VICTIMA      denunciante_victima
         */
         $nvaDenunciante = new Denunciante;
+        $id_denuncia = $request->input('id_denuncia');
 
         //$nvaDenunciante->id_denuncia = Denunciante::max('ID_DENUNCIA')+1;
-        $nvaDenunciante->id_denuncia = $request->input('id_denuncia');
-
-        $nvaDenunciante->fecha = $request->input('fecha');
-        $denuncia_extracto = $request->input('denuncia_extracto');
-        $nvaDenunciante->extracto = $denuncia_extracto;
-        $nvaDenunciante->descripcion = $request->input('denuncia_descripcion');
+        $nvaDenunciante->id_denuncia = $id_denuncia;
+        $nvaDenunciante->nro_doc = $request->input('num-doc');
+        $nvaDenunciante->apellido = "\"".$request->input('apellido_denunciante')."\"";
+        $nvaDenunciante->nombre = "\"".$request->input('nombres_denunciante')."\"";
+        $nvaDenunciante->tipo_doc = $request->input('tipo-doc');
+        $nvaDenunciante->id_sexo = $request->input('tipo-sex');
+        $fechaOriginal = $request->input('fecha-nac');
+        //$fechaFormateada = DateTime::createFromFormat('Y-m-d', $fechaOriginal)->format('d-m-Y');
+        //echo $fechaFormateada;
+        //$nvaDenunciante->fecha_nac = "\"".$request->input('fecha-nac')."\"";
+        $nvaDenunciante->fecha_nac = "'".$fechaOriginal."'";
+        $nvaDenunciante->domicilio = "\"".$request->input('direccion')."\"";
+        $nvaDenunciante->mail = "\"".$request->input('email')."\"";
+        $nvaDenunciante->telefono = "\"".$request->input('tel')."\"";
+        $nvaDenunciante->vinculo_inst = $request->input('tipo-vinculo');
+        $esVictima = isset($_POST['denunciante_victima']) ? 1 : 0 ;
+        $nvaDenunciante->es_victima = $esVictima;
+        //echo $nvaDenunciante;
         // $usuario = $request->session()->get('usuario');
 
         try {
             $nvaDenunciante->save();
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje','Denuncia creada exitosamente.');
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with(['message'=> 'Se ha agregado el Denunciante']);
         } catch (\Exception $e){
-            return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());
+            //return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->back()->with('error', $e->getMessage());
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }
     }
 

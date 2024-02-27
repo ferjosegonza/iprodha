@@ -139,14 +139,6 @@
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Guardar</button>
                         <a href="{{ route('rrhh.denuncias.intervinientes', ['id' => $denuncia->id_denuncia]) }}" class="btn btn-secondary mr-2">Volver</a>
-                        {{-- <button {{ route('rrhh.denuncias.intervinientes', ['id'=>$denuncia->id_denuncia]) }} type="button" class="btn btn-secondary mr-2">Volver</button> --}}
-                        {{-- <a href="{{ route('rrhh.denuncias.listar') }}"class="btn btn-secondary fo">Volver</a> --}}
-                            {{-- {!! Form::open([
-                                'method' => 'GET',
-                                'route' => ['rrhh.denuncias.intervinientes', $denuncia->id_denuncia] /*,
-                                'style' => 'display:inline'*/]) !!}
-                                {!! Form::submit('Volver', ['class' => 'btn btn-secondary mr-2']) !!}
-                            {!! Form::close() !!} --}}
                         {!! Form::close() !!}
                     </div>
                 </div>
