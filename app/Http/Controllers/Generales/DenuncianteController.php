@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Generales;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\rrhh\Denuncias;
+use app\Models\rrhh\Denunciante;
 use \PDF;
 
 
@@ -60,17 +61,48 @@ class DenuncianteController extends Controller
     }
 
     public function guardarDenunciante(Request $request){
-        $nvaDenuncia = new Denuncias;
+        /*
+        - todos los campos de la BD:
+            ID_DENUNCIA
+            NRO_DOC
+            APELLIDO
+            NOMBRE
+            TIPO_DOC
+            ID_SEXO
+            FECHA_NAC
+            DOMICILIO
+            MAIL
+            TELEFONO
+            VINCULO_INST
+            ES_VICTIMA
 
-        $nvaDenuncia->id_denuncia = Denuncias::max('ID_DENUNCIA')+1;
-        $nvaDenuncia->fecha = $request->input('fecha');
+        - todos los campos del form guardar:
+            id_denuncia
+            denunciante_victima
+            apellido_denunciante
+            nombres_denunciante
+            tipo-doc
+            num-doc
+            tipo-sex
+            fecha-nac
+            direccion
+            email
+            tel
+            tipo-vinculo
+        */
+        $nvaDenunciante = new Denunciante;
+
+        //$nvaDenunciante->id_denuncia = Denunciante::max('ID_DENUNCIA')+1;
+        $nvaDenunciante->id_denuncia = $request->input('id_denuncia');
+
+        $nvaDenunciante->fecha = $request->input('fecha');
         $denuncia_extracto = $request->input('denuncia_extracto');
-        $nvaDenuncia->extracto = $denuncia_extracto;
-        $nvaDenuncia->descripcion = $request->input('denuncia_descripcion');
+        $nvaDenunciante->extracto = $denuncia_extracto;
+        $nvaDenunciante->descripcion = $request->input('denuncia_descripcion');
         // $usuario = $request->session()->get('usuario');
 
         try {
-            $nvaDenuncia->save();
+            $nvaDenunciante->save();
             return redirect()->route('rrhh.denuncias.listar')->with('mensaje','Denuncia creada exitosamente.');
         } catch (\Exception $e){
             return redirect()->route('rrhh.denuncias.listar')->back()->with('error', $e->getMessage());

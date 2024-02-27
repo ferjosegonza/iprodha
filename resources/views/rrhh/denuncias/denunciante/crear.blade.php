@@ -13,8 +13,9 @@
         <div class="section-body">
             <div class="row">
                 <div class="card">
-                    <div class="card-body">
-                        {!! Form::open(array('route'=>'rrhh.denuncias.guardar', 'method'=>'POST'))!!}
+                    <div class="card-body" style="display:flex; flex-wrap: wrap;">
+                        {!! Form::open(array('route'=>'rrhh.denuncias.denunciante.guardar', 'method'=>'POST'))!!}
+                            {!! Form::hidden('id_denuncia', $denuncia->id_denuncia) !!}
                         <div class="row">
                             {{-- 
                                 - todos los campos de la BD:
@@ -30,6 +31,20 @@
                                     TELEFONO
                                 VINCULO_INST
                                     ES_VICTIMA
+
+                                    - todos los campos del form guardar:
+                                    id_denuncia
+                                    denunciante_victima
+                                    apellido_denunciante
+                                    nombres_denunciante
+                                    tipo-doc
+                                    num-doc
+                                    tipo-sex
+                                    fecha-nac
+                                    direccion
+                                    email
+                                    tel
+                                    tipo-vinculo
 
                                 DATOS A CARGAR:
                                     - poner un checkbox con una preg tipo "¿El Denunciante y la Víctima son la misma persona?" y si es, cargar tb en la tabla victima o ver con sergio cómo hacemos
@@ -106,7 +121,7 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('email', 'E-mail:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
-                                {!! Form::email('email', null, ['class' => 'form-control']) !!}
+                                {!! Form::email('email', null, ['class' => 'form-control', 'style' => 'max-width: 300px']) !!}
                             </div>
                             <div class="form-group">
                                 {!! Form::label('tel', 'Teléfono:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
@@ -123,13 +138,15 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                        <a href="{{ route('rrhh.denuncias.intervinientes', ['id' => $denuncia->id_denuncia]) }}" class="btn btn-secondary mr-2">Volver</a>
+                        {{-- <button {{ route('rrhh.denuncias.intervinientes', ['id'=>$denuncia->id_denuncia]) }} type="button" class="btn btn-secondary mr-2">Volver</button> --}}
                         {{-- <a href="{{ route('rrhh.denuncias.listar') }}"class="btn btn-secondary fo">Volver</a> --}}
-                            {!! Form::open([
+                            {{-- {!! Form::open([
                                 'method' => 'GET',
                                 'route' => ['rrhh.denuncias.intervinientes', $denuncia->id_denuncia] /*,
                                 'style' => 'display:inline'*/]) !!}
                                 {!! Form::submit('Volver', ['class' => 'btn btn-secondary mr-2']) !!}
-                            {!! Form::close() !!}
+                            {!! Form::close() !!} --}}
                         {!! Form::close() !!}
                     </div>
                 </div>

@@ -62,8 +62,10 @@
                                             {!! Form::open([
                                                 'method' => 'GET',
                                                 'route' => ['rrhh.denuncias.denunciante.crear', $denuncia->id_denuncia],
-                                                'class' => 'd-flex justify-content-evenly']) !!}
-                                                {!! Form::submit('AgregarR Nuevo', ['class' => 'btn btn-success my-1']) !!}
+                                                /*'style' => 'display:inline',
+                                                'class' => 'd-flex justify-content-evenly'*/
+                                                ]) !!}
+                                                {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else
                                             {!! Form::open([
@@ -100,7 +102,7 @@
                                         @endphp --}}
                                         @if (empty($denuncia->denunciado))
                                             {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.denunciado.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
-                                                {!! Form::submit('Agregar Nuevo', ['class' => 'btn btn-success my-1']) !!}
+                                                {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else
                                             {!! Form::open([
@@ -137,7 +139,7 @@
                                         @endphp --}}
                                         @if (empty($denuncia->victima))
                                             {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.victima.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
-                                                {!! Form::submit('Agregar Nuevo', ['class' => 'btn btn-success my-1']) !!}
+                                                {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else
                                             {!! Form::open([
