@@ -93,8 +93,8 @@
                                         '5'	=>	'DE - Documento Extranjero',
                                         '6'	=>	'Pas. - Pasaporte',
                                         '7' =>		'N/E - No Especifica'
-                                    ], null, ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...']) !!}
-                                    {!! Form::number('num-doc', null, ['class' => 'form-control', 'style'=> 'max-width: 300px;margin-left: 10px', 'min' => 1, 'max' => 999999999, 'placeholder' => 'INGRESE NÚMERO']) !!}
+                                    ], null, ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...', 'required' => true]) !!}
+                                    {!! Form::number('num-doc', null, ['type' => 'number','class' => 'form-control', 'style'=> 'max-width: 300px;margin-left: 10px', 'min' => 1, 'max' => 999999999, 'placeholder' => 'INGRESE NÚMERO', 'required' => true]) !!}
                                 </div>
                             </div>
                             <div class="form-group" style="display: flex; justify-content: flex-start; align-items: flex-end;margin-bottom:0px">
@@ -108,7 +108,7 @@
                                         '2'	=>	'Femenino',
                                         '3' => 'No binario',
                                         '0' => 'No informa'
-                                    ], null, ['class' => 'form-select', 'style'=> 'width: 30%;margin-bottom:15px;margin-top:0px', 'placeholder' => 'SELECCIONE TIPO...']) !!}
+                                    ], '0', ['class' => 'form-select', 'style'=> 'width: 30%;margin-bottom:15px;margin-top:0px', 'placeholder' => 'SELECCIONE TIPO...']) !!}
                                 {!! Form::date('fecha-nac',\Carbon\Carbon::now(),['class'=>'form-control date-field mb-3', 'style' => 'width: auto;justify-content:left;margin:0 0 0 20px', 'max' => now()->format('Y-m-d')]) !!}
                             </div>
                             <div class="form-group">
@@ -133,8 +133,8 @@
                                         '1' => 'Autoridad',
                                         '2' => 'Personal Administrativo',
                                         '3' => 'Público externo',
-                                        '4' => 'Personal de servicios tercerizados'
-                                    ], null, ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...']) !!}
+                                        '4' => 'Personal de servicios tercerizados',
+                                    ], '1', ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...']) !!}
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Guardar</button>

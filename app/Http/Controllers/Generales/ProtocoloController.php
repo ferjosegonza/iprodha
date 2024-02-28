@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Generales;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\rrhh\Denuncias;
+use App\Models\rrhh\Denunciante;
 use \PDF;
 
 
@@ -49,7 +50,11 @@ class ProtocoloController extends Controller
 
     public function intervinientesDenuncia(Request $request, $id){
         $denuncia = Denuncias::find($id);
-        return view('rrhh.denuncias.intervinientes', compact('denuncia'));
+        $denunciante = Denunciante::find($id);
+        $denunciado = Denunciado::find($id);
+        $victima = Victima::find($id);
+
+        return view('rrhh.denuncias.intervinientes', compact('denuncia', 'denunciante', 'denunciado', 'victima'));
     }
 
     public function crearDenuncia(){

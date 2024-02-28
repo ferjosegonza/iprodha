@@ -68,12 +68,12 @@
                                                 {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else
-                                            {!! Form::open([
+                                            {{-- {!! Form::open([
                                                 'method' => 'GET',
                                                 'route' => ['rrhh.denuncias.denunciante.ver', $denuncia->id_denuncia],
                                                 'style' => 'display:inline']) !!}
                                                 {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
-                                            {!! Form::close() !!}
+                                            {!! Form::close() !!} --}}
                                 
                                             {!! Form::open([
                                                 'method' => 'GET',
@@ -97,10 +97,10 @@
                                         DENUNCIADO
                                     </button>
                                     <div class="dropdown-menu">
-                                        {{-- @php
-                                            $denunciadoVacio =  ? true : false;
-                                        @endphp --}}
-                                        @if (empty($denuncia->denunciado))
+                                        @php
+                                            $denunciadoVacio = empty($denuncia->denunciado) ? true : false;
+                                        @endphp
+                                        @if ($denunciadoVacio)
                                             {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.denunciado.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
                                                 {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}

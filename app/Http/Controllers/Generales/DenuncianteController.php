@@ -39,58 +39,22 @@ class DenuncianteController extends Controller
     }
 
     public function guardarDenunciante(Request $request){
-        /*echo 'id_denuncia'.$request->input('id_denuncia');
-        echo 'num-doc'.$request->input('num-doc');
-        echo 'apellido_denunciante'.$request->input('apellido_denunciante');
-        echo 'nombres_denunciante'.$request->input('nombres_denunciante');
-        echo 'tipo-doc'.$request->input('tipo-doc');
-        echo 'tipo-sex'.$request->input('tipo-sex');
-        echo 'fecha-nac'.$request->input('fecha-nac');
-        echo 'direccion'.$request->input('direccion');
-        echo 'email'.$request->input('email');
-        echo 'tel'.$request->input('tel');
-        echo 'tipo-vinculo'.$request->input('tipo-vinculo');
-        $esVictima = isset($_POST['denunciante_victima']) ? 1 : 0 ;
-        echo 'esVictima'.$esVictima;*/
+            $nvaDenunciante = new Denunciante;
 
-        /*
-        campos de la BD:    campos del form guardar:
-            ID_DENUNCIA     id_denuncia
-            NRO_DOC         num-doc
-            APELLIDO        apellido_denunciante
-            NOMBRE          nombres_denunciante
-            TIPO_DOC        tipo-doc
-            ID_SEXO         tipo-sex
-            FECHA_NAC       fecha-nac
-            DOMICILIO       direccion
-            MAIL            email
-            TELEFONO        tel
-            VINCULO_INST    tipo-vinculo
-            ES_VICTIMA      denunciante_victima
-        */
-        $nvaDenunciante = new Denunciante;
-        $id_denuncia = $request->input('id_denuncia');
-
-        //$nvaDenunciante->id_denuncia = Denunciante::max('ID_DENUNCIA')+1;
-        $nvaDenunciante->id_denuncia = $id_denuncia;
-        $nvaDenunciante->nro_doc = $request->input('num-doc');
-        $nvaDenunciante->apellido = "\"".$request->input('apellido_denunciante')."\"";
-        $nvaDenunciante->nombre = "\"".$request->input('nombres_denunciante')."\"";
-        $nvaDenunciante->tipo_doc = $request->input('tipo-doc');
-        $nvaDenunciante->id_sexo = $request->input('tipo-sex');
-        $fechaOriginal = $request->input('fecha-nac');
-        //$fechaFormateada = DateTime::createFromFormat('Y-m-d', $fechaOriginal)->format('d-m-Y');
-        //echo $fechaFormateada;
-        //$nvaDenunciante->fecha_nac = "\"".$request->input('fecha-nac')."\"";
-        $nvaDenunciante->fecha_nac = "'".$fechaOriginal."'";
-        $nvaDenunciante->domicilio = "\"".$request->input('direccion')."\"";
-        $nvaDenunciante->mail = "\"".$request->input('email')."\"";
-        $nvaDenunciante->telefono = "\"".$request->input('tel')."\"";
-        $nvaDenunciante->vinculo_inst = $request->input('tipo-vinculo');
-        $esVictima = isset($_POST['denunciante_victima']) ? 1 : 0 ;
-        $nvaDenunciante->es_victima = $esVictima;
-        //echo $nvaDenunciante;
-        // $usuario = $request->session()->get('usuario');
+            $id_denuncia = $request->input('id_denuncia');
+            $nvaDenunciante->id_denuncia = $id_denuncia;
+            $nvaDenunciante->nro_doc = $request->input('num-doc');
+            $nvaDenunciante->apellido = strlen($request->input('apellido_denunciante')) == 0 ? "NULL" : $request->input('apellido_denunciante');
+            $nvaDenunciante->nombre = strlen($request->input('nombres_denunciante')) == 0 ? "NULL" : $request->input('nombres_denunciante');
+            $nvaDenunciante->tipo_doc = $request->input('tipo-doc');
+            $nvaDenunciante->id_sexo = strlen($request->input('tipo-sex')) == 0 ? "NULL" : $request->input('tipo-sex');
+            $nvaDenunciante->fecha_nac = $request->input('fecha-nac');
+            $nvaDenunciante->domicilio = strlen($request->input('direccion')) == 0 ? "NULL" : $request->input('direccion');
+            $nvaDenunciante->mail = strlen($request->input('email')) == 0 ? "NULL" : $request->input('email');
+            $nvaDenunciante->telefono = strlen($request->input('tel')) == 0 ? "NULL" : $request->input('tel');
+            $nvaDenunciante->vinculo_inst = $request->input('tipo-vinculo');
+            $esVictima = isset($_POST['denunciante_victima']) ? 1 : 0 ;
+            $nvaDenunciante->es_victima = $esVictima;
 
         try {
             $nvaDenunciante->save();
