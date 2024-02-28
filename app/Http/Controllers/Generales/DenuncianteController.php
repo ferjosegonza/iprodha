@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\rrhh\Denuncias;
 use App\Models\rrhh\Denunciante;
+use App\Models\rrhh\Denunciado;
+use App\Models\rrhh\Victima;
 //use \PDF;
 use DateTime;
 

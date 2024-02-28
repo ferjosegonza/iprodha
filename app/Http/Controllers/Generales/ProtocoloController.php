@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\rrhh\Denuncias;
 use App\Models\rrhh\Denunciante;
+use App\Models\rrhh\Denunciado;
+use App\Models\rrhh\Victima;
 use \PDF;
 
 
@@ -45,7 +47,12 @@ class ProtocoloController extends Controller
 
     public function verDenuncia(Request $request, $id){
         $denuncia = Denuncias::find($id);
-        return view('rrhh.denuncias.ver', compact('denuncia'));
+        $denunciante = Denunciante::find($id);
+        $denunciado = Denunciado::find($id);
+        $victima = Victima::find($id);
+
+        return view('rrhh.denuncias.ver', compact('denuncia', 'denunciante', 'denunciado', 'victima'));
+        //return view('rrhh.denuncias.ver', compact('denuncia'));
     }
 
     public function intervinientesDenuncia(Request $request, $id){
