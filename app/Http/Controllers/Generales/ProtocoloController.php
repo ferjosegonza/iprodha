@@ -47,7 +47,17 @@ class ProtocoloController extends Controller
 
     public function verDenuncia(Request $request, $id){
         $denuncia = Denuncias::find($id);
+
         $denunciante = Denunciante::find($id);
+        //$denunciante->load('sexo');
+        //dd($denunciante->sexo);
+        try{
+            $denunciante = Denunciante::with('sexo')->find($id);
+            //dd($denunciante->sexo);
+        } catch (\Exception $e) {
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
+        }
+
         $denunciado = Denunciado::find($id);
         $victima = Victima::find($id);
 

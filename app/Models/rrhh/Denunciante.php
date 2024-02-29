@@ -1,9 +1,10 @@
 <?php
-
 namespace App\Models\rrhh;
+
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\rrhh\Sexo;
 
 class Denunciante extends Model
 {
@@ -14,17 +15,22 @@ class Denunciante extends Model
     protected $primaryKey = 'id_denuncia';
     public $incrementing = false;
     protected $fillable = [
-        'ID_DENUNCIA',
-        'NRO_DOC',
-        'APELLIDO',
-        'NOMBRE',
-        'TIPO_DOC',
-        'ID_SEXO',
-        'FECHA_NAC',
-        'DOMICILIO',
-        'MAIL',
-        'TELEFONO',
-        'VINCULO_INST',
-        'ES_VICTIMA'
+        'id_denuncia',
+        'nro_doc',
+        'apellido',
+        'nombre',
+        'tipo_doc',
+        'id_sexo',
+        'fecha_nac',
+        'domicilio',
+        'mail',
+        'telefono',
+        'vinculo_inst',
+        'es_victima'
     ];
+
+    public function sexo() {
+        //return $this->belongsTo(Sexo::class, 'codsexo', 'id_sexo');
+        return $this->belongsTo(Sexo::class, 'id_sexo', 'codsexo');
+    }
 }
