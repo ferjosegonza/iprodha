@@ -58,8 +58,9 @@ class ProtocoloController extends Controller
         try{
             // $denunciante = Denunciante::find($id);
             //$denunciante = Denunciante::with('sexo')->find($id);
-            $denunciante = Denunciante::with(['sexo', 'tipo_dni', 'vinculo_inst'])->find($id);
-            //dd($denunciante->sexo);
+            $denunciante = Denunciante::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
+            //$denunciante = Denunciante::with(['sexo', 'vinculo_inst'])->find($id);
+            //dd($denunciante);
         } catch (\Exception $e) {
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
         }

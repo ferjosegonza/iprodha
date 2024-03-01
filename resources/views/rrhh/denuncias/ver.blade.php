@@ -57,7 +57,8 @@
                                     <div>Domicilio: <b>{{ $denunciante['domicilio'] }}</b></div>
                                     <div>Mail: <b>{{ $denunciante['mail'] }}</b></div>
                                     <div>Teléfono: <b>{{ $denunciante['telefono'] }}</b></div>
-                                    <div>Vínculo con la Institución: <b>{{ $denunciante['vinculo_inst'] }}</b></div>
+                                    {{-- <div>Vínculo con la Institución: <b>{{ $denunciante['vinculo_inst'] }}</b></div> --}}
+                                    <div>Vínculo con la Institución: <b>{{ $denunciante->vinculo_inst->descripcion ?? 'No trae nada' }}</b></div>
                                     <div>¿El Denunciante es también la Víctima?: <b>{{ $denunciante['es_victima'] ? 'Si':'No' }}</b></div>
                                 @else
                                     <div>No hay datos cargados del denunciante</div>
@@ -79,7 +80,8 @@
                                 @if ($denunciado)
                                     <div>Apellido y Nombre: <b>{{ $denunciado['apellido'] }} {{ $denunciado['nombre'] }}</b></div>
                                     <div>Tipo de Documento y Número: <b>{{ $denunciado['tipo_doc'] }} {{ $denunciado['nro_doc'] }}</b></div>
-                                    <div>Sexo: <b>{{ $denunciado['id_sexo'] }}</b></div>
+                                    {{-- <div>Sexo: <b>{{ $denunciado['id_sexo'] }}</b></div> --}}
+                                    <div>Sexo: <b>{{ $denunciado->sexo->descsexo ?? $denunciado->id_sexo }}</b></div>
                                     <div>Fecha de Nacimiento: <b>{{ $denunciado['fecha_nac'] }}</b></div>
                                     <div>Domicilio: <b>{{ $denunciado['domicilio'] }}</b></div>
                                     <div>Mail: <b>{{ $denunciado['mail'] }}</b></div>
@@ -96,7 +98,8 @@
                                 @if ($victima)
                                     <div>Apellido y Nombre: <b>{{ $victima['apellido'] }} {{ $victima['nombre'] }}</b></div>
                                     <div>Tipo de Documento y Número: <b>{{ $victima['tipo_doc'] }} {{ $victima['nro_doc'] }}</b></div>
-                                    <div>Sexo: <b>{{ $victima['id_sexo'] }}</b></div>
+                                    {{-- <div>Sexo: <b>{{ $victima['id_sexo'] }}</b></div> --}}
+                                    <div>Sexo: <b>{{ $victima->sexo->descsexo ?? $victima->id_sexo }}</b></div>
                                     <div>Fecha de Nacimiento: <b>{{ $victima['fecha_nac'] }}</b></div>
                                     <div>Domicilio: <b>{{ $victima['domicilio'] }}</b></div>
                                     <div>Mail: <b>{{ $victima['mail'] }}</b></div>

@@ -4,9 +4,9 @@ namespace App\Models\rrhh;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-// use App\Models\rrhh\Sexo;
-// use App\Models\rrhh\TipoDni;
-// use App\Models\rrhh\Vinculo;
+use App\Models\rrhh\Sexo;
+use App\Models\rrhh\Tipdoc;
+use App\Models\rrhh\Vinculo;
 
 class Denunciante extends Model
 {
@@ -35,11 +35,11 @@ class Denunciante extends Model
         //return $this->belongsTo(Sexo::class, 'codsexo', 'id_sexo');
         return $this->hasOne(Sexo::class, 'codsexo', 'id_sexo');
     }
-    public function tipo_dni() {
+    public function tipoDni() {
         //return $this->belongsTo(Sexo::class, 'codsexo', 'id_sexo');
-        return $this->hasOne(Tipo_dni::class, 'id_tipdoc', 'tipo_doc');
+        return $this->hasOne(Tipdoc::class, 'id_tipdoc', 'tipo_doc');
     }
-    public function vinculo_inst() {
+    public function vinculo() {
         //return $this->belongsTo(Sexo::class, 'codsexo', 'id_sexo');
         return $this->hasOne(Vinculo::class, 'id_vinculo', 'vinculo_inst');
     }
