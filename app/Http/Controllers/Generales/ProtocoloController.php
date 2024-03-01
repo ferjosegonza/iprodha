@@ -48,11 +48,17 @@ class ProtocoloController extends Controller
     public function verDenuncia(Request $request, $id){
         $denuncia = Denuncias::find($id);
 
-        $denunciante = Denunciante::find($id);
+        //dd($denunciante);
+
+        //$sexo = Sexo::find($denunciante->id_sexo);
+        //$sexo_desc = $sexo->descsexo;
+
         //$denunciante->load('sexo');
-        //dd($denunciante->sexo);
+
         try{
-            $denunciante = Denunciante::with('sexo')->find($id);
+            // $denunciante = Denunciante::find($id);
+            //$denunciante = Denunciante::with('sexo')->find($id);
+            $denunciante = Denunciante::with(['sexo', 'tipo_dni', 'vinculo_inst'])->find($id);
             //dd($denunciante->sexo);
         } catch (\Exception $e) {
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
@@ -62,7 +68,6 @@ class ProtocoloController extends Controller
         $victima = Victima::find($id);
 
         return view('rrhh.denuncias.ver', compact('denuncia', 'denunciante', 'denunciado', 'victima'));
-        //return view('rrhh.denuncias.ver', compact('denuncia'));
     }
 
     public function intervinientesDenuncia(Request $request, $id){

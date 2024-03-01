@@ -51,7 +51,8 @@
                                 @if ($denunciante)
                                     <div>Apellido y Nombre: <b>{{ $denunciante->apellido }} {{ $denunciante['nombre'] }}</b></div>
                                     <div>Tipo de Documento y Número: <b>{{ $denunciante['tipo_doc'] }} {{ $denunciante['nro_doc'] }}</b></div>
-                                    <div>Sexo: <b>{{ $denunciante->sexo->DESCSEXO ?? $denunciante->id_sexo }}</b></div>
+                                    {{-- <div>Sexo: <b>{{ $sexo_desc }}</b></div> --}}
+                                    <div>Sexo: <b>{{ $denunciante->sexo->descsexo ?? $denunciante->id_sexo }}</b></div>
                                     <div>Fecha de Nacimiento: <b>{{ $denunciante['fecha_nac'] }}</b></div>
                                     <div>Domicilio: <b>{{ $denunciante['domicilio'] }}</b></div>
                                     <div>Mail: <b>{{ $denunciante['mail'] }}</b></div>

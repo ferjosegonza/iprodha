@@ -9,6 +9,7 @@ use App\Models\rrhh\Denuncias;
 use App\Models\rrhh\Denunciante;
 use App\Models\rrhh\Denunciado;
 use App\Models\rrhh\Victima;
+use App\Models\rrhh\Sexo;
 //use \PDF;
 use DateTime;
 
