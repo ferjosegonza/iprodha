@@ -226,27 +226,17 @@
                                         <div class="">
                                             <label>Viviendas:</label>
                                         </div>
-                                        <div id="viviendasParaAsignar" class="d-flex flex-column overflow-auto" style="height: 225px;">
-                                            <div class="ms-auto d-flex align-items-center">
-                                                <input id="checkpermisos" onclick="seleccionarpermisostodos()" class="me-2 name" name="checkpermisos" type="checkbox">
-                                                <div>Selec. todo</div>
-                                            </div>
-                                            @foreach ($todasLasViviendas as $viv)
-                                                {{-- {{in_array($viv->id_viv, $listaViviendas)}} --}}
-                                                @php
-                                                    if(in_array($viv->id_viv, $listaViviendas)){
-                                                        $bandera = true;
-                                                    }else{
-                                                        $bandera = false;
-                                                    } 
-                                                @endphp
-                                                @if ($bandera)
-                                                    <label id='{{$viv->id_viv}}'><input checked onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->id_viv}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
-                                                @else
-                                                    <label id='{{$viv->id_viv}}'><input onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->id_viv}}" name="" type="checkbox" value="{{$viv->id_viv}}"> {{'Viv. Orden N°: '.$viv->orden}} </label>
-                                                @endif
-
-                                                
+                                        <div class="ms-auto d-flex align-items-center">
+                                            <input id="checkpermisos" onclick="seleccionarpermisostodos()" class="me-2 name" name="checkpermisos" type="checkbox">
+                                            <div>Selec. todo</div>
+                                        </div>
+                                        <div id="viviendasParaAsignar" class="d-flex flex-column overflow-auto" style="height: 225px;">                                            
+                                            @foreach($todasLasViviendas as $viv)                                                
+                                                @php $var=(in_array($viv->id_viv,$listaViviendas))?'checked':''; @endphp                                                                                                
+                                                <label id='{{$viv->id_viv}}'>
+                                                    <input <?php echo$var?> onclick="agregarVivienda('{{$viv->id_viv}}','{{$viv->orden}}')" class="radiockeck{{$viv->id_viv}}" type="checkbox" value="{{$viv->id_viv}}">
+                                                    {{'Viv. Orden N°: '.$viv->orden}} 
+                                                </label>
                                             @endforeach
                                         </div>
                                     </div>

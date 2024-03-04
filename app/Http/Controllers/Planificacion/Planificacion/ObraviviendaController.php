@@ -551,6 +551,8 @@ class ObraviviendaController extends Controller
 
     public function viviendaDeObra($id){
         $this->conectar();
+        return Ob_vivienda::find($id);        
+        /*$this->conectar();
         $vivienda_est = array();
         $modif = DB::select('SELECT iprodha.fun_modifica_idviv(?) as modif from dual', [$id]);
         $vivienda = Ob_vivienda::find($id);
@@ -583,7 +585,7 @@ class ObraviviendaController extends Controller
             'entrecalles' => $vivienda->entrecalles,
             'deslinde' => $vivienda->deslinde,
             'estado' => $modif[0]->modif]);
-            return $vivienda_est;
+            return $vivienda_est;*/
     }
 
     public function viviendaDeObraId($id){
