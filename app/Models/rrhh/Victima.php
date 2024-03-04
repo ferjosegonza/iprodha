@@ -3,9 +3,9 @@
 namespace App\Models\rrhh;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\rrhh\PersonaDenuncia;
 
-class Victima extends Model
+class Victima extends PersonaDenuncia
 {
     use HasFactory;
 

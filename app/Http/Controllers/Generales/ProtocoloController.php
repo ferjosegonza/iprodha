@@ -11,8 +11,6 @@ use App\Models\rrhh\Denunciado;
 use App\Models\rrhh\Victima;
 use \PDF;
 
-
-
 class ProtocoloController extends Controller
 {
     function __construct()
@@ -48,16 +46,10 @@ class ProtocoloController extends Controller
     public function verDenuncia(Request $request, $id){
         $denuncia = Denuncias::find($id);
 
-        //dd($denunciante);
-
-        //$sexo = Sexo::find($denunciante->id_sexo);
-        //$sexo_desc = $sexo->descsexo;
-
-        //$denunciante->load('sexo');
-
         try{
             // $denunciante = Denunciante::find($id);
             //$denunciante = Denunciante::with('sexo')->find($id);
+            //$denunciante->load('sexo');
             $denunciante = Denunciante::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
             //$denunciante = Denunciante::with(['sexo', 'vinculo_inst'])->find($id);
             //dd($denunciante);
@@ -65,17 +57,28 @@ class ProtocoloController extends Controller
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
         }
 
-        $denunciado = Denunciado::find($id);
-        $victima = Victima::find($id);
+        try{
+            //$denunciado = Denunciado::find($id);
+            $denunciado = Denunciado::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
+        } catch (\Exception $e) {
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
+        }
+
+        try{
+            //$victima = Victima::find($id);
+            $victima = Victima::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
+        } catch (\Exception $e) {
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
+        }
 
         return view('rrhh.denuncias.ver', compact('denuncia', 'denunciante', 'denunciado', 'victima'));
     }
 
     public function intervinientesDenuncia(Request $request, $id){
         $denuncia = Denuncias::find($id);
-        $denunciante = Denunciante::find($id);
-        $denunciado = Denunciado::find($id);
-        $victima = Victima::find($id);
+        $denunciante = Denunciante::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
+        $denunciado = Denunciado::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
+        $victima = Victima::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
 
         return view('rrhh.denuncias.intervinientes', compact('denuncia', 'denunciante', 'denunciado', 'victima'));
     }

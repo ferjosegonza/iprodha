@@ -3,12 +3,9 @@ namespace App\Models\rrhh;
 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\rrhh\Sexo;
-use App\Models\rrhh\Tipdoc;
-use App\Models\rrhh\Vinculo;
+use App\Models\rrhh\PersonaDenuncia;
 
-class Denunciante extends Model
+class Denunciante extends PersonaDenuncia
 {
     use HasFactory;
 
@@ -31,16 +28,4 @@ class Denunciante extends Model
         'es_victima'
     ];
 
-    public function sexo() {
-        //return $this->belongsTo(Sexo::class, 'codsexo', 'id_sexo');
-        return $this->hasOne(Sexo::class, 'codsexo', 'id_sexo');
-    }
-    public function tipoDni() {
-        //return $this->belongsTo(Sexo::class, 'codsexo', 'id_sexo');
-        return $this->hasOne(Tipdoc::class, 'id_tipdoc', 'tipo_doc');
-    }
-    public function vinculo() {
-        //return $this->belongsTo(Sexo::class, 'codsexo', 'id_sexo');
-        return $this->hasOne(Vinculo::class, 'id_vinculo', 'vinculo_inst');
-    }
 }
