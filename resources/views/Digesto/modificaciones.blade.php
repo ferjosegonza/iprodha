@@ -3,7 +3,9 @@
 @section('content')  
 <head>
     <link rel="stylesheet" href="{{asset('css/digesto/modificaciones.css')}}">
-    <script src="{{ asset('js/Coordinacion/Digesto/modificaciones.js') }}"></script>
+    <script src="{{ asset('js/Coordinacion/Digesto/modificaciones.js') }}"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.5.22/dist/jspdf.plugin.autotable.js"></script>
 </head>
 <section class="section">
     <div class="section-header">
@@ -22,6 +24,7 @@
                     <h5>Archivos </h5>
                 </div>
                 <div class="card-body">
+                    <i onclick="exportPDF()" class="fa fa-file-pdf fa-2x" style="color: #ff0000;"></i>
                     <table id="tabla-relacionados">
                         <thead>
                             <th>Nro de Archivo</th>

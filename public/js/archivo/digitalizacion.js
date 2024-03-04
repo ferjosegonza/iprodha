@@ -950,6 +950,7 @@ function mostrarPagina(archivo){
 function ocultarPagina(){    
     elementos=[]
     complejos=[]
+    cambiarDireccionPDF('N')
     let padre = document.getElementById('comp-obligatorio')
     while(padre.hasChildNodes()){
         padre.removeChild(padre.lastChild)

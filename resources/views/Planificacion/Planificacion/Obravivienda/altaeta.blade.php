@@ -163,32 +163,39 @@
                                             <th class="text-center" scope="col" style="color:#fff;width:15%;">Acciones</th>
                                         </thead>
                                         <tbody>
+                                            @if(sizeof($obra->getEtapas) == 0)
+                                            <tr>
+                                                <td colspan="4"> No se han cargado etapas para esta obra.</td>
+                                            </tr>
+                                            @else
                                             @foreach ($obra->getEtapas->sortBy('nro_eta') as $etapa)
-                                                <tr>                                          
-                                                    <td class= 'text-center' >{{$etapa->nro_eta}}</td>
-                                                    <td class= 'text-center' >{{$etapa->descripcion}}</td>
-                                                    <td class= 'text-center' >{{$etapa->cant_viv}}</td>
-                                                    {{-- <td class= 'text-center' >{{$etapa->can_viv_0 ?? 0}}</td>   
-                                                    <td class= 'text-center' >{{$etapa->can_viv_2}}</td>                                           
-                                                    <td class= 'text-center' >{{$etapa->can_viv_3}}</td>
-                                                    <td class= 'text-center' >{{$etapa->can_viv_4}}</td> --}}
-                                                    <td class= 'text-center' >
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.editaretapa', $etapa->id_etapa], 'style' => '']) !!}
-                                                                {!! Form::submit('Editar', ['class' => 'btn btn-primary']) !!}
-                                                                {!! Form::close() !!}
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                {!! Form::open([
-                                                                    'method' => 'DELETE','route' => ['obravivienda.eliminaretapa', $etapa->id_etapa],'style' => '',]) !!}
-                                                                {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('¿Está seguro que desea ELIMINAR la etapa?')",]) !!}
-                                                                {!! Form::close() !!}
-                                                            </div>
+                                            <tr>                                          
+                                                <td class= 'text-center' >{{$etapa->nro_eta}}</td>
+                                                <td class= 'text-center' >{{$etapa->descripcion}}</td>
+                                                <td class= 'text-center' >{{$etapa->cant_viv}}</td>
+                                                {{-- <td class= 'text-center' >{{$etapa->can_viv_0 ?? 0}}</td>   
+                                                <td class= 'text-center' >{{$etapa->can_viv_2}}</td>                                           
+                                                <td class= 'text-center' >{{$etapa->can_viv_3}}</td>
+                                                <td class= 'text-center' >{{$etapa->can_viv_4}}</td> --}}
+                                                <td class= 'text-center' >
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.editaretapa', $etapa->id_etapa], 'style' => '']) !!}
+                                                            {!! Form::submit('Editar', ['class' => 'btn btn-primary']) !!}
+                                                            {!! Form::close() !!}
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                        <div class="col-lg-6">
+                                                            {!! Form::open([
+                                                                'method' => 'DELETE','route' => ['obravivienda.eliminaretapa', $etapa->id_etapa],'style' => '',]) !!}
+                                                            {!! Form::submit('Borrar', ['class' => 'btn btn-danger','onclick' => "return confirm('¿Está seguro que desea ELIMINAR la etapa?')",]) !!}
+                                                            {!! Form::close() !!}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                            @endif
+                                           
                                         </tbody>
                                     </table>
                                     </div>
@@ -229,7 +236,17 @@
                                             <th class="text-center" scope="col" style="color:#fff;width:18%;">Acciones</th>
                                         </thead>
                                         <tbody>
-                                            @foreach ($obra->getEtapas as $etapa)
+                                            @if (sizeof($obra->getEtapas) == 0)
+                                            <tr>
+                                                <td colspan="6"> No se han cargado etapas para esta obra.</td>
+                                            </tr>
+                                            @else
+                                                @if (sizeof($etapa->getEntregas) == 0)
+                                                <tr>
+                                                    <td colspan="6"> No se han cargado entregas para esta obra.</td>
+                                                </tr>
+                                                @else
+                                                @foreach ($obra->getEtapas as $etapa)
                                                 @foreach ($etapa->getEntregas as $entrega)
                                                     <tr>      
                                                         <td class= 'text-center' >{{$entrega->getEtapa->nro_eta}}</td>                                    
@@ -270,6 +287,8 @@
                                                     </tr>
                                                 @endforeach
                                             @endforeach
+                                                @endif
+                                            @endif                                            
                                         </tbody>
                                     </table>
                                     </div>
@@ -285,15 +304,37 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row pb-1">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 text-center">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 text-center">
                                     <h5>Viviendas</h5>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-1">
-                                    {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.nuevaviv', $obra->id_obr], 'style' => '']) !!}
-                                    {!! Form::submit('Crear', ['class' => 'btn btn-success w-100']) !!}
-                                    {!! Form::close() !!}
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 row" style="align-self: flex-end;">
+                                    <button class="btn btn-primary col-xs-12 col-sm-12 col-md-12 col-lg-8" type="button" id="btnMacroVivienda" disabled onclick="mostrarCantidad()">
+                                        Crear varias viviendas
+                                    </button> 
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 row" id="inputVivienda"  hidden >
+                                       <input type="number"  min="0" class="form-control"  id="cantidadMacro" style="width: 70%">  
+                                        <div style="flex-direction: column; width: 20%">
+                                            <button class="btn btn-danger" style="width: 6%;
+                                            display: grid;
+                                            justify-content: center;
+                                            height: 26%;
+                                            align-content: center;"
+                                            onclick="cancelarMacro()">X</button>
+                                            <button class="btn btn-success" style="width: 6%;
+                                            display: grid;
+                                            justify-content: center;
+                                            height: 26%;
+                                            align-content: center;"
+                                            onclick="macroVivienda()">✓</button>
+                                        </div>
+                                        
+                                    </div>                                    
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                        {!! Form::open(['method' => 'GET', 'route' => ['obravivienda.nuevaviv', $obra->id_obr], 'style' => '']) !!}
+                                        {!! Form::submit('Crear', ['class' => 'btn btn-success ']) !!}
+                                        {!! Form::close() !!}    
+                                    </div> 
+                                    
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -316,28 +357,35 @@
                                         <th class="text-center" scope="col" style="color:#fff;width:5%;">Escalera</th>
                                     </thead>
                                     <tbody>
-                                        @foreach ($viviendasTabla as $vivienda)
-                                            <tr>    
-                                                <td class= 'text-center' >{{$vivienda->orden}}</td>                                      
-                                                <td class= 'text-center' >{{$vivienda->etapa}}</td>
-                                                <td class= 'text-center' >{{$vivienda->entrega}}</td>
-                                                @if ($vivienda->discap == 1)
-                                                    <td class= 'text-center' >SI</td>
-                                                @else
-                                                    <td class= 'text-center' >NO</td>
-                                                @endif
-                                                <td class= 'text-center' >{{$vivienda->plano}}</td>
-                                                <td class= 'text-center' >{{$vivienda->seccion}}</td>
-                                                <td class= 'text-center' >{{$vivienda->chacra}}</td>
-                                                <td class= 'text-center' >{{$vivienda->manzana}}</td>
-                                                <td class= 'text-center' >{{$vivienda->parcela}}</td>
-                                                <td class= 'text-center' >{{$vivienda->finca}}</td>
-                                                <td class= 'text-center' >{{$vivienda->edificio}}</td>
-                                                <td class= 'text-center' >{{$vivienda->piso}}</td>
-                                                <td class= 'text-center' >{{$vivienda->departamento}}</td>
-                                                <td class= 'text-center' >{{$vivienda->escalera}}</td>
+                                        @if (sizeof($viviendasTabla) == 0)
+                                            <tr>
+                                                <td colspan="14"> No se han cargado viviendas para esta obra.</td>
                                             </tr>
-                                        @endforeach
+                                        @else
+                                        @foreach ($viviendasTabla as $vivienda)
+                                        <tr>    
+                                            <td class= 'text-center' >{{$vivienda->orden}}</td>                                      
+                                            <td class= 'text-center' >{{$vivienda->etapa}}</td>
+                                            <td class= 'text-center' >{{$vivienda->entrega}}</td>
+                                            @if ($vivienda->discap == 1)
+                                                <td class= 'text-center' >SI</td>
+                                            @else
+                                                <td class= 'text-center' >NO</td>
+                                            @endif
+                                            <td class= 'text-center' >{{$vivienda->plano}}</td>
+                                            <td class= 'text-center' >{{$vivienda->seccion}}</td>
+                                            <td class= 'text-center' >{{$vivienda->chacra}}</td>
+                                            <td class= 'text-center' >{{$vivienda->manzana}}</td>
+                                            <td class= 'text-center' >{{$vivienda->parcela}}</td>
+                                            <td class= 'text-center' >{{$vivienda->finca}}</td>
+                                            <td class= 'text-center' >{{$vivienda->edificio}}</td>
+                                            <td class= 'text-center' >{{$vivienda->piso}}</td>
+                                            <td class= 'text-center' >{{$vivienda->departamento}}</td>
+                                            <td class= 'text-center' >{{$vivienda->escalera}}</td>
+                                        </tr>
+                                    @endforeach
+                                        @endif
+                                        
                                     </tbody>
                                 </table>
                                 </div>

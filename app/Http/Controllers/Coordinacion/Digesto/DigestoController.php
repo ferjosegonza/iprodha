@@ -89,7 +89,6 @@ class DigestoController extends Controller
             ->where('nro_archivo', '=', $request->doc)
            ->where('ano_archivo', '=', $request->año)->first();
         }
-       
         //return $archivo;
         $archivo->path_archivo = substr($archivo->path_archivo, 14);
         return response()->json($archivo);

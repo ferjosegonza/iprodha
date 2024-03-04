@@ -38,3 +38,16 @@ function cancelar(){
     document.getElementById('pdf-preview').setAttribute('hidden', 'hidden')
     document.getElementById('lista-relacionados').setAttribute('class', 'col-lg-12 card')
 }
+
+function  exportPDF(){
+    //crear tabla
+    let tabla = document.getElementById('tabla-relacionados')
+    //
+    let doc = new jsPDF('l', 'pt', 'a4');
+    doc.autoTable({ html: tabla, 
+        theme: 'grid', styles : { halign : 'center'}, headStyles :{fillColor : [124, 95, 240]}, alternateRowStyles: {fillColor : [231, 215, 252]}, tableLineColor: [124, 95, 240], tableLineWidth: 0.1,}, )
+    console.log(tabla)
+    let nombre = 'Historial_'+tabla.rows[1].cells[0].innerHTML;
+    console.log(nombre)
+    doc.save(nombre+'.pdf')    
+}

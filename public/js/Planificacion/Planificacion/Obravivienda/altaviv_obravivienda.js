@@ -104,3 +104,74 @@ function activarCargaIndividual(){
     let deslinde = document.getElementById('iddeslinde').disabled = false;
 }
 
+function extractIdFromUrl(url) {
+    const urlParts = url.split('/');
+    const id = urlParts[urlParts.length - 1];
+    return id;
+  }
+
+  var id_ent;
+
+$(document).ready(function () {
+    const url = window.location.href;
+    const id = extractIdFromUrl(url);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: '/obravivienda/eta-y-ent/'+id+'/etapa0',
+        type: 'GET',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id:id
+        }),
+        dataType: 'json',
+        success: function(res) {          
+            console.log(res)
+            id_ent = res.id_ent
+            if(res!=null){
+                document.getElementById('btnMacroVivienda').removeAttribute('disabled')
+            }
+            else{
+                document.getElementById('btnMacroVivienda').setAttribute('disabled')
+            }
+        },
+        error: function(res){
+            console.log(res)
+        }});
+})
+
+function mostrarCantidad(){  
+    document.getElementById('btnMacroVivienda').setAttribute('hidden', 'hidden')
+    document.getElementById('inputVivienda').removeAttribute('hidden')
+}
+
+function cancelarMacro(){
+    document.getElementById('btnMacroVivienda').removeAttribute('hidden')
+    document.getElementById('inputVivienda').setAttribute('hidden', 'hidden')
+}
+
+function macroVivienda(){
+    let viviendas = document.getElementById('cantidadMacro').value;
+
+    $.ajax({
+        url: '/obravivienda/eta-y-ent/'+id_ent+'/macroVivienda',
+        type: 'POST',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            id:id_ent,
+            viviendas: viviendas
+        }),
+        dataType: 'json',
+        success: function(res) {          
+            console.log(res)
+            location.reload()
+        },
+        error: function(res){
+            console.log(res)
+        }});
+}

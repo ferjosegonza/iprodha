@@ -17,7 +17,7 @@
             </div>
             <div class="card-body row">
                 <p>Podrá encontrar un archivo y a qué cadena de modificaciones pertenece.</p>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     {!! Form::label('*Tipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap;' ]) !!}
                     <select class="form-select" id="tipo" onchange="tipos()" name="tipo">
                         @foreach ($tipos as $tipo)                           
@@ -25,7 +25,7 @@
                         @endforeach                        
                     </select>   
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     {!! Form::label('*Subtipo documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                     <select class="form-select" id="subtipo" name="subtipo">
                         @foreach ($subtipos as $subtipo)
@@ -33,11 +33,15 @@
                         @endforeach                        
                     </select>    
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     {!! Form::label('*Nº Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
                     {!! Form::number('doc', null, ['class' => 'form-control no-spin', 'id'=>'doc', 'min'=>'0']) !!}
                 </div>
-                <div class="col-lg-3"> 
+                <div class="col-lg-2">
+                    {!! Form::label('*Año Documento:', null, ['class' => 'control-label', 'style' => 'white-space: nowrap; ']) !!}
+                    {!! Form::number('año', null, ['class' => 'form-control no-spin', 'id'=>'año', 'min'=>'0']) !!}
+                </div> 
+                <div class="col-lg-2"> 
                     <button type="button" class="btn btn-success btn-block" id='btn-buscar' onclick="buscarArchivo()" disabled>Buscar</button>
                 </div>
             </div>            
