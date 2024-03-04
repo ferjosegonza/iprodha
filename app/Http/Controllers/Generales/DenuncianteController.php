@@ -10,8 +10,10 @@ use App\Models\rrhh\Denunciante;
 use App\Models\rrhh\Denunciado;
 use App\Models\rrhh\Victima;
 use App\Models\rrhh\Sexo;
-//use \PDF;
+use App\Models\rrhh\Tipdoc;
+use App\Models\rrhh\Vinculo;
 use DateTime;
+//use \PDF;
 
 
 class DenuncianteController extends Controller
@@ -38,7 +40,10 @@ class DenuncianteController extends Controller
 
     public function crearDenunciante(Request $request, $id){
         $denuncia = Denuncias::find($id);
-        return view('rrhh.denuncias.denunciante.crear', compact('denuncia'));
+        $todosLosTipdoc = Tipdoc::get();
+        $todosLosSexo = Sexo::get();
+        $todosLosVinculos = Vinculo::get();
+        return view('rrhh.denuncias.denunciante.crear', compact('denuncia', 'todosLosTipdoc', 'todosLosSexo', 'todosLosVinculos'));
     }
 
     public function guardarDenunciante(Request $request){

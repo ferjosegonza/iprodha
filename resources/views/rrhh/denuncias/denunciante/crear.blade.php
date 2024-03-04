@@ -7,7 +7,7 @@
     <section class="section">
         <div class="section-header">
             <h3 class="page__heading">Crear Denunciante</h3>
-            {{$denuncia}}
+            {{-- {{$denuncia}} --}}
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])
         <div class="section-body">
@@ -94,6 +94,7 @@
                                         '6'	=>	'Pas. - Pasaporte',
                                         '7' =>		'N/E - No Especifica'
                                     ], null, ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...', 'required' => true]) !!}
+                                    {!! Form::select('tipo-doc', $todosLosTipdoc->pluck('destipdoc', 'id_tipdoc'), null, ['class' => 'form-select', 'style'=> 'max-width: 300px;', 'placeholder' => 'SELECCIONE TIPO...', 'required' => true]) !!}
                                     {!! Form::number('num-doc', null, ['type' => 'number','class' => 'form-control', 'style'=> 'max-width: 300px;margin-left: 10px', 'min' => 1, 'max' => 999999999, 'placeholder' => 'INGRESE NÚMERO', 'required' => true]) !!}
                                 </div>
                             </div>
