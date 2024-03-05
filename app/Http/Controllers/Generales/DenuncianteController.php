@@ -40,29 +40,35 @@ class DenuncianteController extends Controller
 
     public function crearDenunciante(Request $request, $id){
         $denuncia = Denuncias::find($id);
-        $todosLosTipdoc = Tipdoc::get();
+        $todosLosTipdoc = Tipdoc::all();
         $todosLosSexo = Sexo::get();
         $todosLosVinculos = Vinculo::get();
         return view('rrhh.denuncias.denunciante.crear', compact('denuncia', 'todosLosTipdoc', 'todosLosSexo', 'todosLosVinculos'));
     }
 
     public function guardarDenunciante(Request $request){
-            $nvaDenunciante = new Denunciante;
+        $nvaDenunciante = new Denunciante;
 
-            $id_denuncia = $request->input('id_denuncia');
-            $nvaDenunciante->id_denuncia = $id_denuncia;
-            $nvaDenunciante->nro_doc = $request->input('num-doc');
-            $nvaDenunciante->apellido = strlen($request->input('apellido_denunciante')) == 0 ? "NULL" : $request->input('apellido_denunciante');
-            $nvaDenunciante->nombre = strlen($request->input('nombres_denunciante')) == 0 ? "NULL" : $request->input('nombres_denunciante');
-            $nvaDenunciante->tipo_doc = $request->input('tipo-doc');
-            $nvaDenunciante->id_sexo = strlen($request->input('tipo-sex')) == 0 ? "NULL" : $request->input('tipo-sex');
-            $nvaDenunciante->fecha_nac = $request->input('fecha-nac');
-            $nvaDenunciante->domicilio = strlen($request->input('direccion')) == 0 ? "NULL" : $request->input('direccion');
-            $nvaDenunciante->mail = strlen($request->input('email')) == 0 ? "NULL" : $request->input('email');
-            $nvaDenunciante->telefono = strlen($request->input('tel')) == 0 ? "NULL" : $request->input('tel');
-            $nvaDenunciante->vinculo_inst = $request->input('tipo-vinculo');
-            $esVictima = isset($_POST['denunciante_victima']) ? 1 : 0 ;
-            $nvaDenunciante->es_victima = $esVictima;
+        $id_denuncia = $request->input('id_denuncia');
+        $nvaDenunciante->id_denuncia = $id_denuncia;
+        $nvaDenunciante->nro_doc = $request->input('num-doc');
+        $nvaDenunciante->apellido = strlen($request->input('apellido_denunciante')) == 0 ? "NULL" : strtoupper($request->input('apellido_denunciante'));
+        $nvaDenunciante->nombre = strlen($request->input('nombres_denunciante')) == 0 ? "NULL" : strtoupper($request->input('nombres_denunciante'));
+        $nvaDenunciante->tipo_doc = $request->input('tipo-doc');
+        $nvaDenunciante->id_sexo = strlen($request->input('tipo-sex')) == 0 ? "NULL" : $request->input('tipo-sex');
+        $nvaDenunciante->fecha_nac = $request->input('fecha-nac');
+        $nvaDenunciante->domicilio = strlen($request->input('direccion')) == 0 ? "NULL" : strtoupper($request->input('direccion'));
+        $nvaDenunciante->mail = strlen($request->input('email')) == 0 ? "NULL" : strtoupper($request->input('email'));
+        $nvaDenunciante->telefono = strlen($request->input('tel')) == 0 ? "NULL" : strtoupper($request->input('tel'));
+        $nvaDenunciante->vinculo_inst = $request->input('tipo-vinculo');
+
+        if (isset($_POST['denunciante_victima'])){
+            $nvaVictima = new Victima;
+            $nvaDenunciante->es_victima = 1;
+        } else {
+            $nvaDenunciante->es_victima = 0;
+        }
+
 
         try {
             $nvaDenunciante->save();
