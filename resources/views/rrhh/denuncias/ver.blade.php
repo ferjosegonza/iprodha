@@ -5,7 +5,7 @@
         <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
         <style>
             .form-group > div, .min-height-20 {
-                min-height: 30px;
+                min-height: 25px;
             }
             .form-group {
                 margin-bottom: 15px;
@@ -49,15 +49,22 @@
                             <div class="form-group" style="margin-top: 12px;">
                                 <h5>Datos del Denunciante</h5>
                                 @if ($denunciante)
-                                    <div>Apellido y Nombre: <b>{{ $denunciante->apellido }} {{ $denunciante['nombre'] }}</b></div>
+                                    @if ($denunciante['es_victima'])
+                                        <div><b><i>La víctima y el denunciante son la misma persona.</i></b></div>
+                                    @endif
+                                    <div>Apellido y Nombre: <b>{{ $denunciante->apellido ?? 'No hay apellido cargado' }} {{ $denunciante['nombre'] ?? 'No hay nombre cargado' }}</b></div>
                                     <div>Tipo de Documento y Número: <b>{{ $denunciante->tipoDni->des_abr }} ({{ $denunciante->tipoDni->destipdoc }}) {{ number_format($denunciante['nro_doc'], 0, ',', '.') }}</b></div>
                                     <div>Sexo: <b>{{ $denunciante->sexo->descsexo ?? $denunciante->id_sexo }}</b></div>
                                     <div>Fecha de Nacimiento: <b>{{ \Carbon\Carbon::parse($denunciante['fecha_nac'])->format('d-m-Y') }}</b></div>
-                                    <div>Domicilio: <b>{{ $denunciante['domicilio'] }}</b></div>
-                                    <div>Mail: <b>{{ $denunciante['mail'] }}</b></div>
-                                    <div>Teléfono: <b>{{ $denunciante['telefono'] }}</b></div>
-                                    <div>Vínculo con la Institución: <b>{{ $denunciante->vinculo->descripcion ?? 'Información no encontrada' }}</b></div>
-                                    <div>¿El Denunciante es también la Víctima?: <b>{{ $denunciante['es_victima'] ? 'Si':'No' }}</b></div>
+                                    <div>Domicilio: <b>{{ $denunciante['domicilio'] ?? 'Sin datos' }}</b></div>
+                                        <div>Mail: <b>{{ $denunciante['mail'] ?? 'Sin datos' }}</b></div>
+                                        <div>Teléfono: <b>{{ $denunciante['telefono'] ?? 'Sin datos' }}</b></div>
+                                    <div>Vínculo con la Institución: <b>{{ $denunciante->vinculo->descripcion ?? 'Sin datos' }}</b></div>
+                                    <div>¿El Denunciante es también la Víctima?: <b>{{ $denunciante['es_victima'] ? 'Si':'No' }}</b>
+                                        @if ($denunciante['es_victima'])
+                                            <i>Los cambios que realice en el denunciante impactarán también en los datos de la víctima.</i>
+                                        @endif
+                                    </div>
                                 @else
                                     <div>No hay datos cargados del denunciante</div>
                                 @endif
@@ -75,15 +82,15 @@
                             <div class="form-group">
                                 <h5>Datos del Denunciado</h5>
                                 @if ($denunciado)
-                                    <div>Apellido y Nombre: <b>{{ $denunciado['apellido'] }} {{ $denunciado['nombre'] }}</b></div>
+                                    <div>Apellido y Nombre: <b>{{ $denunciado->apellido ?? 'No hay apellido cargado' }} {{ $denunciado['nombre'] ?? 'No hay nombre cargado' }}</b></div>
                                     <div>Tipo de Documento y Número: <b>{{ $denunciado->tipoDni->des_abr }} ({{ $denunciado->tipoDni->destipdoc }}) {{ number_format($denunciado['nro_doc'], 0, ',', '.') }}</b></div>
                                     <div>Sexo: <b>{{ $denunciado->sexo->descsexo ?? 'Información no encontrada' }}</b></div>
                                     <div>Fecha de Nacimiento: <b>{{ \Carbon\Carbon::parse($denunciado['fecha_nac'])->format('d-m-Y') }}</b></div>
-                                    <div>Domicilio: <b>{{ $denunciado['domicilio'] }}</b></div>
-                                    <div>Mail: <b>{{ $denunciado['mail'] }}</b></div>
-                                    <div>Teléfono: <b>{{ $denunciado['telefono'] }}</b></div>
-                                    <div>Vínculo con la Institución: <b>{{ $denunciado->vinculo->descripcion ?? 'Información no encontrada' }}</b></div>
-                                    <div>Vínculo con la Víctima: <b>{{ $denunciado['vinculo_vict'] }}</b></div>
+                                    <div>Domicilio: <b>{{ $denunciado['domicilio'] ?? 'Sin datos' }}</b></div>
+                                    <div>Mail: <b>{{ $denunciado['mail'] ?? 'Sin datos' }}</b></div>
+                                    <div>Teléfono: <b>{{ $denunciado['telefono'] ?? 'Sin datos' }}</b></div>
+                                    <div>Vínculo con la Institución: <b>{{ $denunciado->vinculo->descripcion ?? 'Sin datos' }}</b></div>
+                                    <div>Vínculo con la Víctima: <b>{{ $denunciado['vinculo_vict'] ?? 'Sin datos' }}</b></div>
                                 @else
                                     <div>No hay datos cargados del denunciado</div>
                                 @endif
@@ -95,14 +102,14 @@
                                     @if ($denunciante['es_victima'])
                                         <div><b><i>La víctima y el denunciante son la misma persona.</i></b></div>
                                     @endif
-                                    <div>Apellido y Nombre: <b>{{ $victima['apellido'] }} {{ $victima['nombre'] }}</b></div>
+                                    <div>Apellido y Nombre: <b>{{ $victima->apellido ?? 'No hay apellido cargado' }} {{ $victima['nombre'] ?? 'No hay nombre cargado' }}</b></div>
                                     <div>Tipo de Documento y Número: <b>{{ $victima->tipoDni->des_abr }} ({{ $victima->tipoDni->destipdoc }}) {{ number_format($victima['nro_doc'], 0, ',', '.') }}</b></div>
                                     <div>Sexo: <b>{{ $victima->sexo->descsexo ?? 'Información no encontrada' }}</b></div>
                                     <div>Fecha de Nacimiento: <b>{{ \Carbon\Carbon::parse($victima['fecha_nac'])->format('d-m-Y') }}</b></div>
-                                    <div>Domicilio: <b>{{ $victima['domicilio'] }}</b></div>
-                                    <div>Mail: <b>{{ $victima['mail'] }}</b></div>
-                                    <div>Teléfono: <b>{{ $victima['telefono'] }}</b></div>
-                                    <div>Vínculo con la Institución: <b>{{ $victima->vinculo->descripcion ?? 'Información no encontrada' }}</b></div>
+                                    <div>Domicilio: <b>{{ $victima['domicilio'] ?? 'Sin datos' }}</b></div>
+                                    <div>Mail: <b>{{ $victima['mail'] ?? 'Sin datos' }}</b></div>
+                                    <div>Teléfono: <b>{{ $victima['telefono'] ?? 'Sin datos' }}</b></div>
+                                    <div>Vínculo con la Institución: <b>{{ $victima->vinculo->descripcion ?? 'Sin datos' }}</b></div>
                                 @else
                                     <div>No hay datos cargados de la víctima</div>
                                 @endif

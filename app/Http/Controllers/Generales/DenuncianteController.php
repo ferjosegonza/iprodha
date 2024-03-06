@@ -52,29 +52,37 @@ class DenuncianteController extends Controller
         $id_denuncia = $request->input('id_denuncia');
         $nvaDenunciante->id_denuncia = $id_denuncia;
         $nvaDenunciante->nro_doc = $request->input('num-doc');
-        $nvaDenunciante->apellido = strlen($request->input('apellido_denunciante')) == 0 ? "NULL" : strtoupper($request->input('apellido_denunciante'));
-        $nvaDenunciante->nombre = strlen($request->input('nombres_denunciante')) == 0 ? "NULL" : strtoupper($request->input('nombres_denunciante'));
+        $nvaDenunciante->apellido = strlen($request->input('apellido_denunciante')) == 0 ? NULL : strtoupper($request->input('apellido_denunciante'));
+        $nvaDenunciante->nombre = strlen($request->input('nombres_denunciante')) == 0 ? NULL : strtoupper($request->input('nombres_denunciante'));
         $nvaDenunciante->tipo_doc = $request->input('tipo-doc');
-        $nvaDenunciante->id_sexo = strlen($request->input('tipo-sex')) == 0 ? "NULL" : $request->input('tipo-sex');
+        $nvaDenunciante->id_sexo = strlen($request->input('tipo-sex')) == 0 ? NULL : $request->input('tipo-sex');
         $nvaDenunciante->fecha_nac = $request->input('fecha-nac');
-        $nvaDenunciante->domicilio = strlen($request->input('direccion')) == 0 ? "NULL" : strtoupper($request->input('direccion'));
-        $nvaDenunciante->mail = strlen($request->input('email')) == 0 ? "NULL" : strtoupper($request->input('email'));
-        $nvaDenunciante->telefono = strlen($request->input('tel')) == 0 ? "NULL" : strtoupper($request->input('tel'));
+        $nvaDenunciante->domicilio = strlen($request->input('direccion')) == 0 ? NULL : strtoupper($request->input('direccion'));
+        $nvaDenunciante->mail = strlen($request->input('email')) == 0 ? NULL : strtoupper($request->input('email'));
+        $nvaDenunciante->telefono = strlen($request->input('tel')) == 0 ? NULL : strtoupper($request->input('tel'));
         $nvaDenunciante->vinculo_inst = $request->input('tipo-vinculo');
 
         if (isset($_POST['denunciante_victima'])){
             $nvaVictima = new Victima;
+
+            // antes de crear el atributo 'es_victima' en el objeto '$nvaDenunciante',
+            // copio todos los atrib creados hasta ahora de '$nvaDenunciante' a $nvaVictima y guardo
+            $nvaVictima->setRawAttributes($nvaDenunciante->getAttributes());
+            $nvaVictima->save();
+            $mensaje = 'Se han agregado los datos de Denunciante y Victima';
+
+            // ahora recién creo el otro atributo q sólo está en Denunciante pero no en Victima
             $nvaDenunciante->es_victima = 1;
         } else {
             $nvaDenunciante->es_victima = 0;
+            $mensaje = 'Se han agregado los datos de Denunciante';
         }
 
 
         try {
             $nvaDenunciante->save();
-            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with(['message'=> 'Se ha agregado el Denunciante']);
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', $mensaje);
         } catch (\Exception $e){
-            //return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->back()->with('error', $e->getMessage());
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }
     }

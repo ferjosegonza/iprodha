@@ -14,16 +14,16 @@ class Victima extends PersonaDenuncia
     protected $primaryKey = 'id_denuncia';
     public $incrementing = false;
     protected $fillable = [
-        'ID_DENUNCIA',
-        'NRO_DOC',
-        'APELLIDO',
-        'NOMBRE',
-        'TIPO_DOC',
-        'ID_SEXO',
-        'FECHA_NAC',
-        'DOMICILIO',
-        'MAIL',
-        'TELEFONO',
-        'VINCULO_INST'
+        'id_denuncia',
+        'nro_doc',
+        'apellido',
+        'nombre',
+        'tipo_doc',
+        'id_sexo',
+        'fecha_nac',
+        'domicilio',
+        'mail',
+        'telefono',
+        'vinculo_inst'
     ];
 }
