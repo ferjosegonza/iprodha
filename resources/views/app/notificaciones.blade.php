@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <head>
-    <link rel="stylesheet" href="{{asset('css/app/boleta.css')}}">
-    <script src="{{ asset('js/app/boleta.js') }}"></script>
+    <link rel="stylesheet" href="{{asset('css/app/notificaciones.css')}}">
+    <script src="{{ asset('js/app/notificaciones.js') }}"></script>
 </head>
 <section class="section">
     <div class="section-header">
-        <div class="titulo page__heading">Notificación de Boletas</div>
+        <div class="titulo page__heading">Notificación de App</div>
         @include('layouts.favorito.fav', ['modo' => 'Agregar'])
     </div>
     <div class="section-body">

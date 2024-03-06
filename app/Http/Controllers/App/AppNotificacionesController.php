@@ -14,9 +14,9 @@ use DB;
 
 class AppNotificacionesController extends Controller
 {
-    public function notificacionBoletas(){
-        $tipos_not = App_not_tipo::where('forma', '=', 1)->get();
-        return view('app.boletas')
+    public function notificacionVista(){
+        $tipos_not = App_not_tipo::get();
+        return view('app.notificaciones')
         ->with('tipos_not', $tipos_not);
     }
 
@@ -26,6 +26,7 @@ class AppNotificacionesController extends Controller
     }
     
     public function adeuda(){
+        
         $adeuda = App_not_adeuda::orderBy('fecha')->get();
         return response()->json($adeuda);
     }
