@@ -39,7 +39,6 @@ function boletas(){
 }
 
 function adeuda(){
-    console.log('va')
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
