@@ -40,7 +40,7 @@
                                         <div>Vínculo con la Institución: <b>{{ $denunciante->vinculo->descripcion ?? 'Sin datos' }}</b></div>
                                         <div>¿El Denunciante es también la Víctima?: <b>{{ $denunciante['es_victima'] ? 'Si.':'No' }}</b>
                                             @if ($denunciante['es_victima'])
-                                                <i>Los cambios que realice en el denunciante impactarán también en los datos de la víctima.</i>
+                                                <i>Los cambios que se realicen en el denunciante impactarán también en los datos de la víctima.</i>
                                             @endif
                                         </div>
                                     @else
