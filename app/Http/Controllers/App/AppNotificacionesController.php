@@ -10,6 +10,8 @@ use App\Models\Iprodha\App_not_tipo;
 use App\Models\Iprodha\App_not_x_usuario;
 use App\Models\Iprodha\App_not_boletadisponible;
 use App\Models\Iprodha\App_not_adeuda;
+use App\Models\Iprodha\App_grupocab;
+use App\Models\Iprodha\App_grupodet;
 use DB;
 
 class AppNotificacionesController extends Controller
@@ -26,7 +28,6 @@ class AppNotificacionesController extends Controller
     }
     
     public function adeuda(){
-        
         $adeuda = App_not_adeuda::orderBy('fecha')->get();
         return response()->json($adeuda);
     }
@@ -81,5 +82,61 @@ class AppNotificacionesController extends Controller
             }
         }
         return response()->json($res);
+    }
+
+    public function getUsuarios(){
+       $users = App_usuario::select('nombre', 'usuario', 'id')->get();
+       return response()->json($users);
+    }
+
+    public function getGrupos(){
+        $grupos = App_grupocab::get();
+        return response()->json($grupos);
+    }
+
+    public function setGruposCabecera(Request $request)
+    {
+        $cab = new App_grupocab;
+        $cab->crear($request->nombre);
+        return $cab->id_grupo;
+    }
+
+    public function setGruposDetalle(Request $request){
+        $res = 1;
+        for ($i = 0; $i < sizeof($request->ids); $i++) {
+            $det = new App_grupodet;
+    
+            // Set the properties of $det using appropriate assignments
+            $det->id_grupo = $request->id_grupo; // Use the retrieved id_grupo value
+    
+            // Ensure that $request->ids is an array and $i is a valid index
+            if (isset($request->ids[$i])) {
+                $det->id_usuario = $request->ids[$i];
+                $res *= $det->save();
+            }
+        }
+    
+        return response()->json($res);
+    }
+
+    public function getGrupoIndividuo(Request $request){
+        $query = "SELECT id_usuario, nombre, usuario as cuit from iprodha.app_grupodet d
+        inner join iprodha.app_usuario u 
+        on d.id_usuario = u.id
+        where id_grupo = $request->id";
+        $usuarios = DB::select( DB::raw($query));
+        return response()->json($usuarios);
+    }
+
+    public function getUsuariosIndividuales(Request $request){
+        $str='';
+        foreach($request->ids as $id){
+            $str .= $id . ', ';
+        }
+        $str = substr($str, 0, -2);
+        $query = "SELECT id, nombre, usuario as cuit from iprodha.app_usuario
+        where id in ($str)";
+        $usuarios = DB::select( DB::raw($query));
+        return response()->json($usuarios);
     }
 }
