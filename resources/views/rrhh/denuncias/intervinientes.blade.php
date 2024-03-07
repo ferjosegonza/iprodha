@@ -3,6 +3,7 @@
 @section('content')
     <head>
         <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
+        <script src="{{ asset('js/rrhh/denuncias.js') }}"></script>
         <style>
             .form-group > div {
                 min-height: 25px;
@@ -125,8 +126,10 @@
                                             {!! Form::open([
                                                 'method' => 'DELETE',
                                                 'class' => 'formulario',
+                                                'id' => 'form-borrar',
                                                 'route' => ['rrhh.denuncias.denunciante.borrar', $denuncia->id_denuncia],
-                                                'style' => 'display:inline'])!!}
+                                                'style' => 'display:inline',
+                                                'onsubmit' => 'return confirmarBorrado(event, '.$denunciante->es_victima.','.$denuncia->id_denuncia.')']) !!}
                                                 {!! Form::submit('Borrar', ['class' => 'formulario dropdown-item btn-borrar-denuncia btn btn-danger borrar-denuncia']) !!}
                                             {!! Form::close() !!}
                                         @endif

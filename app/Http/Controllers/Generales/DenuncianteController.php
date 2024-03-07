@@ -119,15 +119,24 @@ class DenuncianteController extends Controller
 
     public function destroy($id_denuncia){
         try {
-            $denuncia = Denunciante::where('id_denuncia', $id_denuncia);
+            $denunciante = Denunciante::where('id_denuncia', $id_denuncia)->first();
+            $victima = Victima::where('id_denuncia', $id_denuncia)->first();
+            //dd($denuncia, $victima);
 
-            if (!$denuncia){
+            if (!$denunciante){
                 return redirect()->route('rrhh.denuncias.listar')->with('mensaje','No se encontró esa denuncia.');
             }
+            //dd($denunciante);
+            if ($denunciante->es_victima){
+                $victima->delete();
+                $mensaje = 'Los registros de Denunciante y Víctima se borraron con éxito.';
+            } else {
+                $mensaje = 'El denunciante se borró con éxito.';
+            }
 
-            $denuncia->delete();
+            $denunciante->delete();
 
-            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje','El denunciante se borró con éxito.');
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', $mensaje);
         } catch (\Exception $e){
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }
