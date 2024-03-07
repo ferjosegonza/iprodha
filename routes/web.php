@@ -249,6 +249,12 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|DIGESTO']], func
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () {
     Route::get('notificaciones', [AppNotificacionesController::class, 'notificacionVista'])->name('notificaciones.vista');
+    Route::get('notificaciones/usuarios', [AppNotificacionesController::class, 'getUsuarios'])->name('notificaciones.usuarios');
+    Route::get('notificaciones/getGrupos', [AppNotificacionesController::class, 'getGrupos'])->name('notificaciones.getGrupos');
+    Route::get('notificaciones/getUsuarios', [AppNotificacionesController::class, 'getUsuariosIndividuales'])->name('notificaciones.getUsuarios');
+    Route::get('notificaciones/getGrupoIndividuos', [AppNotificacionesController::class, 'getGrupoIndividuo'])->name('notificaciones.getGrupoIndividuo');
+    Route::post('notificaciones/setGruposCabecera', [AppNotificacionesController::class, 'setGruposCabecera'])->name('notificaciones.setGruposCabecera');
+    Route::post('notificaciones/setGruposDetalle', [AppNotificacionesController::class, 'setGruposDetalle'])->name('notificaciones.setGruposDetalle');
     Route::get('notificaciones/boletas/pendientes', [AppNotificacionesController::class, 'pendientes'])->name('notificaciones.boletasPendientes');
     Route::get('notificaciones/boletas/adeuda', [AppNotificacionesController::class, 'adeuda'])->name('notificaciones.boletasAdeuda');
     Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');

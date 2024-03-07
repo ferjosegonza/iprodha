@@ -17,4 +17,9 @@ class App_grupocab extends Model{
     protected $fillable = [ 
         'descripcion'
     ];
+
+    public function crear($decripcion){
+        $this->descripcion = $decripcion;
+        return $this->save();
+    }
 }
