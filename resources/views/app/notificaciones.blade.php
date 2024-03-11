@@ -104,9 +104,9 @@
             <div class="card-body row">
                 <div class="col-lg-6" id="mensajeCard">
                     <label for="cabecera" class="form-label">Cabecera del mensaje: </label>
-                    <input type="text" class="form-control" id="cabecera">
+                    <input type="text" class="form-control" id="cabecera" onkeyup="checkMsj()">
                     <label for="cuerpo" class="form-label">Cuerpo del mensaje: </label>
-                    <input type="text" class="form-control" id="cuerpo">
+                    <input type="text" class="form-control" id="cuerpo" onkeyup="checkMsj()">
                 </div>
                 <div class="col-lg-6" id="usuariosCard">
                     <table id="table_usuarios_elegidos">
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <button class="btn btn-block btn-sm btn-success" style="width: 55%; margin:5px;
-            align-self: center;">Enviar Mensaje</button>
+            align-self: center;" id="btnEnviarMsj" disabled onclick="enviarMsj()">Enviar Mensaje</button>
         </div>    
         <div class="card" >
             <div class="card-body" id="visualizar" hidden>
