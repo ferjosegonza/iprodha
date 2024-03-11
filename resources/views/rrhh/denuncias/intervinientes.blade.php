@@ -90,7 +90,7 @@
                         </div>
 
                         <h5>Gestionar Denunciado, Denunciante y Víctima relacionadas a la Denuncia:</h5>
-                        <p><b>NOTA:</b> Si desea cargar Víctima, primero cargue el Denunciante señalando que no es también la Víctima.</p>
+                        <p><b>NOTA:</b> Si el Denunciante es también la Víctima se gestionan los datos desde <b>Denunciante.</b><br>Para cargar Víctima primero cargue el Denunciante señalando que no son la misma persona.</p>
                         <div class="section-header d-flex">
                             <div class="gropo-botones d-flex">
                                 <div class="btn-group m-1">
@@ -149,12 +149,12 @@
                                                 {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else
-                                            {!! Form::open([
+                                            {{-- {!! Form::open([
                                                 'method' => 'GET',
                                                 'route' => ['rrhh.denuncias.denunciado.ver', $denuncia->id_denuncia],
                                                 'style' => 'display:inline']) !!}
                                                 {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
-                                            {!! Form::close() !!}
+                                            {!! Form::close() !!} --}}
                                 
                                             {!! Form::open([
                                                 'method' => 'GET',
