@@ -4,6 +4,7 @@
     <head>
         <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
         <script src="{{ asset('js/rrhh/denuncias.js') }}"></script>
+        <script src="{{ asset('js/rrhh/intervinientes.js') }}"></script>
         <style>
             .form-group > div {
                 min-height: 25px;
@@ -27,7 +28,7 @@
                                 <div>Descripción: <b>{{$denuncia->descripcion ?? 'No hay descripción cargada.'}}</b></div>
                             </div>
                             <div class="row">
-                                <h4>En relación a la Denuncia. Denunciante, Denunciado y Víctima:</h4>
+                                <h4>Datos de Denunciante, Denunciado y Víctima relacionados a la Denuncia:</h4>
                                 <div class="form-group" style="margin-top: 12px;">
                                     <h5>Datos del Denunciante</h5>
                                     @if ($denunciante)
@@ -88,11 +89,12 @@
                             </div>
                         </div>
 
+                        <h5>Gestionar Denunciado, Denunciante y Víctima relacionadas a la Denuncia:</h5>
+                        <p><b>NOTA:</b> Si desea cargar Víctima, primero cargue el Denunciante señalando que no es también la Víctima.</p>
                         <div class="section-header d-flex">
-                            <h5>Gestionar Denunciado, Denunciante y Víctima relacionadas a la Denuncia:</h5>
                             <div class="gropo-botones d-flex">
                                 <div class="btn-group m-1">
-                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         DENUNCIANTE
                                     </button>
                                     <div class="dropdown-menu">
@@ -115,7 +117,6 @@
                                                 'style' => 'display:inline']) !!}
                                                 {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
                                             {!! Form::close() !!} --}}
-                                
                                             {!! Form::open([
                                                 'method' => 'GET',
                                                 'route' => ['rrhh.denuncias.denunciante.modificar', $denuncia->id_denuncia],
@@ -136,7 +137,7 @@
                                     </div>
                                 </div>
                                 <div class="btn-group m-1">
-                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         DENUNCIADO
                                     </button>
                                     <div class="dropdown-menu">
@@ -173,13 +174,14 @@
                                     </div>
                                 </div>
                                 <div class="btn-group m-1">
-                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @php
+                                        $denunciante = $denuncia->denunciante;
+                                        $desactivarBotonVictima = empty($denunciante) || ($denunciante && $denunciante->es_victima);
+                                    @endphp
+                                    <button type="button" class="btn {{ $desactivarBotonVictima ? 'btn-secondary' : 'btn-primary'}} dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="botonVictima" {{ $desactivarBotonVictima ? ' disabled ' : '' }}>
                                         VÍCTIMA
                                     </button>
                                     <div class="dropdown-menu">
-                                        {{-- @php
-                                            $denunciadoVacio =  ? true : false;
-                                        @endphp --}}
                                         @if (empty($denuncia->victima))
                                             {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.victima.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
                                                 {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
