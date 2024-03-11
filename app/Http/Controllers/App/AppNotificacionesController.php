@@ -134,9 +134,34 @@ class AppNotificacionesController extends Controller
             $str .= $id . ', ';
         }
         $str = substr($str, 0, -2);
-        $query = "SELECT id, nombre, usuario as cuit from iprodha.app_usuario
+        $query = "SELECT id as id_usuario, nombre, usuario as cuit from iprodha.app_usuario
         where id in ($str)";
         $usuarios = DB::select( DB::raw($query));
         return response()->json($usuarios);
+    }
+
+    public function enviarMsj(Request $request){
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $res = 1;
+        foreach($request->ids as $id){
+            $response = Http::post('https://app.nativenotify.com/api/indie/notification', [
+                'subID' => '\'' . $id . '\'',
+                'appId' => 13251,
+                'appToken' => 'oKxfawQe7CdbWGkFd9zDrC',
+                'title' => $request->cabecera,
+                'message' => $request->cuerpo
+            ]);
+            if($response){                
+                $user = App_usuario::where('id', '=', $id)->first();
+                $noti = new App_not_x_usuario;
+                $noti->usuario = $user->usuario;
+                $noti->fecha = date("Y-m-d h:i:s");
+                $noti->id_tipo = $user->tipo;
+                $noti->encabezado = $user->encabezado;
+                $noti->mensaje = $user->mensaje;
+                $res *= $noti->save();
+            }
+        }
+        return response()->json($res);
     }
 }

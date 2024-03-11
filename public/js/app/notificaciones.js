@@ -388,7 +388,8 @@ function crearGrupos(){
 function abrirUsuarios(){  
     document.getElementById('esconderInputGrupo').setAttribute('hidden','hidden');
     document.getElementById('Previsualizar_Mensaje').setAttribute('hidden','hidden');    
-    document.getElementById('btnElegirUsuarios').setAttribute('disabled','disabled')
+    document.getElementById('btnElegirUsuarios').setAttribute('disabled','disabled');
+    chequeados= []
     getUsuarios();
 }
 
@@ -547,6 +548,60 @@ function usuariosElegidos(){
         error: function(response){
             console.log('ERROR')
             console.log(response);
+        }   
+    });
+}
+
+
+function checkMsj(){
+    if(document.getElementById('cabecera').value.length>0 && document.getElementById('cuerpo').value.length > 0){
+        document.getElementById('btnEnviarMsj').removeAttribute('disabled')
+    }
+    else{
+        document.getElementById('btnEnviarMsj').setAttribute('disabled', 'disabled')
+    }
+}
+
+function enviarMsj(){    
+    let ids = []
+    let allTDs = document.getElementById('table_usuarios_elegidos').getElementsByTagName('tr');
+    for (let i = 1; i < allTDs.length; i++) {
+        ids.push(parseInt(allTDs[i].getElementsByTagName('td')[0].innerHTML))
+    }
+
+    let cuerpo = document.getElementById('cuerpo').value;
+    let cabecera = document.getElementById('cabecera').value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: '/notificaciones/enviarMsj',
+        type: 'POST',
+        cache: false,
+        data: ({
+            _token: $('#signup-token').val(),
+            ids,
+            cuerpo,
+            cabecera
+
+        }),
+        dataType: 'json',
+        success: function(res) 
+        {             
+            if(res == 1){
+                popup(1)
+            }
+            else{
+                popup(2)
+            }
+        },
+        error: function(response){
+            console.log('ERROR')
+            console.log(response);
+            popup(3)
         }   
     });
 }

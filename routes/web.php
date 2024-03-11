@@ -259,6 +259,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN']], function () 
     Route::get('notificaciones/boletas/adeuda', [AppNotificacionesController::class, 'adeuda'])->name('notificaciones.boletasAdeuda');
     Route::post('notificaciones/boletas/enviar', [AppNotificacionesController::class, 'enviarBoletas'])->name('notificaciones.boletasEnviar');
     Route::post('notificaciones/boletas/enviarAdeuda', [AppNotificacionesController::class, 'enviarAdeuda'])->name('notificaciones.enviarAdeuda');
+    Route::post('notificaciones/enviarMsj', [AppNotificacionesController::class, 'enviarMsj'])->name('notificaciones.enviarMsj');
 });
 
 Route::group([], function () {
