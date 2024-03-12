@@ -59,7 +59,8 @@ class DenunciadoController extends Controller
             $nvaDenunciado->mail = strlen($request->input('email')) == 0 ? NULL : strtoupper($request->input('email'));
             $nvaDenunciado->telefono = strlen($request->input('tel')) == 0 ? NULL : strtoupper($request->input('tel'));
             $nvaDenunciado->vinculo_inst = $request->input('tipo-vinculo');
-            $nvaDenunciado->vinculo_vict = $request->input('vinculo-victima');
+            $nvaDenunciado->vinculo_vict = strlen($request->input('vinculo-victima')) == 0 ? NULL : strtoupper($request->input('vinculo-victima'));
+            //$nvaDenunciado->vinculo_vict = $request->input('vinculo-victima');
 
         try {
             $nvaDenunciado->save();
