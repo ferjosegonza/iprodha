@@ -20,30 +20,30 @@
                             {{-- 
                                 - todos los campos de la BD:
                                     'ID_DENUNCIA',
-                                'NRO_DOC',
+                                    'NRO_DOC',
                                     'APELLIDO',
                                     'NOMBRE',
-                                'TIPO_DOC',
-                                'ID_SEXO',
-                                'FECHA_NAC',
-                                'DOMICILIO',
-                                'MAIL',
-                                'TELEFONO',
-                                'VINCULO_INST',
+                                    'TIPO_DOC',
+                                    'ID_SEXO',
+                                    'FECHA_NAC',
+                                    'DOMICILIO',
+                                    'MAIL',
+                                    'TELEFONO',
+                                    'VINCULO_INST',
                                 'VINCULO_VICT'
 
                                 - todos los campos del form guardar:
                                     id_denuncia
                                     apellido_denunciado
                                     nombres_denunciado
-                                tipo-doc
-                                num-doc
-                                tipo-sex
-                                fecha-nac
-                                direccion
-                                email
-                                tel
-                                tipo-vinculo
+                                    tipo-doc
+                                    num-doc
+                                    tipo-sex
+                                    fecha-nac
+                                    direccion
+                                    email
+                                    tel
+                                    tipo-vinculo
 
                                 DATOS A CARGAR:
                                     - poner un checkbox con una preg tipo "¿El Denunciante y la Víctima son la misma persona?" y si es, cargar tb en la tabla victima o ver con sergio cómo hacemos
@@ -135,6 +135,10 @@
                                         <option value="{{ $vinculo->id_vinculo }}">{{ $vinculo->descripcion }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('vinculo-victima', 'Descargo: Vínculo del denunciado con la víctima:', ['class' => 'form-label']) !!}
+                                {!! Form::textarea('vinculo-victima', null) !!}
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Guardar</button>
