@@ -44,22 +44,7 @@
                                     email
                                     tel
                                     tipo-vinculo
-
-                                DATOS A CARGAR:
-                                    - poner un checkbox con una preg tipo "¿El Denunciante y la Víctima son la misma persona?" y si es, cargar tb en la tabla victima o ver con sergio cómo hacemos
-                                    - ape y nom
-                                    - tipo y nº doc
-                                    - sexo
-                                    - fecha nac (en el pdf hay un campo "edad" pero lo puedo deducir de la fecha nac así q no es necesario)
-                                    - domicilio
-                                    - telefono
-                                    - e-mail (no está pero como este dato se le pide a la víctima y puede q sean la misma persona más vale tenerlo tb)
-                                - vínculo con el Instituto (marcar lo q corresponda)
-                                    -- Autoridad
-                                    -- Personal Administrativo
-                                    -- Público externo
-                                    -- Personal de servicios tercerizados
-                                    -- Otro: (campo para describir)
+                                    vinculo-victima
                                 --}}
                             <div class="form-group">
                                 {!! Form::label('apellido_denunciado', 'Apellido y Nombres:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
@@ -67,11 +52,13 @@
                                 {!! Form::text('apellido_denunciado', null, [
                                     'id' => 'apellido_denunciado',
                                     'class' => 'form-control',
+                                    'maxlength' => '50',
                                     'style' => 'text-transform:uppercase;max-width: 300px;',
                                     'placeholder' => 'Ingrese apellido']) !!}
                                 {!! Form::text('nombres_denunciado', null, [
                                     'id' => 'nombres_denunciado',
                                     'class' => 'form-control',
+                                    'maxlength' => '50',
                                     'style' => 'text-transform:uppercase;max-width: 300px;margin-left: 10px',
                                     'placeholder' => 'Ingrese nombres']) !!}
                                 </div>
@@ -111,16 +98,17 @@
                                 {!! Form::text('direccion', null, [
                                     'id' => 'direccion',
                                     'class' => 'form-control',
-                                    'style' => 'text-transform:uppercase;',
+                                    'maxlength' => '50',
+                                    'style' => 'text-transform:uppercase;max-width: 700px; width: 100%;',
                                     'placeholder' => 'Ingrese dirección']) !!}
                             </div>
                             <div class="form-group">
                                 {!! Form::label('email', 'E-mail:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
-                                {!! Form::email('email', null, ['class' => 'form-control', 'style' => 'max-width: 300px']) !!}
+                                {!! Form::email('email', null, ['class' => 'form-control', 'style' => 'max-width: 300px;', 'maxlength' => '50',]) !!}
                             </div>
                             <div class="form-group">
                                 {!! Form::label('tel', 'Teléfono:', ['class' => 'form-label', 'style' => 'margin-bottom:0px;']) !!}
-                                {!! Form::tel('tel', null, ['class' => 'form-control', 'style'=> 'max-width: 300px;']) !!}
+                                {!! Form::tel('tel', null, ['class' => 'form-control', 'style'=> 'max-width: 300px;', 'maxlength' => '20',]) !!}
                             </div>
                             <div class="form-group">
                                 {!! Form::label('tipo-vinculo', 'Vínculo con el Instituto:', ['class' => 'form-label']) !!}
@@ -137,8 +125,13 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                {!! Form::label('vinculo-victima', 'Descargo: Vínculo del denunciado con la víctima:', ['class' => 'form-label']) !!}
-                                {!! Form::textarea('vinculo-victima', null) !!}
+                                {!! Form::label('vinculo-victima', 'Vínculo del denunciado con la víctima (máximo 100 caracteres):', ['class' => 'form-label']) !!}
+                                {!! Form::textarea('vinculo-victima', null, [
+                                    'class' => 'form-control',
+                                    'style'=> 'max-width: 700px; width: 100%; height: 80px; resize: none',
+                                    'maxlength' => '100',
+                                    'onkeyup' => 'javascript:this.value=this.value.toUpperCase(), contadorchar("vinculo_caracteres", "vinculo-victima", 100)']) !!}
+                                <label for="vinculo-victima" id="vinculo_caracteres">Quedan 100 caracteres.</label>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Guardar</button>

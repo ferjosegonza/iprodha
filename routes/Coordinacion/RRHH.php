@@ -9,6 +9,8 @@ use App\Http\Controllers\Coordinacion\RRHH\AgenteController;
 //--Fer Jose
 use App\Http\Controllers\Generales\ProtocoloController;
 use App\Http\Controllers\Generales\DenuncianteController;
+use App\Http\Controllers\Generales\DenunciadoController;
+use App\Http\Controllers\Generales\VictimaController;
 //--
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|RRHH']], function () {
@@ -40,7 +42,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|RRHH']], functio
     Route::delete('denuncias/borrar/denunciante/{id_denuncia}', [DenuncianteController::class, 'destroy'])->name('rrhh.denuncias.denunciante.borrar');
 
     Route::get('rrhh/denuncias/denunciado/ver/{id}', [DenunciadoController::class, 'verDenunciado'])->name('rrhh.denuncias.denunciado.ver');
-    Route::any('rrhh/denuncias/denunciado/crear', [DenunciadoController::class, 'crearDenunciado'])->name('rrhh.denuncias.denunciado.crear');
+    Route::any('rrhh/denuncias/denunciado/crear/{id}', [DenunciadoController::class, 'crearDenunciado'])->name('rrhh.denuncias.denunciado.crear');
     Route::any('rrhh/denuncias/denunciado/guardar', [DenunciadoController::class, 'guardarDenunciado'])->name('rrhh.denuncias.denunciado.guardar');
     Route::get('rrhh/denuncias/denunciado/modificar/{id}', [DenunciadoController::class, 'abrirModificarDenunciado'])->name('rrhh.denuncias.denunciado.modificar');
     Route::patch('rrhh/denuncias/denunciado/update/{id}', [DenunciadoController::class, 'guardarDenunciadoModificada'])->name('rrhh.denuncias.denunciado.update');

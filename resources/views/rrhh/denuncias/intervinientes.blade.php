@@ -145,7 +145,10 @@
                                             $denunciadoVacio = empty($denuncia->denunciado) ? true : false;
                                         @endphp
                                         @if ($denunciadoVacio)
-                                            {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.denunciado.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
+                                            {!! Form::open([
+                                                'method' => 'GET',
+                                                'route' => ['rrhh.denuncias.denunciado.crear', $denuncia->id_denuncia],
+                                                'class' => 'd-flex justify-content-evenly']) !!}
                                                 {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else

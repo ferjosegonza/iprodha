@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\rrhh\Denuncias;
 // use App\Models\rrhh\Denunciante;
 use App\Models\rrhh\Denunciado;
-// use App\Models\rrhh\Victima;
+use App\Models\rrhh\Victima;
 use App\Models\rrhh\Sexo;
 use App\Models\rrhh\Tipdoc;
 use App\Models\rrhh\Vinculo;
