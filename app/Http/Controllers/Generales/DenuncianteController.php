@@ -129,9 +129,9 @@ class DenuncianteController extends Controller
             //dd($denunciante);
             if ($denunciante->es_victima){
                 $victima->delete();
-                $mensaje = 'Los registros de Denunciante y Víctima se borraron con éxito.';
+                $mensaje = 'Los datos del Denunciante y Víctima han sido borrados.';
             } else {
-                $mensaje = 'El denunciante se borró con éxito.';
+                $mensaje = 'Los datos del Denunciante han sido borrados.';
             }
 
             $denunciante->delete();

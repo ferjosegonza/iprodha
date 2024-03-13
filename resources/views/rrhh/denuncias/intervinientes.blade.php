@@ -186,7 +186,7 @@
                                         VÍCTIMA
                                     </button>
                                     <div class="dropdown-menu">
-                                        @if (empty($denuncia->victima))
+                                        @if ($victima == null)
                                             {!! Form::open([
                                                 'method' => 'GET',
                                                 'route' => ['rrhh.denuncias.victima.crear', $denuncia->id_denuncia],

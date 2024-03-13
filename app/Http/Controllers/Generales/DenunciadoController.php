@@ -113,7 +113,7 @@ class DenunciadoController extends Controller
             //dd($denunciado);
             $denunciado->delete();
 
-            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', 'El denunciado se borró con éxito.');
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', 'Los datos del Denunciado han sido borrados.');
         } catch (\Exception $e){
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }
