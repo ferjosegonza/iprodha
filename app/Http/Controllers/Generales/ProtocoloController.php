@@ -78,6 +78,7 @@ class ProtocoloController extends Controller
         $denuncia = Denuncias::find($id);
         $denunciante = Denunciante::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
         $denunciado = Denunciado::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
+        //dd($denunciado);
         $victima = Victima::with(['sexo', 'vinculo', 'tipoDni'])->find($id);
 
         return view('rrhh.denuncias.intervinientes', compact('denuncia', 'denunciante', 'denunciado', 'victima'));

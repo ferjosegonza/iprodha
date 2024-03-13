@@ -142,9 +142,10 @@
                                     </button>
                                     <div class="dropdown-menu">
                                         @php
-                                            $denunciadoVacio = empty($denuncia->denunciado) ? true : false;
+                                            //$denunciadoVacio = empty($denuncia->denunciado) ? true : false;
                                         @endphp
-                                        @if ($denunciadoVacio)
+                                        {{-- @if ($denunciadoVacio) --}}
+                                        @if ($denunciado == null)
                                             {!! Form::open([
                                                 'method' => 'GET',
                                                 'route' => ['rrhh.denuncias.denunciado.crear', $denuncia->id_denuncia],
