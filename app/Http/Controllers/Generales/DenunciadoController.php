@@ -64,7 +64,7 @@ class DenunciadoController extends Controller
 
         try {
             $nvaDenunciado->save();
-            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', 'Se han agregado los datos del Denunciado');
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', 'Se ha agregado los datos de la Víctima');
         } catch (\Exception $e){
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }

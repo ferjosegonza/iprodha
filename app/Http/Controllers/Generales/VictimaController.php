@@ -14,7 +14,7 @@ use App\Models\rrhh\Vinculo;
 // use DateTime;
 //use \PDF;
 
-class DenunciadoController extends Controller
+class VictimaController extends Controller
 {
     function __construct()
     {
@@ -36,50 +36,34 @@ class DenunciadoController extends Controller
     //     return view('rrhh.denuncias.intervinientes', compact('denuncia'));
     // }
 
-    public function crearDenunciado(Request $request, $id){
+    public function crearVictima(Request $request, $id){
         $denuncia = Denuncias::find($id);
         $todosLosTipdoc = Tipdoc::all();
         $todosLosSexo = Sexo::get();
         $todosLosVinculos = Vinculo::get();
-        return view('rrhh.denuncias.denunciado.crear', compact('denuncia', 'todosLosTipdoc', 'todosLosSexo', 'todosLosVinculos'));
+        return view('rrhh.denuncias.victima.crear', compact('denuncia', 'todosLosTipdoc', 'todosLosSexo', 'todosLosVinculos'));
     }
 
-    public function guardarDenunciante(Request $request){
-        $nvaDenunciante = new Denunciante;
+    public function guardarVictima(Request $request){
+        //$nvaDenunciante = new Denunciante;
+        $nvaVictima = new Victima;
 
         $id_denuncia = $request->input('id_denuncia');
-        $nvaDenunciante->id_denuncia = $id_denuncia;
-        $nvaDenunciante->nro_doc = $request->input('num-doc');
-        $nvaDenunciante->apellido = strlen($request->input('apellido_denunciante')) == 0 ? NULL : strtoupper($request->input('apellido_denunciante'));
-        $nvaDenunciante->nombre = strlen($request->input('nombres_denunciante')) == 0 ? NULL : strtoupper($request->input('nombres_denunciante'));
-        $nvaDenunciante->tipo_doc = $request->input('tipo-doc');
-        $nvaDenunciante->id_sexo = strlen($request->input('tipo-sex')) == 0 ? NULL : $request->input('tipo-sex');
-        $nvaDenunciante->fecha_nac = $request->input('fecha-nac');
-        $nvaDenunciante->domicilio = strlen($request->input('direccion')) == 0 ? NULL : strtoupper($request->input('direccion'));
-        $nvaDenunciante->mail = strlen($request->input('email')) == 0 ? NULL : strtoupper($request->input('email'));
-        $nvaDenunciante->telefono = strlen($request->input('tel')) == 0 ? NULL : strtoupper($request->input('tel'));
-        $nvaDenunciante->vinculo_inst = $request->input('tipo-vinculo');
-
-        if (isset($_POST['denunciante_victima'])){
-            $nvaVictima = new Victima;
-
-            // antes de crear el atributo 'es_victima' en el objeto '$nvaDenunciante',
-            // copio todos los atrib creados hasta ahora de '$nvaDenunciante' a $nvaVictima y guardo
-            $nvaVictima->setRawAttributes($nvaDenunciante->getAttributes());
-            $nvaVictima->save();
-            $mensaje = 'Se han agregado los datos de Denunciante y Victima';
-
-            // ahora recién creo el otro atributo q sólo está en Denunciante pero no en Victima
-            $nvaDenunciante->es_victima = 1;
-        } else {
-            $nvaDenunciante->es_victima = 0;
-            $mensaje = 'Se han agregado los datos de Denunciante';
-        }
-
+        $nvaVictima->id_denuncia = $id_denuncia;
+        $nvaVictima->nro_doc = $request->input('num-doc');
+        $nvaVictima->apellido = strlen($request->input('apellido_victima')) == 0 ? NULL : strtoupper($request->input('apellido_victima'));
+        $nvaVictima->nombre = strlen($request->input('nombres_victima')) == 0 ? NULL : strtoupper($request->input('nombres_victima'));
+        $nvaVictima->tipo_doc = $request->input('tipo-doc');
+        $nvaVictima->id_sexo = strlen($request->input('tipo-sex')) == 0 ? NULL : $request->input('tipo-sex');
+        $nvaVictima->fecha_nac = $request->input('fecha-nac');
+        $nvaVictima->domicilio = strlen($request->input('direccion')) == 0 ? NULL : strtoupper($request->input('direccion'));
+        $nvaVictima->mail = strlen($request->input('email')) == 0 ? NULL : strtoupper($request->input('email'));
+        $nvaVictima->telefono = strlen($request->input('tel')) == 0 ? NULL : strtoupper($request->input('tel'));
+        $nvaVictima->vinculo_inst = $request->input('tipo-vinculo');
 
         try {
-            $nvaDenunciante->save();
-            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', $mensaje);
+            $nvaVictima->save();
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', 'Se ha agregado los datos de la Víctima');
         } catch (\Exception $e){
             return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }

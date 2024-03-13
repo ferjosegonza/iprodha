@@ -6,7 +6,7 @@
     </head>
     <section class="section">
         <div class="section-header">
-            <h3 class="page__heading">Crear Denunciante</h3>
+            <h3 class="page__heading">Registrar Denunciante</h3>
             {{-- {{$denuncia}} --}}
         </div>
         @include('layouts.modal.mensajes', ['modo' => 'Agregar'])

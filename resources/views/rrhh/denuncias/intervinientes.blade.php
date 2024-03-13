@@ -187,16 +187,19 @@
                                     </button>
                                     <div class="dropdown-menu">
                                         @if (empty($denuncia->victima))
-                                            {!! Form::open(['method' => 'GET', 'route' => ['rrhh.denuncias.victima.crear'], 'class' => 'd-flex justify-content-evenly']) !!}
+                                            {!! Form::open([
+                                                'method' => 'GET',
+                                                'route' => ['rrhh.denuncias.victima.crear', $denuncia->id_denuncia],
+                                                'class' => 'd-flex justify-content-evenly']) !!}
                                                 {!! Form::submit('Agregar Nuevo', ['class' => 'formulario dropdown-item btn btn-success my-1']) !!}
                                             {!! Form::close() !!}
                                         @else
-                                            {!! Form::open([
+                                            {{-- {!! Form::open([
                                                 'method' => 'GET',
                                                 'route' => ['rrhh.denuncias.victima.ver', $denuncia->id_denuncia],
                                                 'style' => 'display:inline']) !!}
                                                 {!! Form::submit('Ver', ['class' => 'formulario dropdown-item btn btn-info']) !!}
-                                            {!! Form::close() !!}
+                                            {!! Form::close() !!} --}}
                                 
                                             {!! Form::open([
                                                 'method' => 'GET',
