@@ -138,15 +138,47 @@ class ProtocoloController extends Controller
 
     public function destroy($id_denuncia){
         try {
-            $denuncia = Denuncias::where('id_denuncia', $id_denuncia);
+            $denuncia = Denuncias::where('id_denuncia', $id_denuncia)->first();
+            $denunciante = Denunciante::where('id_denuncia', $id_denuncia)->first();
+            $denunciado = Denunciado::where('id_denuncia', $id_denuncia)->first();
+            $victima = Victima::where('id_denuncia', $id_denuncia)->first();
 
             if (!$denuncia){
                 return redirect()->route('rrhh.denuncias.listar')->with('mensaje','No se encontró esa denuncia.');
             }
 
+            $mensaje = 'Se ha borrado los datos de la Denuncia';
+            $relacionados= [];
+
+            /*if($denunciante == null && $denunciado== null && $victima== null){
+                //dd("entro al if");
+                $relacionados[0] .= '.';
+            } else {
+                //dd("no entro al if");
+                $relacionados[0] .= ' y los datos relacionados de:';*/
+                if ($denunciante) {
+                    $denunciante->delete();
+                    $relacionados[] = " Denunciante";
+                }
+                if ($denunciado) {
+                    $denunciado->delete();
+                    $relacionados[] = " Denunciado/a";
+                }
+                if ($victima) {
+                    $victima->delete();
+                    $relacionados[] = " Víctima";
+                }
+
+                if(!empty($relacionados)){
+                    $mensaje .= ' y los datos relacionados de:'.implode(',', $relacionados);
+                } else {
+                    $mensaje .= '.';
+                }
+            //}
+
             $denuncia->delete();
 
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje','La denuncia se borró con éxito.');
+            return redirect()->route('rrhh.denuncias.listar')->with('mensaje',$mensaje);
         } catch (\Exception $e){
             return redirect()->route('rrhh.denuncias.listar')->with('error', $e->getMessage());
         }
