@@ -70,12 +70,15 @@ class DenunciadoController extends Controller
         }
     }
 
-    public function abrirModificarDenuncia(Request $request, $id){
-        $denuncia = Denuncias::find($id);
-        return view('rrhh.denuncias.modificar', compact('denuncia'));
+    public function abrirModificarDenunciado(Request $request, $id){
+        $denunciado = Denunciado::find($id);
+        $todosLosTipdoc = Tipdoc::all();
+        $todosLosSexo = Sexo::get();
+        $todosLosVinculos = Vinculo::get();
+        return view('rrhh.denuncias.denunciado.modificar', compact('denunciado', 'todosLosTipdoc', 'todosLosSexo', 'todosLosVinculos'));
     }
 
-    public function guardarDenunciaModificada(Request $request, $id) {
+    public function guardarDenunciadoModificado(Request $request, $id) {
         //dd($id);
         //dd($request->all());
 
