@@ -70,7 +70,7 @@
                                 <div class="form-group">
                                     <h5>Datos de la Víctima</h5>
                                     @if ($victima)
-                                        @if ($denunciante['es_victima'])
+                                        @if (optional($denunciante)['es_victima'])
                                             <div><b><i>La víctima y el denunciante son la misma persona.</i></b></div>
                                         @endif
                                         <div>Apellido y Nombre: <b>{{ $victima->apellido ?? 'No hay apellido cargado' }} {{ $victima['nombre'] ?? 'No hay nombre cargado' }}</b></div>
