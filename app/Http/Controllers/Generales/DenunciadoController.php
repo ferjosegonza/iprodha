@@ -83,22 +83,38 @@ class DenunciadoController extends Controller
         //dd($request->all());
 
         // Obtener la información actual de la denuncia
-        $denuncia = Denuncias::find($id);
+        $denunciado = Denunciado::find($id);
 
-        // Verificar si se encontró la denuncia
-        if (!$denuncia) {
-            return redirect()->route('rrhh.denuncias.listar')->with('error', 'Denuncia no encontrada.');
+        // Verificar si se encontró el denunciado
+        if (!$denunciado) {
+            return redirect()->route('rrhh.denuncias.listar')->with('error', 'No se ha encontrado datos de Denunciado con ese ID.');
         }
 
         // Actualizar la información con los datos del formulario
-        $denuncia->fecha = $request->input('fecha') ?? null;
-        $denuncia->extracto = $request->input('denuncia_extracto');
-        $denuncia->descripcion = $request->input('denuncia_descripcion');
+        $denunciado->id_denuncia = $id;
+        $denunciado->nro_doc = $request->input('num-doc');
+        $denunciado->apellido = strlen($request->input('apellido_denunciado')) == 0 ? NULL : strtoupper($request->input('apellido_denunciado'));
+        $denunciado->nombre = strlen($request->input('nombres_denunciado')) == 0 ? NULL : strtoupper($request->input('nombres_denunciado'));
+        $denunciado->tipo_doc = $request->input('tipo-doc');
+        $denunciado->id_sexo = strlen($request->input('tipo-sex')) == 0 ? NULL : $request->input('tipo-sex');
+        $denunciado->fecha_nac = $request->input('fecha-nac');
+        $denunciado->domicilio = strlen($request->input('direccion')) == 0 ? NULL : strtoupper($request->input('direccion'));
+        $denunciado->mail = strlen($request->input('email')) == 0 ? NULL : strtoupper($request->input('email'));
+        $denunciado->telefono = strlen($request->input('tel')) == 0 ? NULL : strtoupper($request->input('tel'));
+        $denunciado->vinculo_inst = $request->input('tipo-vinculo');
+        $denunciado->vinculo_vict = strlen($request->input('vinculo-victima')) == 0 ? NULL : strtoupper($request->input('vinculo-victima'));
 
-        if ($denuncia->save()) {
+        if ($denunciado->save()) {
             return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
         } else {
             return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'No se ha podido modificar la Denuncia.');
+        }
+
+        try {
+            $denunciado->save();
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', 'Se ha agregado los datos de la Víctima');
+        } catch (\Exception $e){
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }
     }
 

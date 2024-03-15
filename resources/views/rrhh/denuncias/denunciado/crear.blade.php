@@ -30,7 +30,7 @@
                                     'MAIL',
                                     'TELEFONO',
                                     'VINCULO_INST',
-                                'VINCULO_VICT'
+                                    'VINCULO_VICT'
 
                                 - todos los campos del form guardar:
                                     id_denuncia
