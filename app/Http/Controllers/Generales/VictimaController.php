@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Generales;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\rrhh\Denuncias;
-// use App\Models\rrhh\Denunciante;
+use App\Models\rrhh\Denunciante;
 use App\Models\rrhh\Denunciado;
 use App\Models\rrhh\Victima;
 use App\Models\rrhh\Sexo;
@@ -69,32 +69,47 @@ class VictimaController extends Controller
         }
     }
 
-    public function abrirModificarDenuncia(Request $request, $id){
-        $denuncia = Denuncias::find($id);
-        return view('rrhh.denuncias.modificar', compact('denuncia'));
+    public function abrirModificarVictima(Request $request, $id){
+        $victima = Victima::find($id);
+        $todosLosTipdoc = Tipdoc::all();
+        $todosLosSexo = Sexo::get();
+        $todosLosVinculos = Vinculo::get();
+        return view('rrhh.denuncias.victima.modificar', compact('victima', 'todosLosTipdoc', 'todosLosSexo', 'todosLosVinculos'));
     }
 
-    public function guardarDenunciaModificada(Request $request, $id) {
-        //dd($id);
+    public function guardarVictimaModificada(Request $request, $id) {
         //dd($request->all());
 
-        // Obtener la información actual de la denuncia
-        $denuncia = Denuncias::find($id);
+        $victima = Victima::find($id);
+        $denunciante = Denunciante::find($id);
 
-        // Verificar si se encontró la denuncia
-        if (!$denuncia) {
-            return redirect()->route('rrhh.denuncias.listar')->with('error', 'Denuncia no encontrada.');
+        // Verificar si se encontró la victima
+        if (!$victima) {
+            return redirect()->route('rrhh.denuncias.listar')->with('error', 'Víctima no encontrada.');
+        }
+
+        if ($denunciante->es_victima){
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('mensaje', 'La Víctima es también el Denunciante, se deben gestionar los datos a través de Denunciante.');
         }
 
         // Actualizar la información con los datos del formulario
-        $denuncia->fecha = $request->input('fecha') ?? null;
-        $denuncia->extracto = $request->input('denuncia_extracto');
-        $denuncia->descripcion = $request->input('denuncia_descripcion');
+        $victima->id_denuncia = $id;
+        $victima->nro_doc = $request->input('num-doc');
+        $victima->apellido = strlen($request->input('apellido_victima')) == 0 ? NULL : strtoupper($request->input('apellido_victima'));
+        $victima->nombre = strlen($request->input('nombres_victima')) == 0 ? NULL : strtoupper($request->input('nombres_victima'));
+        $victima->tipo_doc = $request->input('tipo-doc');
+        $victima->id_sexo = strlen($request->input('tipo-sex')) == 0 ? NULL : $request->input('tipo-sex');
+        $victima->fecha_nac = $request->input('fecha-nac');
+        $victima->domicilio = strlen($request->input('direccion')) == 0 ? NULL : strtoupper($request->input('direccion'));
+        $victima->mail = strlen($request->input('email')) == 0 ? NULL : strtoupper($request->input('email'));
+        $victima->telefono = strlen($request->input('tel')) == 0 ? NULL : strtoupper($request->input('tel'));
+        $victima->vinculo_inst = $request->input('tipo-vinculo');
 
-        if ($denuncia->save()) {
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
-        } else {
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'No se ha podido modificar la Denuncia.');
+        try {
+            $victima->save();
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('mensaje', 'Los datos de la Víctima se han modificado.');
+        } catch (\Exception $e){
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
         }
     }
 
