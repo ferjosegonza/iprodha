@@ -105,7 +105,7 @@ function mostrarTurnos(turnos){
     turnos.forEach(turno => {
         if(puestoActual == turno.puesto){
             if(band == 0){
-                head+='<th style="display:table-cell;"">'+turno.hora + ':' + turno.minuto +'</th>'
+                head+='<th style="display:table-cell;"">'+String(turno.hora).padStart(2, '0') + ':' + String(turno.minuto).padStart(2, '0') +'</th>'
             }            
         }
         else{
