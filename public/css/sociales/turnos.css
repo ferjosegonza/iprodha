@@ -1,0 +1,7 @@
+.btnCenter{
+    justify-content: center;
+    display: flex;
+}
+.btn{
+    margin: 5px;
+}
