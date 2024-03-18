@@ -104,17 +104,17 @@ class DenunciadoController extends Controller
         $denunciado->vinculo_inst = $request->input('tipo-vinculo');
         $denunciado->vinculo_vict = strlen($request->input('vinculo-victima')) == 0 ? NULL : strtoupper($request->input('vinculo-victima'));
 
-        if ($denunciado->save()) {
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
-        } else {
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'No se ha podido modificar la Denuncia.');
-        }
+        // if ($denunciado->save()) {
+        //     return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
+        // } else {
+        //     return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'No se ha podido modificar la Denuncia.');
+        // }
 
         try {
             $denunciado->save();
-            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', 'Se ha agregado los datos de la Víctima');
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('mensaje', 'Se han modificado los datos de la persona Denunciada.');
         } catch (\Exception $e){
-            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id])->with('error', $e->getMessage());
         }
     }
 
