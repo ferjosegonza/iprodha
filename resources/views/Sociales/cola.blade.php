@@ -51,7 +51,7 @@
                             </div>     
                              <div id="diaTracker" hidden>     
                                 <hr>                         
-                                <table id="turnos">
+                                <table id="turnos" style="width: 100%">
                                     <thead id="turnos_head">
                                     </thead>
                                     <tbody id="turnos_body">                                        
