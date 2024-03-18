@@ -1,0 +1,33 @@
+td{
+    align-content: center;
+    justify-content: center;
+}
+.dosPuntos{
+    margin: -5%; 
+    align-self: center;
+    font-size: large;
+}
+th, td{
+    text-align: center !important;
+}
+td{
+    border: 1px solid !important;
+    border-color: rgba(192, 192, 192, 0.301) !important;
+}
+.row div{
+    justify-content: center;
+}
+.form-check-input{
+    width: 30%;
+    height: 80%;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

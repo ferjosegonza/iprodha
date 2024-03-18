@@ -1,0 +1,22 @@
+.nofecha::-webkit-datetime-edit-text {
+    -webkit-appearance: none;
+    display: none;
+}
+.nofecha::-webkit-datetime-edit-month-field{
+    -webkit-appearance: none;
+    display: none;
+}
+.nofecha::-webkit-datetime-edit-day-field {
+    -webkit-appearance: none;
+    display: none;
+}
+.nofecha::-webkit-datetime-edit-year-field {
+    -webkit-appearance: none;
+    display: none;
+}
+th{
+    text-align: center !important;
+}
+td{
+    text-align: center !important;
+}

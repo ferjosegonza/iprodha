@@ -83,6 +83,9 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                     ->namespace($this->namespace)
                     ->group(base_path('routes/Coordinacion/Notarial.php'));
+            Route::middleware('web')
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/Sociales/Turnos.php'));
         });
     }
 
