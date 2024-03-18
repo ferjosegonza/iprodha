@@ -19,7 +19,7 @@
                         <div class="row">
                             {{-- 
                                 - todos los campos de la BD:
-                                ID_DENUNCIA
+                                    ID_DENUNCIA
                                     NRO_DOC
                                     APELLIDO
                                     NOMBRE
@@ -29,7 +29,7 @@
                                     DOMICILIO
                                     MAIL
                                     TELEFONO
-                                VINCULO_INST
+                                    VINCULO_INST
                                     ES_VICTIMA
 
                                     - todos los campos del form guardar:

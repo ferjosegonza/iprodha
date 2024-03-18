@@ -87,32 +87,69 @@ class DenuncianteController extends Controller
         }
     }
 
-    public function abrirModificarDenuncia(Request $request, $id){
-        $denuncia = Denuncias::find($id);
-        return view('rrhh.denuncias.modificar', compact('denuncia'));
+    public function abrirModificarDenunciante(Request $request, $id){
+        $denunciante = Denunciante::find($id);
+        $todosLosTipdoc = Tipdoc::all();
+        $todosLosSexo = Sexo::get();
+        $todosLosVinculos = Vinculo::get();
+        return view('rrhh.denuncias.denunciante.modificar', compact('denunciante', 'todosLosTipdoc', 'todosLosSexo', 'todosLosVinculos'));
     }
 
-    public function guardarDenunciaModificada(Request $request, $id) {
+    public function guardarDenuncianteModificado(Request $request, $id) {
         //dd($id);
         //dd($request->all());
 
         // Obtener la información actual de la denuncia
-        $denuncia = Denuncias::find($id);
+        $denuncianteModif = Denunciante::find($id);
 
         // Verificar si se encontró la denuncia
-        if (!$denuncia) {
-            return redirect()->route('rrhh.denuncias.listar')->with('error', 'Denuncia no encontrada.');
+        if (!$denuncianteModif) {
+            return redirect()->route('rrhh.denuncias.listar')->with('error', 'Denunciante no encontrada.');
         }
 
-        // Actualizar la información con los datos del formulario
-        $denuncia->fecha = $request->input('fecha') ?? null;
-        $denuncia->extracto = $request->input('denuncia_extracto');
-        $denuncia->descripcion = $request->input('denuncia_descripcion');
+        $id_denuncia = $request->input('id_denuncia');
+        $denuncianteModif->id_denuncia = $id_denuncia;
+        $denuncianteModif->nro_doc = $request->input('num-doc');
+        $denuncianteModif->apellido = strlen($request->input('apellido_denunciante')) == 0 ? NULL : strtoupper($request->input('apellido_denunciante'));
+        $denuncianteModif->nombre = strlen($request->input('nombres_denunciante')) == 0 ? NULL : strtoupper($request->input('nombres_denunciante'));
+        $denuncianteModif->tipo_doc = $request->input('tipo-doc');
+        $denuncianteModif->id_sexo = strlen($request->input('tipo-sex')) == 0 ? NULL : $request->input('tipo-sex');
+        $denuncianteModif->fecha_nac = $request->input('fecha-nac');
+        $denuncianteModif->domicilio = strlen($request->input('direccion')) == 0 ? NULL : strtoupper($request->input('direccion'));
+        $denuncianteModif->mail = strlen($request->input('email')) == 0 ? NULL : strtoupper($request->input('email'));
+        $denuncianteModif->telefono = strlen($request->input('tel')) == 0 ? NULL : strtoupper($request->input('tel'));
+        $denuncianteModif->vinculo_inst = $request->input('tipo-vinculo');
 
-        if ($denuncia->save()) {
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'Denuncia modificada exitosamente.');
+        // si es victima tengo q cargar tb en esa tabla
+        if (isset($_POST['denunciante_victima'])){
+
+            //ver si ya existía y se está modificando una víctima existente
+            $victimaModif = Victima::find($id_denuncia);
+
+            // si es null, ahora se va a registrar como víctima
+            if(is_null($victimaModif)) {
+                $victimaModif = new Victima;
+            }
+
+            // antes de crear el atributo 'es_victima' en el objeto '$denuncianteModif',
+            // copio todos los atrib creados hasta ahora de '$denuncianteModif' a $nvaVictima y guardo
+            $victimaModif->setRawAttributes($denuncianteModif->getAttributes());
+            $victimaModif->save();
+            $mensaje = 'Se han modificado los datos de Denunciante y Victima';
+
+            // ahora recién creo el otro atributo q sólo está en Denunciante pero no en Victima
+            $denuncianteModif->es_victima = 1;
         } else {
-            return redirect()->route('rrhh.denuncias.listar')->with('mensaje', 'No se ha podido modificar la Denuncia.');
+            $denuncianteModif->es_victima = 0;
+            $mensaje = 'Se han modificado los datos del Denunciante';
+        }
+
+
+        try {
+            $denuncianteModif->save();
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('mensaje', $mensaje);
+        } catch (\Exception $e){
+            return redirect()->route('rrhh.denuncias.intervinientes', ['id' => $id_denuncia])->with('error', $e->getMessage());
         }
     }
 
