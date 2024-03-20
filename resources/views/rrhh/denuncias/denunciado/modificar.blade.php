@@ -27,13 +27,15 @@
                                         'class' => 'form-control',
                                         'maxlength' => '50',
                                         'style' => 'text-transform:uppercase;max-width: 300px;',
-                                        'placeholder' => 'Ingrese apellido']) !!}
+                                        'placeholder' => 'Ingrese apellido',
+                                        'required' => true]) !!}
                                     {!! Form::text('nombres_denunciado', $denunciado->nombre, [
                                         'id' => 'nombres_denunciado',
                                         'class' => 'form-control',
                                         'maxlength' => '50',
                                         'style' => 'text-transform:uppercase;max-width: 300px;margin-left: 10px',
-                                        'placeholder' => 'Ingrese nombres']) !!}
+                                        'placeholder' => 'Ingrese nombres',
+                                        'required' => true]) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">

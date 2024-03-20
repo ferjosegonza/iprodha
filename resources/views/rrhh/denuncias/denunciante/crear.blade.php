@@ -73,12 +73,14 @@
                                     'id' => 'apellido_denunciante',
                                     'class' => 'form-control',
                                     'style' => 'text-transform:uppercase;max-width: 300px;',
-                                    'placeholder' => 'Ingrese apellido']) !!}
+                                    'placeholder' => 'Ingrese apellido',
+                                    'required' => true]) !!}
                                 {!! Form::text('nombres_denunciante', null, [
                                     'id' => 'nombres_denunciante',
                                     'class' => 'form-control',
                                     'style' => 'text-transform:uppercase;max-width: 300px;margin-left: 10px',
-                                    'placeholder' => 'Ingrese nombres']) !!}
+                                    'placeholder' => 'Ingrese nombres',
+                                    'required' => true]) !!}
                                 </div>
                             </div>
                             <div class="form-group">
