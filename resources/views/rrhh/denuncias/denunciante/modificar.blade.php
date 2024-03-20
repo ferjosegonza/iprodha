@@ -3,6 +3,7 @@
 @section('content')
     <head>
         <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
+        <script src="{{ asset('js/rrhh/denuncias.js') }}"></script>
     </head>
     <section class="section">
         <div class="section-header">
@@ -16,7 +17,8 @@
                         <div><h4>Datos actuales:</h4></div>
                         {!! Form::model($denunciante,['method'=>'PATCH',
                                                 'class' => 'formulario',
-                                                'route'=>['rrhh.denuncias.denunciante.update', $denunciante->id_denuncia]
+                                                'route'=>['rrhh.denuncias.denunciante.update', $denunciante->id_denuncia],
+                                                'onsubmit' => 'return confirmarModificado(event, this.denunciante_victima.checked)'
                                                 ])!!}
                             <div class="row">
                                 <div class="form-group form-check-inline" style="align-items:baseline; display:flex;">

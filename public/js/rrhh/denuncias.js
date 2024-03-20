@@ -50,3 +50,22 @@ function confirmarBorrado(event, es_victima, id_denuncia) {
         return false;
     }
 }
+
+function confirmarModificado(event, esDenuncianteVictima) {
+    let mensaje = '';
+    //let es_victima = $('#denunciante_victima').checked;
+    if (esDenuncianteVictima){
+        mensaje = 'Tenga en cuenta que las modificaciones sobre Denunciante también impactarán sobre los datos de la Víctima. ¿Confirma?';
+    } else {
+        mensaje = '¿Confirma que desea modificar el registro?';
+    }
+
+    if (confirm(mensaje)) {
+        // Si el usuario confirma, permitimos el envío del formulario
+        return true;
+    } else {
+        // Si el usuario cancela, preventimos el envío del formulario
+        event.preventDefault();
+        return false;
+    }
+}
