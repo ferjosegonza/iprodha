@@ -45,7 +45,9 @@
                             <button class="btn btn-sm btn-success" style="width: 10%; margin-left:5%;" onclick="visualizarDia()">Visualizar día</button>
                         </div>     
                             <div id="diaTracker" hidden>     
-                            <hr>                         
+                            <hr>                 
+                            Imprimir reporte del día: 
+                            <br>         
                             <i onclick="exportPDF()" class="fa fa-file-pdf fa-2x" style="color: #ff0000;"></i>
                             <i onclick="excel('xlsx')" class="fa fa-file-excel fa-2x" style="color: #008a09;"></i>
                             <table id="turnos" style="width: 100%">
