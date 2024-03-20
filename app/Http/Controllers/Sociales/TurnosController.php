@@ -18,10 +18,13 @@ class TurnosController extends Controller
     }
 
     public function index(){
-        $colas = Tur_cola::select('Tur_cola.idcola as idcola', 'descripcion', 'fecha_desde', 'fecha_hasta', 'cant_puestos', 'duracion_turno', 'denominacion')
-                ->join('iprodha.tur_tramite t', 't.idtramite', '=', 'Tur_cola.idtramite')
-                ->orderBy('fecha_desde')
-                ->get();
+        $query = "SELECT t.idcola as idcola, t.descripcion, t.publicado, t.fecha_desde, t.fecha_hasta, t.cant_puestos, 
+        t.duracion_turno, tr.denominacion, sc1.turnos FROM iprodha.tur_cola t
+        inner join iprodha.tur_tramite tr on tr.idtramite = t.idtramite
+        inner join (select t.idcola as idcola, count(tu.idturno) as turnos FROM iprodha.tur_cola t
+        left join iprodha.tur_turno tu on tu.idcola = t.idcola
+        group by t.idcola) sc1 on sc1.idcola = t.idcola";
+        $colas = DB::select( DB::raw($query));
         return view('Sociales.turnos')
         ->with('colas', $colas);
     }
@@ -85,7 +88,28 @@ class TurnosController extends Controller
     }
 
     public function cola($id){
-        $cola = Tur_cola::where('idcola', '=', $id)->first();
+        $cola = Tur_cola::select('Tur_cola.idcola as idcola', 'descripcion', 'publicado', 'fecha_desde', 
+        'fecha_hasta', 'cant_puestos', 'duracion_turno', 'denominacion')
+        ->where('idcola', '=', $id)
+        ->join('iprodha.tur_tramite tr', 'tr.idtramite', '=', 'Tur_cola.idtramite')
+        ->first();
+        $horarios = Tur_horarioxcola::where('idcola', '=', $id)->orderBy('dia')->get();  
+        $turnos=null;        
+        $tr = Tur_turno::where('idcola', '=', $id)->get();
+        if( sizeof ($tr) >0){
+            $turnos = 1;
+        }            
+        return view('Sociales.cola')
+        ->with('cola', $cola)
+        ->with('turnos', $turnos);
+    }
+
+    public function turnos_cola($id){
+        $cola = Tur_cola::select('Tur_cola.idcola as idcola', 'descripcion', 'publicado', 'fecha_desde', 
+        'fecha_hasta', 'cant_puestos', 'duracion_turno', 'denominacion')
+        ->where('idcola', '=', $id)
+        ->join('iprodha.tur_tramite tr', 'tr.idtramite', '=', 'Tur_cola.idtramite')
+        ->first();
         $horarios = Tur_horarioxcola::where('idcola', '=', $id)->orderBy('dia')->get();  
         $arrayTablas = [NULL, NULL, NULL, NULL, NULL];
         for($i=0;$i<sizeof($horarios); $i++){
@@ -138,7 +162,7 @@ class TurnosController extends Controller
         if( sizeof ($tr) >0){
             $turnos = 1;
         }            
-        return view('Sociales.cola')
+        return view('Sociales.turnos_cola')
         ->with('cola', $cola)
         ->with('turnos', $turnos)
         ->with('str', $str);
@@ -162,24 +186,31 @@ class TurnosController extends Controller
             foreach ($horarios as $horario) {
                 // Check if the current day matches the specified day for turns
                 if (($dayOfWeek + 1) == $horario->dia) {
-                    // Calculate the number of turns that can fit within the specified time frame
-                    $horaInicio = $horario->hora_desde * 60 + $horario->minuto_desde;
-                    $horaFin = $horario->hora_hasta * 60 + $horario->minuto_hasta;
-                    $duracionTurno = $cola->duracion_turno;
-                    $numTurnos = floor(($horaFin - $horaInicio) / $duracionTurno);
-    
-                    // Iterate through each turn
-                    for ($i = 0; $i < $numTurnos; $i++) {
-                        $horaTurno = $horaInicio + ($duracionTurno * $i);
-                        $hora = floor($horaTurno / 60);
-                        $minuto = $horaTurno % 60;
-    
-                        // Generate the turn for each available position
-                        for ($j = 0; $j < $cola->cant_puestos; $j++) {
-                            $turno = new Tur_turno;
-                            $res *= $turno->crear($request->id, $fecha->format('Y-m-d'), $hora, $minuto, $j + 1, null); // Assuming dni can be null
+                    $format = $fecha->format('Y-m-d');
+                    $query = "SELECT * from iprodha.feriados where fecha = '$format'";
+                
+                    $feriado = DB::select( DB::raw($query));
+                    if(sizeof($feriado) == 0){
+                        // Calculate the number of turns that can fit within the specified time frame
+                        $horaInicio = $horario->hora_desde * 60 + $horario->minuto_desde;
+                        $horaFin = $horario->hora_hasta * 60 + $horario->minuto_hasta;
+                        $duracionTurno = $cola->duracion_turno;
+                        $numTurnos = floor(($horaFin - $horaInicio) / $duracionTurno);
+
+                        // Iterate through each turn
+                        for ($i = 0; $i < $numTurnos; $i++) {
+                            $horaTurno = $horaInicio + ($duracionTurno * $i);
+                            $hora = floor($horaTurno / 60);
+                            $minuto = $horaTurno % 60;
+
+                            // Generate the turn for each available position
+                            for ($j = 0; $j < $cola->cant_puestos; $j++) {
+                                $turno = new Tur_turno;
+                                $res *= $turno->crear($request->id, $fecha->format('Y-m-d'), $hora, $minuto, $j + 1, null); // Assuming dni can be null
+                            }
                         }
                     }
+                    
                 }
             }
     
@@ -194,7 +225,7 @@ class TurnosController extends Controller
         ->leftJoin('iprodha.in_titular t', 't.dnitit', '=', 'iprodha.tur_turno.dni')
         ->where('idcola', '=', $request->id)
         ->where('fecha', '=', $request->fecha)
-        ->orderBy('puesto')->orderBy('hora')->orderBy('minuto')->get();
+        ->orderBy('hora')->orderBy('minuto')->get();
         return response()->json($turnos);
     }
 
@@ -212,8 +243,28 @@ class TurnosController extends Controller
 
     public function borrarCola(Request $request){
         $cola=Tur_cola::find($request->id);
-        $horario=Tur_horarioxcola::where('idcola', '=', $cola->idcola)->delete();
-        $turnos = Tur_turno::where('idcola', '=', $cola->idcola)->delete();
-        return response()->json($cola->delete());
+        $query = "SELECT * from iprodha.tur_turno 
+        where dni is not null and idcola= $request->id";
+        $vacio = DB::select( DB::raw($query));
+        if(sizeof($vacio) == 0){
+            $horario=Tur_horarioxcola::where('idcola', '=', $cola->idcola)->delete();        
+            $turnos = Tur_turno::where('idcola', '=', $cola->idcola)->delete();
+            return response()->json($cola->delete());
+        }
+        else{
+            return response()->json(-1);
+        }
     }    
+
+    public function publicarCola(Request $request){
+        $cola=Tur_cola::find($request->id);
+        $cola->publicado = 1;
+        return $cola->save();
+    }
+    
+    public function borrarTurno(Request $request){
+        $turno = Tur_turno::find($request->id);
+        $turno->dni = '';
+        return response()->json($turno->save());
+    }
 }

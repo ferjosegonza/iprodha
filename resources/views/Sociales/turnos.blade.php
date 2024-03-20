@@ -43,7 +43,10 @@
                                 <td>{{$cola->fecha_hasta}}</td>
                                 <td>{{$cola->duracion_turno}} min.</td>
                                 <td>
-                                    <a href="cola/{{$cola->idcola}}" class="btn btn-outline-primary">Acceder a la cola</a>
+                                    <a href="cola/{{$cola->idcola}}" class="btn btn-outline-primary">Configurar cola</a>
+                                    @if($cola->turnos != 0)
+                                        <a href="turnos_cola/{{$cola->idcola}}" class="btn btn-outline-primary">Turnos</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
