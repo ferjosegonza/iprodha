@@ -10,6 +10,7 @@ use App\Http\Controllers\Sociales\TurnosController;
 
 Route::group(['middleware' => ['auth','role_or_permission:ADMIN|SOCIALES']], function () {
     Route::get('sociales/turnos', [TurnosController::class, 'index'])->name('turnos.index');
+    Route::get('sociales/turnos_cola/{parameter}', [TurnosController::class, 'turnos_cola'])->name('turnos.turnos_cola');
     Route::get('sociales/nueva_cola', [TurnosController::class, 'nueva_cola'])->name('turnos.nueva_cola');
     Route::get('sociales/cola/{parameter}', [TurnosController::class, 'cola'])->name('turnos.cola');
     Route::get('sociales/verificarUsuario', [TurnosController::class, 'verificarUsuario'])->name('turnos.verificarUsuario');
@@ -17,5 +18,7 @@ Route::group(['middleware' => ['auth','role_or_permission:ADMIN|SOCIALES']], fun
     Route::get('sociales/getTurnosByFecha', [TurnosController::class, 'getTurnosByFecha'])->name('turnos.getTurnosByFecha');
     Route::post('sociales/postCola', [TurnosController::class, 'postCola'])->name('turnos.postCola');
     Route::post('sociales/generarTurnos',[TurnosController::class, 'generarTurnos'])->name('turnos.generarTurnos');
+    Route::put('sociales/publicarCola',[TurnosController::class, 'publicarCola'])->name('turnos.publicarCola');
+    Route::put('sociales/borrarTurno',[TurnosController::class, 'borrarTurno'])->name('turnos.borrarTurno');
     Route::delete('sociales/borrarCola',[TurnosController::class, 'borrarCola'])->name('turnos.borrarCola');
 });

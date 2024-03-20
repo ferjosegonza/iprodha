@@ -4,16 +4,19 @@
     <head>
         <link rel="stylesheet" href="{{ asset('css/sociales/cola.css') }}">
         <script src="{{ asset('js/Sociales/cola.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+        <script src="https://unpkg.com/jspdf-autotable@3.5.22/dist/jspdf.plugin.autotable.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     </head>
     <section class="section">
-        <div class="section-header">
+        <div class="section-header">            
             <h3 class="page__heading">Generar Turnos</h3>
         </div>
         <div class="section-body">
             <div class="card">
                 <div class="card-head">
                     <input type="text" hidden value="{{$cola->idcola}}" id="id">
-                    <h5 style="margin: 1%">{{ $cola->descripcion }} - {{$cola->denominacion}}</h5>                
+                    <h5 style="margin: 1%">{{ $cola->descripcion }} - {{$cola->denominacion}}</h5>        
                     <hr>
                 </div>
                 <div class="card-body">       
@@ -30,16 +33,29 @@
                             <label for="puestos" class="form-label">Puestos:</label>              
                             <input id="puestos" type="text" disabled value="{{$cola->cant_puestos}}" class="form-control">                  
                         </div>
-                    </div>        
+                    </div>
+                    <br>                    
+                    <u> Días de la semana:</u>
+                    {{$str}}                    
                     <hr>
-                    @if ($cola->publicado == 0)
-                        <button class="btn btn-danger" onclick="borrarColaPopUp()">Borrar cola</button>
-                        @if($turnos != 1)
-                        <button class="btn btn-primary" onclick='generarTurnos()'>Generar turnos</button>
-                        @else
-                            <button class="btn btn-primary" onclick='publicarCola()'>Publicar cola</button>
-                        @endif
-                    @endif
+                    <div>                           
+                        <div id="calendarioTracker" class="row">
+                            <label for="datepicker">Seleccionar Fecha:</label>
+                            <input style="width: 60%; margin-left:1%" class="form-control nofecha" type="date" id="datepicker" min={{$cola->fecha_desde}} max={{$cola->fecha_hasta}} onchange="fecha()">
+                            <button class="btn btn-sm btn-success" style="width: 10%; margin-left:5%;" onclick="visualizarDia()">Visualizar día</button>
+                        </div>     
+                            <div id="diaTracker" hidden>     
+                            <hr>                         
+                            <i onclick="exportPDF()" class="fa fa-file-pdf fa-2x" style="color: #ff0000;"></i>
+                            <i onclick="excel('xlsx')" class="fa fa-file-excel fa-2x" style="color: #008a09;"></i>
+                            <table id="turnos" style="width: 100%">
+                                <thead id="turnos_head">
+                                </thead>
+                                <tbody id="turnos_body">                                        
+                                </tbody>
+                            </table>
+                        </div>                            
+                    </div>
                     <div class="row" style="display: grid;">
                         <a style="width:7%;justify-self: end;" href="/sociales/turnos" class="btn btn-primary">Volver </a>
                     </div>
@@ -58,7 +74,7 @@
             <div class="modal-body" id="popBody">
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" id="btnOk" data-bs-dismiss="modal">Ok</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
             </div>
           </div>
         </div>
@@ -68,15 +84,13 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Borrar Cola</h5>
+              <h5 class="modal-title">Turno</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-            <div class="modal-body">
-                ¿Está seguro que desea borrar esta cola? No podrá recuperarla
+            <div class="modal-body" id="bodyTurnoBorrar">
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="borrarCola()">Borrar</button>
+            <div class="modal-footer" id="footerTurnoBorrar">
+                
             </div>
           </div>
         </div>
