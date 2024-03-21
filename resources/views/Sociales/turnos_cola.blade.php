@@ -4,6 +4,8 @@
     <head>
         <link rel="stylesheet" href="{{ asset('css/sociales/cola.css') }}">
         <script src="{{ asset('js/Sociales/cola.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
         <script src="https://unpkg.com/jspdf-autotable@3.5.22/dist/jspdf.plugin.autotable.js"></script>
         <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
@@ -16,7 +18,7 @@
             <div class="card">
                 <div class="card-head">
                     <input type="text" hidden value="{{$cola->idcola}}" id="id">
-                    <h5 style="margin: 1%">{{ $cola->descripcion }} - {{$cola->denominacion}}</h5>        
+                    <h5 style="margin: 1%" id="titulo">{{ $cola->descripcion }} - {{$cola->denominacion}}</h5>        
                     <hr>
                 </div>
                 <div class="card-body">       

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#colas').DataTable({
+    let table = $('#colas').DataTable({
         orderCellsTop: true,
         fixedHeader: true,
         "bSort":false,
@@ -18,5 +18,23 @@ $(document).ready(function () {
             },
         },
         order: [[ 1, 'asc' ]]
-    });
+    });    
+    table.columns(3).search('Pendiente').draw();
 });
+
+
+function filter(tipo){
+    let table = $('#colas').DataTable()
+    if(tipo == 't'){
+        table.columns(3).search('').draw();
+    }
+    if(tipo == 'c'){
+        table.columns(3).search('Cerrada').draw();
+    }
+    if(tipo == 'p'){
+        table.columns(3).search('Pendiente').draw();
+    }
+    if(tipo == 'pu'){
+        table.columns(3).search('Publicada').draw();
+    }
+}

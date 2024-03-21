@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-head">
                     <input type="text" hidden value="{{$cola->idcola}}" id="id">
-                    <h5 style="margin: 1%">{{ $cola->descripcion }} - {{$cola->denominacion}}</h5>                
+                    <h5 style="margin: 1%" id="titulo">{{ $cola->descripcion }} - {{$cola->denominacion}}</h5>                
                     <hr>
                 </div>
                 <div class="card-body">       
