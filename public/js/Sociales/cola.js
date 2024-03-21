@@ -136,7 +136,7 @@ function mostrarTurnos(turnos){
     let body='<tr><th>' + String(turnos[0].hora).padStart(2, '0') + ':' + String(turnos[0].minuto).padStart(2, '0') + '</th>'
     turnos.forEach(turno => {
         if(horaActual != turno.hora || minutoActual != turno.minuto){
-            body +='</tr><tr><td style="width:60px; display:table-cell;">'+ String(turno.hora).padStart(2, '0') + ':' + String(turno.minuto).padStart(2, '0')  +'</td>'
+            body +='</tr><tr><th style="width:60px; display:table-cell;">'+ String(turno.hora).padStart(2, '0') + ':' + String(turno.minuto).padStart(2, '0')  +'</th>'
             horaActual = turno.hora;
             minutoActual = turno.minuto;
         }
@@ -155,7 +155,7 @@ function mostrarTurnos(turnos){
       }
     head_Table.innerHTML = head;
     body_Table.innerHTML = body;
-    $('#turnos').DataTable({
+    let table  = $('#turnos').DataTable({
         scrollX: true,
         paging:   false,
         ordering: false,
@@ -348,22 +348,94 @@ function liberarTurno(id){
 
 function  exportPDF(){
     //crear tabla
-    let tabla = document.getElementById('turnos')
+    let tabla = document.getElementById('turnos');
     //
     let doc = new jsPDF('l', 'pt', 'a4');
-    doc.autoTable({ html: tabla, 
-        theme: 'grid', styles : { halign : 'center'}, headStyles :{fillColor : [124, 95, 240]}, alternateRowStyles: {fillColor : [231, 215, 252]}, tableLineColor: [124, 95, 240], tableLineWidth: 0.1,}, )
-    console.log(tabla)
-    let nombre = 'Turnos_'+document.getElementById('datepicker').value
-    console.log(nombre)
-    doc.save(nombre+'.pdf')    
+
+    // Add text to the PDF
+    doc.setFontSize(12); // Set font size
+    doc.text(document.getElementById('titulo').innerHTML + '.', 10, 20);
+    doc.text('Fecha: ' + fecha.toLocaleDateString() + '.', 10, 40);
+    doc.text('Día y hora de la impresión: ' + currentdate.toLocaleString(), 10, 60);
+    // Add the table to the PDF
+    doc.autoTable({
+        html: tabla,
+        theme: 'grid',
+        styles: {
+            halign: 'center'
+        },
+        headStyles: {
+            fillColor: [124, 95, 240]
+        },
+        alternateRowStyles: {
+            fillColor: [231, 215, 252]
+        },
+        tableLineColor: [124, 95, 240],
+        tableLineWidth: 0.1,
+        startY: 80 
+    });
+
+    let nombre = 'Turnos_' + document.getElementById('datepicker').value;
+    doc.save(nombre + '.pdf');
 }
 
-function excel(type, fn, dl){
-    let nombre = 'Turnos_'+document.getElementById('datepicker').value
-    var elt = document.getElementById('turnos')
-    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-    return dl ?
-      XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
-      XLSX.writeFile(wb, fn || (nombre +'.' + (type || 'xlsx')));
+function excel() {
+    var currentdate = new Date();
+    let fecha = new Date(document.getElementById('datepicker').value);
+    let tableE = document.createElement('table');
+    tableE.innerHTML = '<tr><th colspan="3">'+document.getElementById('titulo').innerHTML +'</th><th colspan="2"> Fecha '+ fecha.toLocaleDateString() + '</th><th colspan="5">Día y hora de la impresión: ' + currentdate.toLocaleString() +'</th></tr><tr></tr>';
+    var table = document.getElementById('turnos');
+    tableE.innerHTML += table.innerHTML;
+    if (!table) {
+        console.error("Table element with id 'turnos' not found.");
+        return;
+    }
+
+    var filename = 'Turnos_' + document.getElementById('datepicker').value + '.xlsx';
+    
+    /* Convert table to worksheet */
+    var ws = table_to_sheet_with_style(tableE);
+
+    /* Generate workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* Generate XLSX file */
+    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    /* Create Blob */
+    var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+    /* Trigger download */
+    saveAs(blob, filename);
+}
+
+/* Helper function to convert data to array buffer */
+function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
+
+/* Custom function to convert table to sheet with style */
+function table_to_sheet_with_style(table) {
+    var ws = XLSX.utils.table_to_sheet(table);
+
+    // Add some basic styling
+    var range = XLSX.utils.decode_range(ws['!ref']);
+    for (var R = range.s.r; R <= range.e.r; ++R) {
+        for (var C = range.s.c; C <= range.e.c; ++C) {
+            var cell_address = { c: C, r: R };
+            var cell_ref = XLSX.utils.encode_cell(cell_address);
+            var cell = ws[cell_ref];
+            
+            // Add styling to cells
+            if (cell && cell.v !== undefined) {
+                cell.s = { font: { bold: true } }; // Example: Making text bold
+            }
+        }
+    }
+
+    return ws;
 }

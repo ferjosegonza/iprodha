@@ -16,6 +16,10 @@
                 <a href="nueva_cola"><button class="btn btn-outline-success">Generar nueva cola de turnos</button></a>
                 <hr>
                 <table id="colas" style="width: 100%">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="filter('t')">Ver todas las colas</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="filter('c')">Ver las colas cerradas</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="filter('p')">Ver las colas pendientes</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="filter('pu')">Ver las colas publicadas</button>
                     <thead>
                         <th hidden></th>
                         <th>Descripción</th>
@@ -33,12 +37,18 @@
                                 <td hidden>{{$cola->idcola}}</td>
                                 <td>{{$cola->descripcion}}</td>
                                 <td>{{$cola->denominacion}}</td>
-                                <td>@if ($cola->publicado == 0)
-                                    Pendiente
+                                <td>                                    
+                                    @if(date('Y-m-d',strtotime($cola->fecha_hasta)) > date("Y-m-d"))
+                                        @if ($cola->publicado == 0)
+                                        Pendiente
+                                        @else
+                                        Publicada
+                                        @endif
                                     @else
-                                    Publicado
-                                @endif</td>
-                                <td>{{$cola->cant_puestos}}</td>
+                                        Cerrada
+                                    @endif
+                                </td>
+                                <td>{{strtotime($cola->cant_puestos)}}</td>
                                 <td>{{$cola->fecha_desde}}</td>
                                 <td>{{$cola->fecha_hasta}}</td>
                                 <td>{{$cola->duracion_turno}} min.</td>
