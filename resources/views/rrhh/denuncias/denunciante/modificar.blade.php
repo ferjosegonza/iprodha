@@ -3,7 +3,7 @@
 @section('content')
     <head>
         <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
-        <script src="{{ asset('js/rrhh/denuncias.js') }}"></script>
+        <script src="{{ asset('js/Coordinacion/rrhh/denuncias.js') }}"></script>
     </head>
     <section class="section">
         <div class="section-header">

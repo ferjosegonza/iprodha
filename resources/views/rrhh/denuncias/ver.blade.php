@@ -3,6 +3,9 @@
 @section('content')
     <head>
         <script src="{{ asset('js/archivo/digitalizacion.js') }}"></script>
+        <script src="{{ asset('js/Coordinacion/rrhh/denuncias.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+        <script src="https://unpkg.com/jspdf-autotable@3.5.22/dist/jspdf.plugin.autotable.js"></script>
         <style>
             .form-group > div, .min-height-20 {
                 min-height: 25px;
@@ -20,7 +23,13 @@
         <div class="section-body">
             <div class="row min-height-20">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="col-xs-12 col-sm-12 col-md-12" style="margin: 30px 0 0 10px">
+                        {!! link_to_route('rrhh.denuncias.listar',$title = 'Volver',$parameters = [],$attributes = ['class' => 'btn btn-secondary fo']) !!}
+                        <br><br>
+                        Exportar a PDF: <i onclick="exportPDF()" class="fa fa-file-pdf fa-2x" style="color: #ff0000;"></i>
+                    </div>
+
+                    <div class="card-body" id="content">
                         <div class="form-group min-height-20" style="margin-bottom: 35px">
                             <h4>Datos de la Denuncia</h4>
                             <div>Fecha: <b>{{$denuncia->fecha ? \Carbon\Carbon::parse($denuncia->fecha)->format('d-m-Y') : 'No hay fecha cargada.' }}</b></div>
@@ -114,11 +123,8 @@
                                     <div>No hay datos cargados de la víctima</div>
                                 @endif
                             </div>
+                        </div>
 
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            {!! link_to_route('rrhh.denuncias.listar',$title = 'Volver',$parameters = [],$attributes = ['class' => 'btn btn-secondary fo']) !!}
-                        </div>
                     </div>
                 </div>
             </div>
