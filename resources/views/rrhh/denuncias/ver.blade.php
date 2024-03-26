@@ -35,22 +35,6 @@
                             <div>Fecha: <b>{{$denuncia->fecha ? \Carbon\Carbon::parse($denuncia->fecha)->format('d-m-Y') : 'No hay fecha cargada.' }}</b></div>
                             <div>Extracto: <b>{{$denuncia->extracto ?? 'No hay extracto cargado.'}}</b></div>
                             <div>Descripción: <b>{{$denuncia->descripcion ?? 'No hay descripción cargada.'}}</b></div>
-                            {{-- <div class="form-group" style="margin-bottom: 0;padding-bottom: 0px">
-                                {!! Form::label('fecha', 'Fecha:', ['class' => 'form-label m-1','style' => 'color:black;']) !!}
-                                {!! Form::date('fecha',$denuncia->fecha ? substr($denuncia->fecha, 0, 10) : '',[
-                                    'class'=>'form-control date-field mb-3',
-                                    'style' => 'width: auto;',
-                                    'max' => now()->format('Y-m-d'),
-                                    'readonly' => true]) !!}
-                            </div>
-                            <div class="form-group">
-                                <div>{!! Form::label('denuncia_extracto', 'Extracto:', ['class' => 'form-label','style' => 'color:black;']) !!}</div>
-                                <div>{{$denuncia->extracto}}</div>
-                            </div>
-                            <div class="form-group">
-                                <div>{!! Form::label('denuncia_descripcion', 'Descripción:', ['class' => 'form-label','style' => 'color:black;']) !!}</div>
-                                <div>{{$denuncia->descripcion}}</div>
-                            </div> --}}
                         </div>
 
                         <div class="row">
@@ -78,15 +62,6 @@
                                     <div>No hay datos cargados del denunciante</div>
                                 @endif
                             </div>
-                            {{-- <div class="form-group">
-                                {!! Form::label('id_sexo', 'Sexo:', ['class' => 'form-label','style' => 'color:black;']) !!}
-                                {!! Form::text('id_sexo', $denunciante->sexo->DESCSEXO, [
-                                    'class' => 'form-control',
-                                    'style' => 'resize:none;text-transform:uppercase;color: var(--bs-modal-color);',
-                                    'id'    =>  'id_sexo',
-                                    'readonly' => true
-                                ]) !!}
-                            </div> --}}
 
                             <div class="form-group">
                                 <h5>Datos del Denunciado</h5>
