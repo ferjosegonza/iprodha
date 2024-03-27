@@ -18,6 +18,8 @@ use App\Http\Controllers\Barrio\barrio_terrenoController;
 use App\Http\Controllers\Barrio\BarrioXOrgController;
 use App\Http\Controllers\Barrio\fc_conxbarrioController;
 use App\Http\Controllers\ob_licitacionController;
+use App\Http\Controllers\me\userXAreaController;                            
+use App\Http\Controllers\me\bandejaController;
 
 
 use App\Http\Controllers\CategorialaboralController;
@@ -155,6 +157,13 @@ Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],func
 Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-BARRIO']],function(){
     Route::get('/barrio/{barrio}/vercostos',[Fc_concosxbarrioController::class,'edit'])->name('barrio.verCostos');        
 });
+
+Route::get('me/userXArea',[userXAreaController::class,'index'])->name('userXArea.index');
+Route::post('me/userXArea',[userXAreaController::class,'store'])->name('userXArea.store');
+Route::delete('me/userXArea/eliminar/{id}/{codare}',[userXAreaController::class,'destroy'])->name('userXArea.eliminar');
+Route::resource('me/userXArea',userXAreaController::class);
+
+Route::get('me/bandeja',[bandejaController::class,'index'])->name('bandeja.index');
 
 //ob_licitacion
 Route::group(['middleware'=>['auth','role_or_permission:ADMIN|VER-OB_LIC']],function(){
